@@ -41,6 +41,7 @@ class Sequencer:
         self.standing = standing if standing is not None else {}
         self.tentative = {}
         self._verdicts = {}
+        self.rule_decider = None
         self.admission = Scheduler()
         self.state = fold(self.log.entries)
         self.dictionary = Dictionary(
@@ -394,12 +395,25 @@ class Sequencer:
         view = self._record_lookup(producer, cls)
         outcome, reasons = decide(producer, envelope["kind"], effects,
                                   view, self.standing.get(producer))
+        decided_by = None
+        policy_outcome = outcome
+        if self.rule_decider is not None:
+            ruled = self.rule_decider(producer, cls, effects, outcome,
+                                      reasons)
+            if ruled is not None:
+                decided_by, outcome = ruled
+                reasons = ["standing-rule:%s" % decided_by]
         decision = {"producer": producer, "class": cls,
                     "proposal_id": env_hash,
                     "policy_version": POLICY_VERSION,
                     "outcome": {"allow": "allow", "deny": "deny",
                                 "queue": "queued"}[outcome],
                     "reasons": reasons, "effects": sorted(effects)}
+        if decided_by is not None:
+            decision["decided_by"] = decided_by
+            decision["policy_outcome"] = {
+                "allow": "allow", "deny": "deny",
+                "queue": "queued"}[policy_outcome]
         if outcome == "queue":
             decision["requests"] = requests
             decision["irreversible"] = bool(body.get("irreversible"))

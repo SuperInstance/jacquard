@@ -371,3 +371,43 @@ constitutional test pins this: decisions are byte-identical with
 and without a 99%-confident judgement sense published, and the
 kernel's decision-path modules contain no provider imports
 (asserted by grep in the test suite).
+
+## 2026-11-02 — Slice 6: the learner
+
+**Delivered.** `learner.py` driving the standing-rule machine
+through the full R10 pipeline: mining (shape = producer × class
+× exact effect set over the first 70% of primary decisions;
+support ≥3, dominance ≥80%), a generated pure recogniser
+definition per candidate (computed effects: none), offline
+evaluation on the held-out 30%, shadow, canary, active — each
+promotion gated on scored agreement (≥90% over ≥3 fresh
+samples), production scoring with automatic demotion, and
+one-call revocation. The P9 `similar` primitive is implemented
+now (shape-key lookup over the actor's own decision history);
+the Phase 1 "honestly returns []" stub is gone. Tests: 9 new
+(110 total) covering mining on the gpu-queue pattern in
+miniature plus a synthetic pattern, shadow non-interference,
+the full pipeline to an active rule that verifiably decides
+(`decided_by` on the decision entry), promotion refusal without
+evidence, and revocation immediacy.
+
+**The constitutional detail that matters.** When a rule
+decides, the decision entry also records `policy_outcome` —
+what policy/1 would have done. Production scoring compares the
+rule against THAT, never against its own decisions; otherwise
+"agreement" for an active rule is a tautology and regression is
+undetectable. The planted-regression test works exactly this
+way: the producer is suspended, policy denies, the hook refuses
+to override a suspension (standing is constitutional), the
+rule's stored prediction keeps disagreeing with the recorded
+policy outcomes, and check_demotions demotes it with the
+regress transition and the 0% agreement score in the log.
+
+**Honest limits.** Mining is shape-frequency only — no
+sequence patterns beyond repetition of a shape; the recogniser
+is exact-match on the effect set, so near-miss shapes are
+different shapes. Both are stated in spec section 12's terms
+(minimum support, dominance) rather than dressed up.
+Quarantine exists in the machine but nothing drives a rule
+into it yet — it is the operator's lever, wired when the
+operator surface lands (Phase 3, slice 10).

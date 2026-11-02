@@ -96,6 +96,33 @@ class EvalContext:
         return len(self.entries)
 
 
+def shape_key(cls, effects):
+    """The canonical key of a proposal shape: class and sorted
+    effect verbs. The learner mines shapes under this key."""
+    return "%s|%s" % (cls, ",".join(sorted(effects)))
+
+
+def _similar(ctx, shape, k):
+    """Up to k decisions in the actor's own history whose shape
+    key matches `shape` ("<class>|<verb,verb,...>"), oldest
+    first. Each is {"class", "effects", "outcome"}."""
+    matches = []
+    for entry in ctx.entries:
+        if entry["kind"] != "decision":
+            continue
+        body = entry["body"]
+        if body.get("producer") != ctx.producer:
+            continue
+        if shape_key(body.get("class", "work"),
+                     body.get("effects", [])) != shape:
+            continue
+        matches.append({"class": body.get("class", "work"),
+                        "effects": body.get("effects", []),
+                        "outcome": body.get("outcome")})
+    k = _int(k, "similar")
+    return matches[-k:] if k > 0 else []
+
+
 def _history(ctx, unit, window):
     values = []
     for entry in ctx.entries:
@@ -119,10 +146,10 @@ IMPLS = {
     "record": lambda ctx, producer, cls: (
         ctx.record_lookup(producer, cls) if ctx.record_lookup else {}),
     "sense": lambda ctx, name: ctx.state.senses.get(name),
-    # P9 reads a similarity index over the log. In Phase 1 the index
-    # is not populated, so this honestly returns an empty list; the
-    # learner that fills it is a later phase (builder's log).
-    "similar": lambda ctx, shape, k: [],
+    # P9: the similarity index over the log, populated since the
+    # learner landed (Phase 2, slice 6): decisions in the actor's
+    # own history whose shape key matches, most recent last.
+    "similar": lambda ctx, shape, k: _similar(ctx, shape, k),
     "history": lambda ctx, unit, window: _history(
         ctx, unit, _int(window, "history")),
     "eq": lambda ctx, a, b: a == b,

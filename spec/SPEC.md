@@ -435,3 +435,57 @@ may depend on a provider's verdict, and the kernel imports no
 provider-specific code — adapters live outside the kernel, and
 changing providers changes which senses exist, never how
 decisions are made. The record gates; the model only testifies.
+
+## 12. The learner and standing rules
+
+Learned behaviour enters as a *standing rule*: a candidate rule
+whose lifecycle is the standing-rule machine (candidate,
+evaluated, shadow, canary, active, demoted, quarantined,
+revoked), every transition a log entry.
+
+A rule is a `rule` entry: `{"rule_id", "definition", "shape",
+"predicted_outcome", "support", "dominance_bp", "origin", ...}`
+where shape is (producer, class, exact effect set) and
+definition names a pure dictionary word — the *recogniser* —
+that decides whether a proposal matches the shape. A rule's
+identity is a hash of its shape and prediction: identity is
+derived from instances, not assigned. A rule's stage is never
+stored in the rule entry; it is the state of the rule's
+standing-rule machine instance, whose id is the rule id.
+
+The pipeline:
+
+1. *Mining.* Primary decisions (the first decision per proposal;
+   release/reject/expire follow-ups and fault records are not
+   fresh evidence) are grouped by shape over a training window
+   (reference: the first 70%). A shape with at least the minimum
+   support (reference: 3) and a dominant outcome (reference:
+   ≥80% of its decisions) becomes a candidate.
+2. *Offline evaluation.* The candidate's prediction is scored
+   against the held-out tail. Below the bar (reference: 80%
+   agreement) it stays a candidate; the scores are recorded on
+   the rule entry either way.
+3. *Shadow.* The rule predicts but never decides. Agreement with
+   real outcomes is scored from the log.
+4. *Canary, then active.* Promotion at each stage requires
+   scored agreement (reference: ≥90% over ≥3 fresh samples at
+   that stage). There is no faster lane for shapes carrying
+   protected effects.
+5. *Production scoring and demotion.* An active rule decides
+   matching proposals through the sequencer's rule hook, within
+   bounds: it never overrides a suspension, and it never turns
+   an outcome into a queue. Every rule-made decision records
+   `decided_by` and `policy_outcome` (what the policy gate would
+   have done), so scoring compares the rule against the
+   constitution. An active rule whose agreement over fresh
+   samples collapses (reference: <50% over ≥5) is demoted
+   automatically — the regress transition and the scores are in
+   the log.
+6. *Revocation.* One call steps the rule to revoked. The hook
+   reads stage from folded state per proposal, so revocation
+   takes effect on the next proposal and decides nothing further.
+
+Scoring in every stage counts, per matching primary decision,
+agreement between the prediction and the actual outcome — where
+"actual" for a rule-made decision is the recorded policy
+outcome, never the rule's own decision.

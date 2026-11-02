@@ -16,7 +16,7 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 ## Repository layout
 
 - `spec/` — the specification (SPEC.md, currently version 0.2) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), and the decision-model provider seam (`providers.py`).
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), and the learner (`learner.py`).
 - `adapters/` — provider adapters that live outside the kernel (the kernel imports no provider-specific code).
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
@@ -25,9 +25,9 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 Phase 1 (complete): reference kernel (log, sequencer, dictionary with computed effects, policy gate with batched decision queue) plus the replay acceptance suite.
 
-Phase 2 (in progress): lifecycle machines and the machine-profile checker have landed (spec section 10) — the seven lifecycle machines are definitions in the repo, statically checked with named refusals, and the kernel runs its proposal, action and approval lifecycles through them. Queued proposals can now also be rejected or expired, not only released. Fair-queue scheduling, budgets and prices, and the senses framework have also landed (spec section 11): one WFQ scheduler arbitrates sequencer admission, executor slots and decision-queue attention; budgets are accounted from the log to the unit; senses publish named readings with their methods stated. Decision models plug in behind a provider interface as advisors only (spec section 13; `adapters/typesafe_jev.py` is the first adapter, outside the kernel).
+Phase 2 (in progress): lifecycle machines and the machine-profile checker have landed (spec section 10) — the seven lifecycle machines are definitions in the repo, statically checked with named refusals, and the kernel runs its proposal, action and approval lifecycles through them. Queued proposals can now also be rejected or expired, not only released. Fair-queue scheduling, budgets and prices, and the senses framework have also landed (spec section 11): one WFQ scheduler arbitrates sequencer admission, executor slots and decision-queue attention; budgets are accounted from the log to the unit; senses publish named readings with their methods stated. Decision models plug in behind a provider interface as advisors only (spec section 13; `adapters/typesafe_jev.py` is the first adapter, outside the kernel). The learner has also landed (spec section 12): repeated decision shapes are mined into candidate standing rules, evaluated offline, shadow-run, promoted through canary to active on scored evidence, auto-demoted on regression, and revocable in one call — every stage a machine transition in the log.
 
-Not built yet: the learner (standing-rule mining, shadow deployment, staged activation), state export bundles, a sandboxed executor, and the operator CLI. See the builder's log for the current state and honest per-slice verdicts.
+Not built yet: state export bundles, a sandboxed executor, and the operator CLI. See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 
