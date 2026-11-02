@@ -41,12 +41,32 @@ def _unify(a, b):
     return None
 
 
+def _form_key(token):
+    """The key naming a dict token's form, for refusals."""
+    keys = sorted(token)
+    return keys[0] if keys else ""
+
+
 def _walk_tokens(tokens):
+    """Yield every token in a body, descending into every
+    token position of every form (SPEC section 5): both
+    branches of an if, a bare list, and the values of any dict
+    form — except a literal's value, which is data and holds
+    no token positions. The walk is deliberately form-agnostic:
+    accounting must never undercount because a form was added
+    without the walk being taught about it (the pre-0.4 walk
+    descended only into if/else, and a quotation form's body
+    computed effect-free through it)."""
     for token in tokens:
         yield token
-        if isinstance(token, dict) and "if" in token:
-            yield from _walk_tokens(token.get("if") or [])
-            yield from _walk_tokens(token.get("else") or [])
+        if isinstance(token, dict):
+            for key, value in token.items():
+                if key == "lit" and set(token) == {"lit"}:
+                    continue
+                if isinstance(value, list):
+                    yield from _walk_tokens(value)
+        elif isinstance(token, list):
+            yield from _walk_tokens(token)
 
 
 class Dictionary:
@@ -132,9 +152,10 @@ class Dictionary:
     # ------------------------------------------------ signature check
     def _simulate(self, tokens, stack, defn_name):
         for token in tokens:
-            if isinstance(token, dict) and "lit" in token:
+            if isinstance(token, dict) and set(token) == {"lit"}:
                 stack.append(type_of(token["lit"]))
-            elif isinstance(token, dict) and "if" in token:
+            elif isinstance(token, dict) and "if" in token \
+                    and set(token) <= {"if", "else"}:
                 if not stack:
                     raise Refusal("FIELD", "%s: if with empty stack" % defn_name)
                 cond = stack.pop()
@@ -153,6 +174,12 @@ class Dictionary:
                         "%s: if branches leave different stack shapes (%s vs %s)"
                         % (defn_name, then_stack, else_stack))
                 stack[:] = then_stack
+            elif isinstance(token, dict):
+                raise Refusal(
+                    "SPEC",
+                    "%s: token form %r is not defined in this "
+                    "version (SPEC section 5)" % (defn_name,
+                                                  _form_key(token)))
             elif isinstance(token, str) and token in SYNTAX_FORMS:
                 self._simulate_syntax(token, stack, defn_name)
             elif isinstance(token, str):
@@ -297,9 +324,10 @@ class Dictionary:
 
     def _exec(self, tokens, stack, requests, ctx, refs):
         for token in tokens:
-            if isinstance(token, dict) and "lit" in token:
+            if isinstance(token, dict) and set(token) == {"lit"}:
                 stack.append(copy.deepcopy(token["lit"]))
-            elif isinstance(token, dict) and "if" in token:
+            elif isinstance(token, dict) and "if" in token \
+                    and set(token) <= {"if", "else"}:
                 if not stack:
                     raise Refusal("FIELD", "if with empty stack")
                 branch = token.get("if") if stack.pop() else token.get("else")
@@ -329,6 +357,11 @@ class Dictionary:
                     raise Refusal("SPEC", "unknown reference: %s" % token)
                 self._exec(defn["body"], stack, requests, ctx,
                            defn.get("refs") or {})
+            elif isinstance(token, dict):
+                raise Refusal(
+                    "SPEC",
+                    "token form %r is not defined in this version "
+                    "(SPEC section 5)" % (_form_key(token),))
             else:
                 raise Refusal("FIELD", "bad token %r" % (token,))
 
