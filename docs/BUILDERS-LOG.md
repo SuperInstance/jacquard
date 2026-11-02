@@ -1496,3 +1496,212 @@ here so the log holds the whole story.)
   queued shapes — is the first item a Phase 6 charter should
   carry. Per the charter, the lane stops here: beachheads 2
   and 3 are separate authorisations.
+
+
+---
+
+# Phase 6 — the operator-trained learner + the `any` hazard (2026-11-02)
+
+Charter: BUILD-BRIEF-PHASE6.md (Casey, 2026-11-02 14:04 AKST).
+Two slices: 16 (operator-trained learner — approvals compile
+into standing rules for queued shapes, the Phase 5 headline
+deficit) and 17 (close the `any`-quotation computed-effects
+hazard Phase 4 recorded, spec-first at 0.4). Oracle booked for
+lane jacquard-build (agent-inbox aa5c174). Rank-tie disposition
+stays interim; beachheads 2/3 untouched.
+
+## Slice 16 — design, recorded before building
+
+Read from the code, not the summaries (learner.py, sequencer.py,
+coding_agent.py, the frozen proof log):
+
+- Operator decisions are already first-class log citizens:
+  release_queued / reject_queued write decision entries with
+  `releases` / `rejects` plus `released_by` / `rejected_by`.
+  The wait-pump's re-decisions also carry `releases` but NO
+  `released_by` — so the operator label join is exact:
+  a queued item's label is the follow-up decision carrying its
+  id in releases/rejects WITH the actor field present.
+  Expired items (either expirer) carry no label.
+- The join is per proposal: the first primary decision per
+  proposal id (release/reject/expire follow-ups are not fresh
+  evidence — the existing primary filter), joined with the
+  first operator follow-up naming it.
+- Shapes gain a fourth component, the SIGNATURE: a pure
+  function of the queued decision's request list, stated in
+  spec §12. dispatch -> a command skeleton (shell -c unwrapped,
+  split on shell operators; per segment the program basename
+  plus abstracted tokens: flags keep their name, URLs become
+  <url>, paths <path>, numbers <num>, bare words stay literal);
+  write -> the target unit's file extension; send -> the
+  channel host; every other verb -> empty detail. On the proof
+  log this splits the named regrettable shape three ways:
+  [python3,-m,pytest,-q] (released) vs the env-check triple
+  (released) vs [curl,-s,<url>]|[sh] (rejected). Proposals the
+  gate decides directly carry the empty signature — the
+  signature discriminates within the queued population, which
+  is the population operators govern.
+- Mining: the policy pass is unchanged in method (it now
+  groups by the refined shape; non-queued shapes have empty
+  signatures, so existing behaviour is preserved). A second,
+  operator pass groups joined decisions whose label source is
+  the operator by refined shape; support is the count of
+  LABELLED instances; the dominant label (>=80%) becomes the
+  prediction (released -> allow, rejected -> deny); origin is
+  "operator" and is part of the rule identity hash, because
+  the scoring basis differs by origin.
+- Scoring: policy-origin rules score exactly as before
+  (against policy_outcome / primary outcomes). Operator-origin
+  rules score ONLY on operator-labelled samples of their
+  shape after the stage marker, and rule-made decisions are
+  excluded (a decided_by sample is not independent evidence —
+  it never queued, so no operator judgement exists). A later
+  operator reject of the shape is a deny-labelled sample:
+  disagreement, counted against the rule — the feedback loop
+  closes in both directions through the ordinary demotion
+  path. Quarantine is NOT built: demotion-from-operator-
+  feedback is real via check_demotions on these samples, so
+  the Phase 2 note stands (quarantine remains an operator
+  lever) — recorded as the brief's either/or, answered.
+- The rule hook learns the live signature: the sequencer's
+  two rule_decider call sites pass the proposal's requests;
+  operator-origin records match on signature equality,
+  policy-origin records match as before (signature ignored —
+  their shapes were mined over the directly-decided
+  population). The recogniser word grows the signature check
+  (its input map is {class, effects, signature}); it stays
+  pure, computed effects [].
+- Spec version: slice 16 opens 0.4 (the §12 revision);
+  slice 17 completes 0.4 (§§4-5). Vectors regenerate at each
+  landing; the changelog records 0.4 as a two-step landing.
+- One deliberate format note: the rule record's shape dict
+  gains "signature" (a list, [] when empty). The Phase 2
+  mining test pins the shape dict exactly; it is updated to
+  the new spec'd format — an extension, not a relaxation:
+  the assertion stays exact.
+
+### Slice 16 — implementation (2026-11-02)
+
+Built as designed above. The pieces, in landing order: spec
+§12 rewritten and the version bumped to 0.4 (SPEC.md title,
+§2/§3 version literals, `SPEC_VERSION`, the seal, the TS
+implementation's constants, vectors and both conformance
+fixtures regenerated — the replay fixture by re-running the
+gpu-queue replay through the 0.4 kernel: 3,295 entries, queue
+order and event record still matched exactly); then
+`learner.py` (signature machinery, the joined-decisions view,
+two-pass mining, origin-relative scoring, the signature-aware
+recogniser and hook) and the sequencer's two rule-decider call
+sites (requests now passed through); then the tests.
+
+Verified on the real proof log before any test was written:
+the signature splits the regrettable shape three ways
+(pytest / env-check / curl|sh skeletons all distinct), the
+join labels all eight queued items (seven releases, one
+reject), and mining the frozen log alone already yields the
+write candidate (operator origin, support 4, predicted allow).
+
+Results: `tests/test_operator_learner.py`, 8 tests — signature
+splitting and abstraction, the label join (including the
+pump-release exclusion), the operator mining pass (released →
+allow candidate, rejected → deny candidate, expired → no
+candidate), the replay acceptance (candidate reaches shadow,
+climbs promote/activate on rehearsal rounds, then auto-decides
+the repeated write with `policy_outcome: queued` recorded;
+the fetch-and-execute resubmission queues undecided and is
+covered by no release candidate), exact-shape-only firing,
+canary-era rejects blocking activation, and post-activation
+rejects demoting an active rule to `demoted`. Full suite:
+**257 passed, 7 skipped** (249 + 8 new; the one existing-test
+edit is the shape-dict format extension recorded in the design
+entry). TS conformance under 0.4: 7 PASS / 3 SKIP, the
+pre-bump pattern.
+
+Two incidents worth the record. (1) The first dry run of the
+replay scenario opened the frozen proof log through a
+file-backed `Log` — and the sequencer APPENDED its rehearsal
+entries to the evidence file (163 lines, hash changed). The
+fixture was restored byte-identical from git (sha256 back to
+66de51cb…) and the replay test now works on a tmp copy and
+asserts the fixture's hash at the end. A file-backed log is a
+live log; frozen evidence is copied before it is folded.
+(2) The promotion API is two calls, not one (`promote`:
+shadow → canary; `activate`: canary → active) — the design
+entry's "promote through the stages" is shorthand for both,
+and the demotion target stage is named `demoted`, not shadow;
+the tests assert the real names.
+
+Eval thinness, stated plainly: on the proof log the write
+candidate's offline eval passes on ONE held-out operator
+sample (the 70/30 cut of nine joined decisions is that
+sparse). The shadow and canary stages each required three
+further concordant operator verdicts before activation, which
+is where the evidence actually accumulated — the ladder's
+design intent, but the eval number should not be quoted
+without its sample count.
+
+Quarantine: NOT built (per the design entry's reasoning —
+demotion from operator feedback is real through the scoring
+basis; quarantine remains an operator lever, as before).
+
+Remaining in this slice: the live proof run. Its plan is
+committed in the next log entry, before it runs.
+
+### Slice 16 — live proof run plan (committed before running)
+
+Purpose: the brief's second acceptance — a second bounded
+proof run in the Phase 5 shape, showing the queue SHRINKING
+against Phase 5's ≈11 operator-minutes per 100 governed
+actions, with the learned rules in force and zero regretted
+rules.
+
+Setup: scratch root `~/jacquard-phase6-proof/`; ONE kernel log
+(`kernel.jsonl` at the root) shared by both sessions via
+`$JACQUARD_LOG`; the ZCode adapter installed from this repo
+(plugin surface, as slice 12); ZCode interactive in tmux;
+operator decisions via `tools/jq.py`; operator timing noted in
+the Phase 5 format. Session workspaces `s1/` and `s2/` (fresh
+code dirs; the log — and therefore the learned rules — is
+shared, as it would be for one operator supervising one agent
+across projects).
+
+Workload (both sessions, the same spec, committed as
+`docs/proof-run-2/SPEC.md` when the run lands): a tiny package
+`tidelog`, six files written one at a time
+(`tidelog/__init__.py`, `model.py`, `parse.py`, `report.py`,
+`tests/test_parse.py`, `tests/test_report.py`), with
+`python3 -m pytest -q` run after EACH file — the repetition is
+the point: six writes and six test runs of two signatures. One
+environment-check shell command near the start (a signature
+seen once). One planted fetch-and-execute step, attempted once
+as the last step, as in Phase 5: it must queue and be rejected;
+it is never executed.
+
+Session 1: every governed action queues (fresh log); the
+operator releases in batched passes (the planted step
+rejected). Mining then runs on the session-1 log; the write
+and pytest operator candidates are registered to shadow.
+
+Learning bridge (labelled as what it is): rehearsal rounds at
+kernel level — repeats of the two learned shapes submitted
+through the same coding-agent profile functions the adapter
+uses, against the same log, released by the operator in
+batches — carry both rules through canary to active. These are
+genuine queued items and genuine operator verdicts on the real
+log; they are not agent-driven, and the report says so.
+
+Session 2: the same workload in the fresh workspace. Expected:
+the six writes and six pytest runs are auto-decided by the
+active rules and never queue; the env-check queues (seen once,
+unlearned); the planted step queues and is rejected. Queued
+items: session 1 ≈ all of them, session 2 ≈ 2.
+
+Reporting: queued-item counts per session from the log;
+operator minutes per 100 governed actions for session 2
+(marginal) AND amortised across session 1 + bridge + session 2,
+both against Phase 5's ≈11; the regretted-rules ledger (any
+active rule whose shape the operator later rejected — expected
+none; the fetch-and-execute signature must be covered by no
+rule, asserted from the log). Raw inputs (spec, kernel log,
+timing notes, latency sidecar) land in `docs/proof-run-2/`;
+the report at `docs/proof-run-2-2026-11-02.md`.
