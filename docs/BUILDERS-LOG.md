@@ -1068,3 +1068,74 @@ its own profile definitions against the profile checker
   flipping it.
 - Slice 15 window and workload will be stated here before the
   proof run starts, per the brief.
+
+## Phase 5 — slice 13: the network service (2026-11-02)
+
+The README's last "not built yet" item, built. A second machine
+can now operate the kernel over HTTP with the CLI's verbs and
+the CLI's hash-binding rules.
+
+- **One rendering path.** The queue listing, replay, status
+  text, the one-line decision outcomes, the binding hash and
+  the demo seed moved out of tools/jq.py into
+  src/jacquard/present.py; jq.py now prints what present.py
+  renders, and the service returns the same strings. Byte-for-
+  byte agreement between CLI and service is therefore by
+  construction — and still proven by test (below), because a
+  construction claim is testimony until a diff runs. The CLI's
+  own suite (tests/test_cli.py, incl. the slice-10 drill,
+  waiting-item annotation and mixed batches) passes unchanged
+  against the refactor.
+- **The service** (src/jacquard/service.py, stdlib
+  http.server only — zero-dependency is a property, kept;
+  runner tools/jqserve.py): POST /seed-demo, POST /proposals
+  (one envelope in, the kernel's verdict out), GET /senses and
+  GET /senses/<name>, GET /queue, POST /decide (single, and
+  batch via `decisions` or `batch` — a stale hash fails that
+  item with the CLI's binding-mismatch line and changes
+  nothing; the rest of a batch still processes, as the CLI
+  does), GET /replay/<proposal_id>, GET /status. Every request
+  opens the log fresh from disk, so the service acts on the
+  current record even when the CLI appended between requests;
+  mutations are serialised under a lock. Text-bearing
+  responses carry the exact CLI rendering in a `text` field
+  alongside structured data (`items`, `status`, `results`).
+- **Senses are publications, not computations.** Per the
+  Phase 4 findings addendum — contention readings are computed
+  by the kernel that owns the record; a remote adapter
+  consumes published readings and never recomputes — the
+  senses endpoints serve only what the owning kernel has
+  published into its log (folded state), 404 for an
+  unpublished name. A test pins the semantics: after a
+  decision moves the queue, the published queue-depth reading
+  still reports its as_of value until the kernel republishes.
+- **Posture.** Binds 127.0.0.1:8730 by default. A non-loopback
+  bind requires BOTH --allow-remote AND a bearer token
+  (JACQUARD_SERVICE_TOKEN env); without the token the service
+  refuses to start off loopback (tested at the serve() seam).
+  With a token set, every request is checked (hmac
+  compare_digest); missing/wrong token → 401 and no state
+  change (tested: log bytes identical after rejected reads
+  and writes). No TLS, and the README's service section says
+  what that means plainly: the token is a door lock against
+  unauthorised LAN machines, not encryption, not per-user
+  identity; run it on a trusted LAN or in a tunnel.
+- **Tests** (tests/test_service.py, 8 tests): every verb over
+  HTTP against a seeded log; the drill-equivalence test —
+  seed/queue/decide/replay through HTTP vs the CLI on two
+  identically seeded logs, queue/status/replay texts diffed
+  byte-for-byte at each step and the two log files asserted
+  byte-identical after the decisions; batch decide; stale-hash
+  decide over HTTP (409, log bytes unchanged, item still
+  queued); seed on a non-empty log refused over HTTP; bind
+  posture; token checks. Suite: 206 passed, 7 skipped (the
+  declared Probe B skips) — was 198 + 7 before this slice.
+- **Not in this slice:** execute stays CLI-side (the sandboxed
+  executor runs where the log lives; the brief's drill surface
+  for the service is seed/queue/decide/replay), and the
+  cross-machine acceptance — the drill re-run through the
+  service from a second machine — is the coordinator's run
+  after this lands. Exact run line, on the Oracle's loopback:
+  `python3 tools/jqserve.py --log <kernel.jsonl>` (default
+  127.0.0.1:8730). Nothing here depends on the interim
+  rank-tie disposition.

@@ -16,9 +16,9 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 ## Repository layout
 
 - `spec/` — the specification (SPEC.md, currently version 0.3) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`).
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`, Phase 5 slice 13).
 - `adapters/` — adapters that live outside the kernel: decision-model providers (the kernel imports no provider-specific code) and the sandboxed executor.
-- `tools/` — operator and build tools: the operator CLI (`jq.py`), the golden-vector generator, the shadow-trial runner.
+- `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the golden-vector generator, the shadow-trial runner.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: an independent TypeScript implementation written from the spec alone, its gap report, and the fixtures it folds (see `conformance/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
@@ -37,7 +37,9 @@ Phase 3 (continued): a sandboxed executor adapter has landed (`adapters/executor
 
 Phase 4 (complete): the completeness probes closed the shadow trial's three expressiveness findings (docs/completeness-probes-2026-11-02.md) with no new primitives and no new fold section. Interval contention is a kernel sense consumed by machine guards (spec section 11.3); conditional starts are a `wait` field on the proposal body, re-evaluated by a sequencer pump under pinned ordering rules (spec section 7.1); authority priority is rank as data, an authority sense that recognises only operator grants, and preemption as ordinary operator proposals, in a booking application profile shipped as definitions (spec section 11.4). The operator CLI annotates waiting items and authority ties in the queue listing.
 
-Not built yet: any network service; packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
+Phase 5 (in progress): beachhead 1 — the supervision layer for coding-agent fleets. Slice 13 has landed: the network service (`src/jacquard/service.py`, run via `tools/jqserve.py`) exposes the operator CLI's verbs over HTTP — see the service section below. Slices 12 (a live adapter to a real coding agent), 14 (batched queue notifications) and 15 (the measured proof run) are the rest of the phase.
+
+Not built yet: packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 
@@ -93,3 +95,75 @@ Success looks like: step 3 prints `approved <id>` / `denied
 reports the action confirmed; step 5's replay shows the queued
 decision, the operator's decision, and the execution, in log
 order.
+
+## The network service
+
+The kernel is also reachable over HTTP, so a second machine can
+operate it: the same verbs as the operator CLI, against the same
+log, with the hash-binding rules unchanged. The service is
+standard-library only (the repo stays zero-dependency).
+
+Run it (from the repo root, on the machine that owns the log):
+
+```
+python3 tools/jqserve.py --log /tmp/kernel.jsonl
+# binds 127.0.0.1:8730 by default; --host / --port to change
+```
+
+Endpoints (JSON in, JSON out; every response that renders
+operator text carries it in a `text` field):
+
+| Route | Verb |
+|---|---|
+| `POST /seed-demo` | seed a fresh log with the demo proposals (refuses a non-empty log, like the CLI) |
+| `POST /proposals` | submit one envelope (the envelope object itself, or `{"envelope": ...}`); returns the kernel's verdict |
+| `GET /senses` | all published sense readings in the log |
+| `GET /senses/<name>` | one published reading by name (404 if none was published) |
+| `GET /queue` | the decision queue: structured `items` plus `text` |
+| `POST /decide` | decide: `{"action", "proposal_id", "hash"}`, or `{"decisions": [...]}` / `{"action", "batch": [...]}` for a batch |
+| `GET /replay/<proposal_id>` | the proposal's replay |
+| `GET /status` | kernel status |
+
+Queue presentation and replay are byte-for-byte identical to
+the CLI's output for the same log: both surfaces render through
+`src/jacquard/present.py`, and `tests/test_service.py` runs the
+slice-10 operator drill through HTTP and the CLI on identical
+logs and diffs every rendering (and the resulting log files).
+
+Decisions stay hash-bound over the wire: a `hash` that does not
+match the binding the queue presented fails with 409, prints
+the CLI's binding-mismatch line, and changes nothing.
+Successful batch items in a mixed batch still apply, exactly
+as the CLI processes the rest of a batch.
+
+Senses are the owning kernel's *published* readings — values
+the kernel computed and wrote into its log, with their methods
+and `as_of_seq`. The service serves those publications; it
+never recomputes a reading (contention, authority, or any
+other) from the record on a consumer's behalf.
+
+### Auth story, honestly
+
+- **Loopback (the default).** Binding 127.0.0.1 trusts every
+  local user of the host: anyone who can open a local TCP
+  connection can operate the kernel. No token is required,
+  because on loopback a token would only pretend to separate
+  users the OS already shares the port with.
+- **Non-loopback (LAN).** Requires BOTH the explicit
+  `--allow-remote` flag AND a bearer token in the
+  `JACQUARD_SERVICE_TOKEN` environment variable; without the
+  token the service refuses to start on a non-loopback bind.
+  When a token is configured it is checked on every request
+  (`Authorization: Bearer <token>`); a missing or wrong token
+  gets 401 and changes nothing.
+- **What the token does:** keeps unauthorised machines on the
+  LAN from operating the kernel, and nothing more. It is one
+  shared secret — not per-user identity, not an audit of *who*
+  decided (decisions are recorded as `operator`, as with the
+  CLI).
+- **What it does not do:** there is **no TLS**. The token and
+  every payload cross the network in clear text, so anyone who
+  can observe LAN traffic can read proposals and replay the
+  token. Run it only on a LAN you trust, or inside a tunnel
+  (SSH, WireGuard, Tailscale) — the token is a door lock, not
+  an armoured car.
