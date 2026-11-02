@@ -66,7 +66,7 @@ try {
 
 // --- a. spec_seal -----------------------------------------------------------
 // The seal computed from the spec text's rule (§3: hash of the string
-// "jacquard-spec/0.2") must equal the seal recorded in vectors.json.
+// "jacquard-spec/0.3") must equal the seal recorded in vectors.json.
 {
   const ok = SPEC_SEAL === vectors.spec_seal;
   report(
@@ -80,7 +80,7 @@ try {
 
 // --- b. vector entries rebuild + chain --------------------------------------
 // Rebuild the three vector entries from (kind, body), supplying seq, the
-// prev chain and spec "jacquard/0.2"; each must reproduce its recorded hash,
+// prev chain and spec "jacquard/0.3"; each must reproduce its recorded hash,
 // and the chain must verify.
 const rebuiltEntries: StoredEntry[] = [];
 {
@@ -220,6 +220,11 @@ report(
   "SKIP",
   "vectors.state",
   "encodes sequencer execution of the vector envelope (spec §7), outside this fold-scope implementation",
+);
+report(
+  "SKIP",
+  "vectors.senses",
+  "encodes sense computation (spec §11.3): readings are published values computed by kernels over the log, not folded, outside this fold-scope implementation",
 );
 
 process.exit(failures === 0 ? 0 : 1);

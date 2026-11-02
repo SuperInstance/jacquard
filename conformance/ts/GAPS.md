@@ -187,3 +187,21 @@ share one root cause worth fixing first: the fixtures contain only 4
 of the 12 entry kinds (definition, decision, execution, sense), so
 eight kinds' fold rules are specified, if at all, only in prose that
 omits the schemas and representations a second implementer needs.
+
+## 16. §11.3 / §9 — Sense computation is kernel work, not fold work (Phase 4, spec 0.3)
+
+- **Ambiguity:** spec 0.3 adds a `senses` section to the golden
+  vectors: entry lists plus a subject, with the expected reading
+  {value, method, as_of_seq}. A reading is a *published value*
+  computed by a kernel over the entry prefix up to its
+  as_of_seq (the contention and authority methods scan entries
+  and committed units with stated filters); the fold itself only
+  stores published readings verbatim, so no fold rule in the
+  spec derives a reading from a subject.
+- **Chosen:** sense computation is declared out of this
+  checker's fold scope: the checker reports the section as
+  SKIP (`vectors.senses`). Sense *entries* still fold exactly
+  as before (the body's `value`, verbatim — see #8), and
+  checks e/f/g cover logs containing them.
+- **Caught by:** the Python suite — tests/test_vectors.py
+  verifies every senses case via fold + compute_sense.

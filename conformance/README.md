@@ -31,6 +31,8 @@ failure. Checks a–d cover the golden vectors (seal, entry chain,
 checkpoint fold, envelope id); e–f the replay log (every hash
 recomputed, chain verified, fold to the expected state hash);
 g the all-kinds log. The vectors' `definitions` and final `state`
-sections encode dictionary evaluation and sequencer execution —
+sections encode dictionary evaluation and sequencer execution, and
+the `senses` section (spec 0.3) encodes sense computation —
+readings are published values computed by kernels, not folded —
 outside this fold-scope implementation, they are reported SKIP;
 they remain pinned for a future full port.
