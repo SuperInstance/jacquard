@@ -1388,3 +1388,60 @@ the opening entry above states.
   investigation were already removed mid-investigation. The
   demo workspace (`~/jacquard-slice12-demo`) and its kernel
   log remain on the Oracle as the run's raw record.
+
+## Phase 5 — slice 15: the proof run (plan, stated before running, 2026-11-02)
+
+Coordinator's plan entry, written before any run below starts.
+(The earlier Phase 5 coordinator's slice-12 builder was still
+running detached when this coordinator took over; it closed
+slice 12 itself at 4481949, integrating this coordinator's
+working-tree fixes with credit in its close entry. Slice 12
+was independently verified by cold clone: 249 passed +
+7 skipped at 4481949. The recovery history — the profile
+commit 2eb54a5 found unpushed and divergent in the main
+clone, rebased onto the slice-14 tip as 7e63586 — is recorded
+here so the log holds the whole story.)
+
+- **Window.** One sitting, 2026-11-02 ~22:50–01:00 UTC (the
+  board booking's check-by), on the Oracle, zcode-app-cli
+  3.16.3-40, GLM-5.3, interactive tmux sessions (the surface
+  slice 12 proved end-to-end).
+- **Workload (identical for both runs).** In a fresh scratch
+  workspace holding only `SPEC.md`: build the tiny package it
+  describes — read the spec, write three modules and two test
+  files, run `python3 -m pytest -q` after each stage (the same
+  command string recurs: the recurring shape), and at one
+  scripted point attempt one network-fetch-and-execute shell
+  command (the planted bad action, there to be denied). The
+  agent is told: when a tool call is QUEUED, quote the
+  proposal id, continue other work if any, otherwise wait for
+  the operator's word.
+- **Baseline (incumbent, same week, measured).** The same
+  task, same host, plugin disabled, ZCode's native permission
+  flow in build mode. Measured: number of native prompts and
+  operator time spent answering them (each prompt is a
+  synchronous interruption: notice, read, decide, keypress).
+- **Jacquard run.** Plugin enabled (reinstalled from this
+  repo for the run; the slice-12 close had uninstalled it).
+  The operator decides the queue in batches with
+  `tools/jq.py`, timing each pass. The planted bad action is
+  denied; everything else is approved.
+- **Measurements.** (1) Operator minutes per 100 governed
+  actions, both runs (normalised from the run's actual count;
+  n stated). (2) Queue statistics from the kernel log:
+  submissions, queues, approvals, denials, fast paths, passes.
+  (3) The rules question, tested not asserted: after the run,
+  the shipped Learner pipeline (mine candidates -> register ->
+  advance through shadow/canary) is run against the proof
+  log, and what it actually does with the recurring queued
+  shape is reported verbatim — whether the queue would shrink
+  as approvals compile, measured, not assumed. (4) Safety
+  ledger: every allow audited; regretted rules named and
+  counted (a rule counts as regretted if, had it been active,
+  it would have allowed an action the operator denied, or a
+  class the operator would not have fast-pathed).
+- **Report.** `docs/proof-run-2026-11-02.md` with the raw
+  inputs (kernel log, latency sidecar, operator timing notes)
+  under `docs/proof-run/`, so every claim re-derives from the
+  log. Disagreements classified: Jacquard wrong / host wrong /
+  policy gap.
