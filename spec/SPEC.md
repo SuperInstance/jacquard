@@ -10,10 +10,24 @@ version.
 All hashed or stored structures use one canonical JSON form:
 
 - UTF-8, keys sorted, separators `,` and `:` (no whitespace).
+  Key sorting is lexicographic by Unicode code point.
 - Values are restricted to: null, true, false, integers, strings,
   arrays, objects. **No floating-point numbers.** Quantities that
   would be fractional are integers in a stated unit (weights are
   milli-units, durations are milliseconds).
+- Integers are mathematical integers, but cross-language
+  conformance is guaranteed only in the safe range
+  -(2^53 - 1) .. 2^53 - 1: an implementation that cannot
+  represent an integer exactly must refuse it rather than emit
+  approximate canonical bytes.
+- Strings are escaped in the ASCII-safe form: `"` and `\` are
+  backslash-escaped; backspace, form feed, newline, carriage
+  return and tab use their short escapes (`\b`, `\f`, `\n`,
+  `\r`, `\t`); every other character outside printable ASCII
+  — including ALL non-ASCII characters — is escaped as
+  `\uXXXX` with lowercase hex digits, astral characters as
+  surrogate pairs. (The golden vectors include a non-ASCII
+  checkpoint name so this rule is exercised, not just stated.)
 - The hash of a structure is the lowercase hex SHA-256 of its
   canonical bytes.
 
@@ -29,7 +43,14 @@ Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
 
 Entry kinds: `proposal`, `decision`, `definition`, `execution`,
 `sense`, `checkpoint`, `machine`, `transition`, `budget`, `price`,
-`rule`, `import`. A checkpoint body is `{"name": str,
+`rule`, `import`. The entry hash is the hash (section 1) of the
+entry object WITHOUT the hash field itself: exactly
+`{"seq", "prev", "kind", "body", "spec"}`. The golden vectors
+record entries as `{"seq", "kind", "body", "hash"}`; `prev` and
+`spec` are reconstructed from this section when rebuilding them.
+The log's writer refuses kinds outside the list above; a fold
+ignores any entry whose kind it does not know (a conforming log
+never contains one). A checkpoint body is `{"name": str,
 "state_hash": hex64}` where state_hash is the hash of the folded
 state at that point.
 
@@ -64,6 +85,55 @@ The `dictionary` and `machines` values are lists of wrappers
 holds the stored form (a stored definition, section 5, or a
 stored machine, section 10).
 
+
+### 2.1 Entry body schemas and folded representations
+
+Fold-critical field names, per entry kind. Fields marked
+optional may be absent; a fold uses only the fields named here.
+
+- `proposal`: reserved; the reference kernel records proposals
+  as decisions and executions, and a fold ignores proposal
+  entries.
+- `decision`: `{"producer", "class", "proposal_id",
+  "policy_version", "outcome", "reasons", "effects"}` with
+  outcome one of `allow`, `deny`, `queued`, `refused`,
+  `expired`. The stored literal for a queueing decision is
+  `queued`. Optional: `fault` (with outcome `refused`),
+  `requests` / `irreversible` / `uses` (on `queued` decisions:
+  the stored work), `releases` / `rejects` / `expires` plus
+  `released_by` / `rejected_by` / `expired_by` (on the decision
+  that closes a queue item), `decided_by` and `policy_outcome`
+  (section 12). Fold: a `queued` body enters the decision queue
+  under its `proposal_id`, value = the full body; a body
+  carrying `releases`, `rejects` or `expires` removes that id.
+- `definition`: `{"producer", "definition"}`; the folded value
+  per name is the list of `{"entry_seq", "entry_hash",
+  "definition"}` wrappers (section 2).
+- `execution`: `{"producer", "class", "proposal_id", "applied",
+  "uses"}`; `applied` items are `{"verb", "args"}` plus optional
+  `outputs`. Fold: `write` items set units, `spend` items charge
+  the producer's budget (section 11.2).
+- `sense`: `{"producer", "name", "value"}`; the folded reading
+  for a name is the body's `value`, verbatim.
+- `checkpoint`: `{"name", "state_hash"}`; no fold effect.
+- `machine`: `{"producer", "machine"}`; folded like definitions,
+  wrapper key `definition` holding the stored machine form
+  (section 10.1, plus `action_effects`).
+- `transition`: the section 10.3 fields. Fold: the value per
+  instance is the OBJECT `{"machine", "state"}`, moved to the
+  entry's `to` on outcomes `created` and `taken` only.
+- `budget`: `{"producer", "delta"}` (optional `by`, and for
+  purchases `reason`, `flow`, `extra`, `resource` — evidence
+  only). Fold: the producer's key is created by its first budget
+  entry or first applied spend, and `delta` is added.
+- `price`: `{"resource", "price"}` (optional `by`). Fold: the
+  folded price of a resource is the latest entry's price.
+- `rule`: `{"producer", "rule"}`; the folded value per rule id
+  is the `rule` object itself (section 12), not the whole body.
+- `import`: `{"producer", "bundle_hash", "format",
+  "exported_from"}`; NO fold effect. Imported configuration is
+  applied by a separate `execution` entry (section 14).
+
 ## 3. Envelopes and verdicts
 
 Producers submit envelopes:
@@ -71,12 +141,18 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the string `jacquard-spec/0.2`. The envelope id used in the log
+of the raw UTF-8 bytes of the string `jacquard-spec/0.2` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
 Envelope kinds: `proposal` (body: `{"requests": [request]}`),
 `definition` (body: a definition, section 5), and `machine`
 (body: `{"text": <machine definition text>}`, section 10).
+Validation, in order: the envelope must be an object carrying
+all seven fields (else FIELD); `v` must equal 1 (else SPEC);
+`spec_seal` must equal the seal (else SPEC); `kind` must be one
+of the three kinds (else FIELD); `declared_effects` must be a
+list (else FIELD). Extra keys are permitted and ARE covered by
+the envelope id (the id hashes the whole envelope object).
 
 A request is `{"verb": <Tier-E verb>, "args": [value...]}` plus an
 optional `"irreversible": true` flag on the request.
@@ -409,9 +485,13 @@ authority itself remains a policy matter (section 7).
 ### 11.3 Senses
 
 A sense is a read-only projection of the log and folded state,
-published as a `sense` entry whose value is `{"value", "method",
-"as_of_seq"}`: the reading, how it was derived, and the log
-position it describes. Sense values use canonical types only;
+published as a `sense` entry (body `{"producer", "name",
+"value"}`; the fold stores the body's `value` verbatim). For
+senses published by the senses framework the value is the
+reading object `{"value", "method", "as_of_seq"}`: the reading,
+how it was derived, and the log position it describes. A sense
+entry may also carry a bare value (a boolean, a number) when
+published directly; the fold does not distinguish the two. Sense values use canonical types only;
 rates are integer basis points. Computing a sense appends
 nothing. Built-in senses: `queue-depth` (folded queue size),
 `output-use:<producer>` (the records projection as a reading:

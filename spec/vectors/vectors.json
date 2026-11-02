@@ -163,6 +163,15 @@
    "hash": "7d10abf58e721a8d9bcb950a3ed80fa68f3557c5065dda7c763ae77f7e3233ca",
    "kind": "checkpoint",
    "seq": 2
+  },
+  {
+   "body": {
+    "name": "caf\u00e9-\u2603",
+    "state_hash": "7f584bf6ef1411341b4d1ca2654c1a19fe8299dd2d378b233aee0814c2d0e0f6"
+   },
+   "hash": "7ba3478946c3cceba6c7b807becb1fc0c0ecd3e1c56707e11aad3f9e817aaba7",
+   "kind": "checkpoint",
+   "seq": 3
   }
  ],
  "envelope": {

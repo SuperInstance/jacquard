@@ -446,3 +446,62 @@ every slice. What Phase 2 deliberately did NOT do: no executor
 (real effects still stop at the log's applied lists), no
 operator surface beyond the Python API, no second-language
 implementation yet — Phase 3's slices 8–11, in order.
+
+## 2026-11-02 — Slice 8: second-language conformance (TypeScript, spec-only)
+
+**Result: PASS, with three real divergences found and fixed —
+all in the spec, none in either implementation's logic.** The
+implementer (an agent given SPEC.md, the vectors, and the
+replay fixture only — no Python source) reproduced: the seal,
+the vector entry chain, the checkpoint fold, the envelope id,
+all 3,295 replay entry hashes, and the replay fold to the
+identical state hash 9f434ef1…. Its gap report (kept at
+conformance/ts/GAPS.md) lists 15 underdeterminations. Disposition
+of each, per the brief's rule (divergence = spec bug first):
+
+- Pinned, reading already matched the reference: key-sort
+  collation (#1, code-point order), integer conformance range
+  (#2, safe range, refuse-don't-approximate), seal = raw string
+  bytes (#4), envelope validation enumerated in full (#5),
+  entry-hash input and the vectors' record shape (#6), budget
+  key creation (#14), unknown kinds — writer refuses, folder
+  ignores (#15), budget/price body schemas (#10).
+- Root fix for #13: new spec section 2.1 pins every entry
+  kind's body schema and folded representation.
+- Three REAL divergences, latent because the fixtures held only
+  4 of 12 entry kinds: machine_instances folded value (#9 —
+  implementer read a bare state string; the reference folds
+  {"machine", "state"}), the rules folded value (#11 — whole
+  body vs body.rule), and the import entry (#12 — implementer
+  applied units from the body; the reference gives import
+  entries no fold effect). All three pinned to the reference's
+  behaviour in 2.1, the TS fold corrected to the pinned text,
+  and a new fixture (conformance/full-log.json.gz, 25 entries,
+  all 11 emitted kinds) now discriminates them: checker item g.
+- The escaping round (#3) deserves its own sentence: the
+  implementer read raw UTF-8; the coordinator's first spec
+  amendment pinned the ASCII-escaped form FROM MEMORY of what
+  the reference "must" do — and the new non-ASCII golden vector
+  (a café-☃ checkpoint, added to gen_vectors.py for exactly
+  this) refuted the amendment: the reference emits raw UTF-8.
+  The spec now pins raw UTF-8, and section 1 records that the
+  vector, not memory, settled it. This is the anchored-iteration
+  doctrine working as intended, on the coordinator.
+
+**The /tmp incident (recorded, owned).** Mid-slice the
+development VM's /tmp was reset; the coordinator's local
+working clone — including the not-yet-pushed Phase 3 opening
+commit and the replay fixture — vanished. Nothing already
+pushed was at risk (GitHub + the Oracle checkout held
+everything through Phase 2). Recovery: the fixture regenerated
+bit-identically (the replay is deterministic; the state hash
+matched to the digit), and the TS work survived in the
+implementer's own backup. Lesson applied immediately: the
+working clone now lives under ~/workspace, not /tmp, and
+commits push per slice without exception.
+
+**Scoped honestly:** the vectors' definitions and final-state
+sections encode dictionary evaluation and sequencer execution;
+the fold-scope checker reports them SKIP rather than faking
+coverage. They remain pinned for a full second implementation
+(the Rust port is the expected candidate, Casey's call).

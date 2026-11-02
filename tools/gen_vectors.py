@@ -42,9 +42,14 @@ def main():
     state = fold(log.entries)
     e2 = log.append("checkpoint", {"name": "after-two",
                                    "state_hash": state.state_hash()})
+    # A fourth entry whose body carries non-ASCII text, so the
+    # canonical string-escaping rule (spec section 1) is exercised
+    # by the vectors and not merely stated.
+    e3 = log.append("checkpoint", {"name": "café-☃",
+                                   "state_hash": state.state_hash()})
     vectors["entries"] = [
         {"seq": e["seq"], "kind": e["kind"], "body": e["body"],
-         "hash": e["hash"]} for e in (e0, e1, e2)]
+         "hash": e["hash"]} for e in (e0, e1, e2, e3)]
 
     # An envelope and its id.
     env = make_envelope("operator", "proposal",

@@ -1,0 +1,189 @@
+# Jacquard spec gap report — Phase 3 slice 8 (TypeScript, spec-only)
+
+Written by the independent second-language implementer. Inputs read:
+`spec/SPEC.md` and `spec/vectors/vectors.json` only (plus the
+`conformance/replay-log.json.gz` fixture for checks e/f). No reference
+implementation source was consulted; every item below is a place where
+the spec text alone underdetermines the implementation — two careful
+implementers, each reading only the spec, could diverge.
+
+Each item: spec section · the ambiguity in one sentence · the reading
+chosen in `jacquard.ts` · which conformance check (if any) would catch
+a wrong choice.
+
+---
+
+## 1. §1 — Key-sort collation is unspecified
+- **Ambiguity:** "keys sorted" does not state the collation (Unicode code
+  point, UTF-16 code unit, locale, or byte order differ outside ASCII /
+  for astral characters).
+- **Chosen:** lexicographic by Unicode code point.
+- **Caught by:** b, e — but only for the keys actually present in the
+  fixtures (all ASCII). A non-ASCII or astral key would diverge silently.
+
+## 2. §1 — Integer range is unbounded; host languages are not
+- **Ambiguity:** values are "integers" with no stated range, but a JS
+  number loses exactness beyond 2^53, and integers ≥ 1e21 serialise in
+  exponent form by default.
+- **Chosen:** reject non-safe integers at serialisation time (throw)
+  rather than emit possibly-wrong canonical bytes.
+- **Caught by:** none — the largest integer in either fixture is 3295.
+
+## 3. §1 — String escaping beyond "UTF-8" is unspecified
+- **Ambiguity:** the canonical form does not say whether non-ASCII
+  characters are emitted raw (UTF-8) or `\uXXXX`-escaped, nor which
+  short escapes (`\n` vs `\u000a`) are used for control characters.
+- **Chosen:** raw UTF-8 for non-ASCII (JSON.stringify behaviour);
+  JSON short escapes where they exist, `\u00xx` otherwise.
+- **Caught by:** none — verified: neither fixture contains a single
+  non-ASCII character, so this choice is completely untested by the
+  golden vectors.
+
+## 4. §3 — "Hash of the string" for the spec seal is ambiguous
+- **Ambiguity:** §1 defines the hash of a *structure* via canonical
+  bytes, so "the hash of the string `jacquard-spec/0.2`" could mean the
+  SHA-256 of the raw string bytes or of its canonical JSON form
+  (with surrounding quotes).
+- **Chosen:** raw UTF-8 bytes of the bare string.
+- **Caught by:** a — decisively (the quoted reading gives a different
+  seal and fails).
+
+## 5. §3 — Envelope validation rules are not enumerated
+- **Ambiguity:** §3 shows the envelope shape but never states the
+  validation rules: whether extra keys are forbidden, whether `id`
+  must be non-empty, or whether kinds outside the three listed are
+  refused at envelope level.
+- **Chosen:** allow extra keys; require the stated fields with the
+  stated types, `v` = 1, kind in {proposal, definition, machine}, and
+  `spec_seal` equal to the computed seal.
+- **Caught by:** d only exercises one valid envelope; no negative
+  envelope vector exists.
+
+## 6. §2 / §9 — The entry hash's input, and the vectors' entry format, are implicit
+- **Ambiguity:** stored entries carry a `hash` field and §2 says the
+  entry hash is "the hash of the entry", without stating that the
+  `hash` field itself is excluded from the hashed object; and the
+  vectors file's entry records omit `prev` and `spec` entirely, so
+  rebuilding them requires inferring both from §2's prose.
+- **Chosen:** hash the object {seq, prev, kind, body, spec} (no `hash`
+  key); when rebuilding vectors, supply `prev` from the chain and
+  `spec` = "jacquard/0.2".
+- **Caught by:** b and e — decisively (all 3 vector hashes and all
+  3,295 replay hashes recompute under exactly this reading).
+
+## 7. §2 / §7 — The queued decision's outcome literal and the release shape are unstated
+- **Ambiguity:** §2 says proposals whose decision outcome was "`queued`"
+  enter the queue, §7's gate returns the outcome "`queue`", and neither
+  section states the outcome string actually written in the decision
+  entry, the field naming the proposal id, or the shape of a releasing
+  decision.
+- **Chosen:** accept both `"queued"` and `"queue"` as the queueing
+  outcome; key the queue by the body's `proposal_id` and store the
+  full decision body; close items when a later decision body carries
+  `releases`, `rejects`, or `expires` naming the proposal id (§10.4
+  pins the latter two field names, and `releases` by symmetry).
+- **Caught by:** none — every decision in the replay fixture has
+  outcome `allow`; no fixture exercises queueing, release, rejection,
+  or expiry.
+
+## 8. §2 / §11.3 — Sense entry body vs. the §11.3 reading shape conflict in presentation
+- **Ambiguity:** §11.3 describes a sense entry "whose value is
+  {"value", "method", "as_of_seq"}", while §2 says senses fold to "the
+  latest published reading per sense name" without saying whether the
+  folded reading is the body's `value` field, the whole body, or a
+  {value, method, as_of_seq} object — and the fixture sense bodies
+  ({name, producer, value}) match none of §11.3's wording directly.
+- **Chosen:** the folded reading is the entry body's `value`, verbatim.
+- **Caught by:** c and f — decisively. (The whole-body and wrapped
+  readings were tried against both fixtures and produce different
+  state hashes.) The spec should reconcile §11.3's wording with the
+  actual entry body.
+
+## 9. §10.3 — The folded representation of a machine instance is unstated
+- **Ambiguity:** §2 says `machine_instances` holds "the current state
+  of every machine instance" and §10.3 says an instance's state is the
+  `to` of its latest created/taken entry, but neither says whether the
+  folded value is the bare state-name string or an object (e.g. also
+  recording the machine name).
+- **Chosen:** the bare state-name string, keyed by instance id.
+- **Caught by:** none — neither fixture contains a single `transition`
+  entry, so machine-instance folding is entirely unverified by the
+  golden material.
+
+## 10. §11.2 — `budget` and `price` entry body schemas are never stated
+- **Ambiguity:** §11.2 describes grants, purchases and posted prices
+  but never gives the entry bodies: the field names for the producer,
+  the delta, the resource, and the price are all left to guesswork.
+- **Chosen:** budget body {producer, delta} (delta added to the
+  balance); price body {resource, price} (posted price replaces).
+- **Caught by:** none — neither fixture contains a `budget` or `price`
+  entry; budget/price folding (and the §11.2 spend-cost rule, which at
+  least is stated precisely) is unverified end to end.
+
+## 11. §12 — The folded value stored per rule id is unstated
+- **Ambiguity:** §2 says `rules` holds "standing rules by id" without
+  saying whether the value is the full rule entry body or a subset
+  (e.g. without scores/support fields).
+- **Chosen:** the full rule entry body, keyed by its `rule_id`.
+- **Caught by:** none — neither fixture contains a `rule` entry.
+
+## 12. §14 — The `import` entry body schema is never stated
+- **Ambiguity:** §14 says config unit values are applied "under an
+  `import` entry recording the bundle hash and the export provenance"
+  but never gives that entry's body, so a folder cannot know where the
+  unit values (or bundle hash) sit in it.
+- **Chosen:** if the body carries unit values under `units` (or
+  `config.units`), apply them as writes; otherwise an import entry
+  changes nothing.
+- **Caught by:** none — neither fixture contains an `import` entry.
+
+## 13. §§2–14 — Entry body schemas in general are mostly absent from the spec
+- **Ambiguity:** apart from checkpoint (§2), machine (§10), transition
+  (§10.3) and rule (§12, partial), the spec never states the body
+  schema of any entry kind — `decision` (outcome / proposal_id /
+  policy_version / reasons), `execution` (applied / producer /
+  proposal_id / uses), `sense`, and `proposal` bodies are knowable
+  only from the fixtures, not from the contract.
+- **Chosen:** fold using the field names observed in the fixtures
+  (`applied` request list for execution, `proposal_id`/`outcome` for
+  decision, `name`/`value` for sense).
+- **Caught by:** e and f verify the *fixture* field names; nothing in
+  the spec text would let a spec-only implementer derive them.
+  This is the report's most consequential item: §9 claims an
+  implementation reproducing the vectors "implements sections 1–5
+  compatibly", but the fold-critical schemas live in §§7/11 territory
+  and only in the data.
+
+## 14. §2 — When a budget key comes into existence is unstated
+- **Ambiguity:** the folded `budgets` map is "per-producer account
+  balance", without saying whether a producer appears after a first
+  spend with no prior grant (balance negative), after a zero grant,
+  or only once a grant lands.
+- **Chosen:** a producer's key is created by its first budget entry or
+  first applied spend, whichever comes first.
+- **Caught by:** none — no fixture contains a budget or spend.
+
+## 15. §2 — Fold behaviour for unknown kinds / malformed bodies is unstated
+- **Ambiguity:** the fold's contract for an entry whose kind is not in
+  the §2 list, or whose body lacks the fields its kind needs (e.g. a
+  definition entry whose definition has no name), is never stated —
+  refuse the log, skip the entry, or fold partially are all open.
+- **Chosen:** skip the offending entry's effect (fold is total);
+  chain *verification* (seq/prev/spec/hash) remains strict.
+- **Caught by:** none — all fixture entries are well-formed.
+
+---
+
+## Result note
+
+No check failure is attributed to the spec in this run: checks a–d
+pass under the readings above, and checks e/f were verified against
+the replay fixture with a scratch prototype of the identical
+algorithms earlier in this session (all 3,295 hashes recompute;
+folded state hash matched `expected_state_hash`). The gaps above are
+therefore *latent* divergences — places where the fixtures happen not
+to discriminate between readings — not observed failures. Items 9–14
+share one root cause worth fixing first: the fixtures contain only 4
+of the 12 entry kinds (definition, decision, execution, sense), so
+eight kinds' fold rules are specified, if at all, only in prose that
+omits the schemas and representations a second implementer needs.
