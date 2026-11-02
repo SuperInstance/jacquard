@@ -3,7 +3,9 @@ import json
 import os
 
 from jacquard import Log, Sequencer, envelope_hash, fold, make_envelope
+from jacquard import senses as _senses_module
 from jacquard.canonical import SPEC_SEAL
+from jacquard.senses import compute_sense
 
 VECTORS = os.path.join(os.path.dirname(__file__), "..",
                        "spec", "vectors", "vectors.json")
@@ -16,7 +18,7 @@ def load():
 
 def test_spec_seal():
     assert load()["spec_seal"] == SPEC_SEAL
-    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.2").hexdigest()
+    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.3").hexdigest()
 
 
 def test_entry_zero_hash_from_handwritten_canonical_string():
@@ -25,7 +27,7 @@ def test_entry_zero_hash_from_handwritten_canonical_string():
     literal = (
         '{"body":{"name":"gpu-foreign","producer":"operator","value":false},'
         '"kind":"sense","prev":"' + "0" * 64 + '","seq":0,'
-        '"spec":"jacquard/0.2"}')
+        '"spec":"jacquard/0.3"}')
     expect = hashlib.sha256(literal.encode("utf-8")).hexdigest()
     assert load()["entries"][0]["hash"] == expect
 
@@ -79,3 +81,36 @@ def test_state_vector():
     assert seq.state.state_hash() == recorded["state_hash"]
     assert fold(seq.log.entries).state_hash() == recorded["state_hash"]
     assert env["body"]["requests"][0]["args"] == ["answer", 42]
+
+
+def test_senses_vectors():
+    # The probe modules register their own candidate senses into
+    # SENSES at runtime (the registry hazard); re-register the
+    # production functions first, as the other production tests do.
+    _senses_module.SENSES["contention"] = _senses_module._contention
+    _senses_module.SENSES["authority"] = _senses_module._authority
+    section = load()["senses"]
+    assert set(section) == {"contention", "authority"}
+    assert len(section["contention"]) >= 3
+    assert len(section["authority"]) >= 2
+    for sense, cases in section.items():
+        for case in cases:
+            entries = case["entries"]
+            state = fold(entries)
+            reading = compute_sense(
+                "%s:%s" % (sense, case["subject"]), entries, state)
+            assert reading == case["expect"]
+            assert reading["as_of_seq"] == entries[-1]["seq"]
+    # The recorded expectations, pinned in words (not just
+    # re-derived): the shapes the brief names.
+    contention = [c["expect"]["value"] for c in section["contention"]]
+    assert contention[0]["count"] == 0
+    assert contention[0]["unclassified"] == []
+    assert contention[1]["count"] == 2
+    assert contention[1]["max_rank"] == 3
+    assert contention[1]["top_id"] == "bk-2"
+    assert contention[2]["count"] == 0
+    assert contention[2]["unclassified"] == ["zcod"]
+    authority = [c["expect"]["value"] for c in section["authority"]]
+    assert authority[0] == {"ceiling": None, "grants": 0}
+    assert authority[1] == {"ceiling": 2, "grants": 2}

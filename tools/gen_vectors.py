@@ -14,6 +14,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from jacquard import Log, Sequencer, fold, make_envelope, envelope_hash
+from jacquard.senses import compute_sense
 from jacquard.canonical import SPEC_SEAL
 
 DOUBLE = {"name": "double",
@@ -26,6 +27,91 @@ DISPATCH_JOB = {"name": "dispatch-job",
                 "body": ["dispatch"],
                 "examples": [{"args": [{"job": "job-1"}],
                               "requests": ["dispatch"]}]}
+
+
+def _exec_entry(log, producer, cls, proposal_id, unit, value):
+    """One execution entry applying a single write -- the only
+    kind the sense cases need: contention reads committed units
+    (folded from applied writes); authority scans executions."""
+    return log.append("execution", {
+        "producer": producer, "class": cls, "proposal_id": proposal_id,
+        "applied": [{"verb": "write", "args": [unit, value]}],
+        "uses": []})
+
+
+def _booking(bid, producer, seat, start, end, rank):
+    return {"id": bid, "box": "thor", "producer": producer,
+            "seat": seat, "start": start, "end": end,
+            "checkby": None, "status": "active", "rank": rank,
+            "asserted_rank": rank}
+
+
+def _sense_case(sense, subject, entries):
+    reading = compute_sense("%s:%s" % (sense, subject), entries,
+                            fold(entries))
+    return {"entries": entries, "subject": subject,
+            "expect": {"value": reading["value"],
+                       "method": reading["method"],
+                       "as_of_seq": reading["as_of_seq"]}}
+
+
+def senses_section():
+    """Sense-computation vectors (spec 0.3, section 11.3): cases
+    built from stated entry lists (mini logs folded by this
+    tool). Each case is {"entries", "subject", "expect"} with
+    expect {"value", "method", "as_of_seq"}; tests/test_vectors.py
+    verifies the section via fold + compute_sense."""
+    cases = {"contention": [], "authority": []}
+
+    # Contention: a clear candidate -- committed booking does
+    # not overlap the candidate's window.
+    log = Log()
+    e = [_exec_entry(log, "lane-a", "booking", "sv-bk-1",
+                     "booking/thor/bk-1",
+                     _booking("bk-1", "lane-a", "gpu", 1000, 1100, 0))]
+    cases["contention"].append(_sense_case(
+        "contention", "thor/zcode/1200/1300/lane-b/cand-1", e))
+
+    # Contention: two contenders -- the candidate's "box" seat
+    # contends with every seat; both committed bookings overlap.
+    log = Log()
+    e = [_exec_entry(log, "lane-a", "booking", "sv-bk-1",
+                     "booking/thor/bk-1",
+                     _booking("bk-1", "lane-a", "gpu", 1000, 1200, 1)),
+         _exec_entry(log, "lane-c", "booking", "sv-bk-2",
+                     "booking/thor/bk-2",
+                     _booking("bk-2", "lane-c", "stage", 1150, 1400, 3))]
+    cases["contention"].append(_sense_case(
+        "contention", "thor/box/1100/1300/lane-b/cand-2", e))
+
+    # Contention: an unclassified-seat candidate -- "zcod" is in
+    # neither the exclusive set nor {"detached"}; distinct seats
+    # do not contend, so the count is 0 but the seat is reported.
+    log = Log()
+    e = [_exec_entry(log, "lane-a", "booking", "sv-bk-1",
+                     "booking/thor/bk-1",
+                     _booking("bk-1", "lane-a", "gpu", 1000, 1200, 0))]
+    cases["contention"].append(_sense_case(
+        "contention", "thor/zcod/1050/1150/lane-b/cand-3", e))
+
+    # Authority: an ungranted producer -- her own write to
+    # authority/mallory lands as an execution, but the producer
+    # filter ignores it (the self-grant attack, as a vector).
+    log = Log()
+    e = [_exec_entry(log, "mallory", "work", "sv-self-grant",
+                     "authority/mallory", 99)]
+    cases["authority"].append(_sense_case("authority", "mallory", e))
+
+    # Authority: granted, then re-granted lower -- last-wins, so
+    # the second grant is a downward revocation: ceiling 2.
+    log = Log()
+    e = [_exec_entry(log, "operator", "config", "sv-grant-1",
+                     "authority/captain", 5),
+         _exec_entry(log, "operator", "config", "sv-grant-2",
+                     "authority/captain", 2)]
+    cases["authority"].append(_sense_case("authority", "captain", e))
+
+    return cases
 
 
 def main():
@@ -76,6 +162,9 @@ def main():
         ["write"], "v-p1"))
     vectors["state"] = {"units": seq2.state.units,
                         "state_hash": seq2.state.state_hash()}
+
+    # Sense-computation cases (spec 0.3, section 11.3).
+    vectors["senses"] = senses_section()
 
     out = os.path.join(os.path.dirname(__file__), "..",
                        "spec", "vectors", "vectors.json")

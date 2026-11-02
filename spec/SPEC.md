@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.2
+# Jacquard specification — version 0.3
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -37,7 +37,7 @@ The log is an append-only sequence of entries. State is a fold of
 the log; the log is never rewritten.
 
 Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
-"spec": "jacquard/0.2"}`. The entry hash is the hash of the entry.
+"spec": "jacquard/0.3"}`. The entry hash is the hash of the entry.
 `prev` is the previous entry hash; the genesis entry has
 `prev` = 64 zero characters. `seq` starts at 0 and increments by 1.
 
@@ -100,7 +100,9 @@ optional may be absent; a fold uses only the fields named here.
   `expired`. The stored literal for a queueing decision is
   `queued`. Optional: `fault` (with outcome `refused`),
   `requests` / `irreversible` / `uses` (on `queued` decisions:
-  the stored work), `releases` / `rejects` / `expires` plus
+  the stored work), `wait` / `wait_refusal_at` (on `queued`
+  decisions: the conditional-start spec and its refusal
+  marker, section 7.1), `releases` / `rejects` / `expires` plus
   `released_by` / `rejected_by` / `expired_by` (on the decision
   that closes a queue item), `decided_by` and `policy_outcome`
   (section 12). Fold: a `queued` body enters the decision queue
@@ -141,10 +143,12 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the raw UTF-8 bytes of the string `jacquard-spec/0.2` (not of its canonical JSON form). The envelope id used in the log
+of the raw UTF-8 bytes of the string `jacquard-spec/0.3` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
-Envelope kinds: `proposal` (body: `{"requests": [request]}`),
+Envelope kinds: `proposal` (body: `{"requests": [request]}`,
+plus optional `class`, `uses`, and the conditional-start
+field `wait`, section 7.1),
 `definition` (body: a definition, section 5), and `machine`
 (body: `{"text": <machine definition text>}`, section 10).
 Validation, in order: the envelope must be an object carrying
@@ -296,7 +300,132 @@ submitting a decision referencing its id; the release executes the
 original request list atomically. An operator may instead reject a
 queued proposal (decision with outcome `deny` and `rejects` set to
 the proposal id) or expire it (outcome `expired`, `expires` set);
-both close the queue item without executing it.
+both close the queue item without executing it. A closing
+decision's reasons default to `released-by-operator`,
+`rejected-by-operator` or `expired-in-queue`; a caller may
+supply a single reason instead, which replaces the default
+on the decision entry (the wait pump's `wait-expired:<guard>`
+and the booking profile's `preempted-by:<id>`, sections 7.1
+and 11.4, arrive this way -- the decision entry is written by
+the closing functions, so a reason a caller needs on the
+entry can only arrive through them).
+
+### 7.1 Conditional starts: the `wait` field
+
+A proposal body may carry one extra field:
+`wait: {"guard": <word name>, "deadline_seq": <int>}` --
+"starts when X lands", carried as data on the proposal
+itself, so the waiting exists in the record: it can be
+listed, expired, and audited. The guard is an ordinary pure
+dictionary word over committed state. The semantics are
+state-based, not edge-based: the guard reads current
+committed state at re-evaluation time, so a landing that was
+retracted by compensation before re-evaluation does not
+start the waiter; a later re-landing does.
+
+Shape and validation. All of this happens BEFORE anything
+is appended; every refusal in this paragraph appends nothing
+and is returned as a REFUSED verdict (request-shape refusals
+under section 3 are checked first). A `wait` that is not an
+object with a string `guard` and an integer `deadline_seq`
+(booleans are not integers) is refused FIELD. A guard that
+does not resolve to a dictionary word is refused SPEC; a
+guard whose signature is not (map -> bool) is refused FIELD;
+a guard with non-empty computed effects is refused SPEC.
+The underdeclared check is also made here, before queueing:
+the envelope's declared effects must cover the proposal's
+actual effects (its request verbs, plus the `irreversible`
+marker when the body carries it), else the submission is
+refused UNDERDECLARED and appends nothing. (The normal
+path's underdeclared refusal appends a fault decision; a
+queued waiter never reaches that path's check, so the check
+is made pre-append here -- queueing an underdeclared
+proposal would be worse.)
+
+Submission-time evaluation. The guard is then evaluated at
+once, with payload `{"proposal_id": <envelope id>}`. A
+Refusal raised by the evaluation is a submission refusal:
+the verdict carries that refusal's name and nothing is
+appended -- fail fast while the producer is present. A pure
+guard cannot emit requests; if evaluation nevertheless
+emits any, the submission is refused SPEC. A guard leaving
+anything other than exactly `[true]` or `[false]` is
+refused FIELD.
+
+- Guard true at submission: the proposal takes the normal
+  path, and `wait-satisfied:<guard>` is prepended to the
+  decision's reasons, whatever the outcome.
+- Guard false at submission: the proposal is queued. The
+  decision entry is exactly the stored form of an ordinary
+  queueing decision (requests, irreversible, uses, effects)
+  PLUS `"wait": <the wait spec>`, with outcome `queued` and
+  reasons `["waiting:<guard>"]`; the proposal lifecycle
+  steps submit then hold; NO approval instance is created
+  (waiters are not approval items); the verdict outcome is
+  `queue`. No new fold section exists: the fold stores whole
+  decision bodies in the decision queue, so the nested wait
+  spec survives a refold intact.
+
+The pump. After any public sequencer operation that appended
+entries -- submit, release_queued, reject_queued,
+expire_queued, grant_budget, post_price, buy_weight,
+submit_sense, checkpoint -- the sequencer re-evaluates
+outstanding wait guards before that operation returns.
+(Machine-step methods are exempt: every flow path that steps
+a machine also submits proposals, which pump.) The pump's
+own appends never re-enter it. Ordering rules:
+
+- Post-fold evaluation: the pump runs after the triggering
+  entries are folded, against the resulting committed state
+  -- a guard never reads a half-applied commit.
+- Fixpoint: the pump makes passes over a snapshot of the
+  decision queue, in queue order, until a pass changes
+  nothing, at most 64 passes. A waiter's execution may write
+  the unit another waiter's guard reads; such cascades
+  complete within the one triggering call.
+- Guard-true beats deadline: the guard is checked before
+  the deadline at the same log position. Expiry exists to
+  bound waiting for a condition that does not hold, so a
+  condition that holds in current state releases even past
+  its deadline.
+- A refusing guard is treated as not-true for that pass and
+  is recorded, never swallowed and never fatal to the
+  unrelated submission that triggered the pump: the pump
+  appends a re-queueing decision entry for the waiter --
+  outcome `queued`, reasons
+  `["wait-guard-refused:<refusal name>"]`, all stored fields
+  preserved including `wait`, plus `wait_refusal_at`: the
+  sequence number of that record itself. Re-recording is
+  skipped while that record is still the last entry in the
+  log (nothing has changed since it was recorded). A
+  recorded refusal counts as a change for the fixpoint, but
+  the skip rule bounds re-recording. Expiry (below) is
+  evaluated on passes where the guard returns false.
+- Deadline: `deadline_seq` is an absolute log position, and
+  queueing's own entries count toward it (queueing a waiter
+  appends its decision and lifecycle entries). When the log
+  length exceeds `deadline_seq` and the guard is false, the
+  waiter is expired through the ordinary expire path with
+  reason `wait-expired:<guard>`.
+- Supersession: the queueing decision records the wait; the
+  decision that fires, rejects or expires the waiter
+  supersedes it for disposition. Record scoring (section 8)
+  treats the first decision per proposal as primary and
+  release decisions as follow-ups.
+
+Composition with policy. A fired guard re-decides the
+proposal through the ordinary policy decision, fresh --
+policy gate plus the standing-rule hook, with bookkeeping
+as in the normal path -- and never bypasses it. The fired
+decision's reasons are `["wait-satisfied:<guard>"]` plus
+the fresh decision's reasons. Outcomes: allow -> a decision
+carrying `releases` (the fold pops the queue entry),
+lifecycle decide, the stored requests executed, commit and
+close; deny -> a decision also carrying `releases`,
+lifecycle refuse; queue -> an ordinary approval-queue entry
+(a fresh queueing decision with the stored fields and NO
+`wait` -- the wait is spent -- and an approval instance
+created as the normal queue path does).
 
 ## 8. Producer records
 
@@ -312,7 +441,15 @@ Records are computed from the fold, never stored as truth.
 and hashes: entries in a short chain, an envelope and its id, a
 definition and its computed effects, a folded state and its
 checkpoint hash. An implementation that reproduces every vector
-implements sections 1-5 compatibly.
+implements sections 1-5 compatibly. The vectors also carry a
+`senses` section (section 11.3): for the contention and
+authority senses, cases built from stated entry lists (mini
+logs), each `{"entries", "subject", "expect"}` where expect is
+`{"value", "method", "as_of_seq"}`, verified by folding the
+entries and recomputing the sense at the subject. Sense
+computation is kernel work over the log, not fold work: the
+TypeScript conformance checker declares this section SKIP
+(conformance/ts/GAPS.md).
 
 ## 10. Machines
 
@@ -499,7 +636,173 @@ outputs, used, ratio in basis points), `starvation` (per-flow
 waiting/served/weight evidence from a live scheduler's
 counters), `calibration-drift` (a stub — kernel-wide allow-rate
 drift between fixed windows; per-rule calibration is section
-12's business, and the stub's method says so).
+12's business, and the stub's method says so), and the two
+domain senses specified in full below: `contention` and
+`authority` (both added in 0.3).
+
+Published-value determinism (all senses, stated precisely
+because two different claims are easily conflated): readings
+are *published values*. Refold reproduces state from the log
+-- the same log folds to the same state, published readings
+included. A reading is additionally a pure function of the
+entry prefix up to its `as_of_seq` plus its parameters, so
+recomputation at that position reproduces the reading
+byte-identically. Computing a sense appends nothing;
+publication is a separate sense entry.
+
+**The contention sense.** Name: `contention:<subject>`,
+where the subject grammar is
+`<box>/<seat>/<start>/<end>/<producer>/<id>` -- the
+candidate's box, seat, start and end (integer minutes),
+producer and booking id -- parsed from the right into six
+fields, so the box field itself may contain `/` when a name
+is parsed. (Constructing a name is stricter: the booking
+profile, section 11.4, refuses any of box, seat, producer
+or id containing `/` with FIELD, rather than misparse
+silently.) Read set: committed units with prefix
+`booking/<box>/`. A committed booking contends if and only
+if ALL of these filters pass: its status is `"active"`
+only (done, cancelled, preempted and expired bookings are
+inert); its id differs from the candidate's id (a booking
+never contends with itself -- a committed row whose id
+equals the candidate's id is excluded even when its
+producer differs); its producer differs from the
+candidate's producer (a same-producer overlap is a renewal,
+not contention); its check-by is null or >= the candidate
+start (a booking whose check-by passed before the candidate
+starts is dead); the seat rules -- equal seats contend if
+and only if the seat is in the exclusive set {zcode, mcode,
+claude-code, gpu, stage, kimi, box}, `"box"` contends with
+every seat, and other distinct seats do not contend; and
+strict interval overlap, candidate.start < other.end and
+other.start < candidate.end (touching endpoints do not
+contend). The value is `{"contenders": [...], "count": n,
+"max_rank": r, "top_id": id-or-null, "unclassified": [...]}`:
+contenders are objects `{"id", "producer", "seat",
+"start", "end", "rank"}` sorted by id; max_rank is the
+highest contender rank, -1 when there are none; top_id is
+the highest-rank contender's id (ties: smallest id), null
+when there are none; unclassified is the sorted list of
+seat strings -- the candidate's seat and the seats of
+status-"active" rows under the prefix -- that are in
+neither the exclusive set nor {"detached"}. Rank otherwise
+plays no part in contention itself. The reading's method
+string states the read set, every filter, and the
+unclassified rule. Publication in the booking flow is at
+decision time (the reading's as_of_seq is the decision's
+own position), never as a separate operator action, and is
+unconditional on the decision's outcome -- a denied booking
+still leaves its reading in the record as an audit artifact.
+Readings never feed the sense's own read set, so they
+cannot compound.
+
+**The authority sense.** Name: `authority:<producer>`; the
+subject is the producer whose grant ceiling is read. Read
+set: log entries passing three filters -- the entry kind is
+`execution`; the entry body's producer is `"operator"`;
+and the entry's applied writes include a write to unit
+`authority/<producer>`. Among the writes passing all three
+filters, the LATEST wins: its written value is the ceiling,
+so a later lower grant is a downward revocation; `grants`
+is the count of such writes. The value is `{"ceiling":
+<value or null>, "grants": n}`; with no operator grant the
+ceiling is null and grants 0. Provenance comes from the
+log, not from the unit's current holder: under policy/1 any
+producer may write any unit, so a producer's own write to
+`authority/<self>` may land in committed state -- and fails
+the producer filter here, so it is visible in the log and
+inert. The unit's current value alone is NOT evidence of a
+grant; this sense is the only sanctioned reading of
+`authority/` units.
+
+### 11.4 The booking application profile
+
+The booking board's rules ship as definitions, not kernel
+code: the two senses above (kernel-resident, because senses
+are the only mechanism for kernel-computed readings), seven
+dictionary words, one lifecycle machine, and a flow module
+that routes between them. The profile computes no overlap
+and no rank comparison outside the kernel: the senses
+compute, the words turn published readings into guard
+booleans and the effective rank, and the machine's guards
+decide transitions.
+
+Record schema. A booking record, stored at unit
+`booking/<box>/<id>`, is `{"id", "box", "producer",
+"seat", "start", "end", "checkby", "status", "rank",
+"asserted_rank"}`. `rank` is the EFFECTIVE rank: the
+asserted rank clamped to the granted ceiling,
+`min(asserted, ceiling)`, and 0 with no grant.
+`asserted_rank` is kept beside it, so the record never
+launders a claim into a fact.
+
+Grants. A grant is an operator proposal (class `config`)
+writing `authority/<producer>` = ceiling. Grants are
+recognised only through the authority sense (11.3): the
+unit value alone is not evidence, and the profile's words
+consume the sense, never the raw unit. The words:
+`booking-clear` (the reading's count is 0 AND its
+unclassified list is empty), `booking-contended` (count >
+0), `booking-outranks` (count > 0 and the candidate's rank
+exceeds the reading's max_rank), `booking-tied` (count > 0,
+rank > 0, and rank equals max_rank), `rank-granted` (a
+grant exists and the asserted rank does not exceed the
+ceiling), `effective-rank` (the clamp above), and
+`rank-below` (rank < a stated limit).
+
+Seats and the fail-closed guard. Seat classification is the
+contention sense's table: the exclusive set {zcode, mcode,
+claude-code, gpu, stage, kimi, box} plus the one classified
+non-exclusive seat, `detached`. A seat in neither set is
+unclassified, and `booking-clear` requires the reading's
+unclassified list to be empty -- so a misspelled seat holds
+the booking for a human instead of silently clearing. (The
+sense itself stays faithful to the stated rules; the
+fail-closed check lives in the guard, where a deployment
+can amend it.) Spelling is case-exact; the kernel does no
+normalisation.
+
+The booking machine. States: requested (initial), held,
+active, and terminals done, cancelled, preempted, expired.
+Load-bearing transitions: requested -> active on `commit`
+guarded by booking-clear; requested -> held on `commit`
+otherwise; requested -> held on `tie` guarded by
+booking-tied; held -> active on `commit` guarded by
+booking-clear; held or active -> preempted on `preempt`;
+plus cancel, complete and expire transitions as in the
+machine text shipped in the profile module.
+
+Preemption. When a candidate outranks every contender, the
+flow preempts each contender with ordinary operator
+proposals (class `preemption`) that write the loser's
+booking record to status `"preempted"` and write a
+preemption record at `preemption/<loser-id>`:
+`{"winner", "winner_producer", "rank", "authority_sense",
+"at_seq"}` -- the winner's id and producer, its effective
+rank, the authority sense name its rank was read from, and
+the log position. The loser's booking instance is stepped
+`preempt`. A HELD (queued) booking disposed of by a winner
+that outranks it is rejected from the decision queue with
+reason `preempted-by:<winner-id>` (section 7's reason
+parameter), given the same preemption record, and stepped
+`preempt`; its write never executes. No kernel writes are
+invented: the whole override replays from ordinary entries
+through the ordinary policy gate, and an audit replay from
+the log alone reconstructs who overrode whom, by whose
+authority, and at what cost (the loser's lost interval, in
+its preempted record).
+
+Ties. A tie is not a refusal: the challenger is queued under
+a taken `tie` transition whose guard is booking-tied; the
+published contention reading names the equal-rank contender
+it tied with; the incumbent is untouched. The interim
+disposition is stated, not implicit: **the incumbent holds
+the interval while the challenger waits** -- "no silent
+winner" means no *unrecorded* winner, and the operator
+queue surfaces such items as authority ties for the
+operator's batched decision. Equal rank is likewise left
+queued by disposal: only a strictly lower rank is disposed
+of.
 
 ## 13. Decision-model providers
 

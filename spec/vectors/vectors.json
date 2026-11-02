@@ -116,7 +116,7 @@
     "producer": "operator",
     "value": false
    },
-   "hash": "6a20c5bb68f8629282e8f4622c3be2a1aa096d03e3c282c0556fcc292b4e7642",
+   "hash": "717f23281017190cfb4b01cbca1a852565f229177370f1962fd4302dc4a66f77",
    "kind": "sense",
    "seq": 0
   },
@@ -151,25 +151,25 @@
     },
     "producer": "operator"
    },
-   "hash": "060fdbb449cb0bdc717717c221f302f28005d337af9e849a7f025da3af667b14",
+   "hash": "e5a760ec7a7cc44144dfbe9e0ff9912521bfe278a7315d3e96e2e09653164e6e",
    "kind": "definition",
    "seq": 1
   },
   {
    "body": {
     "name": "after-two",
-    "state_hash": "7f584bf6ef1411341b4d1ca2654c1a19fe8299dd2d378b233aee0814c2d0e0f6"
+    "state_hash": "4eba2636f55a7e1c3a9e436aec09ef1bceeafa12569822220d1c7ec788bb027a"
    },
-   "hash": "7d10abf58e721a8d9bcb950a3ed80fa68f3557c5065dda7c763ae77f7e3233ca",
+   "hash": "87b010c3825b86bf9e1feacf33a360de3ce918590afdd4ccbd1fbab3f1fdee8a",
    "kind": "checkpoint",
    "seq": 2
   },
   {
    "body": {
     "name": "caf\u00e9-\u2603",
-    "state_hash": "7f584bf6ef1411341b4d1ca2654c1a19fe8299dd2d378b233aee0814c2d0e0f6"
+    "state_hash": "4eba2636f55a7e1c3a9e436aec09ef1bceeafa12569822220d1c7ec788bb027a"
    },
-   "hash": "7ba3478946c3cceba6c7b807becb1fc0c0ecd3e1c56707e11aad3f9e817aaba7",
+   "hash": "cf10eed7a91863a8f9acca43bc63df6761b8b70735fa72ac37b64347f9483631",
    "kind": "checkpoint",
    "seq": 3
   }
@@ -193,14 +193,311 @@
    "id": "vectors-1",
    "kind": "proposal",
    "producer": "operator",
-   "spec_seal": "5ec1da62b8dd6d4cf11920454c76273cb95f28e44b3d073d03a86c16c7c98679",
+   "spec_seal": "4dba09c2c796a0cbe4d564783b27b8f0719d50b7ae7e5b16a6229121ec19a141",
    "v": 1
   },
-  "id": "6776a3b5285c4e6d9301ffe8cf21989357ffb5693f4350a35649e6492d1cf5c8"
+  "id": "1fb87d32787db8971425c193db2019e40cd49af6d1f1012a9a174b76ce834b80"
  },
- "spec_seal": "5ec1da62b8dd6d4cf11920454c76273cb95f28e44b3d073d03a86c16c7c98679",
+ "senses": {
+  "authority": [
+   {
+    "entries": [
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "authority/mallory",
+          99
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "work",
+       "producer": "mallory",
+       "proposal_id": "sv-self-grant",
+       "uses": []
+      },
+      "hash": "95730a2651a3b9cbe7506c9e0bfc4a3bee487badc96a698aa9e4c0f6defe50eb",
+      "kind": "execution",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "seq": 0,
+      "spec": "jacquard/0.3"
+     }
+    ],
+    "expect": {
+     "as_of_seq": 0,
+     "method": "authority sense: read set = log entries passing three filters -- entry kind is \"execution\", the entry body's producer is \"operator\", and the entry's applied writes include a write to unit authority/<producer>. Among those writes the LATEST wins: its value (an integer) is the ceiling, so a later lower grant is a downward revocation; grants is the count of such writes. Only operator-authored writes count: a producer's own write to authority/<self> may land in units under policy/1 but fails the producer filter, so it is visible in the log and inert here. The unit's current value alone is not evidence of a grant. No operator grant -> ceiling null, grants 0.",
+     "value": {
+      "ceiling": null,
+      "grants": 0
+     }
+    },
+    "subject": "mallory"
+   },
+   {
+    "entries": [
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "authority/captain",
+          5
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "config",
+       "producer": "operator",
+       "proposal_id": "sv-grant-1",
+       "uses": []
+      },
+      "hash": "d5c2a2333253d25cab59b14d0c60b645136baeadf9b5635f9743fe33c4e2ba9c",
+      "kind": "execution",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "seq": 0,
+      "spec": "jacquard/0.3"
+     },
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "authority/captain",
+          2
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "config",
+       "producer": "operator",
+       "proposal_id": "sv-grant-2",
+       "uses": []
+      },
+      "hash": "11374a949f3d04fb9d38677a7311fd86b38334420b6fab31ef8ee8ce0b0c53b7",
+      "kind": "execution",
+      "prev": "d5c2a2333253d25cab59b14d0c60b645136baeadf9b5635f9743fe33c4e2ba9c",
+      "seq": 1,
+      "spec": "jacquard/0.3"
+     }
+    ],
+    "expect": {
+     "as_of_seq": 1,
+     "method": "authority sense: read set = log entries passing three filters -- entry kind is \"execution\", the entry body's producer is \"operator\", and the entry's applied writes include a write to unit authority/<producer>. Among those writes the LATEST wins: its value (an integer) is the ceiling, so a later lower grant is a downward revocation; grants is the count of such writes. Only operator-authored writes count: a producer's own write to authority/<self> may land in units under policy/1 but fails the producer filter, so it is visible in the log and inert here. The unit's current value alone is not evidence of a grant. No operator grant -> ceiling null, grants 0.",
+     "value": {
+      "ceiling": 2,
+      "grants": 2
+     }
+    },
+    "subject": "captain"
+   }
+  ],
+  "contention": [
+   {
+    "entries": [
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "booking/thor/bk-1",
+          {
+           "asserted_rank": 0,
+           "box": "thor",
+           "checkby": null,
+           "end": 1100,
+           "id": "bk-1",
+           "producer": "lane-a",
+           "rank": 0,
+           "seat": "gpu",
+           "start": 1000,
+           "status": "active"
+          }
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "booking",
+       "producer": "lane-a",
+       "proposal_id": "sv-bk-1",
+       "uses": []
+      },
+      "hash": "ba0eab73207566ffc47935275b53391c20b9046657be2fca2f50bc8e6116b4f6",
+      "kind": "execution",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "seq": 0,
+      "spec": "jacquard/0.3"
+     }
+    ],
+    "expect": {
+     "as_of_seq": 0,
+     "method": "contention sense: read set = committed units with prefix booking/<box>/ (the subject's box); a committed booking contends iff ALL of: status is \"active\" only (done, cancelled, preempted and expired bookings are inert); its id differs from the candidate's id (a booking never contends with itself -- a committed row whose id equals the candidate's id is excluded even when its producer differs); its producer differs from the candidate's producer (a same-producer overlap is a renewal, not contention); its checkby is null or >= the candidate start (a booking whose check-by passed before the candidate starts is dead by the board protocol); seat rules -- equal seats contend iff the seat is in {zcode, mcode, claude-code, gpu, stage, kimi, box}, \"box\" contends with every seat, other distinct seats do not contend; and strict interval overlap candidate.start < other.end and other.start < candidate.end (touching endpoints do not contend). Value reports every contender sorted by id, their count, the maximum contender rank (-1 when none), the highest-rank contender's id (ties: smallest id, null when none), and \"unclassified\": the sorted seat strings -- the candidate's seat and the seats of status-\"active\" rows under the prefix -- that are in neither the exclusive set nor {\"detached\"}. Rank otherwise plays no part in contention itself.",
+     "value": {
+      "contenders": [],
+      "count": 0,
+      "max_rank": -1,
+      "top_id": null,
+      "unclassified": []
+     }
+    },
+    "subject": "thor/zcode/1200/1300/lane-b/cand-1"
+   },
+   {
+    "entries": [
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "booking/thor/bk-1",
+          {
+           "asserted_rank": 1,
+           "box": "thor",
+           "checkby": null,
+           "end": 1200,
+           "id": "bk-1",
+           "producer": "lane-a",
+           "rank": 1,
+           "seat": "gpu",
+           "start": 1000,
+           "status": "active"
+          }
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "booking",
+       "producer": "lane-a",
+       "proposal_id": "sv-bk-1",
+       "uses": []
+      },
+      "hash": "2cef746a8438577f0827a36fb9b284bddb89764b4b6d72e80c340b5a67913684",
+      "kind": "execution",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "seq": 0,
+      "spec": "jacquard/0.3"
+     },
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "booking/thor/bk-2",
+          {
+           "asserted_rank": 3,
+           "box": "thor",
+           "checkby": null,
+           "end": 1400,
+           "id": "bk-2",
+           "producer": "lane-c",
+           "rank": 3,
+           "seat": "stage",
+           "start": 1150,
+           "status": "active"
+          }
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "booking",
+       "producer": "lane-c",
+       "proposal_id": "sv-bk-2",
+       "uses": []
+      },
+      "hash": "3705d5a8459737f8aac646d668e1335f7b7822028e81cd9fbbc3e95f850a44b5",
+      "kind": "execution",
+      "prev": "2cef746a8438577f0827a36fb9b284bddb89764b4b6d72e80c340b5a67913684",
+      "seq": 1,
+      "spec": "jacquard/0.3"
+     }
+    ],
+    "expect": {
+     "as_of_seq": 1,
+     "method": "contention sense: read set = committed units with prefix booking/<box>/ (the subject's box); a committed booking contends iff ALL of: status is \"active\" only (done, cancelled, preempted and expired bookings are inert); its id differs from the candidate's id (a booking never contends with itself -- a committed row whose id equals the candidate's id is excluded even when its producer differs); its producer differs from the candidate's producer (a same-producer overlap is a renewal, not contention); its checkby is null or >= the candidate start (a booking whose check-by passed before the candidate starts is dead by the board protocol); seat rules -- equal seats contend iff the seat is in {zcode, mcode, claude-code, gpu, stage, kimi, box}, \"box\" contends with every seat, other distinct seats do not contend; and strict interval overlap candidate.start < other.end and other.start < candidate.end (touching endpoints do not contend). Value reports every contender sorted by id, their count, the maximum contender rank (-1 when none), the highest-rank contender's id (ties: smallest id, null when none), and \"unclassified\": the sorted seat strings -- the candidate's seat and the seats of status-\"active\" rows under the prefix -- that are in neither the exclusive set nor {\"detached\"}. Rank otherwise plays no part in contention itself.",
+     "value": {
+      "contenders": [
+       {
+        "end": 1200,
+        "id": "bk-1",
+        "producer": "lane-a",
+        "rank": 1,
+        "seat": "gpu",
+        "start": 1000
+       },
+       {
+        "end": 1400,
+        "id": "bk-2",
+        "producer": "lane-c",
+        "rank": 3,
+        "seat": "stage",
+        "start": 1150
+       }
+      ],
+      "count": 2,
+      "max_rank": 3,
+      "top_id": "bk-2",
+      "unclassified": []
+     }
+    },
+    "subject": "thor/box/1100/1300/lane-b/cand-2"
+   },
+   {
+    "entries": [
+     {
+      "body": {
+       "applied": [
+        {
+         "args": [
+          "booking/thor/bk-1",
+          {
+           "asserted_rank": 0,
+           "box": "thor",
+           "checkby": null,
+           "end": 1200,
+           "id": "bk-1",
+           "producer": "lane-a",
+           "rank": 0,
+           "seat": "gpu",
+           "start": 1000,
+           "status": "active"
+          }
+         ],
+         "verb": "write"
+        }
+       ],
+       "class": "booking",
+       "producer": "lane-a",
+       "proposal_id": "sv-bk-1",
+       "uses": []
+      },
+      "hash": "563afddbfce8d051195575bbf51e7d9eb3b390d51bf228aaeb805220e766cb69",
+      "kind": "execution",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "seq": 0,
+      "spec": "jacquard/0.3"
+     }
+    ],
+    "expect": {
+     "as_of_seq": 0,
+     "method": "contention sense: read set = committed units with prefix booking/<box>/ (the subject's box); a committed booking contends iff ALL of: status is \"active\" only (done, cancelled, preempted and expired bookings are inert); its id differs from the candidate's id (a booking never contends with itself -- a committed row whose id equals the candidate's id is excluded even when its producer differs); its producer differs from the candidate's producer (a same-producer overlap is a renewal, not contention); its checkby is null or >= the candidate start (a booking whose check-by passed before the candidate starts is dead by the board protocol); seat rules -- equal seats contend iff the seat is in {zcode, mcode, claude-code, gpu, stage, kimi, box}, \"box\" contends with every seat, other distinct seats do not contend; and strict interval overlap candidate.start < other.end and other.start < candidate.end (touching endpoints do not contend). Value reports every contender sorted by id, their count, the maximum contender rank (-1 when none), the highest-rank contender's id (ties: smallest id, null when none), and \"unclassified\": the sorted seat strings -- the candidate's seat and the seats of status-\"active\" rows under the prefix -- that are in neither the exclusive set nor {\"detached\"}. Rank otherwise plays no part in contention itself.",
+     "value": {
+      "contenders": [],
+      "count": 0,
+      "max_rank": -1,
+      "top_id": null,
+      "unclassified": [
+       "zcod"
+      ]
+     }
+    },
+    "subject": "thor/zcod/1050/1150/lane-b/cand-3"
+   }
+  ]
+ },
+ "spec_seal": "4dba09c2c796a0cbe4d564783b27b8f0719d50b7ae7e5b16a6229121ec19a141",
  "state": {
-  "state_hash": "9dabe02827e0d6b5be553adb53d5943ef5a7d9336bf2f03a067be5455b70761d",
+  "state_hash": "d0d26a84966076974a96224fc3bfaf060696a5254ca9625d7d047ce496cf8efd",
   "units": {
    "answer": 42
   }
