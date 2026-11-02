@@ -966,3 +966,22 @@ stopped builder left at steps 1-4 plus the Probe B ruling.
   network service and distribution beyond the repo). Tag
   v0.3.0 follows push; cold-clone and tag verification are
   recorded in the addendum entry after this one.
+
+## Phase 4 -- verification addendum (2026-11-02)
+
+Recorded after the push, as the close entry promised.
+
+- **Push.** Local main (the previous builder's five commits
+  1a9a2f4..eeab18e plus this finisher's 55739d5, 20e55b4,
+  143c92c, 5085899) pushed to origin: adb245e..5085899.
+  ls-remote confirms origin/main at 5085899.
+- **Cold clone of the pushed main.** Fresh clone from GitHub
+  into a clean directory: suite 198 passed, 7 skipped (the
+  declared Probe B skips, visible with -rs); TypeScript
+  checker 7 PASS (a-g), 3 SKIP (vectors.definitions,
+  vectors.state, vectors.senses), exit 0.
+- **Tag.** v0.3.0 is tagged on the main that carries this
+  addendum; acceptance is verified from the tag artifact (a
+  fresh clone checked out at the tag, suite + checker +
+  operator drill re-run there), not from the working tree
+  that built it -- the Phase 3 discipline.
