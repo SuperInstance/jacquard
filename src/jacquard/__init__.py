@@ -10,6 +10,9 @@ from .envelope import envelope_hash, make_envelope, validate_envelope
 from .lifecycles import LIFECYCLES, install_lifecycles
 from .log import Log
 from .machines import check_machine, find_transition, parse_machine
+from .booking import (BOOKING_MACHINE, BookingFlow, effective_rank,
+                      install_booking, publish_authority,
+                      publish_contention)
 from .bundle import BUNDLE_FORMAT, export_bundle, import_bundle
 from .learner import Learner
 from .providers import (DecisionModelProvider, FakeProvider,
@@ -29,6 +32,8 @@ __all__ = [
     "RecordingProvider", "publish_judgement", "Learner",
     "BUNDLE_FORMAT", "export_bundle", "import_bundle",
     "output_use_ratio", "outputs_and_uses", "records",
+    "BOOKING_MACHINE", "BookingFlow", "effective_rank",
+    "install_booking", "publish_authority", "publish_contention",
     "Scheduler", "SENSES", "compute_sense", "publish_senses",
     "Sequencer", "Refusal", "State", "fold", "rule_stage",
 ]
