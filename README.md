@@ -1,0 +1,31 @@
+# Jacquard
+
+A supervised runtime where untrusted producers submit proposals, a small auditable kernel decides what may change shared state or act on the world, learned behaviours are deployed under test, and every decision can be replayed from an append-only log.
+
+## What this is
+
+Producers (people, language models, programs, sensors) differ enormously in cost, latency, reliability and authority, but they all emit the same kind of thing: proposals. Jacquard separates proposing from deciding:
+
+- **Proposals** arrive in a sealed envelope format and are never trusted. Each proposal declares its effects (what it would write, send, spend, or irreversibly do).
+- **Tentative state** holds undecided work as candidate sets, so nothing becomes shared truth just by being suggested.
+- **The kernel** — a sequencer, an append-only hash-chained log, and a versioned policy gate — is the only part that can change committed state. It answers every submission with a verdict: accepted, decided, or refused with a named reason.
+- **Approvals are batched.** Proposals that need a human decision go to a decision queue; everything else keeps moving. Asking never stalls the system.
+- **Behaviour is extended by definition.** New behaviour enters as dictionary definitions composed from a fixed set of 26 primitives. A definition's effects are computed from its parts, not declared, so a definition cannot hide what it does. Learned behaviours (standing rules) are deployed through evaluation, shadow running, and staged activation, and can be revoked.
+- **Everything replays.** Committed state is a fold of the log; any decision can be re-derived and checked.
+
+## Repository layout
+
+- `spec/` — the specification (SPEC.md) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `src/jacquard/` — the Python reference implementation of the kernel.
+- `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
+- `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
+
+## Status
+
+Phase 1: reference kernel (log, sequencer, dictionary with computed effects, policy gate with batched decision queue) plus the replay acceptance suite. See the builder's log for the current state and honest per-criterion verdicts.
+
+## Running the tests
+
+```
+python3 -m pytest tests/ -q
+```
