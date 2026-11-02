@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.3
+# Jacquard specification — version 0.4
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -37,7 +37,7 @@ The log is an append-only sequence of entries. State is a fold of
 the log; the log is never rewritten.
 
 Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
-"spec": "jacquard/0.3"}`. The entry hash is the hash of the entry.
+"spec": "jacquard/0.4"}`. The entry hash is the hash of the entry.
 `prev` is the previous entry hash; the genesis entry has
 `prev` = 64 zero characters. `seq` starts at 0 and increments by 1.
 
@@ -143,7 +143,7 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the raw UTF-8 bytes of the string `jacquard-spec/0.3` (not of its canonical JSON form). The envelope id used in the log
+of the raw UTF-8 bytes of the string `jacquard-spec/0.4` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
 Envelope kinds: `proposal` (body: `{"requests": [request]}`,
@@ -828,50 +828,142 @@ revoked), every transition a log entry.
 
 A rule is a `rule` entry: `{"rule_id", "definition", "shape",
 "predicted_outcome", "support", "dominance_bp", "origin", ...}`
-where shape is (producer, class, exact effect set) and
-definition names a pure dictionary word — the *recogniser* —
-that decides whether a proposal matches the shape. A rule's
-identity is a hash of its shape and prediction: identity is
-derived from instances, not assigned. A rule's stage is never
-stored in the rule entry; it is the state of the rule's
-standing-rule machine instance, whose id is the rule id.
+where shape is (producer, class, exact effect set, signature)
+and definition names a pure dictionary word — the *recogniser* —
+that decides whether a proposal matches the shape. The
+recogniser's input is the map `{"class", "effects",
+"signature"}` projected from the proposal. A rule's identity
+is a hash of its shape, its prediction and its origin:
+identity is derived from instances, not assigned. A rule's
+stage is never stored in the rule entry; it is the state of
+the rule's standing-rule machine instance, whose id is the
+rule id.
 
-The pipeline:
+### 12.1 Shape signatures
 
-1. *Mining.* Primary decisions (the first decision per proposal;
-   release/reject/expire follow-ups and fault records are not
-   fresh evidence) are grouped by shape over a training window
-   (reference: the first 70%). A shape with at least the minimum
-   support (reference: 3) and a dominant outcome (reference:
-   ≥80% of its decisions) becomes a candidate.
-2. *Offline evaluation.* The candidate's prediction is scored
-   against the held-out tail. Below the bar (reference: 80%
-   agreement) it stays a candidate; the scores are recorded on
-   the rule entry either way.
-3. *Shadow.* The rule predicts but never decides. Agreement with
-   real outcomes is scored from the log.
+The signature refines a shape within the queued population —
+the proposals the gate holds for an operator. It is a pure
+function of the request list recorded on the queued decision,
+so it is derivable from the log alone. For each request, in
+order, the signature carries one component `[verb, detail]`:
+
+- `dispatch`, when the request's action carries a `cmd` token
+  list: the command skeleton. If the list is a shell `-c`
+  invocation (the first token's basename one of `sh`, `bash`,
+  `dash`, `zsh`, `ksh` and the second token `-c`), the script
+  is the third token; otherwise the token list itself is the
+  single segment. A script is split into segments on the
+  shell operators `&&`, `||`, `;`, `|` and newlines, and
+  each segment is split into tokens on whitespace (quotes
+  group as in POSIX shell). Each segment contributes a list:
+  the program's basename, then one entry per remaining
+  token — a flag keeps its name (the part before any `=`), a
+  token containing `://` becomes `<url>`, a token containing
+  `/` becomes `<path>`, an all-digit token becomes `<num>`,
+  and any other token (a bare word: a subcommand, a module
+  name) stays literal.
+- `write`: the file extension of the target unit's basename
+  (from the last `.`, dot included), or empty when the
+  basename carries no dot.
+- `send`: the channel's host, or empty when the channel has
+  none.
+- Any other verb, and any request whose arguments do not
+  have the stated form: empty detail.
+
+A proposal the gate decides directly (allow or deny, never
+queued) carries the empty signature `[]`: the signature
+discriminates among queued items, and only queued decisions
+record their request list.
+
+### 12.2 Joined outcomes and operator labels
+
+A queued item's story ends with a follow-up decision. The
+*joined outcome* of a primary decision is:
+
+- its own outcome, when the gate decided it directly
+  (allow or deny);
+- the operator's label, when it queued: a follow-up decision
+  whose `releases` names the item AND carries `released_by`
+  labels it *released*; a follow-up whose `rejects` names it
+  AND carries `rejected_by` labels it *rejected*;
+- no outcome, when it expired (whoever expired it — expiry
+  is not a judgement) or is still undecided.
+
+Re-decisions written by the wait pump carry `releases` but
+no `released_by`; they are mechanics, not operator
+judgements, and never label an item. And a label is honest
+about its scope: a release is the operator accepting THIS
+item, not a standing permission for its shape. Candidates
+mined from labels enter the pipeline at offline evaluation
+and climb every stage exactly as policy-mined candidates do.
+
+### 12.3 The pipeline
+
+1. *Mining.* Primary decisions (the first decision per
+   proposal; release/reject/expire follow-ups and fault
+   records are not fresh evidence) are grouped by shape over
+   a training window (reference: the first 70%). Two passes
+   run over the window:
+   - the *policy pass* groups by the gate's primary
+     outcomes, as before; its candidates carry origin
+     `mined`;
+   - the *operator pass* groups the joined decisions whose
+     label source is the operator. Support is the count of
+     LABELLED instances of the shape; a shape whose dominant
+     label (reference: ≥80% of its labelled instances) is
+     released yields a candidate predicting allow, and one
+     dominated by rejected yields a candidate predicting
+     deny. Its origin is `operator`.
+   A shape below the minimum support (reference: 3) in a
+   pass yields no candidate from that pass.
+2. *Offline evaluation.* The candidate's prediction is
+   scored against the held-out tail, under its own scoring
+   basis (section 12.4). Below the bar (reference: 80%
+   agreement) it stays a candidate; the scores are recorded
+   on the rule entry either way.
+3. *Shadow.* The rule predicts but never decides. Agreement
+   with real outcomes is scored from the log.
 4. *Canary, then active.* Promotion at each stage requires
    scored agreement (reference: ≥90% over ≥3 fresh samples at
    that stage). There is no faster lane for shapes carrying
    protected effects.
 5. *Production scoring and demotion.* An active rule decides
-   matching proposals through the sequencer's rule hook, within
-   bounds: it never overrides a suspension, and it never turns
-   an outcome into a queue. Every rule-made decision records
-   `decided_by` and `policy_outcome` (what the policy gate would
-   have done), so scoring compares the rule against the
-   constitution. An active rule whose agreement over fresh
-   samples collapses (reference: <50% over ≥5) is demoted
-   automatically — the regress transition and the scores are in
-   the log.
-6. *Revocation.* One call steps the rule to revoked. The hook
-   reads stage from folded state per proposal, so revocation
-   takes effect on the next proposal and decides nothing further.
+   matching proposals through the sequencer's rule hook,
+   within bounds: it never overrides a suspension, and it
+   never turns an outcome into a queue. Matching is by
+   producer, class and exact effect set; an operator-origin
+   rule must ALSO match the proposal's signature, computed
+   from its request list by section 12.1. Every rule-made
+   decision records `decided_by` and `policy_outcome` (what
+   the policy gate would have done). An active rule whose
+   agreement over fresh samples collapses (reference: <50%
+   over ≥5) is demoted automatically — the regress
+   transition and the scores are in the log.
+6. *Revocation.* One call steps the rule to revoked. The
+   hook reads stage from folded state per proposal, so
+   revocation takes effect on the next proposal and decides
+   nothing further.
 
-Scoring in every stage counts, per matching primary decision,
-agreement between the prediction and the actual outcome — where
-"actual" for a rule-made decision is the recorded policy
-outcome, never the rule's own decision.
+### 12.4 Scoring basis
+
+Scoring in every stage counts, per matching primary decision
+after the stage marker, agreement between the prediction and
+the actual outcome — where "actual" is relative to the
+rule's origin:
+
+- A policy-origin rule: the actual outcome is the primary
+  outcome, and for a rule-made decision the recorded
+  `policy_outcome` — the rule is compared against the
+  constitution, never against itself.
+- An operator-origin rule: only operator-labelled samples
+  count (section 12.2). Rule-made decisions are excluded —
+  the item never queued, so no operator judgement of it
+  exists, and scoring it would be the rule grading itself.
+  A later operator reject of the shape is a labelled sample
+  with outcome deny: it counts against a rule predicting
+  allow in every stage, including production scoring, so
+  operator feedback demotes as well as promotes — the loop
+  closes in both directions.
 
 ## 14. State export bundles
 

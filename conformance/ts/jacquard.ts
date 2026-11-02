@@ -117,8 +117,8 @@ export function hashString(s: string): string {
 // §3 Envelopes and the spec seal
 // ---------------------------------------------------------------------------
 
-export const SPEC_VERSION = "jacquard/0.3";
-export const SPEC_SEAL = hashString("jacquard-spec/0.3");
+export const SPEC_VERSION = "jacquard/0.4";
+export const SPEC_SEAL = hashString("jacquard-spec/0.4");
 export const GENESIS_PREV = "0".repeat(64);
 const HEX64 = /^[0-9a-f]{64}$/;
 const ENVELOPE_KINDS = ["proposal", "definition", "machine"];
@@ -156,7 +156,7 @@ export function validateEnvelope(env: unknown): string[] {
   if (typeof env.spec_seal !== "string" || !HEX64.test(env.spec_seal)) {
     problems.push("spec_seal must be a hex64 string");
   } else if (env.spec_seal !== SPEC_SEAL) {
-    problems.push("spec_seal does not match the seal of jacquard-spec/0.3");
+    problems.push("spec_seal does not match the seal of jacquard-spec/0.4");
   }
   return problems;
 }
@@ -231,7 +231,7 @@ export interface ChainResult {
 
 // Verify a chain of stored entries: seq runs 0,1,2,…; each prev is the
 // previous entry's recorded hash (genesis prev = 64 zeros); spec is
-// "jacquard/0.3"; and every recorded hash recomputes from the entry.
+// "jacquard/0.4"; and every recorded hash recomputes from the entry.
 export function verifyChain(entries: StoredEntry[]): ChainResult {
   let prev = GENESIS_PREV;
   for (let i = 0; i < entries.length; i++) {
