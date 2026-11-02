@@ -584,3 +584,41 @@ and vectors/fixtures regenerate accordingly, as they did for
   unchanged either way) and relocating the senses into a
   profile (no spec'd mechanism lets a profile register a
   sense; it would be trusted code either way, worse placed).
+
+---
+
+## Addendum — what Phase 5 can rely on (2026-11-02)
+
+Written at the parent lane's request: Phase 5 (beachhead 1 — a
+live adapter to a real coding agent, the network service,
+batched queue notifications, a measured proof run) starts from
+this document. The per-gap verdicts, stated once more in
+adapter-facing terms:
+
+| Gap | Winning rung | The surface Phase 5 builds against |
+|---|---|---|
+| F1 contention | 4 — kernel sense | The `contention` sense (spec 0.3 §11): parameterised readings, published in the log with `as_of_seq`, consumed by guard words. An adapter mediating a contended resource publishes/consumes readings; it never computes overlap itself. |
+| F2a conditional starts | 2 — proposal data | The `wait: {guard, deadline_seq}` body field (spec 0.3), with its pinned ordering rules: post-fold re-evaluation, guard-true beats deadline, fixpoint pump, refusing guards recorded. A fired guard re-decides through policy — a wait is a timing gate, never a policy bypass. |
+| F2b authority priority | 2+3+4 — data + machine + sense | `rank`/`asserted_rank` as record data, the `authority` sense (operator-only provenance, last-wins ceilings) for recognition, and profile machine transitions (`preempt`, `tie`) for the override itself. An adapter expresses priority as data and surfaces asserted vs effective rank distinctly; it does not carry its own priority flags. |
+
+Other surfaces the adapter may treat as stable at spec 0.3:
+the envelope submission path and its verdict vocabulary
+(accepted / REFUSED-by-name / decided with outcome); the
+batched decision queue with hash-bound approvals (the slice-10
+CLI semantics — an approval binds the queued decision's hash,
+and a changed item fails approval); machine lifecycle
+transitions as the audit trail for anything the adapter
+drives; senses generally — published readings with stated
+methods, never bare numbers; the §13 decision-model provider
+seam, advisors only (a decision model may publish readings;
+it never gates).
+
+Non-reliances, stated so Phase 5 does not plan on them: there
+is still **no network service** (Phase 5 slice 13 builds it —
+the kernel is a library and a CLI); the booking profile is
+the only shipped domain profile, so the coding-agent adapter
+authors its own machine/word definitions against the profile
+checker, as the booking profile did; and contention readings
+are computed by the kernel that owns the record — an adapter
+on a second machine consumes the service's published
+readings, it does not recompute them.
