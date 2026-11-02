@@ -16,7 +16,7 @@ def load():
 
 def test_spec_seal():
     assert load()["spec_seal"] == SPEC_SEAL
-    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.1").hexdigest()
+    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.2").hexdigest()
 
 
 def test_entry_zero_hash_from_handwritten_canonical_string():
@@ -25,7 +25,7 @@ def test_entry_zero_hash_from_handwritten_canonical_string():
     literal = (
         '{"body":{"name":"gpu-foreign","producer":"operator","value":false},'
         '"kind":"sense","prev":"' + "0" * 64 + '","seq":0,'
-        '"spec":"jacquard/0.1"}')
+        '"spec":"jacquard/0.2"}')
     expect = hashlib.sha256(literal.encode("utf-8")).hexdigest()
     assert load()["entries"][0]["hash"] == expect
 

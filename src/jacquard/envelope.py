@@ -26,7 +26,7 @@ def validate_envelope(envelope):
         return ("SPEC", "unsupported envelope version: %r" % (envelope["v"],))
     if envelope["spec_seal"] != SPEC_SEAL:
         return ("SPEC", "spec seal mismatch")
-    if envelope["kind"] not in ("proposal", "definition"):
+    if envelope["kind"] not in ("proposal", "definition", "machine"):
         return ("FIELD", "unknown envelope kind: %r" % (envelope["kind"],))
     if not isinstance(envelope["declared_effects"], list):
         return ("FIELD", "declared_effects must be a list")
