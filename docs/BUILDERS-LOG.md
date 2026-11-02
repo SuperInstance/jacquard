@@ -781,3 +781,67 @@ profile-defined senses (no spec'd registration mechanism
 exists). The findings doc in this commit is the
 post-critique version; the pre-critique draft is in git
 history at de1813a.
+
+## Phase 4 — implementation slice (spec 0.3), in progress (2026-11-02)
+
+Steps 1–4 of the slice brief are built and committed locally
+(not yet pushed; §5 spec/vectors/conformance and the §6
+close-out wait on the Probe B ruling below):
+
+- **Senses (1a9a2f4).** `contention` and `authority` promoted
+  from tests/probes into src/jacquard/senses.py. Contention
+  gains the findings' `unclassified` list (candidate's seat +
+  seats of status-"active" rows under the prefix, in neither
+  the exclusive set nor {"detached"}); the method string states
+  it. Authority's method states its three filters and last-wins.
+- **Wait + pump (2523e88).** As briefed: pre-append guard
+  validation/evaluation, queueing with the wait spec on the
+  decision entry and no approval instance, the fixpoint pump at
+  the eight pinned exits, fresh policy decision on a fired
+  guard, guard-true beats deadline, refusing guards recorded
+  once per state change, reason parameters on
+  release/reject/expire_queued. Two deviations, both recorded:
+  (1) the underdeclared check is also made pre-append for
+  wait-carrying proposals (the probe's stated simplification —
+  a queued waiter never reaches the normal path's check, and
+  queueing an underdeclared proposal would be worse); the
+  refusal appends nothing, unlike the normal path's fault
+  decision. (2) Probe B's S3b (land, retract, then pump) is
+  staged in production as land+retract inside ONE commit batch,
+  because the production pump runs inside the landing
+  submission itself — the findings' blind-interval residual,
+  not a semantics change.
+- **Booking profile (b3bd37a) + CLI (da56b3b).** booking.py as
+  briefed (booking-clear requires count == 0 AND unclassified
+  empty; dispose rejects with reason preempted-by:<winner-id>);
+  jq queue annotates waiting items and authority ties.
+  Production tests re-register the production senses in a
+  fixture (probe modules overwrite SENSES at runtime — the
+  brief's registry hazard, real in full-suite runs).
+- **Suite: 197 passed, 7 failed — all 7 in tests/probes/
+  test_probe_b.py, and the failure is structural, not a bug
+  found in either implementation.** Probe B modelled the pump
+  as a harness function (`wait_flow.pump`) called explicitly
+  after submissions. The production pump runs INSIDE
+  `Sequencer.submit` / `checkpoint` exits, exactly as the slice
+  brief pins — so when a probe scenario lands X via
+  `seq.submit`, the waiter is already released and executed
+  before the probe's own `pump(seq)` runs, and the probe's
+  assertion on its pump's action list (`[("released", pid)]`)
+  sees `[]`. The outcome the probe asserts everywhere else
+  (execution, queue state, audit chain) is the production
+  outcome; what is pre-empted is only the probe harness's
+  manual trigger. Any sequencer that pumps on submission —
+  the briefed design — breaks these 7 assertions; no pump
+  placement satisfies both the brief's exit list and the
+  probe's manual pump. STOPPED here per the slice's standing
+  rule (a production change breaking a probe test is a finding
+  to report, not a probe to edit) and reported to the
+  coordinator for a ruling: options include (a) accept the 7 as
+  superseded by tests/test_wait.py, which ports the same
+  scenarios to the production surface, and annotate the probe
+  module accordingly; (b) narrow the pump's trigger set —
+  contradicts the brief's pinned exits; (c) distinguish
+  probe-queued waiters by their approval instance (production
+  waiters have none) — a spec-indefensible special case,
+  recommended against. Recommendation: (a).
