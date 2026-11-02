@@ -47,6 +47,30 @@ def binding_hash(seq, proposal_id):
     return None
 
 
+def _is_authority_tie(seq, body):
+    """A booking item is an authority tie when its booking
+    instance's latest taken transition event is "tie" (the
+    challenger waits; the incumbent holds the interval)."""
+    booking_id = None
+    for request in body.get("requests", []):
+        if request.get("verb") == "write" \
+                and request["args"][0].startswith("booking/") \
+                and isinstance(request["args"][1], dict) \
+                and "id" in request["args"][1]:
+            booking_id = request["args"][1]["id"]
+    if booking_id is None:
+        return False
+    instance = "booking:%s" % booking_id
+    latest_taken = None
+    for entry in seq.log.entries:
+        entry_body = entry["body"]
+        if entry["kind"] == "transition" \
+                and entry_body.get("instance") == instance \
+                and entry_body.get("outcome") == "taken":
+            latest_taken = entry_body.get("event")
+    return latest_taken == "tie"
+
+
 def cmd_queue(seq, _args):
     order = seq.decision_order()
     if not order:
@@ -60,6 +84,12 @@ def cmd_queue(seq, _args):
               % (body["producer"], body.get("class", "work"),
                  ", ".join(body.get("effects", []))))
         print("    binding %s" % binding_hash(seq, proposal_id))
+        wait = body.get("wait")
+        if isinstance(wait, dict):
+            print("    waiting: %s (deadline seq %s)"
+                  % (wait.get("guard"), wait.get("deadline_seq")))
+        if _is_authority_tie(seq, body):
+            print("    authority tie")
     return 0
 
 

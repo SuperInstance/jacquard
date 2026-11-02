@@ -90,6 +90,67 @@ def test_seed_demo_refuses_nonempty_log(tmp_path):
     assert Path(log).read_text() == before  # nothing mutated
 
 
+def test_queue_annotates_waiting_item(tmp_path):
+    """A wait-conditioned item is listed as waiting (guard +
+    deadline), and hash-bound decisions still work on an
+    ordinary item in the same queue."""
+    from jacquard import install_lifecycles, make_envelope
+    log = tmp_path / "k.jsonl"
+    seq = Sequencer(Log(str(log)))
+    install_lifecycles(seq)
+    guard = {
+        "name": "x-landed",
+        "signature": {"ins": ["map"], "outs": ["bool"]},
+        "body": ["drop", {"lit": "artifact/x"}, "dup", "keys",
+                 "swap", "contains",
+                 {"if": [{"lit": "artifact/x"}, "get",
+                         {"lit": "status"}, "getf",
+                         {"lit": "landed"}, "eq"],
+                  "else": [{"lit": False}]}],
+        "examples": [
+            {"args": [{"proposal_id": "e"}],
+             "state": {"units": {"artifact/x": {"status": "landed"}}},
+             "expect": [True]},
+            {"args": [{"proposal_id": "e"}],
+             "state": {"units": {}}, "expect": [False]}],
+    }
+    verdict = seq.submit(make_envelope(
+        "operator", "definition", guard, [], "def-x-landed"))
+    assert verdict["status"] == "accepted"
+    deadline = len(seq.log.entries) + 1000
+    waiting = seq.submit(make_envelope(
+        "agent-a", "proposal",
+        {"requests": [{"verb": "write",
+                       "args": ["job/w1", {"job": "w1"}]}],
+         "wait": {"guard": "x-landed", "deadline_seq": deadline}},
+        ["write"], "cli-waiter"))
+    assert waiting["outcome"] == "queue"
+    ordinary = seq.submit(make_envelope(
+        "alice", "proposal",
+        {"requests": [{"verb": "notify", "args": ["ops", "hi"]}]},
+        ["notify"], "cli-ordinary"))
+    assert ordinary["outcome"] == "queue"
+
+    out = run_cli(log, "queue")
+    assert waiting["proposal_id"] in out
+    assert "waiting: x-landed (deadline seq %d)" % deadline in out
+
+    # decide still works, hash-bound, on the ordinary item
+    seq2 = Sequencer(Log(str(log)))
+    binding = None
+    for entry in seq2.log.entries:
+        if entry["kind"] == "decision" \
+                and entry["body"].get("proposal_id") == \
+                ordinary["proposal_id"] \
+                and entry["body"].get("outcome") == "queued":
+            binding = entry["hash"]
+    out = run_cli(log, "decide", "approve", ordinary["proposal_id"],
+                  "--hash", binding)
+    assert "approved %s" % ordinary["proposal_id"] in out
+    # the waiter is untouched by the ordinary item's decision
+    assert waiting["proposal_id"] in run_cli(log, "queue")
+
+
 def test_mixed_batch(tmp_path):
     log = tmp_path / "k.jsonl"
     seed = json.loads(run_cli(log, "seed-demo"))
