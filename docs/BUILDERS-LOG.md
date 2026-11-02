@@ -611,3 +611,76 @@ Release: tag v0.2.0. Acceptance is verified from the TAG
 artifact — a fresh clone checked out at the tag, suite and
 operator drill re-run there — not from the working tree that
 built it.
+
+## Phase 4 — completeness probes, opening (2026-11-02)
+
+**Authorisation.** Casey, 2026-11-02 12:07 AKST, ruling on the
+Phase 3 report's open questions: the F1/F2 items (interval
+contention, conditional starts, authority priority) "sound like
+first-class concepts"; figure them out "with simulations and on
+the actual test side"; the system is not complete yet and
+something may need adding to the primitives — "but of course we
+don't want to add any more than we need to so think closely."
+Charter: ~/workspace/cybernetic-architecture/BUILD-BRIEF-PHASE4.md.
+Board: agent-inbox 5816fa4 (oracle box, lane jacquard-build).
+
+**Discipline.** An escalation ladder, cheapest first — policy
+content, data, machine, sense, and only then ONE new pure form,
+general or not at all. A bespoke primitive per gap is a failure
+of this phase, not a result. Simulations and adversarial tests on
+the real booking-board history decide the rungs; the findings doc
+(docs/completeness-probes-2026-11-02.md) is written BEFORE any
+implementation, and only the winning minimal set is then built as
+a real slice.
+
+**Coordinator recon (before any probe code).** The kernel facts
+the probes turn on, verified against the source at 3ce55ff:
+
+- Words cannot recurse (references must resolve to previously
+  defined words) and cannot iterate: the only list consumers are
+  count/sum/min/max/contains/first; there is no tail/rest/index
+  form, and no way to project a field across a list of maps. So
+  the rung-1 question for Probe A is not "is it awkward" but "can
+  a word even address the second element of a committed list" —
+  the probe will prove the wall with concrete counterexamples
+  rather than assert it.
+- The decision path (policy/1 + the learner rule hook) is
+  content-blind: it sees producer, class and effects, never the
+  proposal body. Any content-dependent gate must therefore live
+  in a machine guard, a sense, or new sequencer wiring — the
+  probes test which.
+- Senses already take parameterised subjects
+  (compute_sense partitions name at the first colon), publish as
+  log entries with {value, method, as_of_seq}, and are consumed
+  by words via the sense primitive. A parameterised contention
+  sense is a rung-4 candidate that needs no evaluator change.
+- But: a guard word cannot build a parameterised sense name from
+  integer fields (cat is string-only; there is no int->str
+  primitive). The sense NAME is an address; the probe driver
+  constructs it from the validated candidate fields, and the
+  findings will state that production wiring must construct it
+  inside the sequencer at decision time, from the same body —
+  a proposer-supplied address would be a trust hole.
+- decision_queue folds the whole decision body, so a wait spec
+  carried on a queued decision survives replay with NO new fold
+  section (the nine sections stay nine). release_queued /
+  expire_queued already execute/expire queued proposals: a
+  "pump" that evaluates wait guards on each commit is wiring,
+  not new evaluation power.
+- Authority provenance has a trap: policy/1 lets any producer
+  write any unit, so a rank grant stored as a plain unit can be
+  self-granted. The Probe C candidate therefore reads grants
+  through an authority SENSE whose method counts only
+  operator-authored grant writes found in execution entries
+  (entries carry their producer). The self-grant attack is a
+  mandatory probe scenario, not an afterthought.
+
+**Probe team.** Three workstreams: (1) corpus + Probe A
+(rung-1 attempts, contention sense candidate, fold-form
+candidate measured against it); (2) Probe B (wait-condition
+prototype + the brief's five scenarios); (3) an INDEPENDENT
+author for Probe A's adversarial synthetic corpus — different
+agent from the candidate implementer, labels derived from the
+shadow trial's stated rules only, ambiguities flagged rather
+than guessed. Probe C follows once the Probe A sense interface
+exists (it reuses it).
