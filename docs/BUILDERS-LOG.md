@@ -1151,3 +1151,82 @@ the CLI's hash-binding rules.
   log — byte-identical both times. Slice 13 acceptance met:
   the slice-10 drill verbs run end-to-end through the service
   from another machine, and CLI and service agree exactly.
+
+## Phase 5 — slice 14: batched queue notifications (2026-11-02)
+Built `tools/jqnotify.py` + `tests/test_jqnotify.py` (15 tests) in
+a parallel clone (~/jacquard-s14) while slices 12/13 land in the
+main clone; merged by rebase per the coordination protocol.
+**What it does.** Folds the kernel log, computes the current
+decision-queue snapshot, and fires ONE batched summary when the
+queue is at or beyond a configurable age or count. The summary
+is exactly the brief's shape: counts by effect class (per-effect
+counts plus per-class counts), the oldest item's age, total
+queue depth, and the queue snapshot hash. No per-item listing
+by default; `--verbose` lists ids on the console only. The
+notification proposes nothing and approves nothing; decisions
+stay in the CLI/service. Thresholds come from CLI flags
+(`--max-age-s` / `--max-count`) or the environment
+(JQNOTIFY_MAX_AGE_S / JQNOTIFY_MAX_COUNT); defaults 100 / 5.
+**Age is log time, and the brief's word "timestamp" needed a
+ruling.** The kernel log carries no wall-clock timestamps at
+all — its clock is the log itself (spec section 5: P2 `now` is
+the entry count, P6 `age` is staleness in entries). So an item's
+age is defined as (latest substantive seq) minus (seq of the
+decision entry that queued it), where "substantive" excludes
+this tool's own notification records, so a notification never
+ages the queue it reports on. Every summary number is a pure
+function of the log prefix and re-derivable by re-folding; the
+summary states its age mode (`log-entries`) in every emission.
+There is deliberately no wall-clock mode: there is no
+wall-clock data in the log to verify one against. The flag
+spelling `--max-age-s` from the brief is kept (alias
+`--max-age`); its unit is log entries, stated in --help, the
+module docstring, and the README.
+**The log record is a checkpoint, and why not a new kind.** The
+firing appends a `checkpoint` entry (body name
+`queue-notification`) carrying the snapshot hash, the exact
+summary numbers, the tripped thresholds, and the pre-append
+folded state hash. A new entry kind was rejected: the kind list
+is closed in spec section 2 (twelve kinds), `Log.append`
+enforces it, and the TypeScript conformance checker folds
+fixtures by kind — a thirteenth kind is a spec change, not a
+notification. `checkpoint` is the existing kind whose fold is
+defined as no fold effect (spec section 2.1; state.py has no
+checkpoint branch), so the record preserves fold determinism
+and the nine-section state shape exactly — a test pins that the
+state hash after the append equals the state hash before it.
+Flagged openly: the body carries annotation fields beyond the
+minimal checkpoint shape {"name", "state_hash"}; that is a
+payload on a fold-transparent kind, not a fold change.
+Verification is a mode, not a promise: `--verify` re-folds the
+prefix before every notification record in a log and recomputes
+its summary.
+**Repeat suppression.** A state file (default
+`<log>.jqnotify-state.json`) records the last notified snapshot
+hash, oldest item + age, and latest substantive seq. Re-firing
+needs a tripped threshold AND a material change: a different
+snapshot hash (items arrived / left / changed), or the same
+oldest item strictly older on substantive log growth. A poll
+loop over an unchanged queue never re-fires — including the
+run immediately after a firing, because the firing's own
+checkpoint is non-substantive and moves neither age nor hash.
+**Operator drop.** With `--deliver`, a Markdown file is
+committed to the fleet's agent-inbox repo (`verdicts/`,
+numbered sequentially past the highest existing NNN- file, in
+that folder's verdict format: header block, `claims: COMPLETE`
+inventory line, one claim section carrying the summary text and
+the verification recipe; pushed when the repo has an origin).
+Without `--deliver` nothing leaves the machine; the tests
+deliver only into a throwaway git repo and never push.
+**Finding from the tests, worth keeping.** The notifier is an
+external writer: after it appends, a long-lived Sequencer
+holding the same file in memory is stale, and its next append
+would fork the chain (the first version of two tests did
+exactly this and the chain verifier caught it). One writer at
+a time; a process that wants to submit after a notification
+rebuilds from the log. That is the sequencer's existing
+one-writer doctrine, now exercised against a second writer.
+**Suite.** Slice tests 15/15; full suite run and cold-clone
+numbers are recorded in the close entry below. No existing
+test was touched; nothing depends on the interim rank-tie
+disposition.

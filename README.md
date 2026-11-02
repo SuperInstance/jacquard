@@ -37,7 +37,7 @@ Phase 3 (continued): a sandboxed executor adapter has landed (`adapters/executor
 
 Phase 4 (complete): the completeness probes closed the shadow trial's three expressiveness findings (docs/completeness-probes-2026-11-02.md) with no new primitives and no new fold section. Interval contention is a kernel sense consumed by machine guards (spec section 11.3); conditional starts are a `wait` field on the proposal body, re-evaluated by a sequencer pump under pinned ordering rules (spec section 7.1); authority priority is rank as data, an authority sense that recognises only operator grants, and preemption as ordinary operator proposals, in a booking application profile shipped as definitions (spec section 11.4). The operator CLI annotates waiting items and authority ties in the queue listing.
 
-Phase 5 (in progress): beachhead 1 — the supervision layer for coding-agent fleets. Slice 13 has landed: the network service (`src/jacquard/service.py`, run via `tools/jqserve.py`) exposes the operator CLI's verbs over HTTP — see the service section below. Slices 12 (a live adapter to a real coding agent), 14 (batched queue notifications) and 15 (the measured proof run) are the rest of the phase.
+Phase 5 (in progress): beachhead 1 — the supervision layer for coding-agent fleets. Slices 13 and 14 have landed: the network service (`src/jacquard/service.py`, run via `tools/jqserve.py`) exposes the operator CLI's verbs over HTTP — see the service section below — and batched queue notifications (`tools/jqnotify.py`) — see the notifications section below. Slices 12 (a live adapter to a real coding agent) and 15 (the measured proof run) are the rest of the phase.
 
 Not built yet: packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
 
@@ -167,3 +167,44 @@ other) from the record on a consumer's behalf.
   token. Run it only on a LAN you trust, or inside a tunnel
   (SSH, WireGuard, Tailscale) — the token is a door lock, not
   an armoured car.
+
+## Queue notifications (Phase 5, slice 14 — built)
+`tools/jqnotify.py` is the decision queue's tap on the shoulder:
+it folds the log, computes the current queue snapshot, and fires
+ONE batched summary when the queue waits at or beyond a
+configurable age or count. The summary carries counts by effect
+class, the oldest item's age, the total queue depth, and the
+queue snapshot hash — never a per-item listing by default
+(`--verbose` lists ids on the console only). It proposes nothing
+and approves nothing; decisions stay in the CLI/service.
+python3 tools/jqnotify.py --log kernel.jsonl [--max-age-s N] [--max-count N] [--deliver]
+- **Age is log time.** The kernel log has no wall-clock
+  timestamps; its clock is the log itself (spec section 5,
+  primitives P2/P6). An item's age is the distance in log
+  entries between the decision entry that queued it and the
+  newest substantive entry (the notifier's own records do not
+  age the queue). `--max-age-s` (alias `--max-age`) is therefore
+  in log entries. Every summary states its age mode
+  (`log-entries`) and is recomputable from the log alone.
+- **Thresholds** trip at or beyond the limit: oldest age
+  `--max-age-s` (env `JQNOTIFY_MAX_AGE_S`, default 100 entries),
+  depth `--max-count` (env `JQNOTIFY_MAX_COUNT`, default 5).
+  `--check` reports whether a notification would fire without
+  firing it.
+- **Repeat suppression.** A state file (default
+  `<log>.jqnotify-state.json`) records the last notified
+  snapshot; a run re-fires only on a material change (new /
+  changed queue contents, or the same oldest item strictly
+  older on substantive log growth) — never on a poll loop over
+  an unchanged queue.
+- **Where firings land.** (a) A `queue-notification`
+  checkpoint record appended to the kernel log itself,
+  carrying the snapshot hash and the exact summary numbers —
+  fold-transparent (the state hash is unchanged by it), and
+  verifiable after the fact with
+  `python3 tools/jqnotify.py --log kernel.jsonl --verify`,
+  which re-folds the prefix before each record and recomputes
+  its summary. (b) With `--deliver`, a Markdown drop committed
+  to the fleet's agent-inbox repo under `verdicts/`, numbered
+  sequentially in that folder's verdict format. Without
+  `--deliver`, nothing leaves the machine.
