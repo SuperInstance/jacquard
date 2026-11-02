@@ -1006,3 +1006,65 @@ Recorded after the push, as the close entry promised.
   are snapshots and were not edited to match — the drift is
   recorded here and in the coordinator's report rather than
   silently corrected.
+
+## Phase 5 — beachhead 1 build-out (opened 2026-11-02)
+
+Charter: BUILD-BRIEF-PHASE5.md (Casey, "Great, go", on the void
+scan). Four slices: 12 a live adapter to one real coding agent,
+13 the network service, 14 batched queue notifications, 15 the
+measured proof run. The Phase 4 findings addendum is the design
+input: the adapter builds against the envelope verdict
+vocabulary, the hash-bound batched queue, machine transitions
+as the audit trail, and published sense readings; it authors
+its own profile definitions against the profile checker
+(booking is the only shipped profile).
+
+- **Host surface chosen for slice 12: ZCode** (3.16.3, on the
+  Oracle, authenticated on the already-paid plan). Its hook
+  system offers exactly the callout the brief wants:
+  `PreToolUse` / `PermissionRequest` events from a workspace
+  `.zcode/config.json` (`hooks.enabled: true`), a strict-JSON
+  verdict (`allow` / `ask` / `deny`), exit code 2 = deny. The
+  adapter is workspace-scoped configuration plus a hook process:
+  removing the config restores the host exactly. Claude Code
+  hooks were the briefs named candidate
+
+## Phase 5 — beachhead 1 build-out (opened 2026-11-02)
+
+Charter: BUILD-BRIEF-PHASE5.md (Casey, "Great, go", on the void
+scan). Four slices: 12 a live adapter to one real coding agent,
+13 the network service, 14 batched queue notifications, 15 the
+measured proof run. The Phase 4 findings addendum is the design
+input: the adapter builds against the envelope verdict
+vocabulary, the hash-bound batched queue, machine transitions
+as the audit trail, and published sense readings; it authors
+its own profile definitions against the profile checker
+(booking is the only shipped profile).
+
+- **Host surface chosen for slice 12: ZCode** (3.16.3, on the
+  Oracle, authenticated on the already-paid plan). Its hook
+  system offers exactly the callout the brief wants:
+  `PreToolUse` / `PermissionRequest` events from a workspace
+  `.zcode/config.json` (`hooks.enabled: true`), a strict-JSON
+  verdict (`allow` / `ask` / `deny`), exit code 2 = deny. The
+  adapter is workspace-scoped configuration plus a hook process:
+  removing the config restores the host exactly. Claude Code
+  hooks were the brief's named candidate; Claude Code is not
+  installed or authenticated on the build box, and ZCode is the
+  fleet seat that is — time-to-integrate is a competitive
+  variable (scan hardening), so the live surface wins.
+- **The V2 contrast, stated before building:** ZCode hooks run
+  inline, so a queued item blocks THAT action in the host. The
+  adapter returns deny-with-reason naming the queue id and the
+  binding hash; the agent is free to do other work and retry
+  after the batch is decided, and an approval can compile into
+  a governed standing rule so the retry — and every later twin
+  — fast-paths. Permit blocks the producer until timeout =
+  reject; here nothing times out into a rejection, and the
+  queue is decided in one operator pass. Where the host forces
+  a synchronous shape anyway, the report will say so plainly.
+- **Rank-tie disposition** (interim, Phase 4): challenger
+  queues, incumbent holds. Nothing in Phase 5 depends on
+  flipping it.
+- Slice 15 window and workload will be stated here before the
+  proof run starts, per the brief.
