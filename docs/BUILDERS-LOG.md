@@ -560,3 +560,38 @@ over committed state is inexpressible with the 26 primitives
 (no list iteration) — the trial's most valuable output, and a
 spec-revision question for Casey, not something fixed quietly
 here.
+
+## Slice 10 — operator CLI + cold-agent drill (2026-11-02)
+
+`tools/jq.py`: the decision queue as an operator surface over a
+persistent kernel log. Commands: seed-demo, queue, decide
+(approve/deny, single or --batch), execute (drives the slice 9
+executor), replay, status. Approvals are HASH-BOUND: the binding
+is the hash of the decision entry that queued the item; a
+mismatch fails and changes nothing. Batch files take
+`<id> <binding>` lines (decided with the command's action) or
+mixed `<approve|deny> <id> <binding>` lines; a batch processes
+every line and exits 1 if any item failed.
+
+Acceptance: tests/test_cli.py drives the CLI as a subprocess —
+the full drill (seed → queue → wrong-hash refusal → batch
+decisions → queue empty → execute → action confirmed → replay
+matching the log), seed-demo's refusal of a non-empty log, and
+mixed batches. 4 passed.
+
+**Cold-agent drill.** A fresh agent was given ONLY the repo and
+the README's quickstart and asked to reach the success state.
+Verdict: DRILL PASSED — every README success marker reached on a
+fresh log, no failed step. It found six README/CLI defects; all
+fixed in this slice before landing, per the brief's rule that
+drill failures are repo bugs: (1) seed-demo on an existing log
+crashed with a raw traceback AND partially mutated the log —
+now it refuses cleanly ("fresh log" message, exit 1, log
+byte-identical) and the README states the fresh-log
+precondition; (2) step 3 now says either approve/deny assignment
+works, with the canonical one named; (3) step 5 now says replay
+runs once per id and includes the dispatched proposal; (4)
+step 4/5 phrasing now matches the CLI's actual output lines;
+(5) the README status line still claimed the operator CLI was
+"not built yet" — corrected; (6) batch mode now supports mixed
+approve/deny lines, as documented.
