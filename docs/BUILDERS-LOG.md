@@ -985,3 +985,24 @@ Recorded after the push, as the close entry promised.
   fresh clone checked out at the tag, suite + checker +
   operator drill re-run there), not from the working tree
   that built it -- the Phase 3 discipline.
+
+## Phase 4 — coordinator close-out (2026-11-02)
+
+- **Findings addendum.** The completeness findings gained an
+  addendum written for Phase 5 (chartered separately): the
+  per-gap rung verdicts restated in adapter terms — what a live
+  adapter may rely on (envelope verdicts, the hash-bound batched
+  queue, machine transitions as the audit trail, published sense
+  readings, the section-13 advisor seam) and what it may not
+  (there is no network service yet; booking is the only shipped
+  application profile).
+- **Programme documents mirrored.** docs/PROGRAMME.md and
+  docs/USE-CASE-VOID-SCAN.md are verbatim copies of the
+  programme-level documents whose working home is the programme
+  workspace; they are mirrored here so the public record sits
+  alongside the build it describes. Both describe Phase 4 as in
+  flight because that was true when they were written; Phase 4
+  has since landed (this log, spec 0.3, tag v0.3.0). The copies
+  are snapshots and were not edited to match — the drift is
+  recorded here and in the coordinator's report rather than
+  silently corrected.

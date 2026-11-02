@@ -22,6 +22,8 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: an independent TypeScript implementation written from the spec alone, its gap report, and the fixtures it folds (see `conformance/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
+- `docs/PROGRAMME.md` — the programme record: what Jacquard is, how it got here, the rulings, and the verified build state (mirrored verbatim from the programme workspace, which remains its working home).
+- `docs/USE-CASE-VOID-SCAN.md` — the market survey behind the build order: 25 products graded against six capability voids no incumbent holds together (mirrored verbatim from the programme workspace).
 
 ## Status
 
