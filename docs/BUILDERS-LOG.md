@@ -160,3 +160,42 @@ records projection alone, and a guard test with a known ratio
 of 0.5 proves the projection is not a hard-coded zero.
 Criterion 2 PASSED in slice 1k. Criterion 4 is recorded in the
 next entry.
+
+## Criterion 4 and Phase 1 verdict (2026-11-02)
+
+Criterion 4 PASSES on the strong outcome. A zero-shot agent
+given only SPEC.md, the exported queue dictionary, and the
+task brief (recorded in `tests/acceptance/zeroshot/TASK.md`)
+composed `hold-for-orin-bench` — sense the bench, call
+`record-hold` while it runs, delegate to `maybe-dispatch`
+otherwise. The kernel accepted it on first submission
+(computed effects `["dispatch", "write"]`, derived through the
+referenced words), and its behaviour checks pass both ways:
+bench running → a hold write and no dispatch; bench idle → a
+dispatch. The submission is preserved verbatim at
+`tests/acceptance/zeroshot/submission.json`.
+
+Phase 1 verdict, per the design record's criteria:
+
+- Criterion 1 (successor rule as definitions; replay
+  reproduces the record): PASS on real data; the hold and
+  two-failure halt branches are covered by reconstructed
+  fixtures, disclosed as such, because the real record
+  contains no instance of either.
+- Criterion 2 (computed effects; under-declaration refused by
+  name): PASS.
+- Criterion 3 (feeder-churn reading from records alone): PASS
+  (output-use ratio 0.0 over 13,080 outputs, computed by the
+  generic projection; guard test at 0.5).
+- Criterion 4 (zero-shot composition): PASS, first-try
+  acceptance.
+- Kill criteria: none fired. The primitive count stayed at 26
+  (plus nine evaluator syntax forms, accounted openly in the
+  spec); computed effects caught every real effect in the
+  defined words, including transitively through references;
+  the zero-shot agent used the dictionary successfully.
+
+Final suite: 46 tests, all passing, no skips. The suite was
+also run green from a cold clone of the public repository on a
+second machine (different Python version), and the committed
+golden-vector hashes were re-verified by hand from the clone.
