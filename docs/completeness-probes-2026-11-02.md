@@ -62,11 +62,19 @@ Three exhibits, all in tests/probes/test_probe_a.py:
    count (2) and opposite contention labels prove no
    count-based reading can distinguish them.
 
-(Contention is, mathematically, determined by the multiset of
-starts and ends — coverage at a point is a pairing-invariant.
-The wall is not information but vocabulary: the evaluator has
-no filtered count and no per-element test, so the invariant is
-unreachable from inside a word.)
+**Lemma (why no word can do it).** Contention is determined
+by the multiset of starts and ends alone — coverage at a point
+is a pairing-invariant — so the information is present in
+committed state. But computing it requires a *filtered
+aggregate*: the count of intervals with start < b and end > a,
+i.e. a predicate applied per element and then aggregated.
+Against the test-asserted inventory of list consumers
+({count, sum, min, max, contains, first, snoc, cat}), no form
+applies a predicate per element, none filters, and none
+addresses an element beyond the first; and the reference
+graph is acyclic, so no word can manufacture iteration by
+self-reference. The wall is vocabulary, not information —
+which is exactly the shape of gap a sense exists to fill.
 
 ### Rung 4 (parameterised contention sense) — WORKS
 
@@ -110,7 +118,11 @@ Evidence:
 - **Cost:** median 1.02 ms per reading at 1,000 committed
   bookings on one box (0.011 ms at 10, 0.091 ms at 100) —
   linear in bookings per resource, against a 2.29 ms median
-  fold of the full 3,295-entry replay log as baseline.
+  fold of the full 3,295-entry replay log as baseline. The
+  scaling shapes favour the sense as the board grows: its
+  cost is per-resource, the fold form's is per-list (every
+  booking on every box), so the 56× ratio at 1,000 is the
+  *floor*, not the ceiling.
 - **Staleness is the sense's one sharp edge, pinned by test:**
   a guard reads the latest *published* reading; commit an
   overlapping booking after publication and the guard still
@@ -149,7 +161,26 @@ loses on three measured grounds:
 
 **Verdict A: rung 4.** One parameterised sense + guard words +
 a domain machine (the booking machine is a definition, not
-kernel code). Nothing added to the primitive set.
+kernel code). Nothing added to the primitive set. Two method
+details the implementation fixes, both from the adversarial
+corpus's flags: the sense's value also reports
+`unclassified` — seat strings (the candidate's and committed
+rows') that its classification table knows as neither
+exclusive nor `detached` — and the profile's `booking-clear`
+guard requires that list empty, so a misspelled seat holds
+the booking for a human instead of silently clearing (the
+sense stays faithful to the stated rules; the fail-closed
+check lives in the guard, where a deployment can amend it).
+And the determinism claim, stated precisely: readings are
+*published values* — refold reproduces state from the log
+(same log → same state), and a reading is additionally a pure
+function of the entry prefix up to its `as_of_seq` plus its
+parameters, so recomputation at that position reproduces it
+byte-identically (asserted in the probe). Publication in the
+booking flow is unconditional on the decision's outcome: a
+denied booking still leaves its reading in the record, as an
+audit artifact; readings never feed the sense's own read set,
+so they cannot compound.
 
 ---
 
@@ -160,14 +191,18 @@ occupancy was event-driven and unknowable to the shadow.
 
 ### Rung 1 (submit-when-it-fires, the incumbent pattern) — WORKS AS MECHANICS, FAILS AS A RECORD
 
-Scenario S6 demonstrates both halves mechanically: an external
+Scenario S6 demonstrates the failure mechanically: an external
 watcher polling state and submitting when X lands produces the
 execution — and the log cannot answer either audit question.
 Before the start, no entry names the pending intention ("what
-are we waiting for?" is unanswerable); the eventual decision
-entry contains no reference to X, its landing, or any reason
-beyond policy's empty list ("why did this start?" is
-unanswerable). The concept exists only in the watcher's head.
+are we waiting for?" is unanswerable, and nothing can expire
+it); afterwards, any reason the watcher writes into its own
+submission is an unchecked claim by the watcher, not a fact
+the record verified ("why did this start?" has only the
+watcher's word for it). The insufficiency is not that the
+eventual decision lacks a string — it is that the *waiting*
+exists nowhere in the record, so it cannot be listed, expired,
+or audited. The concept lives only in the watcher's head.
 
 ### Rung 2 (a wait-condition carried on the proposal) — WORKS
 
@@ -205,6 +240,34 @@ system's nature (state is a fold; there are no edges to
 remember that the fold has not kept) — and it is the safer
 reading for the board's case: a compensated landing *should*
 not trigger starts.
+
+**Ordering rules the slice specifies** (each measured or
+pinned in the probe; stated here because re-evaluation is
+where event-driven systems quietly diverge):
+
+- The pump runs *after* the triggering commit is folded,
+  against the resulting committed state — a guard never reads
+  a half-applied commit.
+- Guard-true beats deadline at the same log position: expiry
+  exists to bound waiting for a condition that does not hold,
+  so a condition that holds in current state releases even
+  past its deadline.
+- The pump iterates to fixpoint within the commit step,
+  including releases that themselves commit (waiter chains
+  complete in one step); each pass strictly reduces the
+  waiter count or stops, so it terminates.
+- A guard that *refuses* during re-evaluation (purity is not
+  totality — a guard can raise on a state shape it did not
+  anticipate) is treated as not-true for that pass, and the
+  refusal is itself recorded: a re-queueing decision entry
+  carrying the same wait spec and the reason
+  `wait-guard-refused:<name>`. A raising guard can neither
+  crash an unrelated submission nor fail silently.
+- Supersession: the queueing decision records the wait; the
+  release decision (which carries `releases`) supersedes it
+  for disposition. Record scoring already treats the first
+  decision per proposal as primary and release decisions as
+  follow-ups; the spec says so out loud.
 
 **Two things the slice must specify (measured in the probe):**
 
@@ -250,24 +313,42 @@ stores the **effective** rank — `min(asserted, ceiling)`, and
 record never launders a claim into a fact. Nothing about rank
 needs evaluation power: it is carried, hashed, replayed.
 
-### (ii) Recognition = rung 4 (an authority sense) — because the naive rung-2 version is attackable
+### (ii) Recognition = rung 4 (an authority sense) — because the gate cannot see write targets
 
 A grant ("producer X may assert rank up to N") must be
 *recognised by the record*, and the obvious storage — a unit
-`authority/<producer>` — is writable by anyone: policy/1 lets
-any producer write any unit. The probe's mandatory self-grant
+`authority/<producer>` — is writable by anyone. Could a
+better policy refuse non-operator writes under `authority/`?
+No — and this is structural, not a policy/1 oversight: the
+gate's inputs are (producer, kind, *effects*, record,
+standing). Effects are coarse verbs; a `write` effect does
+not carry its target unit, and no dictionary word can gate a
+submission (words are evaluated by machines and flows, never
+by the gate). Target-based write gating is therefore
+inexpressible at rung 1 for *any* policy version that keeps
+the gate's current input vocabulary — widening that
+vocabulary would be a kernel change of the same order as the
+sense, with a larger blast radius (every decision would
+depend on body inspection). The probe's mandatory self-grant
 attack (C5) shows the consequence and the fix in one test:
 Mallory's own proposal writes `authority/mallory = 99`, the
 write **lands** (the unit is 99 in committed state) — and the
-authority sense still reports her ceiling as null, because its
-method counts only grant writes in execution entries whose
-producer is the operator. Her rank-9 override then fails
-exactly as an ungranted one (C4). Provenance comes from the
-log, not from the value's current holder. (Defence in depth
-for the slice, noted not built: a future policy version can
-refuse non-operator writes under `authority/` outright; the
-sense makes the system correct even while such writes are
-permitted.)
+authority sense still reports her ceiling as null, because
+its method counts only grant writes that satisfy all three
+filters: entry kind `execution`, entry producer `operator`,
+and an applied write to the unit `authority/<producer>`.
+Ceiling resolution is last-wins: a later operator grant
+replaces the ceiling, so a lower re-grant is a downward
+revocation. Her rank-9 override then fails exactly as an
+ungranted one (C4). Provenance comes from the log, not from
+the value's current holder. One honest limit: the sense is
+the only *sanctioned* reader of `authority/` — a future word
+that reads the raw unit directly would see the attacker's
+99. The profile never does this (its words consume the sense
+only), and the spec states that the unit value alone is not
+evidence of a grant; making it a mechanism rather than a
+convention would require the target-aware gate rejected
+above.
 
 ### (iii) Override = rung 3 (machine transitions + records)
 
@@ -330,7 +411,14 @@ outcome in the record: the tie is a taken transition entry
 lifecycle, the published contention sense names the
 equal-rank contender it tied with, and the operator CLI
 annotates such queue items as authority ties in the boss's
-batch. If Casey prefers ties to bounce, a refusal
+batch. The interim disposition is stated, not left implicit:
+**the incumbent holds the interval while the challenger
+waits** — "no silent winner" means no *unrecorded* winner;
+the status quo proceeding under a fully recorded challenge,
+pending the boss's batch, is the disposition Casey's ruling
+implies, and the alternative (freeze both) would let any
+equal-rank filing halt a running booking, a denial-of-service
+the board does not want. If Casey prefers ties to bounce, a refusal
 name is a one-line spec addition; the behaviour difference is
 queue-vs-bounce, and the probe's C3 pins the queue behaviour
 either way.
@@ -348,10 +436,12 @@ Added to the system — the complete list:
 
 1. **Two built-in senses** (rung 4, kernel projections, spec
    §11): `contention` (parameterised by box/seat/start/end/
-   producer/id; method and read set as probed; field values
-   containing `/` are refused FIELD where the name is
-   constructed) and `authority` (subject = producer; counts
-   only operator-authored grant writes). Sense-computation
+   producer/id; method and read set as probed; value carries
+   the contenders, count, max_rank, top_id, and any
+   unclassified seat strings; field values containing `/`
+   are refused FIELD where the name is constructed) and
+   `authority` (subject = producer; the three-filter,
+   last-wins method Probe C states). Sense-computation
    vectors join the golden vectors (state fixture + subject →
    expected reading); the TypeScript checker declares sense
    computation out of its fold scope (SKIP, stated in its gap
@@ -360,17 +450,23 @@ Added to the system — the complete list:
    deadline_seq}` — guard validated before anything is
    appended (exists, map->bool, pure); false at submission →
    queued with the wait spec on the decision entry (no new
-   fold section); true → normal path. On each commit the
-   sequencer re-evaluates outstanding wait guards
-   (re-entrancy-safe); a fired guard sends the proposal
-   through the ordinary policy decision fresh — allow
-   executes, queue becomes an ordinary approval item with
-   the wait spent, deny refuses — with `wait-satisfied:
-   <guard>` among the reasons; an expired deadline expires
-   the item with reason `wait-expired:<guard>`. To carry
-   those reasons, `release_queued` / `reject_queued` /
-   `expire_queued` gain an optional reason parameter
-   (defaults unchanged).
+   fold section; a refold test pins the nested spec's
+   survival); true → normal path. On each commit the
+   sequencer re-evaluates outstanding wait guards under the
+   ordering rules Probe B states (post-fold evaluation,
+   guard-true beats deadline, fixpoint within the step,
+   refusing guards recorded not swallowed); a fired guard
+   sends the proposal through the ordinary policy decision
+   fresh — allow executes, queue becomes an ordinary
+   approval item with the wait spent, deny refuses — with
+   `wait-satisfied:<guard>` among the reasons; an expired
+   deadline expires the item with reason
+   `wait-expired:<guard>`. To carry those reasons,
+   `release_queued` / `reject_queued` / `expire_queued` gain
+   an optional reason parameter (defaults unchanged). The
+   parameter is the channel, not a luxury: the decision
+   entry is written by those functions, so a reason a caller
+   needs on the entry can only arrive through them.
 3. **A booking profile shipped as definitions, not kernel
    code** (rungs 2+3): the booking machine, the guard words
    (`booking-clear`, `booking-contended`, `booking-outranks`,
@@ -380,7 +476,18 @@ Added to the system — the complete list:
    beside `lifecycles.py`, with the booking record schema
    (rank + asserted_rank) stated in the spec as an
    application profile. The operator CLI marks wait items
-   and authority-tie reasons in the queue listing.
+   and authority ties in the queue listing. The seven words
+   are dictionary definitions — the system's free currency
+   (inventing terms is free; inventing effects is what costs)
+   — so the kernel surface of this whole phase is items 1–2;
+   the words compose from each other and the primitives and
+   are counted here only for completeness. The two senses
+   are kernel-resident because senses are the spec's only
+   mechanism for kernel-computed readings: a profile cannot
+   register one by definition (words cannot iterate the entry
+   stream either — that was Probe A's lemma), so a
+   "profile-defined sense" would still be trusted code, just
+   worse placed.
 
 **Not added:** any primitive (the count stays 26 + 9 syntax
 forms); any fold section (still nine); any refusal name; any
@@ -397,13 +504,19 @@ and vectors/fixtures regenerate accordingly, as they did for
   its author). Whether a point booking is an interval is a
   rules question for the board protocol, not a mechanism gap;
   the sense implements the formula as stated.
-- **Spelling is data hygiene.** `claude_code` ≠ `claude-code`,
-  `Lane-A` ≠ `lane-a`, and any unlisted seat string is
-  silently non-exclusive (the open-vocabulary trap). The
-  kernel does no normalisation — by design (canonical values
-  are the producers' contract) — but the board protocol
-  should carry a seat vocabulary list; that is a protocol
-  fix, not a kernel one.
+- **Spelling is case-exact, and unlisted seats now fail
+  closed.** `claude_code` ≠ `claude-code` and `Lane-A` ≠
+  `lane-a` remain true (canonical values are the producers'
+  contract; the kernel does no normalisation). What changed
+  during this phase: an unlisted seat string previously
+  cleared *silently*; the sense now reports unclassified
+  seats in its value and the profile guard holds such
+  bookings for a human (Probe A verdict). The residual is
+  narrower than the trap was: a *producer* typo (`Lane-A`)
+  is indistinguishable from a genuinely different producer —
+  that is identity discipline, not vocabulary, and stays a
+  residual. The board protocol should still carry its seat
+  list so deployments can extend the guard's table.
 - **Partial contention does not exist.** A check-by expiring
   mid-window still contends for the whole window; the model
   is whole-window or nothing, as the board's rules are.
@@ -443,5 +556,31 @@ and vectors/fixtures regenerate accordingly, as they did for
   brief (binary vs ceiling rank) and implemented the ceiling.
   Both are recorded in the probes' reports and in this
   document's Probe C section.
-- A DeepInfra critique pass over this draft was run before
-  implementation [CRITIQUE OUTCOME — PENDING].
+- Scope limit of the 35/35 claim, stated plainly: the
+  adversarial corpus inherits the trial's stated rules (its
+  author worked from them), so it cannot catch a rule the
+  trial itself got wrong. The residuals above — zero-duration
+  points, vocabulary, partial contention — are exactly that
+  class: places where the rules, not the mechanism, are the
+  open question.
+- A DeepInfra critique pass over this draft (DeepSeek-V4.1-
+  Flash, ~4,000 completion tokens) landed several blows that
+  changed the document and the implementation set: the wait
+  ordering rules (post-fold evaluation, guard-true beats
+  deadline, fixpoint scope, refusing-guard disposition,
+  decision supersession) were unspecified in the first draft
+  and are now pinned in Probe B; the authority sense's method
+  gained its three-filter statement and last-wins ceiling
+  resolution, and Probe C(ii)'s justification was rewritten
+  from "rung 2 is attackable" to the target-blindness of the
+  gate; the tie's interim disposition (incumbent holds) is
+  now stated rather than implied by "no silent winner"; the
+  seat-vocabulary fail-closed check entered through the
+  critique's "mislabelled residual" charge; the determinism
+  wording for published readings was split into its two true
+  halves. Criticisms considered and not adopted, with
+  reasons in place: trimming the guard-word count (words are
+  definitions, the free currency — the kernel surface is
+  unchanged either way) and relocating the senses into a
+  profile (no spec'd mechanism lets a profile register a
+  sense; it would be trusted code either way, worse placed).

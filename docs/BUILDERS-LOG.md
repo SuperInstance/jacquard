@@ -757,3 +757,27 @@ standing ruling, and "no silent winner" is fully satisfied.
 src/ file touched yet. Next: DeepInfra critique of the
 findings, then the implementation slice (spec 0.3) for the
 minimal set the findings name.
+
+**Critique pass (2026-11-02).** The findings draft went to a
+DeepInfra critic (DeepSeek-V4.1-Flash; prompt = design
+context + ladder + the full draft; ~4k completion tokens,
+cost ~$0.002) before implementation, per the phase brief.
+Blows that landed and changed the findings + slice set: the
+wait composition was under-specified — the ordering rules
+(post-fold evaluation, guard-true beats deadline at equal
+seq, fixpoint pump scope, refusing-guard disposition,
+decision supersession) are now pinned in the findings;
+Probe C(ii) was rewritten from "rung 2 is attackable" to the
+structural argument (the gate is target-blind: effects carry
+no unit, so no policy version can gate writes by target);
+the authority method gained its three filters and last-wins
+ceiling resolution; the tie's interim disposition
+(incumbent holds while the challenger waits) is stated
+instead of hiding inside "no silent winner"; unclassified
+seat strings now fail closed through the guard instead of
+clearing silently. Not adopted, reasons recorded in the
+findings: trimming definition-words (free currency) and
+profile-defined senses (no spec'd registration mechanism
+exists). The findings doc in this commit is the
+post-critique version; the pre-critique draft is in git
+history at de1813a.
