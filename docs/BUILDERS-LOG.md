@@ -684,3 +684,76 @@ agent from the candidate implementer, labels derived from the
 shadow trial's stated rules only, ambiguities flagged rather
 than guessed. Probe C follows once the Probe A sense interface
 exists (it reuses it).
+
+## Phase 4 — completeness probes: results (2026-11-02)
+
+Full findings: docs/completeness-probes-2026-11-02.md. The
+probes live in tests/probes/ (harness + corpora; candidate code
+quarantined there until the slice promotes it).
+
+**Probe A (contention, F1).** Rung 1 proven impossible with
+three exhibits (no list form yields a second element; a
+first-only word silently answers wrong; sum over maps refuses
+FIELD and count cannot distinguish equal-count states of
+opposite label). Rung 4 — a parameterised `contention` sense
+consumed by machine guards — reproduces all 52 shadow
+decisions on the real board corpus, contender id sets
+included, and scores 35/35 on the independent adversarial
+corpus after the probe's own correction: the first subject
+grammar omitted the candidate id (33/35), the id became the
+sixth subject field, and a gate-by-gate check confirms those
+six are exactly the candidate fields the reference predicate
+reads. Corpus pinned to the trial's window (first 63
+schedule commits, head 0d23fd56) because the live board grew
+past the snapshot during this phase. Cost: 1.02 ms median per
+reading at 1,000 bookings/box. Staleness pinned by test: the
+reading must be published inside the decision step.
+**Rung 5 (fold form) built and rejected on evidence:** agrees
+everywhere the sense does, but ~56x the evaluation cost, a
+whole-list rewrite tax per commit (130,891 B write value at
+1,000 bookings vs a constant 128 B), and a demonstrated
+computed-effects hole — a Tier-E verb hidden in the quotation
+computes as effect-free under the stock token walk. The walk
+fix is known; it is a spec programme, not a patch, and buys
+nothing the sense lacks on this evidence.
+
+**Probe B (conditional starts, F2a).** Rung 2: a `wait` field
+on the proposal body ({guard, deadline_seq}); the guard is an
+ordinary pure word; the waiter sits in the decision queue —
+the fold copies whole decision bodies, so the nine fold
+sections stay nine. 13/13 scenarios pass, including the
+rung-1 contrast (the incumbent submit-when-it-fires pattern
+executes fine and leaves a log that can answer neither "what
+are we waiting for?" nor "why did this start?"). Semantics
+pinned state-based, not edge-based: land-then-retract before
+re-evaluation does not start the waiter; deadline is an
+absolute log position, queueing's own 5 entries included.
+Composition rule for the slice, from the probe's open
+interaction: a fired guard sends the proposal through the
+ordinary policy decision fresh — guard release never bypasses
+the gate.
+
+**Probe C (authority priority, F2b).** Decomposition held:
+rank is rung-2 data (records store effective rank =
+min(asserted, ceiling) plus asserted_rank); recognition is a
+rung-4 `authority` sense counting only operator-authored
+grant writes — the mandatory self-grant attack lands its unit
+(authority/mallory = 99 in committed state) and changes
+nothing, because provenance comes from execution entries, not
+from the value. Override is rung-3: preemption as ordinary
+operator proposals + a PREEMPTED machine transition +
+preemption records; audit replay from the log alone returns
+{winner, winner_producer, rank, grant_seq} with ordering
+proven. 8/8 scenarios. The probe caught a contradiction in
+the coordinator's staged brief (binary vs ceiling rank);
+the ceiling won and is recorded in the findings. One
+deliberate deviation from the charter's letter, reasoned in
+the findings: a rank tie is queued under a named `tie`
+transition, not refused — a tie between legitimate
+authorities is a batched-decision item under Casey's
+standing ruling, and "no silent winner" is fully satisfied.
+
+**Suite:** 128 -> 163 with the probes, nothing weakened, no
+src/ file touched yet. Next: DeepInfra critique of the
+findings, then the implementation slice (spec 0.3) for the
+minimal set the findings name.

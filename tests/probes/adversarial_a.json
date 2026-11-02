@@ -1,0 +1,1377 @@
+{
+  "cases": [
+    {
+      "name": "touching-candidate-ends-at-committed-start",
+      "committed": [
+        {
+          "id": "o01",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1100,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c01",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1100,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "C.end == O.start (1100). Strict overlap requires C.start < O.end AND O.start < C.end; 1100 < 1100 is false, so touching endpoints do NOT contend."
+    },
+    {
+      "name": "touching-candidate-starts-at-committed-end",
+      "committed": [
+        {
+          "id": "o02",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1100,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c02",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "C.start == O.end (1100). Strict overlap fails (1100 < 1100 false) in the other direction; no contention."
+    },
+    {
+      "name": "containment-candidate-inside-committed",
+      "committed": [
+        {
+          "id": "o03",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1300,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c03",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o03"
+        ]
+      },
+      "notes": "Candidate strictly inside the committed window; strict overlap holds; same exclusive seat gpu; contends."
+    },
+    {
+      "name": "containment-committed-inside-candidate",
+      "committed": [
+        {
+          "id": "o04",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1100,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c04",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o04"
+        ]
+      },
+      "notes": "Committed booking strictly inside the candidate window; strict overlap holds; contends."
+    },
+    {
+      "name": "identical-windows",
+      "committed": [
+        {
+          "id": "o05",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c05",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o05"
+        ]
+      },
+      "notes": "Identical start and end; 1000 < 1200 and 1000 < 1200, so strict overlap holds; contends."
+    },
+    {
+      "name": "expired-checkby-with-real-overlap",
+      "committed": [
+        {
+          "id": "o06",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1300,
+          "checkby": 1050,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c06",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Real interval overlap, but O.checkby (1050) < C.start (1100): the committed booking is dead by protocol before the candidate starts, so it does not contend."
+    },
+    {
+      "name": "checkby-equals-candidate-start-not-expired",
+      "committed": [
+        {
+          "id": "o07",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1300,
+          "checkby": 1100,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c07",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o07"
+        ]
+      },
+      "notes": "O.checkby == C.start (1100). Expiry is strict <: 1100 < 1100 is false, so the booking is NOT expired and contends."
+    },
+    {
+      "name": "checkby-null-active-overlap",
+      "committed": [
+        {
+          "id": "o08",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c08",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o08"
+        ]
+      },
+      "notes": "Null checkby never expires; active overlapping exclusive-seat booking contends."
+    },
+    {
+      "name": "inert-status-done",
+      "committed": [
+        {
+          "id": "o09",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "done",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c09",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Real overlap and same exclusive seat, but O.status is 'done', not 'active'; only active bookings contend."
+    },
+    {
+      "name": "inert-status-cancelled",
+      "committed": [
+        {
+          "id": "o10",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "cancelled",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c10",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Real overlap, but O.status is 'cancelled'; inert, no contention."
+    },
+    {
+      "name": "inert-status-preempted",
+      "committed": [
+        {
+          "id": "o11",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "preempted",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c11",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Real overlap, but O.status is 'preempted'; inert, no contention."
+    },
+    {
+      "name": "same-producer-renewal-overlap",
+      "committed": [
+        {
+          "id": "o12",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c12",
+        "box": "thor",
+        "producer": "lane-a",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Same producer on both bookings: O.producer != C.producer fails. Same-producer overlaps are renewals, never contention."
+    },
+    {
+      "name": "box-committed-vs-detached-candidate",
+      "committed": [
+        {
+          "id": "o13",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "box",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c13",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "detached",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o13"
+        ]
+      },
+      "notes": "Seats differ but one seat is 'box', which conflicts with everything on its box; contends."
+    },
+    {
+      "name": "detached-vs-detached-same-window",
+      "committed": [
+        {
+          "id": "o14",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "detached",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c14",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "detached",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Seats equal ('detached') but 'detached' is not in the exclusive set, so equal-seat conflict is false; no contention despite identical windows."
+    },
+    {
+      "name": "detached-vs-gpu-no-conflict",
+      "committed": [
+        {
+          "id": "o15",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "detached",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c15",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Seats differ and neither is 'box': no conflict. 'detached' contends only with 'box'."
+    },
+    {
+      "name": "box-vs-box",
+      "committed": [
+        {
+          "id": "o16",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "box",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c16",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "box",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o16"
+        ]
+      },
+      "notes": "Seats equal and 'box' is in the exclusive set; whole-box claims contend."
+    },
+    {
+      "name": "same-nonexclusive-seat-observer",
+      "committed": [
+        {
+          "id": "o17",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "observer",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c17",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "observer",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Seats equal ('observer') but 'observer' is not in the exclusive set {zcode,mcode,claude-code,gpu,stage,kimi,box}; identical windows still do not contend per the stated rules."
+    },
+    {
+      "name": "seat-spelling-claude-code-vs-claude_code",
+      "committed": [
+        {
+          "id": "o18",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "claude-code",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c18",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "claude_code",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Per the strict rules: seat strings are compared exactly. 'claude_code' != 'claude-code', seats differ, neither is 'box', so no conflict and no contention. FLAGGED: a human operator would almost certainly intend these to be the same resource; the rules contain no normalisation, so the label follows the formula, not the intent. See ambiguities."
+    },
+    {
+      "name": "list-depth-only-last-contends",
+      "committed": [
+        {
+          "id": "o19a",
+          "box": "orin",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o19b",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 800,
+          "end": 900,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o19c",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "done",
+          "rank": 0
+        },
+        {
+          "id": "o19d",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "detached",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o19e",
+          "box": "thor",
+          "producer": "lane-c",
+          "seat": "gpu",
+          "start": 1100,
+          "end": 1300,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c19",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o19e"
+        ]
+      },
+      "notes": "Five committed bookings; the first four each fail a different clause (different box; no overlap; status done; detached-vs-gpu seat). Only the LAST, o19e, satisfies every clause. Expected 'with' contains exactly o19e: an implementation that stops scanning early or mishandles any filter fails this case."
+    },
+    {
+      "name": "back-to-back-touching-neighbours",
+      "committed": [
+        {
+          "id": "o20a",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1010,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "c20",
+          "box": "thor",
+          "producer": "lane-c",
+          "seat": "gpu",
+          "start": 1010,
+          "end": 1020,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o20c",
+          "box": "thor",
+          "producer": "lane-c",
+          "seat": "gpu",
+          "start": 1020,
+          "end": 1030,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c20",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1010,
+        "end": 1020,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Three back-to-back bookings [1000,1010),[1010,1020),[1020,1030); candidate is [1010,1020). The two neighbours merely TOUCH the candidate (1010==1010, 1020==1020) so strict overlap fails for both. The middle committed row carries the candidate's own id (c20), so O.id != C.id excludes it: a candidate never contends with itself. Result: no contention. FLAGGED AMBIGUITY: the brief's wording does not state the middle row's identity; if the middle row were an independent different-id booking, the identical-window rule (see identical-windows) would make it contend. Label follows the strict formula under the id-identity reading stated here. See ambiguities."
+    },
+    {
+      "name": "back-to-back-spanning-candidate-contends-all-three",
+      "committed": [
+        {
+          "id": "o21a",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1010,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o21b",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1010,
+          "end": 1020,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o21c",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1020,
+          "end": 1030,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c21",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1009,
+        "end": 1021,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o21a",
+          "o21b",
+          "o21c"
+        ]
+      },
+      "notes": "Candidate [1009,1021) strictly overlaps each of the three back-to-back bookings by at least one minute (1009<1010, 1020<1021); contends with all three; 'with' lists all three ids sorted."
+    },
+    {
+      "name": "two-contenders-at-once",
+      "committed": [
+        {
+          "id": "o22b",
+          "box": "thor",
+          "producer": "lane-c",
+          "seat": "gpu",
+          "start": 1150,
+          "end": 1300,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o22a",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1150,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        },
+        {
+          "id": "o22c",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1200,
+          "end": 1300,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c22",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o22a",
+          "o22b"
+        ]
+      },
+      "notes": "Candidate overlaps o22a and o22b; o22c only touches at 1200 (C.end == O.start) and is excluded. 'with' lists both contenders sorted [o22a, o22b] even though o22b appears first in the committed list."
+    },
+    {
+      "name": "zero-duration-candidate-inside-booking",
+      "committed": [
+        {
+          "id": "o23",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c23",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1100,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o23"
+        ]
+      },
+      "notes": "Zero-duration candidate (start == end == 1100) strictly inside the committed window. Strict formula: C.start < O.end (1100 < 1200) AND O.start < C.end (1000 < 1100) both hold, so it CONTENDS per the formula. FLAGGED AMBIGUITY: whether a zero-length point is an interval at all is not addressed by the rules; labelled per the strict reading of the formula. See ambiguities."
+    },
+    {
+      "name": "zero-duration-committed-inside-candidate",
+      "committed": [
+        {
+          "id": "o24",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1100,
+          "end": 1100,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c24",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o24"
+        ]
+      },
+      "notes": "Zero-duration committed booking (start == end == 1100) strictly inside the candidate window. Strict formula: C.start < O.end (1000 < 1100) AND O.start < C.end (1100 < 1200) both hold, so it CONTENDS per the formula. FLAGGED AMBIGUITY: same point-vs-interval question as zero-duration-candidate-inside-booking, on the committed side. See ambiguities."
+    },
+    {
+      "name": "rank-ignored-high-rank-committed-low-rank-candidate",
+      "committed": [
+        {
+          "id": "o25",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 5
+        }
+      ],
+      "candidate": {
+        "id": "c25",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o25"
+        ]
+      },
+      "notes": "Committed rank 5 vs candidate rank 0, otherwise a plain exclusive-seat overlap. Probe A's rules never mention rank, so the candidate IS contended; rank is Probe C's concern (preemption), not a contention filter."
+    },
+    {
+      "name": "different-box-same-seat-same-window",
+      "committed": [
+        {
+          "id": "o26",
+          "box": "orin",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c26",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Identical seat and window but O.box (orin) != C.box (thor); contention is per-box, so no contention."
+    },
+    {
+      "name": "different-exclusive-seats-gpu-vs-zcode",
+      "committed": [
+        {
+          "id": "o27",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c27",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "zcode",
+        "start": 1000,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "Both seats are individually exclusive, windows identical, same box, different producers, but the seats DIFFER and neither is 'box', so seats_conflict is false: no contention. Operator-surprising but unambiguous per the rules (exclusivity is per-seat, not per-box, except for 'box' itself)."
+    },
+    {
+      "name": "duplicate-id-different-producer-excluded",
+      "committed": [
+        {
+          "id": "dup-1",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "dup-1",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": false,
+        "with": []
+      },
+      "notes": "The committed row carries the SAME id as the candidate but a different producer, seat and window overlapping. O.id != C.id fails, so it is excluded and there is no contention per the strict formula. FLAGGED AMBIGUITY: the rules treat id as identity; whether a duplicate id with different fields is the same booking (stale copy) or a data error is not specified. See ambiguities."
+    },
+    {
+      "name": "checkby-expires-mid-candidate-still-contends",
+      "committed": [
+        {
+          "id": "o29",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1300,
+          "checkby": 1150,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c29",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o29"
+        ]
+      },
+      "notes": "O.checkby (1150) falls INSIDE the candidate window but is not < C.start (1100), so the expiry clause does not fire and the booking contends for the whole candidate per the formula. The rules compare checkby only against candidate start; partial-window contention is not expressed. Operator-surprising; see ambiguities."
+    },
+    {
+      "name": "detached-committed-vs-box-candidate",
+      "committed": [
+        {
+          "id": "o30",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "detached",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c30",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "box",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o30"
+        ]
+      },
+      "notes": "Seats differ and the candidate's seat is 'box': 'box' conflicts with everything on its box, including a detached booking; contends. Symmetric counterpart to box-committed-vs-detached-candidate."
+    },
+    {
+      "name": "one-minute-overlap",
+      "committed": [
+        {
+          "id": "o31",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1100,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c31",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "gpu",
+        "start": 1099,
+        "end": 1200,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o31"
+        ]
+      },
+      "notes": "Smallest strict overlap: C.start (1099) < O.end (1100) by one minute, and O.start < C.end. Contends; contrasts with the touching-endpoint cases where the same comparison is an equality and fails."
+    },
+    {
+      "name": "producer-case-variant-counts-as-different",
+      "committed": [
+        {
+          "id": "o32",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c32",
+        "box": "thor",
+        "producer": "Lane-A",
+        "seat": "gpu",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o32"
+        ]
+      },
+      "notes": "Producers differ only by case ('lane-a' vs 'Lane-A'). The rule O.producer != C.producer is an exact string comparison with no normalisation stated, so they count as different producers and the booking contends. FLAGGED: if producer identity were case-insensitive this would be a renewal instead. See ambiguities."
+    },
+    {
+      "name": "box-candidate-vs-gpu-committed",
+      "committed": [
+        {
+          "id": "o33",
+          "box": "thor",
+          "producer": "lane-a",
+          "seat": "gpu",
+          "start": 1000,
+          "end": 1200,
+          "checkby": null,
+          "status": "active",
+          "rank": 0
+        }
+      ],
+      "candidate": {
+        "id": "c33",
+        "box": "thor",
+        "producer": "lane-b",
+        "seat": "box",
+        "start": 1100,
+        "end": 1300,
+        "checkby": null,
+        "status": "active",
+        "rank": 0
+      },
+      "expected": {
+        "contends": true,
+        "with": [
+          "o33"
+        ]
+      },
+      "notes": "Candidate claims the whole box ('box' seat) over a live gpu booking: seats differ, one is 'box', so conflict; contends. This is the shadow trial's whole-box-over-live-seat pattern."
+    },
+    {
+      "name": "temporal-preempted-then-clear",
+      "events": [
+        {
+          "commit": {
+            "id": "o34",
+            "box": "thor",
+            "producer": "lane-a",
+            "seat": "gpu",
+            "start": 1000,
+            "end": 1200,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          }
+        },
+        {
+          "candidate": {
+            "id": "t-o34-1",
+            "box": "thor",
+            "producer": "lane-b",
+            "seat": "gpu",
+            "start": 1100,
+            "end": 1300,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          },
+          "expected": {
+            "contends": true,
+            "with": [
+              "o34"
+            ]
+          }
+        },
+        {
+          "status": [
+            "o34",
+            "preempted"
+          ]
+        },
+        {
+          "candidate": {
+            "id": "t-o34-2",
+            "box": "thor",
+            "producer": "lane-b",
+            "seat": "gpu",
+            "start": 1100,
+            "end": 1300,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          },
+          "expected": {
+            "contends": false,
+            "with": []
+          }
+        }
+      ],
+      "notes": "Ordered events. Candidate 1 is decided while o34 is still active: it contends. o34 is then marked preempted (status event). Candidate 2 over the same window is decided against the updated state: o34 is no longer active, so it is clear. Assumes candidates are proposals only and do NOT themselves join the committed set (see ambiguities)."
+    },
+    {
+      "name": "temporal-done-then-clear",
+      "events": [
+        {
+          "commit": {
+            "id": "o35",
+            "box": "thor",
+            "producer": "lane-a",
+            "seat": "gpu",
+            "start": 1000,
+            "end": 1200,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          }
+        },
+        {
+          "candidate": {
+            "id": "t-o35-1",
+            "box": "thor",
+            "producer": "lane-b",
+            "seat": "gpu",
+            "start": 1100,
+            "end": 1300,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          },
+          "expected": {
+            "contends": true,
+            "with": [
+              "o35"
+            ]
+          }
+        },
+        {
+          "status": [
+            "o35",
+            "done"
+          ]
+        },
+        {
+          "candidate": {
+            "id": "t-o35-2",
+            "box": "thor",
+            "producer": "lane-b",
+            "seat": "gpu",
+            "start": 1100,
+            "end": 1300,
+            "checkby": null,
+            "status": "active",
+            "rank": 0
+          },
+          "expected": {
+            "contends": false,
+            "with": []
+          }
+        }
+      ],
+      "notes": "Ordered events. Candidate 1 contends with the still-active o35. o35 is then marked done. Candidate 2 over the same window is clear because only status 'active' contends. Assumes candidates do not auto-commit (see ambiguities)."
+    }
+  ],
+  "ambiguities": [
+    {
+      "case": "back-to-back-touching-neighbours",
+      "issue": "The brief's coverage line ('three back-to-back bookings [0,10),[10,20),[20,30) with candidate [10,20) - touching both neighbours, no contention') does not state the middle committed booking's identity or producer. Under the strict formula an independent different-id, different-producer middle booking with an identical window WOULD contend (see identical-windows). The no-contention label is only derivable if the middle row is the candidate itself (id exclusion, as constructed here) or a same-producer renewal. Case labelled per the strict formula under the id-identity reading; the alternative reading flips the label."
+    },
+    {
+      "case": "zero-duration-candidate-inside-booking",
+      "issue": "A zero-duration candidate (start == end) strictly inside a booking satisfies the strict overlap formula (both inequalities hold), so it is labelled contended. The rules never say whether a point is an interval; a half-open-interval reading of [t,t) as the empty set would label it uncontended. Labelled per the strict formula; not guessed beyond it."
+    },
+    {
+      "case": "zero-duration-committed-inside-candidate",
+      "issue": "Same point-vs-interval question on the committed side: a zero-duration committed booking strictly inside the candidate satisfies both strict inequalities and is labelled a contender. Under an empty-interval reading it would contend with nothing. Labelled per the strict formula."
+    },
+    {
+      "case": "seat-spelling-claude-code-vs-claude_code",
+      "issue": "No seat normalisation is specified (case, hyphen vs underscore, aliases). 'claude_code' is not the canonical 'claude-code', compares unequal, and is also not itself in the exclusive set, so the strict label is no contention. A human operator would likely intend the same resource. The rules determine the label only because exact string comparison is the sole stated reading; nothing in the rules validates seat spellings."
+    },
+    {
+      "case": "duplicate-id-different-producer-excluded",
+      "issue": "The id clause (O.id != C.id) treats id as identity, so a committed row reusing the candidate's id is excluded even when producer, seat and window all differ. The rules do not say whether duplicate ids are the same booking, a stale copy, or corrupt data. Labelled per the strict formula."
+    },
+    {
+      "case": "producer-case-variant-counts-as-different",
+      "issue": "Producer identity is an exact string comparison in the stated rules; no case-folding or whitespace trimming is specified. 'Lane-A' vs 'lane-a' therefore count as different producers (contention, not renewal). If the board treats producer names case-insensitively, the intended label flips. Labelled per the strict formula."
+    },
+    {
+      "case": "checkby-expires-mid-candidate-still-contends",
+      "issue": "Check-by expiry is tested only against the candidate's START (O.checkby < C.start). A booking whose check-by falls inside the candidate window still contends for the whole window; the rules express no partial contention and no re-check at check-by time. The formula's label is unique (contends), but whether that matches protocol intent for the post-checkby portion is undetermined by the stated rules."
+    },
+    {
+      "case": null,
+      "issue": "The candidate's own fields play no role in the stated formula: nothing requires the candidate to have status 'active', and the candidate's own checkby and rank are never consulted. This corpus assumes every candidate is a live proposal with status 'active'. If a candidate could itself be done/cancelled/preempted, the rules as stated do not determine a label."
+    },
+    {
+      "case": null,
+      "issue": "Negative-duration bookings (end < start) are not addressed. The overlap formula can be evaluated mechanically on them, but their meaning as board bookings is undefined, so no negative-duration case is included and no label is claimed for that territory."
+    },
+    {
+      "case": null,
+      "issue": "Temporal shape (b): the rules do not state whether a decided candidate joins the committed set for later candidates in the same event sequence. Both temporal cases here assume candidates are evaluated proposals only and only explicit {'commit': ...} events add committed bookings. Under auto-commit, a first candidate could contend with a second over the same window and the second labels would differ."
+    },
+    {
+      "case": null,
+      "issue": "Open seat vocabulary: any seat string outside the exclusive set and not 'box'/'detached' (e.g. 'observer', or a typo of an exclusive seat) is silently non-exclusive, including against itself. The rules give a label for every such string, but provide no validation that a seat name is canonical, so misspellings degrade to no-contention without any signal."
+    }
+  ]
+}
