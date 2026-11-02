@@ -19,12 +19,20 @@ adding ONE token form, ``{"any": [tokens]}``:
 
 What is deliberately NOT overridden: ``computed_effects`` and
 the stock ``jacquard.dictionary._walk_tokens`` it walks with.
-The stock walk descends into ``if``/``else`` only, so a Tier-E
-verb hidden inside ``{"any": [...]}`` is invisible to computed
-effects -- the C2 hazard, demonstrated in test_probe_a.py.
-``descending_walk_tokens`` below is the patched walk the test
-monkeypatches in to show the verb being caught once the walk
-descends into ``any`` too.
+
+SUPERSEDED in part, 2026-11-02 (Phase 6, slice 17): when this
+was written, the stock walk descended into ``if``/``else``
+only, so a Tier-E verb hidden inside ``{"any": [...]}`` was
+invisible to computed effects -- the C2 hazard, demonstrated
+in test_probe_a.py, with ``descending_walk_tokens`` below as
+the patched walk that caught the verb. Spec 0.4 closed the
+hazard by making the STOCK walk descend into every token
+position of every form (and by refusing unknown dict forms,
+by name, in the stock kernel). This dictionary therefore now
+inherits an accounting walk: a verb inside ``any`` computes
+into ``computed_effects`` here too, and the two walks agree.
+``descending_walk_tokens`` is kept as the historical artifact
+that demonstrated the fix in Phase 4.
 
 On top of ``any`` this module builds the booking clearance the
 sense computes, but over a LIST-valued unit ``bookings/<box>``

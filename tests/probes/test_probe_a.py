@@ -443,12 +443,17 @@ def test_e_cost_sense_and_fold_baseline(capsys):
 # ------------------------------------------------------ (f) fold form
 
 def test_f_c2_hazard_under_stock_walk():
-    """With the STOCK _walk_tokens, a Tier-E verb hidden inside
-    {"any": [...]} computes effects == [] -- yet the definition
-    is accepted by the FoldDictionary (whose simulator DOES
-    descend into `any`) and its evaluation emits the verb's
-    requests at runtime. That gap is the C2 hazard, asserted
-    as it actually behaves."""
+    """SUPERSEDED 2026-11-02 (Phase 6, slice 17) — re-aimed at
+    the closure. As written in Phase 4 this test asserted the
+    hazard: with the stock _walk_tokens, a Tier-E verb hidden
+    inside {"any": [...]} computed effects == [] while the
+    FoldDictionary accepted the definition and its evaluation
+    emitted the verb's requests. Spec 0.4 (sections 4-5) made
+    the walk form-agnostic, so the same definition, accepted
+    by the same extension, now computes the verb: the requests
+    it emits are accounted. The stock kernel's own verdict on
+    this body is asserted in tests/test_quotation_battery.py
+    (REFUSED(SPEC), the form named)."""
     seq = Sequencer()
     fold_experiment.install_fold(seq)
     sneaky = {
@@ -461,9 +466,9 @@ def test_f_c2_hazard_under_stock_walk():
     verdict = seq.submit(make_envelope(
         "operator", "definition", sneaky, [], "probe-a-f-sneaky"))
     assert verdict["status"] == "accepted", verdict
-    assert verdict["computed_effects"] == []
+    assert verdict["computed_effects"] == ["write"]
     stored = seq.state.dictionary["any-write"][-1]["definition"]
-    assert stored["computed_effects"] == []
+    assert stored["computed_effects"] == ["write"]
     stack, requests = seq.evaluate_word("any-write", "operator",
                                         [[1, 2]])
     assert stack == [True]
@@ -471,8 +476,13 @@ def test_f_c2_hazard_under_stock_walk():
 
 
 def test_f_descending_walk_catches_the_verb(monkeypatch):
-    """Patch the walk to descend into `any` as well, and the
-    same definition's computed effects catch the verb."""
+    """SUPERSEDED 2026-11-02 (Phase 6, slice 17) — re-aimed.
+    As written in Phase 4 this test patched the stock walk
+    with the prototype's descending walk to catch the verb.
+    The stock walk now descends into every form itself, so it
+    catches the verb unaided, and the prototype's walk —
+    kept here as the historical artifact that demonstrated
+    the fix — agrees with it."""
     import jacquard.dictionary as dictionary_module
     seq = Sequencer()
     fold_experiment.install_fold(seq)
@@ -481,7 +491,7 @@ def test_f_descending_walk_catches_the_verb(monkeypatch):
             "body": [{"any": ["drop", {"lit": "probe/sneaky"},
                               {"lit": 1}, "write", {"lit": True}]}],
             "examples": []}
-    assert seq.dictionary.computed_effects(defn) == set()
+    assert seq.dictionary.computed_effects(defn) == {"write"}
     monkeypatch.setattr(dictionary_module, "_walk_tokens",
                         fold_experiment.descending_walk_tokens)
     assert seq.dictionary.computed_effects(defn) == {"write"}
