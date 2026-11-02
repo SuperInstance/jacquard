@@ -217,11 +217,17 @@ class Sequencer:
                     "detail": "machine body must be {\"text\": <text>}"}
         try:
             parsed = parse_machine(body["text"])
-            stored = check_machine(parsed, self._resolve_word)
+            return self.submit_machine_definition(parsed,
+                                                  envelope["producer"])
         except Refusal as refusal:
             return {"status": "REFUSED", "refusal": refusal.name,
                     "detail": refusal.detail}
-        stored = dict(stored)
+
+    def submit_machine_definition(self, parsed, producer="operator"):
+        """Check a parsed machine definition against the profile
+        and append it. Raises Refusal; the envelope path converts
+        refusals to verdicts."""
+        stored = dict(check_machine(parsed, self._resolve_word))
         effects = set()
         for transition in stored["transitions"]:
             if transition["action"]:
@@ -229,7 +235,7 @@ class Sequencer:
                 effects |= set(versions[-1]["definition"]["computed_effects"])
         stored["action_effects"] = sorted(effects)
         entry = self.log.append("machine", {
-            "producer": envelope["producer"], "machine": stored})
+            "producer": producer, "machine": stored})
         self._refold()
         return {"status": "accepted", "entry": entry["hash"],
                 "machine": stored["name"]}

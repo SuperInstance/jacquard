@@ -10,6 +10,7 @@ from .envelope import envelope_hash, make_envelope, validate_envelope
 from .lifecycles import LIFECYCLES, install_lifecycles
 from .log import Log
 from .machines import check_machine, find_transition, parse_machine
+from .bundle import BUNDLE_FORMAT, export_bundle, import_bundle
 from .learner import Learner
 from .providers import (DecisionModelProvider, FakeProvider,
                         NullProvider, RecordingProvider, publish_judgement)
@@ -26,6 +27,7 @@ __all__ = [
     "Log", "check_machine", "find_transition", "parse_machine",
     "DecisionModelProvider", "FakeProvider", "NullProvider",
     "RecordingProvider", "publish_judgement", "Learner",
+    "BUNDLE_FORMAT", "export_bundle", "import_bundle",
     "output_use_ratio", "outputs_and_uses", "records",
     "Scheduler", "SENSES", "compute_sense", "publish_senses",
     "Sequencer", "Refusal", "State", "fold", "rule_stage",

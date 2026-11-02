@@ -489,3 +489,41 @@ Scoring in every stage counts, per matching primary decision,
 agreement between the prediction and the actual outcome — where
 "actual" for a rule-made decision is the recorded policy
 outcome, never the rule's own decision.
+
+## 14. State export bundles
+
+A state export bundle moves portable state between kernels.
+Its format id is `jacquard/state-export/1`; its top-level keys
+are exactly `format`, `exported_from`, `config`, `definitions`,
+`machines`, `rules`.
+
+- `config` (keys: exactly `units`) travels as-is: the
+  destination applies the unit values as one execution entry of
+  writes, under an `import` entry recording the bundle hash and
+  the export provenance.
+- `definitions` (keys per item: exactly `name`, `signature`,
+  `body`, `examples`) re-enter through the destination's
+  dictionary: examples re-run, computed effects are recomputed
+  — a bundle that carries claimed computed effects is refused.
+- `machines` (parsed form, section 10) re-enter through the
+  destination's profile checker.
+- `rules` (keys per item: exactly `rule_id`, `definition`,
+  `shape`, `predicted_outcome`, `support`, `dominance_bp`,
+  `origin`, `stage_at_export`) travel UNPROVEN: `stage_at_export`
+  is provenance, recorded on the imported rule as
+  `imported_from_stage`, and has no effect on the imported
+  stage. Every imported rule re-enters at shadow and must
+  re-earn promotion on the destination's own record.
+
+What never travels: authority, credentials, standing, budgets.
+The destination issues its own budgets. The importer refuses,
+with PROVENANCE: a bundle of the wrong format; unknown keys at
+the top level or in any item; any key named like a credential,
+secret, token, authority, budget, standing, or stage (other
+than the provenance field `stage_at_export`) anywhere in the
+bundle's structural sections (config, machines, rules,
+exported_from — definition bodies are code and are governed by
+the dictionary, not by this scan); and any definition, machine
+or rule whose name already exists in the destination with
+different content. Identical content is skipped, so importing
+the same bundle twice is safe.

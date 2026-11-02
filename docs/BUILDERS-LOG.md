@@ -411,3 +411,38 @@ different shapes. Both are stated in spec section 12's terms
 Quarantine exists in the machine but nothing drives a rule
 into it yet — it is the operator's lever, wired when the
 operator surface lands (Phase 3, slice 10).
+
+## 2026-11-02 — Slice 7: state export bundles (Phase 2 complete)
+
+**Delivered.** `bundle.py`: export assembles configuration
+(committed units), definitions (raw form — name, signature,
+body, examples), machine definitions (parsed form), and
+standing rules with `stage_at_export` as provenance. Import
+validates the format id and key structure, scans the structural
+sections for anything that must not travel, and re-enters
+everything through the destination's own gates — dictionary
+(examples re-run, effects recomputed), profile checker, and
+the standing-rule machine at shadow, always shadow, with the
+export stage recorded as `imported_from_stage` and nothing
+more. Budgets, standing, credentials and authority are absent
+by construction, and present-by-tampering is refused
+PROVENANCE, as are content collisions; identical re-imports
+skip cleanly. Tests: 9 new (119 total) — the two-kernel
+round-trip, an imported active-in-A rule verifiably NOT
+deciding in B until it re-earns activation on B's own record,
+and the three named smuggling attempts (credential section,
+budget in config, `stage: active` on a rule) each refused by
+name with the destination untouched.
+
+**Phase 2 verdict.** Slices 4–7 and spec 0.2 are in: the
+kernel's lifecycles are data (checked machine definitions), its
+scarce resources are fairly scheduled and accounted from the
+log, its readings are named senses with methods, decision
+models testify as advisors behind a provider seam and never
+gate, learned rules climb a tested pipeline and fall down it
+automatically, and state moves between kernels without moving
+trust. Suite: 46 -> 119 tests, all green from cold clones at
+every slice. What Phase 2 deliberately did NOT do: no executor
+(real effects still stop at the log's applied lists), no
+operator surface beyond the Python API, no second-language
+implementation yet — Phase 3's slices 8–11, in order.
