@@ -1139,3 +1139,15 @@ the CLI's hash-binding rules.
   `python3 tools/jqserve.py --log <kernel.jsonl>` (default
   127.0.0.1:8730). Nothing here depends on the interim
   rank-tie disposition.
+
+- **Slice 13 coordinator verification (cross-machine).** The
+  builder's same-host evidence was re-checked from a second
+  machine (the coordinator's VM) over an SSH tunnel to the
+  Oracle's loopback 8730: seed and status answered; the queue
+  was read remotely; one item was APPROVED remotely with its
+  binding hash (the decide executed downstream — the replay
+  shows the execution and the close); and the service's queue
+  and replay texts were diffed against the CLI's on the same
+  log — byte-identical both times. Slice 13 acceptance met:
+  the slice-10 drill verbs run end-to-end through the service
+  from another machine, and CLI and service agree exactly.
