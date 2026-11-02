@@ -38,6 +38,13 @@ guard reads CURRENT committed state at re-evaluation time. It
 is state-based, not edge-based: if X lands and is then retracted
 by a compensating write before the pump runs, the waiter does
 NOT start.
+
+NOTE (spec 0.3): this harness is the SUPERSEDED prototype.
+Production internalised the pump into Sequencer exits in
+the Phase 4 implementation slice; the production wait
+surface is specified in spec section 7.1 and tested in
+tests/test_wait.py. This module is kept as the experiment
+record.
 """
 import copy
 

@@ -14,6 +14,22 @@ log alone -- while S6 demonstrates, by mechanical log scans,
 that the rung-1 encoding (external watcher submits when the
 condition fires) can answer neither "what are we waiting for?"
 nor "why did this start?".
+
+SUPERSESSION NOTE (spec 0.3, coordinator ruling, 2026-11-02):
+this probe modelled the pump as a manual harness function
+(wait_flow.pump) called explicitly after submissions.
+Production internalised the pump into Sequencer exits in
+the Phase 4 implementation slice (built on baseline
+adb245e), exactly as the findings pinned -- so when a
+scenario lands X via seq.submit, the waiter is already
+released and executed before this probe's own pump(seq)
+runs. The seven tests that assert the PROTOTYPE driver's
+action lists are therefore pre-empted by production
+legitimately; they are marked skip below (declared,
+reasoned, visible -- not deleted) as the experiment
+record. Every scenario's outcome assertions are preserved
+and strengthened in tests/test_wait.py (23 tests) against
+the production surface.
 """
 import json
 import os
@@ -98,6 +114,7 @@ def run_s1():
 
 # ---------------------------------------------------------- S1
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s1_x_lands_releases_waiter():
     seq = kernel()
     env = waiter()
@@ -134,6 +151,7 @@ def test_s1_x_lands_releases_waiter():
 
 # ---------------------------------------------------------- S2
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s2_x_never_lands_expires_by_deadline():
     seq = kernel()
     env = waiter()
@@ -162,6 +180,7 @@ def test_s2_x_never_lands_expires_by_deadline():
 
 # ---------------------------------------------------------- S3a
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s3a_x_lands_twice_releases_exactly_once():
     seq, pid, _landing, actions = run_s1()
     assert actions == [("released", pid)]
@@ -177,6 +196,7 @@ def test_s3a_x_lands_twice_releases_exactly_once():
 
 # ---------------------------------------------------------- S3b
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s3b_lands_then_retracted_before_pump_does_not_start():
     """The semantics are STATE-BASED, not edge-based.
 
@@ -212,6 +232,7 @@ def test_s3b_lands_then_retracted_before_pump_does_not_start():
 
 # ---------------------------------------------------------- S4
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s4_two_waiters_on_same_x_release_in_queue_order():
     seq = kernel()
     env_a = waiter(producer="agent-a", unit="job/w1",
@@ -316,6 +337,7 @@ def test_s6_rung1_watcher_leaves_no_audit_trail():
 
 # ---------------------------------------------------------- S7
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_s7_rung2_audit_reconstructed_from_log_alone():
     """The rung-2 contrast to S6: from the log alone, why the
     waiter started is a chain of three mechanical facts."""
@@ -417,6 +439,7 @@ def test_guard_with_wrong_signature_is_refused_before_any_append():
     assert len(seq.log.entries) == before
 
 
+@pytest.mark.skip(reason="superseded by tests/test_wait.py: production internalised the pump into Sequencer exits, pre-empting the prototype driver's action list (coordinator ruling, spec 0.3)")
 def test_parameterised_guard_for_another_unit():
     """One word per artefact: the same construction defines
     y-landed for "artifact/y", and a waiter on it is not

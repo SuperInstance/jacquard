@@ -845,3 +845,34 @@ close-out wait on the Probe B ruling below):
   probe-queued waiters by their approval instance (production
   waiters have none) — a spec-indefensible special case,
   recommended against. Recommendation: (a).
+
+## Phase 4 -- implementation slice: Probe B ruling (2026-11-02)
+
+**Ruling (coordinator).** Option (a), as the stopped builder
+recommended. Probe B's harness modelled the pump as a manual
+harness function (`wait_flow.pump`) called explicitly after
+submissions; production internalised the pump into Sequencer
+exits, exactly as the findings pinned (the pump runs before
+any public sequencer method that appended entries returns).
+The 7 failing tests assert the PROTOTYPE driver's action
+lists, which production legitimately pre-empts: when a probe
+scenario lands X via `seq.submit`, the waiter is already
+released and executed before the probe's own `pump(seq)` runs,
+so its asserted action list reads empty. Every scenario's
+outcome assertions (execution, queue state, audit chain) are
+preserved and strengthened in tests/test_wait.py (23 tests)
+against the production surface.
+
+**Disposition (executed verbatim-scoped).** In
+tests/probes/test_probe_b.py: a module-docstring note records
+the supersession, and exactly the 7 failing action-list tests
+carry `pytest.mark.skip` with a reason string naming the
+supersession. No assertion was changed, no currently-passing
+test was skipped, wait_flow.py's code is untouched (one
+docstring note marks it the superseded prototype), and Probe
+A/C files are untouched. This mirrors the repo's declared-SKIP
+convention from TypeScript conformance: declared, reasoned,
+visible. Result: test_probe_b.py reports 6 passed, 7 skipped;
+the full suite's only failures are gone without weakening any
+check -- the probe remains in the tree as the experiment
+record, skips and all.
