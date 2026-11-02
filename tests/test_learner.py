@@ -41,7 +41,8 @@ def test_mining_finds_the_repeated_shape():
     candidate = candidates[0]
     assert candidate["shape"] == {"producer": "gpu-daemon",
                                   "class": "gpu-queue",
-                                  "effects": ["dispatch"]}
+                                  "effects": ["dispatch"],
+                                  "signature": []}
     assert candidate["predicted_outcome"] == "allow"
     assert candidate["support"] >= 3
     assert candidate["dominance_bp"] == 10000
