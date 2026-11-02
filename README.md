@@ -37,7 +37,7 @@ Phase 3 (continued): a sandboxed executor adapter has landed (`adapters/executor
 
 Phase 4 (complete): the completeness probes closed the shadow trial's three expressiveness findings (docs/completeness-probes-2026-11-02.md) with no new primitives and no new fold section. Interval contention is a kernel sense consumed by machine guards (spec section 11.3); conditional starts are a `wait` field on the proposal body, re-evaluated by a sequencer pump under pinned ordering rules (spec section 7.1); authority priority is rank as data, an authority sense that recognises only operator grants, and preemption as ordinary operator proposals, in a booking application profile shipped as definitions (spec section 11.4). The operator CLI annotates waiting items and authority ties in the queue listing.
 
-Phase 5 (in progress): beachhead 1 — the supervision layer for coding-agent fleets. Slices 12, 13 and 14 have landed: a live adapter to a real coding agent (ZCode — `adapters/zcode_hook.py`, `adapters/zcode/`; live-run record in `docs/slice12-live-run.md`), the network service (`src/jacquard/service.py`, run via `tools/jqserve.py`) — see the service section below — and batched queue notifications (`tools/jqnotify.py`) — see the notifications section below. Slice 15 (the measured proof run) is the rest of the phase.
+Phase 5 (complete): beachhead 1 — the supervision layer for coding-agent fleets. All four slices landed: a live adapter to a real coding agent (ZCode — `adapters/zcode_hook.py`, `adapters/zcode/`; live-run record in `docs/slice12-live-run.md`), the network service (`src/jacquard/service.py`, run via `tools/jqserve.py`) — see the service section below — batched queue notifications (`tools/jqnotify.py`) — see the notifications section below — and the measured proof run (`docs/proof-run-2026-11-02.md`, raw inputs in `docs/proof-run/`): against the host's native permission flow, operator attention per 100 governed actions fell from ≈70 minutes (8 single-action interruptions) to ≈11 (3 batched passes), every decision landed in the replayable log, and the workload's one dangerous action was denied in batch review after the incumbent flow had waved it through. One named deficit carries forward: approvals do not yet compile into standing rules for queued shapes, because the learner trains on policy outcomes rather than operator decisions.
 
 Not built yet: packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
 
@@ -208,3 +208,21 @@ python3 tools/jqnotify.py --log kernel.jsonl [--max-age-s N] [--max-count N] [--
   to the fleet's agent-inbox repo under `verdicts/`, numbered
   sequentially in that folder's verdict format. Without
   `--deliver`, nothing leaves the machine.
+
+## The ZCode adapter (Phase 5, slice 12 — built)
+
+`adapters/zcode_hook.py` connects ZCode (a real coding-agent
+host) to the kernel. Every tool call is translated into a
+proposal in the coding-agent profile
+(`src/jacquard/coding_agent.py`: four tool-class words whose
+effects are computed, policy as data) and decided before it
+runs: reads fast-path; writes, shell commands and network
+actions queue for a batched, hash-bound operator decision; an
+approval authorises exactly one retry of the identical action,
+and the consumption is a log entry. Install, the queue story,
+the host findings (plugin hooks run on this ZCode build;
+configuration-file hooks do not), and the redaction posture
+are in `adapters/zcode/README.md`; the live-run record is
+`docs/slice12-live-run.md` and the measured comparison with
+the host's native permission flow is
+`docs/proof-run-2026-11-02.md`.

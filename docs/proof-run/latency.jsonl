@@ -1,0 +1,24 @@
+{"ts": "2026-11-02T22:43:08.388597+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 4.04, "proposal_id": "982261b312f9744005cd4a28786a6eaa3d291769204a192cd70760e0c77465ae", "outcome": "allow"}
+{"ts": "2026-11-02T22:43:08.488572+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.118, "outcome": "pass"}
+{"ts": "2026-11-02T22:43:30.621574+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 2.008, "proposal_id": "a6348f03161ba05062f7abc5ebf5a30e9f2b15e3188c79f520de0e083ef35dd2", "outcome": "queue"}
+{"ts": "2026-11-02T22:43:50.921831+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 2.182, "proposal_id": "ba8f70769a2c9aeb9187240f251fcea6f950edc5cacfac84aed615e645094329", "outcome": "queue"}
+{"ts": "2026-11-02T22:43:51.002986+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 2.37, "proposal_id": "19638d7a8656bdf3aed8f94460521075d7d0f7c3da92195e720abb009d7ff732", "outcome": "queue"}
+{"ts": "2026-11-02T22:43:51.088492+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 2.61, "proposal_id": "490b91d8f9f4884760eec763476a50bb957b279ecb10af65007080cd2f9ed58b", "outcome": "queue"}
+{"ts": "2026-11-02T22:43:51.170215+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 2.843, "proposal_id": "0eea34b6ffefca3620aac45cd74826998f3e06c8848c6abcc749368807fe7560", "outcome": "queue"}
+{"ts": "2026-11-02T22:43:51.252598+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 3.058, "proposal_id": "8a68bf6952b25538d9cfa0b1c0d888a07589ba2b352a4aeaddb0c18ba4325315", "outcome": "queue"}
+{"ts": "2026-11-02T22:44:48.761029+00:00", "tool": "Bash", "verdict": "allow", "decision_ms": 3.616, "proposal_id": "a6348f03161ba05062f7abc5ebf5a30e9f2b15e3188c79f520de0e083ef35dd2", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:49.113723+00:00", "tool": "Bash", "verdict": "pass", "decision_ms": 3.51, "outcome": "reported"}
+{"ts": "2026-11-02T22:44:56.340451+00:00", "tool": "Write", "verdict": "allow", "decision_ms": 4.173, "proposal_id": "ba8f70769a2c9aeb9187240f251fcea6f950edc5cacfac84aed615e645094329", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:56.422803+00:00", "tool": "Write", "verdict": "pass", "decision_ms": 0.078, "outcome": "pass"}
+{"ts": "2026-11-02T22:44:56.510931+00:00", "tool": "Write", "verdict": "allow", "decision_ms": 3.692, "proposal_id": "19638d7a8656bdf3aed8f94460521075d7d0f7c3da92195e720abb009d7ff732", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:56.589336+00:00", "tool": "Write", "verdict": "pass", "decision_ms": 0.081, "outcome": "pass"}
+{"ts": "2026-11-02T22:44:56.687126+00:00", "tool": "Write", "verdict": "allow", "decision_ms": 3.773, "proposal_id": "490b91d8f9f4884760eec763476a50bb957b279ecb10af65007080cd2f9ed58b", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:56.770645+00:00", "tool": "Write", "verdict": "pass", "decision_ms": 0.082, "outcome": "pass"}
+{"ts": "2026-11-02T22:44:56.855722+00:00", "tool": "Write", "verdict": "allow", "decision_ms": 3.797, "proposal_id": "0eea34b6ffefca3620aac45cd74826998f3e06c8848c6abcc749368807fe7560", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:56.933345+00:00", "tool": "Write", "verdict": "pass", "decision_ms": 0.08, "outcome": "pass"}
+{"ts": "2026-11-02T22:44:57.025764+00:00", "tool": "Write", "verdict": "allow", "decision_ms": 3.791, "proposal_id": "8a68bf6952b25538d9cfa0b1c0d888a07589ba2b352a4aeaddb0c18ba4325315", "outcome": "allow"}
+{"ts": "2026-11-02T22:44:57.106916+00:00", "tool": "Write", "verdict": "pass", "decision_ms": 0.078, "outcome": "pass"}
+{"ts": "2026-11-02T22:44:59.457267+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 4.645, "proposal_id": "68340190f03bbfb46248e0ca54316db33e81dac99080a6c256348001c42205fc", "outcome": "queue"}
+{"ts": "2026-11-02T22:45:26.011858+00:00", "tool": "Bash", "verdict": "allow", "decision_ms": 4.221, "proposal_id": "68340190f03bbfb46248e0ca54316db33e81dac99080a6c256348001c42205fc", "outcome": "allow"}
+{"ts": "2026-11-02T22:45:26.562384+00:00", "tool": "Bash", "verdict": "pass", "decision_ms": 4.094, "outcome": "reported"}
+{"ts": "2026-11-02T22:45:32.847187+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 6.439, "proposal_id": "fa4f64e62b8e0edc5b60cd4e444885463714bec0869300e1e8ea3b6d43b6ac0f", "outcome": "queue"}

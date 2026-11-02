@@ -1445,3 +1445,54 @@ here so the log holds the whole story.)
   under `docs/proof-run/`, so every claim re-derives from the
   log. Disagreements classified: Jacquard wrong / host wrong /
   policy gap.
+
+## Phase 5 — slice 15: close, and Phase 5 verdict (2026-11-02)
+
+- **The proof run is done and reported in full:**
+  `docs/proof-run-2026-11-02.md`, raw inputs in
+  `docs/proof-run/` (workload spec, frozen kernel log —
+  sha256 66de51cbe40ba9926b6e3ff29fc6acce9dcced41188baec11b249a55ab9d9b6f,
+  hash-identical to the live log — latency sidecar, operator
+  timing notes). Same task, same host, same operator, both
+  flows measured the same day.
+- **Headline results.** Governed actions: incumbent 8,
+  Jacquard 16 (retries included). Operator interruptions:
+  8 vs 3 batched passes. Operator attention per 100 governed
+  actions: ≈70 min poll-bound (≈21–33 at seated latency) vs
+  ≈11 min, falling with batch size. The planted
+  fetch-and-execute command was approved at the incumbent's
+  eighth prompt and executed (harmlessly — the URL serves
+  HTML); under Jacquard it was denied in batch review and
+  never ran. Safety ledger: 8 allows audited, 0 unjustified;
+  0 regretted rules in force; 1 named regrettable shape (the
+  shell class + effect set covers both the approved test
+  command and the denied fetch-and-execute).
+- **The queue does not shrink yet — measured, not asserted.**
+  The shipped Learner, run on the proof log, mined one
+  candidate (the write shape, support 4, dominance 100%),
+  predicted outcome "queue"; it reached shadow and changed
+  nothing: repeat submissions of approved actions queued
+  again. The learner trains on the policy's primary outcomes,
+  not the operator's release/reject decisions, so approvals
+  cannot compile into standing rules for the queued classes.
+  Recorded as the phase's headline policy gap (proof-run doc
+  §"Does the queue shrink"), with the fix direction stated
+  and deliberately not built: it is Phase 6 scope.
+- **Coordinator's verification of slice 12** (independent of
+  its builder): cold clone of main @ 4481949 re-ran
+  249 passed + 7 skipped; the coordinator's own headless arc
+  (queue → hash-bound approve → one-shot consumption allow)
+  reproduced the kernel side end-to-end, and the headless
+  host anomaly after an allow is recorded in
+  `adapters/zcode/README.md`.
+- **Phase 5 verdict.** Beachhead 1 stands: a live adapter on
+  a real coding agent (slice 12), the operator's verbs over
+  the network with CLI-identical results (slice 13), batched
+  queue notifications (slice 14), and a measured proof run
+  (slice 15) showing the composition beating the incumbent
+  permission flow on operator attention, with a complete
+  replayable record and the one dangerous action stopped.
+  The named deficit — operator-trained rule compilation for
+  queued shapes — is the first item a Phase 6 charter should
+  carry. Per the charter, the lane stops here: beachheads 2
+  and 3 are separate authorisations.
