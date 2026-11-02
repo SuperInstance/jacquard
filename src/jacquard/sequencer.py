@@ -41,6 +41,7 @@ class Sequencer:
         self.standing = standing if standing is not None else {}
         self.tentative = {}
         self._verdicts = {}
+        self._pumping = False
         self.rule_decider = None
         self.admission = Scheduler()
         self.state = fold(self.log.entries)
@@ -75,12 +76,14 @@ class Sequencer:
         entry = self.log.append("sense", {"producer": producer,
                                           "name": name, "value": value})
         self._refold()
+        self._pump_waits()
         return entry
 
     def checkpoint(self, name):
         entry = self.log.append("checkpoint", {
             "name": name, "state_hash": self.state.state_hash()})
         self._refold()
+        self._pump_waits()
         return entry
 
     # --------------------------------------- budgets and prices
@@ -90,6 +93,7 @@ class Sequencer:
         entry = self.log.append("budget", {
             "producer": producer, "delta": int(amount), "by": by})
         self._refold()
+        self._pump_waits()
         return {"entry": entry["hash"],
                 "balance": self.state.budgets.get(producer, 0)}
 
@@ -100,6 +104,7 @@ class Sequencer:
         entry = self.log.append("price", {
             "resource": resource, "price": int(price), "by": by})
         self._refold()
+        self._pump_waits()
         return {"entry": entry["hash"], "price": int(price)}
 
     def buy_weight(self, producer, cls, extra, resource="compute"):
@@ -124,6 +129,7 @@ class Sequencer:
             "extra": extra, "resource": resource})
         self.admission.purchase((producer, cls), extra)
         self._refold()
+        self._pump_waits()
         return {"cost": cost,
                 "balance": self.state.budgets.get(producer, 0),
                 "weight": self.admission.weight((producer, cls))}
@@ -178,6 +184,7 @@ class Sequencer:
         else:
             verdict = self._submit_proposal(envelope, env_hash)
         self._verdicts[env_hash] = copy.deepcopy(verdict)
+        self._pump_waits()
         return verdict
 
     def _submit_definition(self, envelope):
@@ -358,6 +365,60 @@ class Sequencer:
                     return ("FIELD", "write expects [unit, value]")
         return None
 
+    def _wait_precheck(self, wait, declared_effects, body,
+                       requests, env_hash):
+        """Validate a proposal's wait spec before anything is
+        appended. Returns a REFUSED verdict, or None when the
+        spec is well-formed, the guard is an existing pure
+        (map -> bool) word, and the envelope's declared effects
+        cover its requests (the underdeclared check the normal
+        path makes, made here too because a queued waiter never
+        reaches it at submission time; a refusal here appends
+        nothing, where the normal path's underdeclared refusal
+        appends a fault decision — the probe's stated
+        simplification, kept)."""
+        if not isinstance(wait, dict) \
+                or not isinstance(wait.get("guard"), str) \
+                or not isinstance(wait.get("deadline_seq"), int) \
+                or isinstance(wait.get("deadline_seq"), bool):
+            return {"status": "REFUSED", "refusal": "FIELD",
+                    "detail": "wait must be {\"guard\": <word name>, "
+                              "\"deadline_seq\": <int>}",
+                    "proposal_id": env_hash}
+        guard = wait["guard"]
+        resolved = self._resolve_word(guard)
+        if resolved is None:
+            return {"status": "REFUSED", "refusal": "SPEC",
+                    "detail": "wait guard is not a dictionary word: %s"
+                              % guard,
+                    "proposal_id": env_hash}
+        ins, outs, effects = resolved
+        if ins != ["map"] or outs != ["bool"]:
+            return {"status": "REFUSED", "refusal": "FIELD",
+                    "detail": "wait guard %s must have signature "
+                              "(map -> bool), has (%s -> %s)"
+                              % (guard, ins, outs),
+                    "proposal_id": env_hash}
+        if effects:
+            return {"status": "REFUSED", "refusal": "SPEC",
+                    "detail": "wait guard %s must be pure, its "
+                              "computed effects are %s"
+                              % (guard, sorted(effects)),
+                    "proposal_id": env_hash}
+        actual = set()
+        for request in requests:
+            actual.add(request["verb"])
+        if body.get("irreversible"):
+            actual.add("irreversible")
+        if not actual <= set(declared_effects):
+            return {"status": "REFUSED", "refusal": "UNDERDECLARED",
+                    "detail": "declared effects %s do not cover "
+                              "actual effects %s"
+                              % (sorted(declared_effects),
+                                 sorted(actual)),
+                    "proposal_id": env_hash}
+        return None
+
     def _submit_proposal(self, envelope, env_hash):
         producer = envelope["producer"]
         body = envelope["body"]
@@ -367,6 +428,67 @@ class Sequencer:
         if problem is not None:
             return {"status": "REFUSED", "refusal": problem[0],
                     "detail": problem[1]}
+        # Wait support (spec 0.3, section 7): a proposal may carry
+        # wait {"guard", "deadline_seq"}. The guard is validated
+        # and evaluated BEFORE anything is appended — a refusal
+        # here appends nothing. A false guard queues the proposal
+        # with the wait spec on its decision entry (no approval
+        # instance: waiters are not approval items); a true guard
+        # falls through to the normal path with the satisfaction
+        # recorded among the decision's reasons.
+        wait = body.get("wait")
+        wait_satisfied = None
+        if wait is not None:
+            early = self._wait_precheck(
+                wait, envelope["declared_effects"], body, requests,
+                env_hash)
+            if early is not None:
+                return early
+            guard = wait["guard"]
+            try:
+                stack, emitted = self.evaluate_word(
+                    guard, producer, [{"proposal_id": env_hash}])
+            except Refusal as refusal:
+                return {"status": "REFUSED", "refusal": refusal.name,
+                        "detail": refusal.detail,
+                        "proposal_id": env_hash}
+            if emitted:
+                return {"status": "REFUSED", "refusal": "SPEC",
+                        "detail": "wait guard %s emitted requests %r"
+                                  % (guard, emitted),
+                        "proposal_id": env_hash}
+            if stack == [True]:
+                wait_satisfied = guard
+            elif stack == [False]:
+                effects = set()
+                for request in requests:
+                    effects.add(request["verb"])
+                if body.get("irreversible"):
+                    effects.add("irreversible")
+                self.log.append("decision", {
+                    "producer": producer, "class": cls,
+                    "proposal_id": env_hash,
+                    "policy_version": POLICY_VERSION,
+                    "outcome": "queued",
+                    "reasons": ["waiting:%s" % guard],
+                    "effects": sorted(effects),
+                    "requests": requests,
+                    "irreversible": bool(body.get("irreversible")),
+                    "uses": body.get("uses", []),
+                    "wait": copy.deepcopy(wait)})
+                self._refold()
+                self._lifecycle("proposal", env_hash, "submit",
+                                producer)
+                self._lifecycle("proposal", env_hash, "hold", producer)
+                self._refold()
+                return {"status": "decided", "outcome": "queue",
+                        "proposal_id": env_hash,
+                        "reasons": ["waiting:%s" % guard]}
+            else:
+                return {"status": "REFUSED", "refusal": "FIELD",
+                        "detail": "wait guard %s must leave exactly "
+                                  "one bool, got %r" % (guard, stack),
+                        "proposal_id": env_hash}
         self._lifecycle("proposal", env_hash, "submit", producer)
         effects = set()
         for request in requests:
@@ -409,6 +531,9 @@ class Sequencer:
             if ruled is not None:
                 decided_by, outcome = ruled
                 reasons = ["standing-rule:%s" % decided_by]
+        if wait_satisfied is not None:
+            reasons = ["wait-satisfied:%s" % wait_satisfied] \
+                + list(reasons)
         decision = {"producer": producer, "class": cls,
                     "proposal_id": env_hash,
                     "policy_version": POLICY_VERSION,
@@ -487,7 +612,7 @@ class Sequencer:
             self.step_machine(instance, "present", {}, producer)
         self.step_machine(instance, event, {}, producer)
 
-    def release_queued(self, proposal_id, operator):
+    def release_queued(self, proposal_id, operator, reason=None):
         queued = self.state.decision_queue.get(proposal_id)
         if queued is None:
             return {"status": "REFUSED", "refusal": "FIELD",
@@ -497,7 +622,9 @@ class Sequencer:
         self.log.append("decision", {
             "producer": producer, "class": cls, "proposal_id": proposal_id,
             "policy_version": POLICY_VERSION, "outcome": "allow",
-            "reasons": ["released-by-operator"], "releases": proposal_id,
+            "reasons": [reason] if reason is not None
+                       else ["released-by-operator"],
+            "releases": proposal_id,
             "released_by": operator, "effects": queued.get("effects", [])})
         self._approval_step(proposal_id, "approve", operator)
         self._lifecycle("proposal", proposal_id, "decide", producer)
@@ -507,10 +634,11 @@ class Sequencer:
         self._lifecycle("proposal", proposal_id, "commit", producer)
         self._lifecycle("proposal", proposal_id, "close", producer)
         self._refold()
+        self._pump_waits()
         return {"status": "decided", "outcome": "allow",
                 "released": proposal_id}
 
-    def reject_queued(self, proposal_id, operator):
+    def reject_queued(self, proposal_id, operator, reason=None):
         queued = self.state.decision_queue.get(proposal_id)
         if queued is None:
             return {"status": "REFUSED", "refusal": "FIELD",
@@ -520,15 +648,18 @@ class Sequencer:
         self.log.append("decision", {
             "producer": producer, "class": cls, "proposal_id": proposal_id,
             "policy_version": POLICY_VERSION, "outcome": "deny",
-            "reasons": ["rejected-by-operator"], "rejects": proposal_id,
+            "reasons": [reason] if reason is not None
+                       else ["rejected-by-operator"],
+            "rejects": proposal_id,
             "rejected_by": operator, "effects": queued.get("effects", [])})
         self._approval_step(proposal_id, "deny", operator)
         self._lifecycle("proposal", proposal_id, "refuse", producer)
         self._refold()
+        self._pump_waits()
         return {"status": "decided", "outcome": "deny",
                 "rejected": proposal_id}
 
-    def expire_queued(self, proposal_id, operator):
+    def expire_queued(self, proposal_id, operator, reason=None):
         queued = self.state.decision_queue.get(proposal_id)
         if queued is None:
             return {"status": "REFUSED", "refusal": "FIELD",
@@ -538,10 +669,160 @@ class Sequencer:
         self.log.append("decision", {
             "producer": producer, "class": cls, "proposal_id": proposal_id,
             "policy_version": POLICY_VERSION, "outcome": "expired",
-            "reasons": ["expired-in-queue"], "expires": proposal_id,
+            "reasons": [reason] if reason is not None
+                       else ["expired-in-queue"],
+            "expires": proposal_id,
             "expired_by": operator, "effects": queued.get("effects", [])})
         self._approval_step(proposal_id, "expire", operator)
         self._lifecycle("proposal", proposal_id, "refuse", producer)
         self._refold()
+        self._pump_waits()
         return {"status": "decided", "outcome": "expired",
                 "expired": proposal_id}
+
+    # -------------------------------------------------- wait pump
+    def _pump_waits(self):
+        """Re-evaluate outstanding wait guards against current
+        committed state, to a fixpoint (max 64 passes). Runs
+        before any public method that appended entries returns;
+        its own appends never re-enter it (the _pumping flag).
+        Machine-step methods are exempt: every flow path that
+        steps a machine also submits proposals, which pump."""
+        if self._pumping:
+            return
+        self._pumping = True
+        try:
+            for _pass in range(64):
+                changed = False
+                snapshot = [(pid, dict(body)) for pid, body
+                            in self.state.decision_queue.items()
+                            if isinstance(body.get("wait"), dict)]
+                for pid, queued in snapshot:
+                    if pid not in self.state.decision_queue:
+                        continue  # acted on earlier in this pass
+                    if self._pump_one_waiter(
+                            pid, self.state.decision_queue[pid]):
+                        changed = True
+                if not changed:
+                    break
+        finally:
+            self._pumping = False
+
+    def _pump_one_waiter(self, proposal_id, queued):
+        """One waiter's re-evaluation. Returns True when the
+        pass changed something (a decision was appended)."""
+        wait = queued["wait"]
+        guard = wait["guard"]
+        producer = queued["producer"]
+        try:
+            stack, emitted = self.evaluate_word(
+                guard, producer, [{"proposal_id": proposal_id}])
+            if emitted:
+                raise Refusal("SPEC", "wait guard %s emitted "
+                              "requests %r" % (guard, emitted))
+            if stack not in ([True], [False]):
+                raise Refusal("FIELD", "wait guard %s must leave "
+                              "exactly one bool, got %r"
+                              % (guard, stack))
+        except Refusal as refusal:
+            # A refusing guard is treated as not-true, and the
+            # refusal is recorded — once per state change: while
+            # this waiter's own refusal record is still the last
+            # entry in the log, nothing has changed since it was
+            # recorded, so it is not recorded again.
+            marker = queued.get("wait_refusal_at")
+            if marker is not None \
+                    and marker == len(self.log.entries) - 1:
+                return False
+            body = {"producer": producer,
+                    "class": queued.get("class", "work"),
+                    "proposal_id": proposal_id,
+                    "policy_version": POLICY_VERSION,
+                    "outcome": "queued",
+                    "reasons": ["wait-guard-refused:%s" % refusal.name],
+                    "effects": queued.get("effects", []),
+                    "requests": queued.get("requests", []),
+                    "irreversible": bool(queued.get("irreversible")),
+                    "uses": queued.get("uses", []),
+                    "wait": copy.deepcopy(wait),
+                    "wait_refusal_at": len(self.log.entries)}
+            self.log.append("decision", body)
+            self._refold()
+            return True
+        if stack == [True]:
+            # Guard-true is checked BEFORE the deadline: a
+            # condition that holds in current state releases even
+            # past its deadline.
+            self._decide_waiter_fresh(proposal_id, queued, guard)
+            return True
+        if len(self.log.entries) > wait["deadline_seq"]:
+            self.expire_queued(proposal_id, "wait-pump",
+                               reason="wait-expired:%s" % guard)
+            return True
+        return False
+
+    def _decide_waiter_fresh(self, proposal_id, queued, guard):
+        """A fired wait guard re-decides the proposal through
+        the ordinary policy gate — it never bypasses it. Mirrors
+        _submit_proposal's decision block; the wait is spent in
+        every outcome."""
+        producer = queued["producer"]
+        cls = queued.get("class", "work")
+        effects = set(queued.get("effects", []))
+        view = self._record_lookup(producer, cls)
+        outcome, reasons = decide(producer, "proposal", effects,
+                                  view, self.standing.get(producer))
+        decided_by = None
+        policy_outcome = outcome
+        if self.rule_decider is not None:
+            ruled = self.rule_decider(producer, cls, effects,
+                                      outcome, reasons)
+            if ruled is not None:
+                decided_by, outcome = ruled
+                reasons = ["standing-rule:%s" % decided_by]
+        reasons = ["wait-satisfied:%s" % guard] + list(reasons)
+        decision = {"producer": producer, "class": cls,
+                    "proposal_id": proposal_id,
+                    "policy_version": POLICY_VERSION,
+                    "outcome": {"allow": "allow", "deny": "deny",
+                                "queue": "queued"}[outcome],
+                    "reasons": reasons, "effects": sorted(effects)}
+        if decided_by is not None:
+            decision["decided_by"] = decided_by
+            decision["policy_outcome"] = {
+                "allow": "allow", "deny": "deny",
+                "queue": "queued"}[policy_outcome]
+        if outcome == "allow":
+            decision["releases"] = proposal_id
+            self.log.append("decision", decision)
+            self._approval_step(proposal_id, "approve", "wait-pump")
+            self._lifecycle("proposal", proposal_id, "decide",
+                            producer)
+            body = {"requests": queued.get("requests", []),
+                    "uses": queued.get("uses", [])}
+            self._execute(producer, cls, proposal_id, body)
+            self._lifecycle("proposal", proposal_id, "commit",
+                            producer)
+            self._lifecycle("proposal", proposal_id, "close",
+                            producer)
+        elif outcome == "deny":
+            decision["releases"] = proposal_id
+            self.log.append("decision", decision)
+            self._approval_step(proposal_id, "deny", "wait-pump")
+            self._lifecycle("proposal", proposal_id, "refuse",
+                            producer)
+        elif outcome == "queue":
+            decision["requests"] = queued.get("requests", [])
+            decision["irreversible"] = bool(
+                queued.get("irreversible"))
+            decision["uses"] = queued.get("uses", [])
+            self.log.append("decision", decision)
+            self._refold()
+            self._lifecycle("proposal", proposal_id, "hold",
+                            producer)
+            if self._machine_definition("approval") is not None \
+                    and "approval:" + proposal_id not in \
+                    self.state.machine_instances:
+                self.create_machine_instance(
+                    "approval", "approval:" + proposal_id, producer)
+        self._refold()
