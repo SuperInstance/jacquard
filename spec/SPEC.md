@@ -185,6 +185,24 @@ the class markers `reads` and `irreversible`.
   taken from the author. A definition that carries a
   `declared_effects` field not equal to the computed set is
   REFUSED(UNDERDECLARED).
+- The computation is complete over the definition's expansion
+  (criterion C2): a word's computed effects are the union of
+  the Tier-E verbs at every token position in its body —
+  including positions inside any nested token form — and,
+  recursively, in the bodies of every word it references.
+  There is no token position whose contents escape accounting:
+  the only value a body can hold without accounting is a
+  literal's value, and a literal's value is data — it is never
+  evaluated as a body, by this or any composition of words,
+  since the language has no form that evaluates data as code.
+  A form that quotes a body for later evaluation, if a future
+  version defines one, has its quoted body accounted at
+  definition time like any other token position: quotation
+  defers evaluation, never accounting. (Added in 0.4, closing
+  the hazard recorded in
+  docs/completeness-probes-2026-11-02.md: a Tier-E verb inside
+  an experimental `{"any": [...]}` quotation computed
+  effect-free under the pre-0.4 walk.)
 
 ## 5. Definitions and the dictionary
 
@@ -202,6 +220,16 @@ Body tokens:
 - `{"if": [token], "else": [token]}` evaluates the then-branch if
   the top of stack is true, else the else-branch (empty if absent).
   Both branches must leave the stack in the same shape.
+
+These are the only token forms. A dict token of any other form
+is REFUSED(SPEC) at definition time, with the form's key named
+in `detail` — an implementation must not accept a form it does
+not account, and must not fail one incidentally under another
+refusal name. The effects walk that computes a definition's
+effects (section 4) descends into every token position of
+every form — both branches of an `if`, and the body of any
+form a future version may add — except inside a `{"lit": ...}`
+value, which is data and contains no token positions.
 
 Syntax forms (evaluator-level; they manipulate only values on the
 evaluation stack, grant no access to state or effects, and are not
