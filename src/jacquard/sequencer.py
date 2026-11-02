@@ -142,6 +142,17 @@ class Sequencer:
             self._refold()
             return {"status": "REFUSED", "refusal": "UNDERDECLARED",
                     "detail": detail, "proposal_id": env_hash}
+        # Definitions inside a proposal are checked against the
+        # committed dictionary before anything is appended, so a
+        # proposal applies atomically or not at all.
+        for request in requests:
+            if request["verb"] == "define":
+                try:
+                    self.dictionary.define(request["args"][0])
+                except Refusal as refusal:
+                    return {"status": "REFUSED", "refusal": refusal.name,
+                            "detail": refusal.detail,
+                            "proposal_id": env_hash}
         view = self._record_lookup(producer, cls)
         outcome, reasons = decide(producer, envelope["kind"], effects,
                                   view, self.standing.get(producer))

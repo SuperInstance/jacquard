@@ -1,0 +1,199 @@
+{
+ "definitions": [
+  {
+   "definition": {
+    "body": [
+     "dup",
+     "add"
+    ],
+    "examples": [
+     {
+      "args": [
+       21
+      ],
+      "expect": [
+       42
+      ]
+     }
+    ],
+    "name": "double",
+    "signature": {
+     "ins": [
+      "int"
+     ],
+     "outs": [
+      "int"
+     ]
+    }
+   },
+   "stored": {
+    "body": [
+     "dup",
+     "add"
+    ],
+    "computed_effects": [],
+    "examples": [
+     {
+      "args": [
+       21
+      ],
+      "expect": [
+       42
+      ]
+     }
+    ],
+    "name": "double",
+    "refs": {},
+    "signature": {
+     "ins": [
+      "int"
+     ],
+     "outs": [
+      "int"
+     ]
+    }
+   }
+  },
+  {
+   "definition": {
+    "body": [
+     "dispatch"
+    ],
+    "examples": [
+     {
+      "args": [
+       {
+        "job": "job-1"
+       }
+      ],
+      "requests": [
+       "dispatch"
+      ]
+     }
+    ],
+    "name": "dispatch-job",
+    "signature": {
+     "ins": [
+      "map"
+     ],
+     "outs": []
+    }
+   },
+   "stored": {
+    "body": [
+     "dispatch"
+    ],
+    "computed_effects": [
+     "dispatch"
+    ],
+    "examples": [
+     {
+      "args": [
+       {
+        "job": "job-1"
+       }
+      ],
+      "requests": [
+       "dispatch"
+      ]
+     }
+    ],
+    "name": "dispatch-job",
+    "refs": {},
+    "signature": {
+     "ins": [
+      "map"
+     ],
+     "outs": []
+    }
+   }
+  }
+ ],
+ "entries": [
+  {
+   "body": {
+    "name": "gpu-foreign",
+    "producer": "operator",
+    "value": false
+   },
+   "hash": "d07d586b31ffa61e3c1438670b9d1d9647c7abfe8f57277cc7e0c9dfcc69fda4",
+   "kind": "sense",
+   "seq": 0
+  },
+  {
+   "body": {
+    "definition": {
+     "body": [
+      "dup",
+      "add"
+     ],
+     "computed_effects": [],
+     "examples": [
+      {
+       "args": [
+        21
+       ],
+       "expect": [
+        42
+       ]
+      }
+     ],
+     "name": "double",
+     "refs": {},
+     "signature": {
+      "ins": [
+       "int"
+      ],
+      "outs": [
+       "int"
+      ]
+     }
+    },
+    "producer": "operator"
+   },
+   "hash": "63b013bb941a4b9e16ddc48d5a6d4b013c20695aa9f750c4549a3666b4fa1b08",
+   "kind": "definition",
+   "seq": 1
+  },
+  {
+   "body": {
+    "name": "after-two",
+    "state_hash": "f3ea879384840882f00583160e0a3b157161a0ef86877681426eb84d50f7ff47"
+   },
+   "hash": "bd11c811eaf0ae64afb4c695a6d2e71ffb579a73957a3535c4d6b7745f1b36f1",
+   "kind": "checkpoint",
+   "seq": 2
+  }
+ ],
+ "envelope": {
+  "envelope": {
+   "body": {
+    "requests": [
+     {
+      "args": [
+       "answer",
+       42
+      ],
+      "verb": "write"
+     }
+    ]
+   },
+   "declared_effects": [
+    "write"
+   ],
+   "id": "vectors-1",
+   "kind": "proposal",
+   "producer": "operator",
+   "spec_seal": "1d65663a1bc971ca5d293a2563e0f18af2f0cf4c41d37428b756fa38d5a76b0a",
+   "v": 1
+  },
+  "id": "fcd6b7549f2861057a7d8802c12372f29a6367438d78386eeb8572ea412326f2"
+ },
+ "spec_seal": "1d65663a1bc971ca5d293a2563e0f18af2f0cf4c41d37428b756fa38d5a76b0a",
+ "state": {
+  "state_hash": "1e9735e6c6469354382238066b1bdf174160d6df97d0b84519fb656b326ef167",
+  "units": {
+   "answer": 42
+  }
+ }
+}
