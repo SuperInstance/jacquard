@@ -505,3 +505,40 @@ sections encode dictionary evaluation and sequencer execution;
 the fold-scope checker reports them SKIP rather than faking
 coverage. They remain pinned for a full second implementation
 (the Rust port is the expected candidate, Casey's call).
+
+## 2026-11-02 — Slice 9: executor + live shadow trial
+
+**Executor (delivered first).** `adapters/executor.py` — a
+deployment adapter outside the kernel, like the provider
+adapters: consumes action instances standing at `dispatched`,
+runs payload commands ({"cmd": [...], "compensate": [...]
+optional}) under bubblewrap (read-only root, private /tmp, no
+network) or a scrubbed subprocess fallback, journals every run
+BEFORE reporting the outcome through the action machine, and
+treats the action id as the idempotency key (a duplicate
+delivery re-reports the recorded outcome, never re-runs).
+Battery tests: confirm, fail->compensate, duplicate delivery
+with the side effect happening exactly once, bad payload ->
+failed without running; the bwrap isolation test runs where
+bubblewrap exists (the Oracle; it skips on machines without
+it). One kernel change rides along: action indices now count
+a proposal's dispatch requests only (spec 10.4 says
+"action-<index>"; the index is now unambiguous), so an executor
+can resolve action-<n> to the n-th dispatch in the execution
+entry. Spec section 10.5 (below) states the executor contract.
+
+**Shadow trial — window and count, stated BEFORE running.**
+Stream: the agent-inbox booking board (schedule/*.md in
+~/agent-inbox on the Oracle), full git history 2026-10-27 to
+2026-11-02, 63 commits touching schedule/. Every row's first
+appearance is one proposal item; the incumbent outcome for
+every item is "accepted" (the board took them all — that is
+what makes disagreements interesting rather than the reverse).
+Shadow rule: policy/1 via a real shadow Sequencer, plus a
+harness-computed contention flag (exclusive-seat overlap with
+an active booking) that would queue the item. The flag is
+harness-side for a stated reason: interval overlap over a list
+of booking maps is not expressible in the dictionary with the
+current 26 primitives (no iteration over lists) — a genuine
+primitive-gap finding this trial exists to surface, recorded
+here rather than engineered around.
