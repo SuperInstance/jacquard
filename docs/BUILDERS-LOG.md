@@ -199,3 +199,113 @@ Final suite: 46 tests, all passing, no skips. The suite was
 also run green from a cold clone of the public repository on a
 second machine (different Python version), and the committed
 golden-vector hashes were re-verified by hand from the clone.
+
+## 2026-11-02 — Phase 2 build begins
+
+**Authorisation.** Casey, 2026-11-02 10:57 AKST: "continue work
+full pace." Brief: BUILD-BRIEF-PHASE2.md (slices 4–7 + spec 0.2).
+Built on the Oracle (board re-booked for lane `jacquard-build`,
+agent-inbox commit 001dcbd), in the verified clone, checking the
+remote after every push — the Phase 1 lesson about unverified
+agent reports is applied by construction this phase: all code
+below was written in the coordinator's own verified environment,
+and every slice verdict cites a cold-clone test run.
+
+**Additional resources (Casey, 2026-11-02), and how they are
+used.** (1) DeepInfra hosted models for iterative development
+(critique passes, fixture generation) — used for slice-draft
+critique where it helps, logged here when material. (2) Typesafe
+Jev decision models: Casey — "decision models might play a role,
+play with it." Constitutional constraint, recorded as binding:
+decision models are ADVISORS only. A Jev-class reading may be
+published as a sense and consumed by policy as data; no allow/deny
+path may depend on a model verdict — the record gates. They enter
+only behind a provider interface (section 13 of the spec): the
+kernel imports no provider-specific code; Typesafe is the first
+plugged-in provider and the experiment subject. (3) Cloudflare
+Workers AI capacity for build help and play-testing, as it
+accelerates.
+
+**Spec 0.2 bump (lands first, so later slices don't churn).**
+Version and seal move to jacquard/0.2; golden vectors regenerated;
+suite still 46 green. The EXAMPLE refusal name — used by the 0.1
+implementation but missing from 0.1's refusal list — is now listed
+(the Phase 1 erratum, folded in). The 0.2 folded state declares,
+up front, every section Phase 2 needs (machines,
+machine_instances, budgets, prices, rules) so slices 5–7 extend
+the fold's behaviour without changing the state hash again.
+Budget accounting folds from the log: `budget` entries grant,
+`price` entries post prices, applied `spend` effects in execution
+entries deduct amount × price-at-that-point-in-the-log (default
+price 1). Decision entries now also close queue items on
+`rejects` and `expires` (the approval lifecycle needs both; 0.1
+only had `releases`).
+
+**Machine profile decisions (slice 4).** The repo's own text
+format and checker, as the brief directs (the .NET StateSmith CLI
+is NOT integrated this phase: it would put a .NET toolchain in the
+definition path of a Python reference kernel whose spec must stay
+language-neutral, and the profile is deliberately smaller than
+StateSmith's — flat, total, dictionary-named actions only. The
+choice and this reason are recorded here per the brief.)
+Format: one directive per line — `machine`, `initial:`,
+`terminal:` (a list, or `none`), `events:`, transitions
+`from -> to : event [guard-word] [/ action-word]`, an optional
+`otherwise` fallback per (state, event), and `ignore event in
+s1, s2` / `ignore event in *` (every state with no transition for
+that event). Totality is checked against the DECLARED event
+alphabet: every (state, event) pair must transition or be
+explicitly ignored. DEAD means: a non-terminal state with no
+outgoing transitions, or (when terminals are declared) a state
+that cannot reach any terminal. AMBIGUOUS means: two guarded
+transitions on one (state, event), or more than one unguarded
+non-fallback transition, or a plain transition competing with an
+`otherwise` fallback — guards cannot be proven disjoint
+statically, so the profile allows at most one guarded transition
+plus one `otherwise` per (state, event). Guard words must have
+signature (map -> bool); action words take the event payload map
+and are evaluated for the requests they emit. Every step writes a
+`transition` entry; instance state is a fold of those entries.
+
+## 2026-11-02 — Slice 4: lifecycle machines + profile checker
+
+**Delivered.** `src/jacquard/machines.py` (parser + static
+checker + firing-order helper), `src/jacquard/lifecycles.py`
+(the seven lifecycle machines as profile-definition text),
+sequencer integration (machine envelopes; instance create/step
+with a transition entry per step; proposal, action and approval
+lifecycles driven through the machines; `reject_queued` /
+`expire_queued` closing queue items alongside `release_queued`;
+`transition_standing` driving the gate's standing view through
+the producer-standing machine). Spec section 10 documents the
+profile to reimplementation standard. Tests: 31 new (77 total)
+— behaviour specs per machine, one deliberately broken machine
+per named refusal (UNREACHABLE, DEAD, AMBIGUOUS, NON_TOTAL, plus
+SPEC/FIELD word and signature cases), guard/otherwise/action
+runtime, and kernel-path tests asserting the log shows the
+transition sequence, not just outcomes.
+
+**Design points worth keeping.** (1) Lifecycle stepping is
+active only for machines present in the kernel's registry, so a
+bare kernel is byte-for-byte the 0.1 kernel — the Phase 1
+acceptance suite is untouched by construction, and installing
+the lifecycles is the production posture. (2) Guards are
+dictionary words whose computed effects must be empty: purity is
+checked from computed effects at definition time, not trusted —
+a guard that would emit a write is refused SPEC. (3) A machine's
+action words are evaluated for the requests they emit, which are
+recorded on the transition entry; the machine never executes
+effects itself. (4) One real bug caught by the new tests during
+development: the checker was first wired to a wrong guess at the
+dictionary's internal resolve shape; the test run failed loudly
+and the wiring now matches the dictionary's actual contract.
+(5) pyproject gained `pythonpath = ["src"]` for pytest: running
+a single test file previously failed collection unless another
+test module happened to fix the path first — a latent trap for
+CI, fixed at the root.
+
+**Not done in this slice (by design).** The commit-batch and
+worker machines are defined, checked and behaviour-tested as
+machines, but no kernel path drives them yet — batching belongs
+to the executor work and workers to the operator surface
+(Phase 3). The standing-rule machine is driven by slice 6.

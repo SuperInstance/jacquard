@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.1
+# Jacquard specification — version 0.2
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -23,12 +23,13 @@ The log is an append-only sequence of entries. State is a fold of
 the log; the log is never rewritten.
 
 Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
-"spec": "jacquard/0.1"}`. The entry hash is the hash of the entry.
+"spec": "jacquard/0.2"}`. The entry hash is the hash of the entry.
 `prev` is the previous entry hash; the genesis entry has
 `prev` = 64 zero characters. `seq` starts at 0 and increments by 1.
 
 Entry kinds: `proposal`, `decision`, `definition`, `execution`,
-`sense`, `checkpoint`. A checkpoint body is `{"name": str,
+`sense`, `checkpoint`, `machine`, `transition`, `budget`, `price`,
+`rule`, `import`. A checkpoint body is `{"name": str,
 "state_hash": hex64}` where state_hash is the hash of the folded
 state at that point.
 
@@ -40,6 +41,18 @@ Folded state:
   by proposal id, until an operator decision releases or rejects
   them.
 - `senses`: latest published reading per sense name.
+- `machines`: machine definitions, by name, as a list of versions
+  (section 10).
+- `machine_instances`: the current state of every machine instance,
+  moved only by `transition` entries (section 10).
+- `budgets`: per-producer account balance in the single accounting
+  unit, from `budget` grants minus the priced cost of applied
+  `spend` effects in `execution` entries (section 11).
+- `prices`: the posted price per resource, from `price` entries
+  (section 11).
+- `rules`: standing rules by id (section 12). A rule's stage is not
+  stored here; it is the state of the rule's standing-rule machine
+  instance.
 
 ## 3. Envelopes and verdicts
 
@@ -48,11 +61,12 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the string `jacquard-spec/0.1`. The envelope id used in the log
+of the string `jacquard-spec/0.2`. The envelope id used in the log
 is the hash of the envelope.
 
-Envelope kinds: `proposal` (body: `{"requests": [request]}`) and
-`definition` (body: a definition, section 5).
+Envelope kinds: `proposal` (body: `{"requests": [request]}`),
+`definition` (body: a definition, section 5), and `machine`
+(body: `{"text": <machine definition text>}`, section 10).
 
 A request is `{"verb": <Tier-E verb>, "args": [value...]}` plus an
 optional `"irreversible": true` flag on the request.
@@ -61,9 +75,10 @@ The sequencer answers every submission with a verdict:
 `{"status": "accepted" | "decided" | "REFUSED", ...}`. A refusal
 carries a `name` from the refusal vocabulary and a human-readable
 `detail`. Refusal names: FIELD, SEQ, PREV, HASH, SPEC,
-CONSERVATION, FRAGMENT, CLASS, PROVENANCE, UNDERDECLARED, and (for
-machine definitions, a later phase) UNREACHABLE, DEAD, AMBIGUOUS,
-NON_TOTAL. Every refusal is itself recorded in the log as a
+CONSERVATION, FRAGMENT, CLASS, PROVENANCE, UNDERDECLARED, EXAMPLE
+(a definition whose examples fail; added in 0.2 — in 0.1 the name
+was used but not listed), and (for machine definitions)
+UNREACHABLE, DEAD, AMBIGUOUS, NON_TOTAL. Every refusal is itself recorded in the log as a
 `decision` entry.
 
 ## 4. Effects
@@ -192,7 +207,10 @@ Allowed proposals are executed by the kernel executor and recorded
 as `execution` entries. Denied and queued outcomes are recorded as
 `decision` entries. An operator releases a queued proposal by
 submitting a decision referencing its id; the release executes the
-original request list atomically.
+original request list atomically. An operator may instead reject a
+queued proposal (decision with outcome `deny` and `rejects` set to
+the proposal id) or expire it (outcome `expired`, `expires` set);
+both close the queue item without executing it.
 
 ## 8. Producer records
 
@@ -209,3 +227,126 @@ and hashes: entries in a short chain, an envelope and its id, a
 definition and its computed effects, a folded state and its
 checkpoint hash. An implementation that reproduces every vector
 implements sections 1-5 compatibly.
+
+## 10. Machines
+
+Behaviour with a lifecycle — proposals, actions, standing rules,
+workers — is a *machine*: a flat state machine defined in a
+restricted text format, checked statically at definition time,
+whose every step is written to the log.
+
+A machine definition is submitted as a `machine` envelope whose
+body is `{"text": <definition text>}`. An accepted machine is
+appended as a `machine` entry whose body is `{"producer", "machine"}`
+where the stored machine is the parsed form below plus
+`action_effects` (the union of its action words' computed effects).
+
+### 10.1 Definition text
+
+One directive per line; `#` starts a comment; blank lines are
+ignored.
+
+- `machine <name>` — first directive, exactly once.
+- `initial: <state>`
+- `terminal: <state>, ...` or `terminal: none`
+- `events: <event>, ...` — the declared event alphabet.
+- `state <name>` — optional explicit state declaration.
+- `<from> -> <to> : <event>` — a transition; optionally followed
+  by `[<guard-word>]`, by `/ <action-word>`, and/or the keyword
+  `otherwise` (the fallback for that (state, event) pair when no
+  guarded transition fires).
+- `ignore <event> in <state>, ...` or `ignore <event> in *` —
+  the event is explicitly a no-op in those states; `*` means
+  every state that has no transition for the event.
+
+States are all names appearing as initial, terminal, declared,
+transition endpoints, or explicit ignore targets. The parsed
+(stored) form is `{"name", "initial", "terminals", "events",
+"states" (sorted), "transitions", "ignores", "source_hash"}`;
+each transition is `{"from", "event", "to", "guard", "action",
+"otherwise"}` with absent guard/action as null.
+
+### 10.2 Static checks
+
+Checks run in a fixed order and refuse by name:
+
+1. FIELD — malformed text; a duplicate transition; an event used
+   but not declared in the alphabet; a terminal that is not a
+   state; a (state, event) pair that is both transitioned and
+   explicitly ignored; a guard word whose signature is not
+   (map -> bool); an action word that does not take the payload
+   map as its single input.
+2. SPEC — a guard or action word that does not resolve to a
+   dictionary word; a guard word with non-empty computed effects
+   (guards are pure by construction: effects are computed, so a
+   guard that could emit an effect request is refused, not
+   trusted).
+3. UNREACHABLE — a state no path from the initial state reaches.
+4. DEAD — a non-terminal state with no outgoing transitions, or,
+   when terminals are declared, a state from which no terminal
+   state is reachable. (Terminal states need no outgoing
+   transitions; `terminal: none` machines exempt the reachability
+   half.)
+5. AMBIGUOUS — for one (state, event): more than one guarded
+   transition, more than one `otherwise` fallback, a plain
+   unguarded transition competing with a guarded or fallback
+   transition, or more than one plain transition. Guard
+   disjointness cannot be proven statically, so at most one
+   guarded transition plus one `otherwise` fallback may share a
+   (state, event) pair.
+6. NON_TOTAL — a (state, event) pair, over all states and the
+   declared alphabet, that neither transitions nor is explicitly
+   ignored.
+
+### 10.3 Instances and the transition hook
+
+An instance is created by a `transition` entry with event
+`@create`, `from` null, `to` the initial state, outcome `created`.
+Each subsequent step appends a `transition` entry: `{"producer",
+"machine", "instance", "event", "from", "to", "guard", "action",
+"requests", "outcome"}`. Firing order for a (state, event): the
+guarded transition first (its guard word is evaluated against the
+event payload map; it fires iff it leaves exactly `[true]`), then
+a plain transition, then the `otherwise` fallback. Outcomes:
+`taken` (state moves to `to`; the action word, if any, is
+evaluated against the payload and the requests it emits are
+recorded on the entry — executing them is the caller's work, the
+machine only records), `ignored` (an explicit ignore: state
+unchanged), `no-transition` (only guarded transitions whose
+guards all returned false: state unchanged). Folding: an
+instance's state is the `to` of its latest `created`/`taken`
+transition entry.
+
+### 10.4 The lifecycle machines
+
+Seven machines ship as profile definitions in the reference
+implementation (`src/jacquard/lifecycles.py`) and are submitted
+like any other machine definition: proposal, action,
+standing-rule, producer-standing, commit-batch, approval, worker
+(state graphs as in the design record). A kernel with them
+installed runs its lifecycles through the machines:
+
+- each proposal gets a proposal-machine instance whose id is the
+  envelope id: received -submit-> validated; the gate's outcomes
+  step hold (queued), decide (allowed) or refuse (denied,
+  underdeclared, or carrying an invalid definition); an allowed
+  proposal steps commit then close; a released queued proposal
+  steps decide, commit, close.
+- each dispatched request in an executed proposal gets an
+  action-machine instance `<proposal-id>/action-<index>`, stepped
+  approve then dispatch at execution time; executors report
+  confirm, fail, compensate (or reject) against the same id —
+  the id is the action's idempotency key.
+- each queued proposal gets an approval-machine instance
+  `approval:<proposal-id>`: created pending; releasing steps
+  present then approve; rejecting steps present then deny;
+  expiring steps expire. Rejection and expiry are decision entries
+  carrying `rejects` / `expires`, and close the queue item exactly
+  as `releases` does.
+- producer standing may be driven through the producer-standing
+  machine (`transition_standing`), whose current state is what
+  the policy gate reads.
+
+A kernel without the lifecycle machines installed behaves exactly
+as the 0.1 kernel: lifecycle stepping is active only for machines
+present in the kernel's registry.

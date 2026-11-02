@@ -15,14 +15,18 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 ## Repository layout
 
-- `spec/` — the specification (SPEC.md) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel.
+- `spec/` — the specification (SPEC.md, currently version 0.2) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`) and the seven lifecycle machine definitions (`lifecycles.py`).
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
 
 ## Status
 
-Phase 1: reference kernel (log, sequencer, dictionary with computed effects, policy gate with batched decision queue) plus the replay acceptance suite. See the builder's log for the current state and honest per-criterion verdicts.
+Phase 1 (complete): reference kernel (log, sequencer, dictionary with computed effects, policy gate with batched decision queue) plus the replay acceptance suite.
+
+Phase 2 (in progress): lifecycle machines and the machine-profile checker have landed (spec section 10) — the seven lifecycle machines are definitions in the repo, statically checked with named refusals, and the kernel runs its proposal, action and approval lifecycles through them. Queued proposals can now also be rejected or expired, not only released.
+
+Not built yet: fair-queue scheduling with budgets and prices, the senses framework, the learner (standing-rule mining, shadow deployment, staged activation), state export bundles, a sandboxed executor, and the operator CLI. See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 
