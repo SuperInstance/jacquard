@@ -527,7 +527,7 @@ class Sequencer:
         policy_outcome = outcome
         if self.rule_decider is not None:
             ruled = self.rule_decider(producer, cls, effects, outcome,
-                                      reasons)
+                                      reasons, requests)
             if ruled is not None:
                 decided_by, outcome = ruled
                 reasons = ["standing-rule:%s" % decided_by]
@@ -776,7 +776,8 @@ class Sequencer:
         policy_outcome = outcome
         if self.rule_decider is not None:
             ruled = self.rule_decider(producer, cls, effects,
-                                      outcome, reasons)
+                                      outcome, reasons,
+                                      queued.get("requests"))
             if ruled is not None:
                 decided_by, outcome = ruled
                 reasons = ["standing-rule:%s" % decided_by]

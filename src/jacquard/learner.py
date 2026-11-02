@@ -10,14 +10,22 @@ the computed effects of its recogniser definition (none — the
 recogniser is pure), and every stage transition is a log entry.
 
 - Mining groups decisions by shape — (producer, class, exact
-  effect set) — over a training window; a shape with enough
-  support and a dominant outcome becomes a candidate: a pure
-  dictionary word that recognises the shape, plus the predicted
-  outcome.
+  effect set, signature) — over a training window; a shape with
+  enough support and a dominant outcome becomes a candidate: a
+  pure dictionary word that recognises the shape, plus the
+  predicted outcome. Two passes run: the policy pass over the
+  gate's primary outcomes, and the operator pass over joined
+  operator labels (SPEC 12.2) — a queued item the operator
+  released or rejected is training signal with the operator's
+  own verdict as the label.
 - Offline evaluation scores the candidate against the held-out
   tail of the log. Only a pass is deployed to shadow.
 - In shadow and canary the rule predicts but never decides; its
-  agreement with real outcomes is scored from the log.
+  agreement with real outcomes is scored from the log. Scoring
+  is origin-relative (SPEC 12.4): an operator-origin rule is
+  scored only on operator-labelled samples, rule-made decisions
+  excluded, so later operator rejects of its shape count
+  against it — the feedback loop closes in both directions.
 - An active rule decides matching proposals through the
   sequencer's rule hook — within constitutional bounds: it never
   overrides a suspension, and it never manufactures a queue.
@@ -28,7 +36,12 @@ recogniser is pure), and every stage transition is a log entry.
 - Revocation is one call, takes effect on the next proposal,
   and is itself a machine transition in the log.
 """
-from .canonical import hash_of
+import json
+import re
+import shlex
+from urllib.parse import urlparse
+
+from .canonical import canonical, hash_of
 from .envelope import make_envelope
 from .primitives import shape_key
 from .state import Refusal, rule_stage
@@ -52,25 +65,140 @@ def _primary_decisions(entries):
         yield entry
 
 
-def _shape_of(body):
+# ------------------------------------------------------ signatures
+# The shape signature (SPEC 12.1): a pure function of a queued
+# decision's request list. It discriminates within the queued
+# population — the population operators govern.
+
+_SHELL_PROGRAMS = {"sh", "bash", "dash", "zsh", "ksh"}
+_SEGMENT_SPLIT = re.compile(r"&&|\|\||[;|\n]")
+
+
+def _basename(path):
+    return str(path).rsplit("/", 1)[-1]
+
+
+def _abstract_token(token):
+    if len(token) > 1 and token.startswith("-"):
+        return token.split("=", 1)[0]
+    if "://" in token:
+        return "<url>"
+    if "/" in token:
+        return "<path>"
+    if token.isdigit():
+        return "<num>"
+    return token
+
+
+def _command_skeleton(cmd):
+    tokens = [str(t) for t in cmd]
+    if len(tokens) >= 3 and tokens[1] == "-c" \
+            and _basename(tokens[0]) in _SHELL_PROGRAMS:
+        segments = []
+        for raw in _SEGMENT_SPLIT.split(tokens[2]):
+            try:
+                parts = shlex.split(raw)
+            except ValueError:
+                parts = raw.split()
+            if parts:
+                segments.append(parts)
+    else:
+        segments = [tokens] if tokens else []
+    return [[_basename(parts[0])] +
+            [_abstract_token(t) for t in parts[1:]]
+            for parts in segments]
+
+
+def shape_signature(requests):
+    """SPEC 12.1: [[verb, detail], ...] for a request list."""
+    components = []
+    for request in requests or []:
+        verb = request.get("verb")
+        args = request.get("args") or []
+        detail = ""
+        if verb == "dispatch" and args \
+                and isinstance(args[0], dict) \
+                and isinstance(args[0].get("cmd"), list):
+            detail = _command_skeleton(args[0]["cmd"])
+        elif verb == "write" and args and isinstance(args[0], str):
+            base = _basename(args[0])
+            detail = base[base.rindex("."):] if "." in base else ""
+        elif verb == "send" and args and isinstance(args[0], str):
+            detail = urlparse(args[0]).hostname or ""
+        components.append([verb, detail])
+    return components
+
+
+def _shape_key_of(body):
+    """The grouping key of a decision body: (producer, class,
+    effects, signature-in-canonical-form). Only queued
+    decisions carry a signature (SPEC 12.1)."""
+    signature = []
+    if body.get("outcome") == "queued" and body.get("requests"):
+        signature = shape_signature(body["requests"])
     return (body["producer"], body.get("class", "work"),
-            tuple(sorted(body.get("effects", []))))
+            tuple(sorted(body.get("effects", []))),
+            canonical(signature))
+
+
+def _record_shape_key(record):
+    shape = record["shape"]
+    return (shape["producer"], shape["class"],
+            tuple(shape["effects"]),
+            canonical(shape.get("signature", [])))
+
+
+def _joined_decisions(entries):
+    """Primary decisions joined with their operator labels
+    (SPEC 12.2). Each item: {"entry", "outcome", "label",
+    "source"} — outcome is the primary outcome in stored form;
+    label is the operator's verdict in stored form ("allow"
+    for a release, "deny" for a reject) or None; source is
+    "operator" when a label exists, else None. Follow-ups the
+    wait pump writes carry `releases` but no `released_by`:
+    mechanics, never labels. Expiry labels nothing."""
+    followups = {}
+    for entry in entries:
+        if entry["kind"] != "decision":
+            continue
+        body = entry["body"]
+        if body.get("releases") and "released_by" in body:
+            followups.setdefault(body["releases"], "allow")
+        elif body.get("rejects") and "rejected_by" in body:
+            followups.setdefault(body["rejects"], "deny")
+    seen = set()
+    for entry in _primary_decisions(entries):
+        pid = entry["body"].get("proposal_id")
+        if pid in seen:
+            continue
+        seen.add(pid)
+        label = followups.get(pid)
+        yield {"entry": entry, "outcome": entry["body"]["outcome"],
+               "label": label,
+               "source": "operator" if label is not None else None}
 
 
 def _recogniser(candidate):
     shape = candidate["shape"]
+    signature = shape.get("signature", [])
     body = ["dup", {"lit": "class"}, "getf", {"lit": shape["class"]},
-            "eq", "swap", {"lit": "effects"}, "getf",
-            {"lit": list(shape["effects"])}, "eq", "and"]
+            "eq", "swap", "dup", {"lit": "effects"}, "getf",
+            {"lit": list(shape["effects"])}, "eq", "swap",
+            {"lit": "signature"}, "getf", {"lit": signature},
+            "eq", "and", "and"]
+    match = {"class": shape["class"],
+             "effects": list(shape["effects"]),
+             "signature": signature}
     return {"name": candidate["definition"],
             "signature": {"ins": ["map"], "outs": ["bool"]},
             "body": body,
             "examples": [
-                {"args": [{"class": shape["class"],
-                           "effects": list(shape["effects"])}],
-                 "expect": [True]},
-                {"args": [{"class": shape["class"] + "-other",
-                           "effects": list(shape["effects"])}],
+                {"args": [match], "expect": [True]},
+                {"args": [dict(match, **{
+                    "class": shape["class"] + "-other"})],
+                 "expect": [False]},
+                {"args": [dict(match, **{
+                    "signature": [["other-verb", ""]]})],
                  "expect": [False]}]}
 
 
@@ -91,17 +219,34 @@ class Learner:
     # -------------------------------------------------- mining
     def mine(self, entries):
         """-> candidate dicts, mined from the training window
-        (the first train_fraction of primary decisions). Each
+        (the first train_fraction of joined decisions). Two
+        passes (SPEC 12.3): the policy pass over primary
+        outcomes (origin "mined") and the operator pass over
+        joined operator labels (origin "operator"). Each
         candidate carries its evidence: support and dominance."""
-        decisions = list(_primary_decisions(entries))
-        cut = len(decisions) * self.train_fraction_bp // 10000
-        train = decisions[:cut] if cut else decisions
-        groups = {}
-        for entry in train:
-            groups.setdefault(_shape_of(entry["body"]), []).append(
-                entry["body"]["outcome"])
+        joined = list(_joined_decisions(entries))
+        cut = len(joined) * self.train_fraction_bp // 10000
+        train = joined[:cut] if cut else joined
         candidates = []
-        for (producer, cls, effects), outcomes in sorted(groups.items()):
+        candidates += self._mine_pass(
+            train, lambda item: item["outcome"], "mined")
+        candidates += self._mine_pass(
+            train,
+            lambda item: item["label"]
+            if item["source"] == "operator" else None,
+            "operator")
+        return candidates
+
+    def _mine_pass(self, train, label_of, origin):
+        groups = {}
+        for item in train:
+            label = label_of(item)
+            if label is None:
+                continue
+            key = _shape_key_of(item["entry"]["body"])
+            groups.setdefault(key, []).append(label)
+        candidates = []
+        for key, outcomes in sorted(groups.items()):
             if len(outcomes) < self.min_support:
                 continue
             counts = {}
@@ -112,39 +257,76 @@ class Learner:
             dominance = 10000 * support // len(outcomes)
             if dominance < self.dominance_bp:
                 continue
+            producer, cls, effects, sig_canonical = key
             shape = {"producer": producer, "class": cls,
-                     "effects": list(effects)}
+                     "effects": list(effects),
+                     "signature": json.loads(sig_canonical)}
             predicted = {"allow": "allow", "deny": "deny",
                          "queued": "queue"}[dominant]
-            digest = hash_of({"shape": shape, "predicted": predicted})[:12]
+            digest = hash_of({"shape": shape, "predicted": predicted,
+                              "origin": origin})[:12]
             candidates.append({
                 "rule_id": "rule-" + digest,
                 "definition": "candidate-" + digest,
                 "shape": shape, "predicted_outcome": predicted,
                 "support": len(outcomes), "dominance_bp": dominance,
-                "origin": "mined"})
+                "origin": origin})
         return candidates
 
     # -------------------------------------------------- scoring
     def _agreement(self, seq, record, after_seq):
-        """Score a rule's prediction against primary decisions
-        after a log position. For rule-made decisions the
-        comparison is against the recorded policy outcome, never
-        against the rule's own decision."""
+        """Score a rule's prediction against decisions after a
+        log position, under the rule's own scoring basis
+        (SPEC 12.4)."""
+        if record.get("origin") == "operator":
+            return self._agreement_operator(seq, record, after_seq)
+        return self._agreement_policy(seq, record, after_seq)
+
+    def _agreement_policy(self, seq, record, after_seq):
+        """Policy basis: the primary outcome; for rule-made
+        decisions the recorded policy outcome, never the rule's
+        own decision."""
         samples = 0
         agreed = 0
-        shape = record["shape"]
+        key = _record_shape_key(record)
         predicted = _OUTCOME_STORED[record["predicted_outcome"]]
         for entry in _primary_decisions(seq.log.entries):
             if entry["seq"] <= after_seq:
                 continue
             body = entry["body"]
-            if _shape_of(body) != (shape["producer"], shape["class"],
-                                   tuple(shape["effects"])):
+            if _shape_key_of(body) != key:
                 continue
             actual = body.get("policy_outcome", body["outcome"])
             samples += 1
             if actual == predicted:
+                agreed += 1
+        agreement = 10000 * agreed // samples if samples else None
+        return {"samples": samples, "agreed": agreed,
+                "agreement_bp": agreement}
+
+    def _agreement_operator(self, seq, record, after_seq):
+        """Operator basis: only operator-labelled samples of
+        the shape count. Rule-made decisions are excluded — the
+        item never queued, so no operator judgement of it
+        exists. A later operator reject of the shape is a
+        deny-labelled sample and counts against a rule
+        predicting allow: the loop closes in both directions."""
+        samples = 0
+        agreed = 0
+        key = _record_shape_key(record)
+        predicted = _OUTCOME_STORED[record["predicted_outcome"]]
+        for item in _joined_decisions(seq.log.entries):
+            entry = item["entry"]
+            if entry["seq"] <= after_seq:
+                continue
+            if item["source"] != "operator":
+                continue
+            if entry["body"].get("decided_by"):
+                continue
+            if _shape_key_of(entry["body"]) != key:
+                continue
+            samples += 1
+            if item["label"] == predicted:
                 agreed += 1
         agreement = 10000 * agreed // samples if samples else None
         return {"samples": samples, "agreed": agreed,
@@ -184,9 +366,10 @@ class Learner:
                   "origin": candidate.get("origin", "mined")}
         self._append_record(seq, record)
         seq.create_machine_instance("standing-rule", rule_id, "learner")
-        decisions = list(_primary_decisions(seq.log.entries))
+        decisions = list(_joined_decisions(seq.log.entries))
         cut = len(decisions) * self.train_fraction_bp // 10000
-        held_out_after = decisions[cut - 1]["seq"] if 0 < cut <= len(decisions) else -1
+        held_out_after = decisions[cut - 1]["entry"]["seq"] \
+            if 0 < cut <= len(decisions) else -1
         scores = self._agreement(seq, record, held_out_after)
         record = self._update(seq, rule_id, eval=scores)
         passed = scores["samples"] > 0 and scores["agreement_bp"] is not None \
@@ -277,7 +460,7 @@ class Learner:
         folded state, so stage changes (including revocation and
         demotion) take effect on the next proposal."""
         def decide_by_rule(producer, cls, effects, policy_outcome,
-                           policy_reasons):
+                           policy_reasons, requests=None):
             if "producer-suspended" in policy_reasons:
                 return None  # standing is constitutional; never override
             for rule_id in sorted(seq.state.rules):
@@ -289,6 +472,17 @@ class Learner:
                         or shape["class"] != cls \
                         or tuple(shape["effects"]) != tuple(sorted(effects)):
                     continue
+                if record.get("origin") == "operator":
+                    # An operator-origin rule lifts queues, and
+                    # only the exact signature it was mined from
+                    # (SPEC 12.3 item 5): outside the queued
+                    # population it does not speak.
+                    if policy_outcome != "queue":
+                        continue
+                    live = shape_signature(requests)
+                    if canonical(live) != canonical(
+                            shape.get("signature", [])):
+                        continue
                 predicted = record["predicted_outcome"]
                 if predicted == "queue":
                     return None  # a rule never manufactures a queue
