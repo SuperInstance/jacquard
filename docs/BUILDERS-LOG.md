@@ -1230,3 +1230,27 @@ one-writer doctrine, now exercised against a second writer.
 numbers are recorded in the close entry below. No existing
 test was touched; nothing depends on the interim rank-tie
 disposition.
+
+## Phase 5 — slice 14: close (2026-11-02)
+
+- **Push.** 3406bb3 (tool + tests) and 8398e93 (log + README)
+  on GitHub main, over slice 13's fe965e0. Two rebase rounds
+  against the landing slice-13 commits; both conflicts were
+  append collisions in README.md / this log and were resolved
+  append-merge (both sides kept), plus one factual correction:
+  the README Phase 5 status sentence now names slices 13 and
+  14 as landed.
+- **Suite.** Slice tests 15/15. Full suite on the merged tree:
+  221 passed, 7 skipped (the declared Probe B skips) — 198
+  baseline + slice 13's 8 + slice 14's 15.
+- **Cold clone.** Fresh clone of GitHub main at 8398e93:
+  221 passed, 7 skipped. The CLI smoke from the clone
+  (seed-demo, fire at --max-age-s 3, second run suppressed,
+  --verify) reproduces the working tree's results exactly —
+  the fired snapshot hash 356766a4… is identical across both
+  clones, as a log-derived number must be.
+- **Origin note.** The parallel clone's `origin` is the local
+  ~/jacquard working repo (checked out on main by the slice
+  12/13 builders), so pushes went to a `gh` remote pointing at
+  GitHub directly; the local clone fast-forwards on its next
+  pull. Nothing was pushed into another builder's working tree.
