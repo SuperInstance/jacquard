@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""gpuq — the Thor GPU successor queue, from the command line.
+
+  gpuq status            live picture: running job, queue order, idle total
+  gpuq list              every job and its state
+  gpuq add --lane LANE --name "NAME" --cmd "COMMAND"
+                         enqueue a finite job named by an existing lane
+  gpuq feeder on|off     the standing foundry-loop feeder (the successor
+                         of last resort behind every finite job)
+
+Rule of the house: a finite job is dispatched only when another job is
+queued behind it or the feeder is on. Add your successor when you add
+your job, or the feeder must be on — otherwise your job holds and the
+hold is recorded against your lane in the deficit report.
+"""
+import argparse
+import fcntl
+import json
+import os
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+QUEUE = os.path.join(HERE, "queue.json")
+STATUS = os.path.join(HERE, "status.json")
+LOCK = os.path.join(HERE, "queue.lock")
+
+
+def iso(ts):
+    return time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(ts))
+
+
+def edit_queue(fn):
+    with open(LOCK, "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        with open(QUEUE) as f:
+            q = json.load(f)
+        fn(q)
+        tmp = QUEUE + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(q, f, indent=1)
+        os.replace(tmp, QUEUE)
+
+
+def cmd_status(_):
+    try:
+        with open(STATUS) as f:
+            st = json.load(f)
+    except Exception:
+        print("queue daemon has not written status yet")
+        return
+    print("as of", st["ts"], "| GPU util:", st["gpu_util_pct"], "%")
+    r = st["running"]
+    print("running:", (r["name"] + " (" + r["lane"] + ", " +
+                       str(r["ran_s"]) + "s)") if r else "nothing")
+    print("queued:")
+    for j in st["queued"]:
+        print("  -", j["name"], "[" + j["lane"] + "]")
+    if not st["queued"]:
+        print("  (none)")
+    print("feeder:", "on" if st["feeder_enabled"] else "OFF")
+    if st["halted"]:
+        print("HALTED:", st["halted"])
+    if st["no_successor_holds"]:
+        print("no-successor holds:", json.dumps(st["no_successor_holds"]))
+    print("idle: %d intervals logged, %.1fs total%s" % (
+        st["idle_intervals_logged"], st["idle_total_s_including_open"],
+        " (one still open since " + st["idle_open_since"] + ")"
+        if st["idle_open_since"] else ""))
+    print("jobs done:", st["jobs_done"], "| failed:", st["jobs_failed"])
+
+
+def cmd_list(_):
+    with open(QUEUE) as f:
+        q = json.load(f)
+    for j in q["jobs"]:
+        print("%-12s %-8s %-12s %s" % (
+            j["id"], j["status"], j["lane"], j["name"]))
+
+
+def cmd_add(a):
+    def fn(q):
+        n = sum(1 for j in q["jobs"] if j["kind"] == "finite") + 1
+        q["jobs"].append({
+            "id": "job-%d" % n, "name": a.name, "lane": a.lane,
+            "kind": "finite", "cmd": a.cmd, "status": "queued",
+            "attempts": 0, "added": iso(time.time())})
+    edit_queue(fn)
+    print("queued. Remember: it dispatches only with a successor "
+          "behind it or the feeder on.")
+
+
+def cmd_feeder(a):
+    def fn(q):
+        q["meta"]["feeder"]["enabled"] = (a.state == "on")
+    edit_queue(fn)
+    print("feeder", a.state)
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser(prog="gpuq")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("status").set_defaults(fn=cmd_status)
+    sub.add_parser("list").set_defaults(fn=cmd_list)
+    pa = sub.add_parser("add")
+    pa.add_argument("--lane", required=True)
+    pa.add_argument("--name", required=True)
+    pa.add_argument("--cmd", required=True)
+    pa.set_defaults(fn=cmd_add)
+    pf = sub.add_parser("feeder")
+    pf.add_argument("state", choices=["on", "off"])
+    pf.set_defaults(fn=cmd_feeder)
+    args = p.parse_args()
+    args.fn(args)

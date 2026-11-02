@@ -1,0 +1,15 @@
+{
+ "ts": "2026-11-02T10:23:18-0900",
+ "gpu_util_pct": 27,
+ "running": null,
+ "queued": [],
+ "feeder_enabled": false,
+ "feeder_next_index": 1635,
+ "halted": null,
+ "no_successor_holds": {},
+ "idle_open_since": null,
+ "idle_intervals_logged": 1137,
+ "idle_total_s_including_open": 205349.3,
+ "jobs_done": 1637,
+ "jobs_failed": 0
+}
