@@ -3,6 +3,60 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 0.4.0 — 2026-11-02
+
+Specification 0.4; Phase 6 of the build, landing in two steps
+(slice 16, then slice 17). The Phase 5 proof run's headline
+deficit — approvals not compiling into standing rules — is
+closed, and the Phase 4 completeness probes' recorded hazard
+(the `any`-quotation C2 hole) is closed with it.
+
+### Added
+- Shape signatures (spec §12.1): a pure, log-derivable
+  function of a queued decision's request list — a dispatch's
+  command skeleton (shell `-c` unwrapped, segments split,
+  programs by basename, flags by name, urls/paths/numbers
+  abstracted), a write's file extension, a send's host —
+  refining the mining shape so one coarse queued shape no
+  longer lumps distinct commands together.
+- Operator labels (spec §12.2): an operator's release or
+  reject of a queued item, joined to the proposal it decided,
+  is first-class training data. The wait pump's mechanical
+  re-decisions carry no operator field and never label;
+  expiry labels nothing.
+- Two-pass mining and origin-relative scoring (spec
+  §§12.3–12.4): candidates are mined from policy outcomes
+  (origin "mined", as before) and from operator verdicts
+  (origin "operator"); operator-origin rules climb the same
+  eval → shadow → canary → active ladder, scored on operator
+  verdicts alone — rule-made decisions never grade
+  themselves, canary-era rejects block activation, and later
+  operator rejects demote. Operator-origin rules fire only on
+  an exact signature match inside the queued population.
+- Token-form accounting (spec §§4–5): the token forms are
+  enumerated; the effects walk descends into every token
+  position except a literal's value; unknown dict forms are
+  REFUSED(SPEC) with the form named; C2 is stated with the
+  quotation case included (quotation defers evaluation,
+  never accounting).
+
+### Evidence
+- Replay proof in the suite (tests/test_operator_learner.py)
+  on the frozen Phase 5 proof log, and a live second proof
+  run (docs/proof-run-2-2026-11-02.md): session 2 queued 1 of
+  16 governed actions against session 1's 14 of 15, ≈3
+  operator-minutes per 100 at the margin against Phase 5's
+  ≈11 baseline; zero regretted rules; the planted
+  fetch-and-execute never executed.
+- Adversarial battery for the quotation closure
+  (tests/test_quotation_battery.py); the Phase 4 findings
+  document carries a dated addendum, and the two probe tests
+  that pinned the hazard are re-aimed as declared
+  supersessions.
+- Suite at the tag: 266 passed, 7 skipped. TS conformance:
+  7 PASS, 3 SKIP (definitions remain SKIP, with the 0.4
+  accounting rule recorded at GAPS item 17).
+
 ## 0.3.0 — 2026-11-02
 
 Specification 0.3; Phase 4 of the build. The completeness

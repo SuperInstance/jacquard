@@ -622,3 +622,43 @@ checker, as the booking profile did; and contention readings
 are computed by the kernel that owns the record — an adapter
 on a second machine consumes the service's published
 readings, it does not recompute them.
+
+## Addendum — the `any`-quotation hazard is closed (2026-11-02, Phase 6 slice 17)
+
+Appended, not rewritten: the findings above stand as written,
+including probe (f)'s verdict at the time — the rung-5 fold
+form was rejected, and the hazard it exposed was recorded as
+a spec-level hole. Spec 0.4 (sections 4–5) closes it:
+
+- The token forms are exactly `{"lit"}`, string, and
+  `{"if"/"else"}`. A dict token of any other form is
+  REFUSED(SPEC) at definition time, with the form's key named
+  in the refusal detail.
+- The effects walk descends into every token position of
+  every form — both if branches, any nested form's body —
+  except inside a literal's value, which is data: this
+  language has no form that evaluates data as code, so the
+  exclusion cannot become an evaluation path.
+- C2 is stated in section 4 with the quotation case
+  included: a word's computed effects are the union over its
+  expansion, and a quotation form, if a future version
+  defines one, has its quoted body accounted at definition
+  time. Quotation defers evaluation, never accounting.
+
+Consequences, verified in the suite: through the stock kernel
+the probe's `any-write` definition is REFUSED(SPEC) naming
+`any`; through the quarantined `FoldDictionary` the same
+definition is accepted with computed effects `["write"]` —
+accounted even in the extension, because the prototype now
+inherits the descending walk. The two probe-(f) tests that
+pinned the hazard's existence are re-aimed at the closure as
+declared supersessions (their docstrings say so), and the
+acceptance battery is `tests/test_quotation_battery.py`:
+the original case both ways, nested quotations, a quotation
+inside an if branch, smuggling via definition composition,
+hybrid dict forms, verb-shaped data inside a literal (inert),
+and a forged body refused on the evaluation path. The TS
+conformance position is recorded in `conformance/ts/
+GAPS.md` item 17: definitions remain SKIP in the fold-scope
+checker, with the 0.4 accounting rule stated for the future
+evaluator implementer.

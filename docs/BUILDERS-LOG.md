@@ -1735,3 +1735,111 @@ rules: none.
 Slice 16 is complete: replay acceptance in the suite, live
 acceptance here, both with evidence. Remaining Phase 6 work:
 slice 17.
+
+### Slice 17 — design (2026-11-02)
+
+The hazard (Phase 4, probe (f), quarantined in
+`tests/probes/fold_experiment.py`): an extension dictionary
+implementing a quotation form `{"any": [token]}` inherits the
+stock token walk, which descends only into `if`/`else` lists —
+so a Tier-E verb inside a quotation computes NO effects while
+evaluation emits the request. C2 fails for that form. The
+stock kernel itself never accepted such a body, but only
+incidentally: its evaluator raises FIELD "bad token" for any
+dict that is not a literal or a conditional. An incidental
+failure under the wrong name is not a spec property, and the
+walk's narrowness is the real defect: any form added later
+inherits silent under-accounting.
+
+The fix is at both levels, spec first (SPEC §§4–5, this
+slice): the token forms are exactly the three listed; any
+other dict form is REFUSED(SPEC) at definition time with the
+form's key named; the effects walk descends into every token
+position of every form except inside a literal value (data —
+and this language has no form that evaluates data as code, so
+the exclusion cannot be turned into an evaluation path); C2 is
+stated in §4 with the quotation case included: quotation
+defers evaluation, never accounting.
+
+Implementation, in `dictionary.py`:
+
+- `_walk_tokens` descends into every dict token's values
+  except a `lit` value, and into bare lists. Accounting can
+  then never undercount by hiding in a form: the walk is
+  form-agnostic.
+- The stock `_simulate`/`_exec` treat a dict token that is
+  neither the lit form nor the if form as Refusal("SPEC", …)
+  naming the form's key — a deliberate refusal under the
+  spec's name, replacing the incidental FIELD "bad token" for
+  dict forms (non-dict bad tokens keep FIELD).
+- Consequence for the quarantined prototype: `FoldDictionary`
+  inherits the descending walk, so its `any-write` definition
+  now computes {"write"} — accounted even in the extension —
+  while the stock kernel refuses the same definition SPEC,
+  naming `any`. Both horns of the brief's either/or hold, each
+  at its level.
+
+Probe disposition: the two probe-(f) tests that pinned the
+hazard's existence are re-aimed at the closure, as declared
+supersessions with their reasons, in the probe file and in a
+dated addendum appended to
+`docs/completeness-probes-2026-11-02.md` (appended, never
+rewritten). The adversarial battery is a new test file:
+the original probe case both ways, nested quotations, a
+quotation inside an if branch, composition smuggling, a
+hybrid dict form, a literal carrying verb-shaped data (must
+stay inert), and an evaluation-time forgery. TS: definitions
+remain SKIP in the fold-scope checker; `conformance/ts/
+GAPS.md` gains the 0.4 accounting rule in its definitions
+entry.
+
+### Slice 17 — implementation and Phase 6 close (2026-11-02)
+
+Built as designed. Spec §§4–5 first (token forms enumerated;
+unknown dict forms REFUSED(SPEC) with the form named; the
+walk's descent rule; C2 stated with the quotation case), then
+`dictionary.py`: `_walk_tokens` is form-agnostic (every dict
+value except a pure literal's, plus bare lists), and the
+stock simulation/evaluation paths refuse non-lit/non-if dict
+forms as SPEC naming the form's first sorted key, replacing
+the incidental FIELD "bad token" for dict forms only. The
+hazard case now lands on both horns: stock define of the
+probe's `any-write` → REFUSED(SPEC) naming `any`; via
+`FoldDictionary` → accepted with computed effects `["write"]`.
+
+Acceptance battery: `tests/test_quotation_battery.py`, 9
+tests (original case both ways, nested quotations, quotation
+in an if branch, composition smuggling plus the positive
+union case, hybrid dict forms, verb-shaped literal data
+inert, forged body refused at evaluation). The two probe-(f)
+tests are re-aimed as declared supersessions;
+`fold_experiment.py`'s docstring records its partial
+supersession; the findings document gains a dated addendum
+(appended, §§1–6 and the Phase 5 addendum untouched); TS
+conformance records the 0.4 rule at GAPS item 17 with
+definitions still SKIP, and the checker reproduces 7 PASS /
+3 SKIP. Full suite: **266 passed, 7 skipped** (257 + 9).
+
+Phase 6 close. Test delta across the phase: 249 + 7 skipped
+→ 266 + 7 skipped (+17 net: 8 operator-learner, 9 quotation
+battery; the 2 probe re-aims and 2 format-extension updates
+— the learner shape record and the version literals —
+are assertion-preserving in intent and recorded where they
+sit). Spec 0.4 is complete: §12 (slice 16) and §§4–5
+(slice 17). Tagged v0.4.0.
+
+What V4 still does not cover, stated once more at the close:
+the learner mines from decisions the operator actually made
+on shapes the gate actually queued. It does not learn from
+actions the policy allows outright (nothing to govern), from
+queued items the operator lets expire (no label — by design:
+an undecided item teaches nothing), or across producers
+(shapes are per-producer). Signatures discriminate by command
+skeleton, file extension and host; two commands differing only
+in an abstracted token (a path, a number, a URL) are one
+shape, and an operator who needs them split needs a finer
+signature function — a spec change, not a configuration.
+Within those bounds the loop the proof run found open is
+closed in both directions: releases compile into rules, and
+rejects — before activation as a block, after it as
+demotion — count against them.

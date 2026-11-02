@@ -205,3 +205,32 @@ omits the schemas and representations a second implementer needs.
   checks e/f/g cover logs containing them.
 - **Caught by:** the Python suite — tests/test_vectors.py
   verifies every senses case via fold + compute_sense.
+
+## 17. §§4–5 — Token-form accounting (Phase 6, spec 0.4)
+
+- **What changed:** spec 0.4 states the effects-accounting rule
+  for dictionary bodies: the token forms are exactly `{"lit"}`,
+  string, and `{"if"/"else"}`; the effects walk descends into
+  every token position of every form except a literal's value
+  (data, never tokens); a dict token of any other form is
+  REFUSED(SPEC) at definition time with the form's key named;
+  and C2 (computed effects = the union over the expansion) is
+  stated with the quotation case included — a form quoting a
+  body for later evaluation, if a future version defines one,
+  has its body accounted at definition time.
+- **Chosen:** unchanged scope — this checker implements the
+  fold, not the evaluator, so `vectors.definitions` remains
+  SKIP, now under the 0.4 rule as well: a future TS evaluator
+  must implement the descending walk and the named SPEC
+  refusal, and the Python battery
+  (tests/test_quotation_battery.py) is the reference behaviour
+  until then. One reading recorded for that implementer: for
+  a hybrid dict carrying several keys, the reference names
+  the first key in sorted order in the refusal detail; the
+  spec's "the form's key" is unambiguous for the single-key
+  forms the hazard actually uses.
+- **Caught by:** the Python suite — the adversarial battery
+  (original probe case both ways, nested quotations,
+  quotation in an if branch, composition smuggling, hybrid
+  forms, literal-carried verb-shaped data, forged-body
+  evaluation) plus the re-aimed probe-(f) tests.
