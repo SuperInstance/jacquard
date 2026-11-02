@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.4
+# Jacquard specification — version 0.5
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -37,7 +37,7 @@ The log is an append-only sequence of entries. State is a fold of
 the log; the log is never rewritten.
 
 Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
-"spec": "jacquard/0.4"}`. The entry hash is the hash of the entry.
+"spec": "jacquard/0.5"}`. The entry hash is the hash of the entry.
 `prev` is the previous entry hash; the genesis entry has
 `prev` = 64 zero characters. `seq` starts at 0 and increments by 1.
 
@@ -143,7 +143,7 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the raw UTF-8 bytes of the string `jacquard-spec/0.4` (not of its canonical JSON form). The envelope id used in the log
+of the raw UTF-8 bytes of the string `jacquard-spec/0.5` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
 Envelope kinds: `proposal` (body: `{"requests": [request]}`,
@@ -477,7 +477,12 @@ logs), each `{"entries", "subject", "expect"}` where expect is
 entries and recomputing the sense at the subject. Sense
 computation is kernel work over the log, not fold work: the
 TypeScript conformance checker declares this section SKIP
-(conformance/ts/GAPS.md).
+(conformance/ts/GAPS.md). The vectors also carry an `anchor`
+section (section 15): one checkpoint for the vector entry chain,
+issued under a published test key recorded in the vectors, with
+its envelope and signature; signature verification is verifier
+work, not fold work, and the TypeScript checker likewise
+declares it SKIP.
 
 ## 10. Machines
 
@@ -1049,3 +1054,261 @@ the compensate command (when present) and reporting
 uses bubblewrap where available — read-only root, private
 temporary directory, no network — and says so in its journal;
 a fallback sandbox is recorded as a fact, never silently).
+
+## 15. Chain-head anchoring
+
+The hash chain of section 2 proves a log is *self-consistent*: every
+hash recomputes and every `prev` links. It does not prove the log is
+*the* history. Whoever holds a log can rewrite any entry, recompute
+the chain from that point on, and present a fully self-consistent
+forgery — chain verification alone cannot tell the two apart. This
+section closes that hole with *anchoring*: signed checkpoints of a
+log's prefix, published outside the kernel's store, so a third party
+can verify a presented log against history the operator cannot
+silently rewrite. (This is the mechanism behind the void scan's V3:
+a "why was this allowed" record verifiable without trusting the
+vendor. A claim of immutability is not a mechanism; this is.)
+
+Anchoring is operator and deployment work, outside the kernel —
+like executors (section 10.5), the kernel itself never anchors,
+never holds a key, and imports no signing code. The kernel's log
+format does not change: a checkpoint is not a log entry (the
+`checkpoint` entry kind of section 2 is an in-log state hash and
+witnesses nothing outside the log).
+
+### 15.1 The checkpoint document
+
+A checkpoint is a small signed JSON document. The signed part is
+the *body*, an object with exactly these eight keys — a body
+carrying any other key, or missing one, is not a checkpoint and a
+verifier must refuse it:
+
+- `format`: the string `jacquard/anchor/1`.
+- `log_id`: hex64, the identity of the anchored log (section 15.2).
+- `label`: a string, operator-chosen (for example
+  `proof-run-2/kernel`). The label is signed but *informational*:
+  it helps a human find the log; identity never rests on it.
+- `checkpoint_seq`: integer ≥ 0. Checkpoints for one `log_id`
+  form their own sequence, starting at 0, incrementing by 1, with
+  no gaps.
+- `log_length`: integer ≥ 0, the number of log entries the
+  checkpoint anchors — a prefix length.
+- `head_hash`: hex64, the hash of the entry at `log_length - 1`,
+  or 64 zero characters when `log_length` is 0.
+- `spec`: the string `jacquard/0.5` — the version of *this
+  section* under which the checkpoint was issued. The anchored
+  log's entries may carry any earlier spec version; the
+  checkpoint's `spec` is the anchoring protocol's version, not an
+  entry's.
+- `prev_checkpoint`: hex64 or null — the section-1 hash of the
+  previous checkpoint *body* for the same `log_id`; null if and
+  only if `checkpoint_seq` is 0. The checkpoint sequence is
+  therefore itself a hash chain: a published checkpoint cannot be
+  dropped, reordered or replaced without breaking the chain a
+  verifier recomputes.
+
+What is signed is exactly the canonical bytes (section 1) of the
+body object — no prefix, no envelope, no transport bytes. The
+signature scheme is Ed25519 (RFC 8032) over those bytes.
+
+The *document* (the file form, and the form a transport carries)
+is the envelope object `{"body": <body>, "pubkey": <hex64>,
+"sig": <hex128>}`, where `pubkey` is the signer's raw 32-byte
+public key as lowercase hex and `sig` is the 64-byte signature as
+lowercase hex. The file form is the canonical bytes (section 1)
+of the envelope followed by a newline. The *checkpoint hash* of a
+checkpoint — the value `prev_checkpoint` chains to — is the
+section-1 hash of its body.
+
+The golden vectors (section 9) carry one checkpoint, issued for
+the vector entry chain under a published test key whose seed is
+recorded in the vectors themselves. That key is a test fixture,
+never an operator key.
+
+### 15.2 Identity of a log
+
+A checkpoint names its log by `log_id`: the hash of the log's
+genesis entry (`entries[0].hash`). For an empty log, `log_id` is
+64 zero characters. Anchoring an empty log is permitted and
+vacuous (`log_length` 0, `head_hash` all zeros).
+
+This is a deliberate, stated limitation: `log_id` names a
+*lineage* (a genesis), not an instance. Two logs that share a
+genesis share a `log_id`; that is not a defect, because identity
+never does the security work — the binding is the
+(`log_length`, `head_hash`) pair, which names one exact prefix.
+`log_id` scopes a checkpoint history and gives the verifier its
+genesis check (section 15.5, step 2): a history whose `log_id`
+differs from the presented log's genesis is *not applicable* to
+that log, however it was obtained.
+
+### 15.3 The signing key
+
+One Ed25519 keypair per operator (a deployment may use one per
+log; the reference tooling uses one per operator).
+
+- *Generation.* The operator generates the keypair once, with the
+  anchor tool's `keygen` verb. The reference implementation uses
+  the `cryptography` package — the anchoring tooling's only
+  non-standard-library dependency, confined to that tooling; the
+  kernel remains zero-dependency and imports none of it.
+- *Where the private key lives.* At
+  `~/.jacquard/anchor-key.ed25519` (a PEM-encoded PKCS#8 private
+  key, file mode 0600), outside every repository. The tool refuses
+  to overwrite an existing key, refuses a key path inside a
+  version-controlled tree, and never prints, logs or transmits
+  the private key. The key file is unencrypted at rest: its
+  protection is the filesystem mode and its location outside any
+  repo; an operator who needs encryption at rest applies it
+  outside the tool. The public key is not secret: it is published
+  in the anchor transport (section 15.4) and carried in every
+  checkpoint envelope.
+- *What the signature does and does not rest on.* A verifier
+  trusts a public key pinned out-of-band (obtained from the
+  operator, or from the anchor repository's README through a
+  channel the verifier already trusts). The `pubkey` field in an
+  envelope is a convenience for matching, never self-trust: a
+  verifier must refuse a checkpoint whose envelope key is not the
+  pinned key.
+- *Compromise.* Whoever holds the private key can issue
+  checkpoints for any prefix of any log — including checkpoints
+  that appear to anchor a forged history. Compromise does not let
+  an attacker rewrite checkpoints *already published* to a public
+  transport without detection by anyone who mirrored that
+  transport (section 15.4); it poisons checkpoints issued after
+  the compromise. There is no trusted clock in a checkpoint (the
+  body carries no wall-clock field — deliberately, for the reason
+  stated in section 15.4), so "issued before the compromise"
+  cannot be proven from the document alone; it rests on the
+  transport's publication record.
+- *Rotation.* Rotation is a new keypair plus a rotation note in
+  the anchor transport naming the old key revoked, the new key,
+  and the `checkpoint_seq` from which the new key signs (per
+  `log_id`). Checkpoints before that sequence verify under the
+  old key; checkpoints from it on verify under the new key, and a
+  verifier must refuse an old-key checkpoint at or after the
+  rotation sequence. The reference tooling takes the pinned key
+  (and, after a rotation, both keys with the boundary) as
+  explicit verifier inputs; it does not silently follow a key
+  change.
+
+### 15.4 Cadence and transport
+
+*Who and when.* Anchoring is an operator-run verb; nothing
+anchors automatically. The recommended cadence — a recommendation
+of this section, stated so the gap is a choice and not a
+surprise — is: anchor at the end of every operator session or
+proof run in which the log grew, at least once per day a log is
+actively growing, and always before a log is handed to a third
+party or relied on in a dispute. The entries after the last
+anchored length are the *unanchored tail*: real history, but
+history only the log's holder vouches for. Verification reports
+the tail's length numerically (section 15.5); a deployment picks
+its cadence to bound the tail it can accept.
+
+*Transport.* The mechanism is transport-agnostic. A conforming
+transport is any store outside the kernel's and the log holder's
+sole control where checkpoint documents are append-only in
+practice: new documents can be added, and rewriting or removing
+a published document is detectable by a third party who mirrored
+the store. The signed body carries no wall-clock field, because
+Jacquard has no trusted clock (its clock is the log itself);
+existence-at-a-time is therefore proven by the transport's
+publication record (for git, the commit that first carries the
+checkpoint), never by a signed timestamp an operator could write
+arbitrarily.
+
+*First transport: a dedicated public git repository* (the
+reference deployment is `SuperInstance/jacquard-anchors`,
+separate from the kernel repository, so the witness history is
+not the witnessed history's own repo). Layout: one file per
+checkpoint at `checkpoints/<log_id>/<checkpoint_seq>.json` with
+`checkpoint_seq` zero-padded to six digits, containing the file
+form of section 15.1. The publisher only ever *adds* commits —
+one commit per checkpoint, adding exactly that checkpoint's file
+— and never amends, rebases or force-pushes; the repository's
+README records the operator public key (and any rotation note)
+and how to verify. A publisher history that violates the
+append-only discipline is itself evidence a verifier should
+weigh, and mirrors of the repository make a silent rewrite
+detectable in exactly the way a silent log rewrite is not.
+
+### 15.5 Verification
+
+Inputs: a presented log; a checkpoint history (a set of
+checkpoint documents, from any conforming transport); a pinned
+public key (plus a rotation boundary, if one applies). No private
+key, no kernel state, and no trust in the log's holder are
+required. The procedure, in order:
+
+1. *Select and authenticate the history.* Take the checkpoints
+   whose `log_id` equals the presented log's genesis hash
+   (section 15.2); ignore others. Sort by `checkpoint_seq` and
+   require the sequence to be 0, 1, 2, … with no gaps, each
+   body's `prev_checkpoint` recomputing to the previous body's
+   hash (null at 0), each body's keys exactly the eight of
+   section 15.1 with `format` and `spec` as stated, each
+   envelope's `pubkey` equal to the pinned key (respecting a
+   stated rotation boundary), and each signature verifying over
+   the body's canonical bytes. Any failure is FAILED, naming the
+   offending `checkpoint_seq`.
+2. *Genesis check.* If the presented log is non-empty, its first
+   entry's hash must equal the history's `log_id` (it does by the
+   selection in step 1, unless the history was supplied as an
+   explicit set for a different log — then FAILED, naming the
+   mismatch). If no checkpoint is applicable, the outcome is
+   UNANCHORED: a statement that nothing witnesses this log, not a
+   failure of the log.
+3. *Internal chain.* Verify the presented log's own chain
+   (section 2). A log that fails its internal chain is FAILED
+   (internal), reported distinctly from an anchor failure.
+4. *Prefix comparison.* For each checkpoint in sequence order:
+   if `log_length` exceeds the presented log's length, the log is
+   truncated or missing anchored history — FAILED, naming that
+   checkpoint. Otherwise compute the head at `log_length` (the
+   hash of the entry at that index minus one; all zeros at 0) and
+   compare with `head_hash`. On the first mismatch: FAILED,
+   naming that checkpoint as the *first divergent checkpoint*
+   (its `checkpoint_seq`, its `log_length`, the expected and
+   actual heads). A checkpoint binds only its prefix: a rewrite
+   after `log_length` cannot fail this checkpoint — it is tail,
+   and step 5 reports it as such.
+5. *Outcome.* If every checkpoint passes: when the last
+   checkpoint's `log_length` equals the presented length, the
+   outcome is VERIFIED (fully anchored, tail 0). When it is
+   smaller, the outcome is VERIFIED-TO-ANCHOR, reporting the
+   anchored prefix length and the unanchored tail length
+   (presented length minus anchored length) as distinct numbers.
+   An extension of an anchored log — same prefix, more entries —
+   is therefore not a forgery and must not be reported as one;
+   truncation below an anchored length is a failure (step 4),
+   never a tail.
+
+A verifier reports exactly one outcome — VERIFIED,
+VERIFIED-TO-ANCHOR (with both lengths), UNANCHORED, or FAILED
+(with the first divergent checkpoint, or the history/internal
+failure, named) — never a bare boolean.
+
+### 15.6 Honest limits
+
+Anchoring proves a bounded thing, and this section states the
+bound. It proves that a specific log prefix existed in exactly
+that form no later than its checkpoint's publication on the
+transport, and it detects any later rewrite of the anchored
+prefix that changes the head at an anchored length — including
+the rewrite-and-rechain forgery that defeats section 2 alone. It
+does not prove the decisions in the log were wise, lawful or
+authorised beyond what the log itself records; it does not prove
+anything about the unanchored tail; it does not prove the
+presented log is complete — an operator may anchor a prefix of a
+longer private history, and withholding beyond the anchored
+length is invisible (withholding *within* it is exactly what the
+head comparison catches); it does not prevent an operator from
+abandoning a log and starting a new one under a new genesis (the
+new `log_id` is visibly a new history, with no checkpoints until
+anchored); and it does not survive the private key and the
+transport's history being rewritten together — mirrors are the
+defence there, as section 15.4 states. A checkpoint for a log
+that is never presented proves only that its head was claimed by
+the key holder; the verification of section 15.5 is what turns a
+claim into evidence.

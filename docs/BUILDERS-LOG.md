@@ -1843,3 +1843,116 @@ Within those bounds the loop the proof run found open is
 closed in both directions: releases compile into rules, and
 rejects — before activation as a block, after it as
 demotion — count against them.
+
+# Phase 7 — anchoring + the full TS port (2026-11-02)
+
+## Slice 18 — design, recorded before building (2026-11-02)
+
+The charter (Casey's Phase 7 authorisation): slice 18 is
+chain-head anchoring — signed checkpoints of (log length, head
+hash, spec version) published outside the kernel's store, so a
+presented log can be verified against history the operator cannot
+silently rewrite. This is beachhead 2's core mechanism and the
+void scan's V3: of 25 surveyed products, immutability was claimed
+by some and mechanised by none. Slice 19 (the full TS port) is
+the other half of the phase and is not this slice; here the TS
+checker gets version bookkeeping only.
+
+The defect, stated plainly: section 2's hash chain proves a log
+is self-consistent, not that it is *the* history. Whoever holds a
+log can rewrite a middle entry and recompute the chain from there
+on; the forgery passes the kernel's own chain verification
+perfectly. The slice's acceptance fixture is exactly that attack,
+built against the frozen Phase 6 proof log (below).
+
+Spec first, as always: new section 15, spec 0.5. The decisions,
+with their reasons:
+
+- *Checkpoint document.* A signed body with exactly eight keys
+  (`format`, `log_id`, `label`, `checkpoint_seq`, `log_length`,
+  `head_hash`, `spec`, `prev_checkpoint`); any extra or missing
+  key is not a checkpoint. What is signed is the canonical bytes
+  of the body alone. The envelope (`body` + `pubkey` + `sig`) is
+  the file form. Exactness mirrors the bundle format's discipline
+  (section 14): a verifier should never have to guess which
+  fields were covered by the signature.
+- *Checkpoint chain.* `prev_checkpoint` hash-chains each log's
+  checkpoint sequence, so a published checkpoint cannot be
+  dropped or reordered without breaking a chain the verifier
+  recomputes — the transport's append-only discipline gets a
+  cryptographic second witness.
+- *Log identity.* `log_id` is the genesis entry's hash. This is
+  the only identity derivable from a log that already exists —
+  the frozen proof logs carry no log-id field, and an identity
+  that cannot be computed for them retroactively would exempt
+  exactly the logs most worth anchoring. The limitation is
+  stated in the spec, not hidden: `log_id` names a lineage, two
+  logs sharing a genesis share it, and identity does no security
+  work — the (`log_length`, `head_hash`) pair binds the prefix.
+- *No signed timestamp.* The body carries no wall-clock field.
+  Jacquard has no trusted clock (the jqnotify slice established
+  this the hard way: the log's clock is the log), and a signed
+  timestamp would be an operator assertion dressed as evidence.
+  Existence-at-a-time rests on the transport's publication
+  record (the git commit that first carries the checkpoint).
+- *Signing.* Ed25519, via the `cryptography` package — the
+  anchor tooling's only non-stdlib dependency, confined to that
+  tooling; the kernel stays zero-dependency and imports no
+  signing code (the anchor module is not exported from
+  `jacquard/__init__`, so `import jacquard` never requires it).
+  Private key at `~/.jacquard/anchor-key.ed25519`, mode 0600,
+  outside every repo; the tool refuses to overwrite an existing
+  key and refuses a key path inside a version-controlled tree.
+  Compromise and rotation stories are stated in the spec
+  (15.3), including the uncomfortable part: with no trusted
+  clock, "issued before the compromise" rests on the transport
+  record, not the document.
+- *Cadence.* An operator-run verb, never automatic — anchoring
+  is deployment work, like execution (section 10.5). The spec
+  recommends: end of session / proof run, at least daily while a
+  log grows, always before a third party relies on the log. The
+  gap is named, not hidden: entries past the last anchored
+  length are the *unanchored tail*, and verification reports its
+  length numerically.
+- *Verification outcomes, never a bare boolean:* VERIFIED
+  (fully anchored), VERIFIED-TO-ANCHOR with anchored prefix and
+  tail lengths stated separately, UNANCHORED (no applicable
+  history — a statement, not a failure), FAILED naming the first
+  divergent checkpoint (or the history / internal-chain failure,
+  distinctly). An extension of an anchored log is
+  VERIFIED-TO-ANCHOR, not a forgery; truncation below an
+  anchored length is FAILED, never a "tail".
+- *Transport.* Transport-agnostic in the spec; first transport
+  is a new, separate public git repo,
+  `SuperInstance/jacquard-anchors` — separate so the witness
+  history is not the witnessed history's own repo. One file per
+  checkpoint (`checkpoints/<log_id>/<seq>.json`), one commit per
+  checkpoint, adds only: never amend, rebase or force-push.
+- *Golden vector.* The vectors gain an `anchor` section: one
+  checkpoint over the vector entry chain under a published test
+  key (seed recorded in the vectors; Ed25519 signing is
+  deterministic, so the signature is a stable vector). The TS
+  checker declares it SKIP (verifier work, not fold work), with
+  the rule recorded in GAPS — the deep TS port is slice 19.
+
+Version mechanics follow the 0.4 pattern (commit 907e5ac):
+SPEC_VERSION + seal in both implementations, golden vectors
+regenerated, the full-log fixture regenerated, and the replay
+fixture regenerated by re-running the gpu-queue replay through
+the 0.5 kernel (3,295 entries expected; queue order and the
+event record must still match exactly). Frozen logs (proof runs
+1 and 2) keep their 0.4 entry spec — anchoring a 0.4 log with a
+0.5 checkpoint is the normal case, and the spec says so.
+
+Acceptance, stated before building: (1) the true proof-run-2 log
+verifies against two published checkpoints (mid-log and full);
+(2) a forged variant — one decision outcome flipped mid-log, the
+chain recomputed from there so the forgery is fully
+self-consistent — passes internal chain verification and FAILS
+anchor verification naming the first divergent checkpoint; the
+fixture and its provenance note are committed under `tests/`;
+(3) an extended log reports its unanchored tail exactly;
+(4) `docs/anchor-drill.md` lets a fresh verifier, given only the
+public anchor repo, the spec and a presented log, reproduce all
+of it cold; (5) cold clone: Python suite + TS checker green.
+The rank-tie interim disposition is untouched by this slice.
