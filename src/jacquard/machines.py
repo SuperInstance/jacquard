@@ -21,13 +21,15 @@ transition plus one `otherwise` fallback may share a
 (state, event) pair: guard disjointness cannot be proven
 statically, so anything more is refused as AMBIGUOUS.
 
-The static checker refuses, by name: FIELD (malformed text, type
-errors), SPEC (unknown word or event references), UNREACHABLE
-(a state no path from the initial state reaches), DEAD (a
-non-terminal state with no outgoing transitions, or one that
-cannot reach any declared terminal), AMBIGUOUS, and NON_TOTAL
-(a (state, event) pair that neither transitions nor is
-explicitly ignored). Machines are flat and total by construction.
+The static checker refuses, by name: FIELD (malformed text,
+signature errors, undeclared events), SPEC (unknown word
+references, guards whose computed effects are non-empty),
+UNREACHABLE (a state no path from the initial state reaches),
+DEAD (a non-terminal state with no outgoing transitions, or one
+that cannot reach any declared terminal), AMBIGUOUS, and
+NON_TOTAL (a (state, event) pair that neither transitions nor
+is explicitly ignored). Machines are flat, and total by check:
+a machine that is not total is refused, never run.
 
 This is the repo's own small checker, written for this profile.
 It is not StateSmith and does not try to be: the profile is

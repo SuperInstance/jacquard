@@ -309,3 +309,20 @@ worker machines are defined, checked and behaviour-tested as
 machines, but no kernel path drives them yet — batching belongs
 to the executor work and workers to the operator surface
 (Phase 3). The standing-rule machine is driven by slice 6.
+
+**Pre-push critique (DeepInfra, DeepSeek-V4.1-Flash-1017).** One
+spec-consistency pass over sections 2/7/10 plus the checker
+summary, before pushing. It found one real contradiction —
+section 10.3's firing-order text implied plain and guarded
+transitions could coexist, which 10.2's AMBIGUOUS rule forbids —
+plus three under-pinnings (guard firing is now stated as "the
+result stack is exactly [true]"; the release path's step origins
+(from tentative) are stated; the state hash is pinned to the nine
+named sections with their wrapper shapes) and two docstring
+drifts in machines.py (SPEC mis-described as covering event
+references — those are FIELD; "total by construction" corrected
+to "total by check"). All fixed in the consistency-pass commit
+below. One critique item was an artifact of the review prompt's
+section splicing, not of the spec; noted and dismissed. Cost:
+~3.6k tokens, fractions of a cent — the contra-find alone was
+worth it.

@@ -38,8 +38,9 @@ Folded state:
   `write` effects recorded in `execution` entries.
 - `dictionary`: definitions, by name, as a list of versions.
 - `decision_queue`: proposals whose decision outcome was `queued`,
-  by proposal id, until an operator decision releases or rejects
-  them.
+  by proposal id, until an operator decision releases, rejects or
+  expires them. The value stored per id is the full body of the
+  `decision` entry that queued it.
 - `senses`: latest published reading per sense name.
 - `machines`: machine definitions, by name, as a list of versions
   (section 10).
@@ -53,6 +54,15 @@ Folded state:
 - `rules`: standing rules by id (section 12). A rule's stage is not
   stored here; it is the state of the rule's standing-rule machine
   instance.
+
+The state hash is the section-1 canonical hash of an object with
+exactly these nine keys — `units`, `senses`, `dictionary`,
+`decision_queue`, `machines`, `machine_instances`, `budgets`,
+`prices`, `rules` — each folded exactly as its section describes.
+The `dictionary` and `machines` values are lists of wrappers
+`{"entry_seq", "entry_hash", "definition"}`, where `definition`
+holds the stored form (a stored definition, section 5, or a
+stored machine, section 10).
 
 ## 3. Envelopes and verdicts
 
@@ -304,10 +314,13 @@ An instance is created by a `transition` entry with event
 `@create`, `from` null, `to` the initial state, outcome `created`.
 Each subsequent step appends a `transition` entry: `{"producer",
 "machine", "instance", "event", "from", "to", "guard", "action",
-"requests", "outcome"}`. Firing order for a (state, event): the
-guarded transition first (its guard word is evaluated against the
-event payload map; it fires iff it leaves exactly `[true]`), then
-a plain transition, then the `otherwise` fallback. Outcomes:
+"requests", "outcome"}`. Firing, for a (state, event) — the
+AMBIGUOUS check guarantees the shapes never compete: if a plain
+transition exists it fires. If a guarded transition exists, its
+guard word is evaluated against the event payload map and it
+fires iff the evaluation's result stack is exactly the
+one-element list `[true]`; if the guard leaves `[false]`, the
+`otherwise` fallback fires when present. Outcomes:
 `taken` (state moves to `to`; the action word, if any, is
 evaluated against the payload and the requests it emits are
 recorded on the entry — executing them is the caller's work, the
@@ -331,7 +344,7 @@ installed runs its lifecycles through the machines:
   step hold (queued), decide (allowed) or refuse (denied,
   underdeclared, or carrying an invalid definition); an allowed
   proposal steps commit then close; a released queued proposal
-  steps decide, commit, close.
+  steps decide (from tentative), commit, close.
 - each dispatched request in an executed proposal gets an
   action-machine instance `<proposal-id>/action-<index>`, stepped
   approve then dispatch at execution time; executors report
