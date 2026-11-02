@@ -1,0 +1,26 @@
+{
+ "cwd": "/home/ubuntu/probe-ws",
+ "hookEventName": "PreToolUse",
+ "mode": "build",
+ "riskLevel": "low",
+ "sessionId": "sess_49be0036-712e-4ad3-b3f2-c56773280b9f",
+ "sideEffectScope": "none",
+ "timestamp": "2026-11-02T22:25:20.639Z",
+ "toolCallId": "call_29ea7cc6decc43f893b0e042",
+ "toolInput": {
+  "file_path": "/home/ubuntu/probe-ws/seed.txt"
+ },
+ "toolName": "Read",
+ "traceId": "3d1baa33-4869-4465-8674-93c61cd15abf",
+ "turnId": "turn_831dbccd-7ae5-43bf-9136-494b8eda7081",
+ "hook_event_name": "PreToolUse",
+ "permission_mode": "build",
+ "session_id": "sess_49be0036-712e-4ad3-b3f2-c56773280b9f",
+ "transcript_path": "/tmp/zcode-hook-X4B2xd/transcript.jsonl",
+ "transcriptPath": "/tmp/zcode-hook-X4B2xd/transcript.jsonl",
+ "tool_name": "Read",
+ "tool_input": {
+  "file_path": "/home/ubuntu/probe-ws/seed.txt"
+ },
+ "tool_use_id": "call_29ea7cc6decc43f893b0e042"
+}

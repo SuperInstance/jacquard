@@ -1,0 +1,1 @@
+{"description":"Jacquard supervision for ZCode: every tool call is decided by the Jacquard kernel (allow / deny / batched queue) before it runs.","hooks":"hooks/hooks.json","name":"jacquard-zcode","version":"0.1.0"}
