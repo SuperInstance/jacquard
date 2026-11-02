@@ -17,7 +17,7 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 - `spec/` — the specification (SPEC.md, currently version 0.2) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
 - `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), and state export bundles (`bundle.py`).
-- `adapters/` — provider adapters that live outside the kernel (the kernel imports no provider-specific code).
+- `adapters/` — adapters that live outside the kernel: decision-model providers (the kernel imports no provider-specific code) and the sandboxed executor.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: an independent TypeScript implementation written from the spec alone, its gap report, and the fixtures it folds (see `conformance/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
@@ -30,7 +30,9 @@ Phase 2 (in progress): lifecycle machines and the machine-profile checker have l
 
 Phase 3 (in progress): second-language conformance has landed — a TypeScript implementation written from the spec alone reproduces the golden vectors and folds the 3,295-entry real replay log to the identical state hash (conformance/).
 
-Not built yet: a sandboxed executor and the operator CLI. See the builder's log for the current state and honest per-slice verdicts.
+Phase 3 (continued): a sandboxed executor adapter has landed (`adapters/executor.py`, spec section 10.5) together with a live shadow trial on the fleet's real booking board — 88% agreement with the incumbent process, every disagreement classified (docs/shadow-trial-2026-11-02.md).
+
+Not built yet: the operator CLI. See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 

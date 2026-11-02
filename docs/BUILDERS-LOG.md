@@ -542,3 +542,21 @@ of booking maps is not expressible in the dictionary with the
 current 26 primitives (no iteration over lists) — a genuine
 primitive-gap finding this trial exists to surface, recorded
 here rather than engineered around.
+
+**Shadow trial — result.** 68 proposal items from the board's
+history; 52 decidable (6 retroactive notes, 10 unparseable);
+agreement 46/52 = 88%; 6 disagreements, each classified in
+docs/shadow-trial-2026-11-02.md: 3 policy gap (conditional
+starts, a Casey-directed priority override — expressiveness
+the board and policy/1 both lack), 3 incumbent wrong (real
+double-bookings of exclusive seats, one costing a re-plan),
+0 Jacquard wrong in the final run. The first run flagged 20:
+auditing them exposed two harness defects (stale bookings
+contending; table-edit re-commits counted as new proposals),
+both fixed and re-run, and the 14 phantom disagreements are
+recorded in the report as Jacquard-wrong (harness), not
+silently replaced. Headline finding (F1): interval contention
+over committed state is inexpressible with the 26 primitives
+(no list iteration) — the trial's most valuable output, and a
+spec-revision question for Casey, not something fixed quietly
+here.

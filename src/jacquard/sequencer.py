@@ -452,7 +452,8 @@ class Sequencer:
             else:
                 prepared.append(None)
         applied = []
-        for index, (request, stored) in enumerate(zip(requests, prepared)):
+        dispatch_index = 0
+        for request, stored in zip(requests, prepared):
             if request["verb"] == "define":
                 self.log.append("definition", {
                     "producer": producer, "definition": stored})
@@ -465,7 +466,8 @@ class Sequencer:
                 if request["verb"] == "dispatch":
                     payload = request["args"][0] \
                         if request["args"] and isinstance(request["args"][0], dict) else {}
-                    action_id = "%s/action-%d" % (proposal_id, index)
+                    action_id = "%s/action-%d" % (proposal_id, dispatch_index)
+                    dispatch_index += 1
                     self._lifecycle("action", action_id, "approve",
                                     producer, payload)
                     if action_id in self.state.machine_instances:

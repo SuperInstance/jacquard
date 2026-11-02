@@ -607,3 +607,22 @@ the dictionary, not by this scan); and any definition, machine
 or rule whose name already exists in the destination with
 different content. Identical content is skipped, so importing
 the same bundle twice is safe.
+
+### 10.5 Executors
+
+The kernel records dispatched actions; executing them is
+deployment work, done by executor adapters outside the kernel.
+The contract: an action's dispatch payload is a map
+`{"cmd": [argv...], "compensate": [argv...]}` (compensate
+optional). The action id — `<proposal-id>/action-<n>`, where n
+is the dispatch's index among the proposal's dispatch requests
+— is the action's idempotency key: an executor journals every
+run under that id BEFORE reporting, so duplicate delivery (or
+a crash between running and reporting) re-reports the recorded
+outcome and never re-runs the command. Exit code 0 is reported
+as `confirm`; any other outcome as `fail`, followed by running
+the compensate command (when present) and reporting
+`compensate`. Commands run sandboxed (the reference adapter
+uses bubblewrap where available — read-only root, private
+temporary directory, no network — and says so in its journal;
+a fallback sandbox is recorded as a fact, never silently).
