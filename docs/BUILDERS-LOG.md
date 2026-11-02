@@ -1705,3 +1705,33 @@ none; the fetch-and-execute signature must be covered by no
 rule, asserted from the log). Raw inputs (spec, kernel log,
 timing notes, latency sidecar) land in `docs/proof-run-2/`;
 the report at `docs/proof-run-2-2026-11-02.md`.
+
+### Slice 16 — live proof run results (2026-11-02)
+
+Ran as planned; the full record is
+`docs/proof-run-2-2026-11-02.md` with raw inputs in
+`docs/proof-run-2/` (507-entry log, sha256 61d96a2a…). The
+headline: session 1 queued 14 of 15 governed actions (14
+operator decisions in 14 passes — this agent waited per item);
+session 2 queued **1 of 16** (the once-seen env-check), with
+an estimated ≈3 operator-minutes per 100 governed actions
+marginal against Phase 5's ≈11 baseline, and ≈20/100
+amortised across the whole run — the learning is paid once
+per shape.
+
+Two findings beyond the plan. (1) The bridge's rehearsal
+releases left unconsumed one-shot approvals in the log, and
+the adapter (by its slice-12 order: approvals before
+submission) let session 2's six pytest runs consume them — the
+queue still shrank, but the pytest RULE was masked for exactly
+the rehearsal count; a final pytest after the carryover was
+exhausted was decided by the rule itself (seq 499). The write
+rule fired directly, six times (seq 443–490). (2) Session 2's
+planted step never queued and never reached the operator: the
+adapter's rejected-twin rule denied it on sight of session
+1's rejection. Zero curl executions in the log. Regretted
+rules: none.
+
+Slice 16 is complete: replay acceptance in the suite, live
+acceptance here, both with evidence. Remaining Phase 6 work:
+slice 17.
