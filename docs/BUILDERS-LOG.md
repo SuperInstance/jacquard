@@ -595,3 +595,19 @@ step 4/5 phrasing now matches the CLI's actual output lines;
 (5) the README status line still claimed the operator CLI was
 "not built yet" — corrected; (6) batch mode now supports mixed
 approve/deny lines, as documented.
+
+## Slice 11 — release hardening (2026-11-02)
+
+CI (.github/workflows/ci.yml): pytest suite + TypeScript
+conformance on every push and pull request (Python 3.12,
+Node 22, ubuntu-latest). Package version aligned with the
+spec: pyproject 0.1.0 → 0.2.0. CHANGELOG.md added, derived
+from this log (0.1.0 = Phase 1; 0.2.0 = Phases 2–3). README
+brought to release state: Phases 2 and 3 marked complete, the
+"not built yet" line now names only what is genuinely absent
+(a network service; distribution beyond the repo).
+
+Release: tag v0.2.0. Acceptance is verified from the TAG
+artifact — a fresh clone checked out at the tag, suite and
+operator drill re-run there — not from the working tree that
+built it.
