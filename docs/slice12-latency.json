@@ -1,0 +1,10 @@
+{
+ "n": 60,
+ "median_ms": 43.65,
+ "p95_ms": 49.19,
+ "min_ms": 37.33,
+ "max_ms": 49.54,
+ "inner_median_ms": 8.34,
+ "inner_p95_ms": 13.1,
+ "note": "wall time per hook subprocess invocation (python start + log fold + decision); inner = decision_ms recorded in the latency sidecar; log grows ~6 entries per call, bench spans entries 0..~370"
+}

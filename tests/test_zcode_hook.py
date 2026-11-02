@@ -130,11 +130,17 @@ def test_changed_action_is_a_new_proposal(tmp_path):
 
 # ---------------------------------------------------------- fail closed
 
-def test_unmapped_tool_fails_closed():
+def test_unmapped_tool_passes_to_host_flow():
+    # Coordinator decision (builders log, slice 12 close): the
+    # adapter governs the four action classes; any other tool
+    # gets NO output, so the host's own permission flow
+    # governs it -- a deny here would break host bookkeeping
+    # tools the profile does not model. Fail-closed still
+    # holds for governed classes and adapter errors (below).
     result = hook.decide({"toolName": "SomeFutureTool", "toolInput": {}},
                          "/tmp/unused-kernel.jsonl")
-    assert result["decision"] == "deny"
-    assert result["reason"].startswith("adapter error:")
+    assert result["decision"] == "pass"
+    assert result["silent"] is True
 
 
 def test_malformed_stdin_fails_closed(tmp_path):

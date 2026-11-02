@@ -21,6 +21,14 @@ active standing rule for a shape (the learner's pipeline) lets
 that shape fast-path instead — the queue shrinks as approvals
 compile into rules.
 
+Tools outside the four classes (host bookkeeping: todo lists,
+plan mode, questions) get no hook output at all: the host's own
+permission flow governs them, and the pass is counted in the
+latency sidecar. After an approved shell action runs, the
+PostToolUse hook reports its outcome against the action machine
+in the kernel log, so the log records what actually ran and the
+operator CLI never re-executes it.
+
 ## The queue story (for the operator)
 
 The hook runs inline, so a queued action blocks THAT tool call —
@@ -45,6 +53,16 @@ is everything around the block:
   proposal.
 - The kernel log replays the whole story:
   `python3 tools/jq.py --log <workspace>/.jacquard/kernel.jsonl replay <id>`.
+
+Tools outside the four governed classes (host bookkeeping —
+todo lists, plan mode, questions) get no hook output at all:
+the host's own permission flow governs them, and the pass is
+counted in the latency sidecar. Adapter errors fail closed
+(deny) for everything the adapter does decide. On PostToolUse
+the hook also reports a released shell action's outcome
+against its kernel action machine, so the log records what
+actually ran (identical repeated commands confirm
+oldest-first — see `docs/slice12-live-run.md`).
 
 The kernel log lives at `$JACQUARD_LOG`, defaulting to
 `<workspace>/.jacquard/kernel.jsonl`. `$JACQUARD_PRODUCER`
@@ -98,6 +116,20 @@ surfaces and the live evidence uses the plugin. If a later
 ZCode build enables workspace hooks, the config snippet becomes
 the lighter install and nothing else changes: both surfaces
 invoke the same `zcode_hook.py`.
+
+### Known limit: headless `-p` mode after an approval
+
+Verified 2026-11-02 (builders log, slice 12 close): the full
+queue → approve → retry arc works in the interactive (plugin)
+surface — the demo session's approved Write and Bash really
+executed. In headless `zcode -p` mode the kernel side also
+works (the retry is allowed and the consumption is recorded),
+but the host then produced no PostToolUse event and no
+observable execution effect, and the agent reported itself
+still blocked. The anomaly is on the host side of the hook
+boundary; the adapter's verdicts are correct in both modes.
+Supervised seats should run interactively until ZCode's
+headless hook lifecycle matches its interactive one.
 
 ## Remove
 

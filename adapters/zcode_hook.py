@@ -17,6 +17,11 @@ For every tool call ZCode is about to make, this process:
    item is batched for an operator decision, to continue other
    work and retry later. An approval authorises exactly one
    retry of the identical action (see the profile module).
+   Tools outside the four governed classes (host bookkeeping)
+   get no output at all: the host's own flow governs them.
+   On PostToolUse the same process reports the outcome of an
+   approved shell action against its action machine, so the
+   log records what actually ran.
 
 Any adapter-internal error fails CLOSED: deny with reason
 "adapter error: ...". This process never exits non-zero with
@@ -129,10 +134,16 @@ def decide(event, log_path, producer=DEFAULT_PRODUCER):
     tool_input = event.get("toolInput") or event.get("tool_input") or {}
     mapped = translate(tool_name, tool_input)
     if mapped is None:
-        return {"decision": "deny",
-                "reason": "adapter error: no Jacquard tool-class "
-                          "mapping for tool %r; failing closed"
-                          % (tool_name,)}
+        # Not one of the four governed action classes (host
+        # bookkeeping: todo lists, plan mode, questions...).
+        # No Jacquard decision exists for it; stay silent so
+        # the host's own permission flow governs. The pass is
+        # counted in the latency sidecar.
+        return {"decision": "pass", "silent": True,
+                "reason": "Jacquard: tool %r is not a governed "
+                          "action class; host flow governs"
+                          % (tool_name,),
+                "outcome": "pass"}
     tool_class, payload = mapped
 
     os.makedirs(os.path.dirname(os.path.abspath(log_path)),
@@ -143,7 +154,7 @@ def decide(event, log_path, producer=DEFAULT_PRODUCER):
         seq = Sequencer(Log(log_path))
         if not profile_installed(seq):
             install_coding_agent(seq)
-        Learner(seq).install(seq)
+        Learner().install(seq)
 
         requests = prepare_requests(seq, producer, tool_class, payload)
 
@@ -212,6 +223,45 @@ def decide(event, log_path, producer=DEFAULT_PRODUCER):
                 "outcome": outcome or "deny"}
 
 
+def report_outcome(event, log_path, producer, failed):
+    """PostToolUse / PostToolUseFailure: if this event is the
+    host-side execution of a released shell proposal, report
+    the outcome against its action machine (pid/action-0), so
+    the log records what actually ran and the operator CLI
+    never re-executes it. Returns the action id reported, or
+    None. Never raises."""
+    try:
+        tool_name = event.get("toolName") or event.get("tool_name")
+        tool_input = event.get("toolInput") \
+            or event.get("tool_input") or {}
+        mapped = translate(tool_name, tool_input)
+        if mapped is None:
+            return None
+        tool_class, payload = mapped
+        if tool_class != "agent-shell":
+            return None  # only dispatch creates action machines
+        lock_path = log_path + ".lock"
+        with open(lock_path, "a") as lock_fh:
+            fcntl.flock(lock_fh, fcntl.LOCK_EX)
+            seq = Sequencer(Log(log_path))
+            if not profile_installed(seq):
+                return None
+            requests = prepare_requests(seq, producer, tool_class,
+                                        payload)
+            for item in proposals_for(seq, producer, tool_class,
+                                      requests):
+                action_id = item["proposal_id"] + "/action-0"
+                machine = seq.state.machine_instances.get(action_id)
+                if machine and machine.get("state") == "dispatched":
+                    seq.report_action(
+                        action_id, "fail" if failed else "confirm",
+                        producer)
+                    return action_id
+    except Exception:
+        return None
+    return None
+
+
 # ---------------------------------------------------------- process
 
 def default_log_path(event):
@@ -245,10 +295,19 @@ def main():
         tool_name = event.get("toolName") or event.get("tool_name")
         log_path = default_log_path(event)
         producer = os.environ.get("JACQUARD_PRODUCER", DEFAULT_PRODUCER)
-        if event_name != "PreToolUse":
-            # Registered for PreToolUse only; anything else is a
-            # no-decision pass (the host's own flow governs).
-            result = {"decision": "allow",
+        if event_name in ("PostToolUse", "PostToolUseFailure"):
+            reported = report_outcome(
+                event, log_path, producer,
+                failed=(event_name == "PostToolUseFailure"))
+            result = {"decision": "pass", "silent": True,
+                      "reason": "Jacquard: outcome %s"
+                                % (("reported for " + reported)
+                                   if reported else "not tracked"),
+                      "outcome": "reported" if reported else "pass"}
+        elif event_name != "PreToolUse":
+            # Registered for PreToolUse + Post only; anything
+            # else is a no-decision pass (host flow governs).
+            result = {"decision": "pass", "silent": True,
                       "reason": "Jacquard: no decision for event %s"
                                 % event_name,
                       "outcome": "pass"}
@@ -277,7 +336,8 @@ def main():
                 fh.write(json.dumps(line) + "\n")
     except Exception:
         pass  # the sidecar never blocks or breaks a decision
-    emit(event_name, result["decision"], result["reason"])
+    if not result.get("silent"):
+        emit(event_name, result["decision"], result["reason"])
     return 0
 
 

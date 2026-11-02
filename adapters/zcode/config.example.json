@@ -1,1 +1,52 @@
-{"hooks":{"enabled":true,"events":{"PreToolUse":[{"hooks":[{"args":["/ABSOLUTE/PATH/TO/jacquard/adapters/zcode_hook.py"],"command":"python3","statusMessage":"Jacquard decision","timeoutMs":30000,"type":"process"}]}]}}}
+{
+ "hooks": {
+  "enabled": true,
+  "events": {
+   "PreToolUse": [
+    {
+     "hooks": [
+      {
+       "args": [
+        "/ABSOLUTE/PATH/TO/jacquard/adapters/zcode_hook.py"
+       ],
+       "command": "python3",
+       "statusMessage": "Jacquard decision",
+       "timeoutMs": 30000,
+       "type": "process"
+      }
+     ]
+    }
+   ],
+   "PostToolUse": [
+    {
+     "hooks": [
+      {
+       "args": [
+        "/ABSOLUTE/PATH/TO/jacquard/adapters/zcode_hook.py"
+       ],
+       "command": "python3",
+       "statusMessage": "Jacquard decision",
+       "timeoutMs": 30000,
+       "type": "process"
+      }
+     ]
+    }
+   ],
+   "PostToolUseFailure": [
+    {
+     "hooks": [
+      {
+       "args": [
+        "/ABSOLUTE/PATH/TO/jacquard/adapters/zcode_hook.py"
+       ],
+       "command": "python3",
+       "statusMessage": "Jacquard decision",
+       "timeoutMs": 30000,
+       "type": "process"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

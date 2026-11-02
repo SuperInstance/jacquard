@@ -1329,3 +1329,62 @@ the opening entry above states.
   consumption is one-shot and in the log: a release authorises
   exactly one later identical action, and consuming it
   publishes a sense entry, so replay shows the whole story.
+
+## Phase 5 — slice 12: close (2026-11-02)
+
+- **Shipped.** `src/jacquard/coding_agent.py` (the profile:
+  four words, policy as data, one-shot approval consumption),
+  `adapters/zcode_hook.py` (the PreToolUse hook process;
+  fail-closed on adapter error; latency sidecar on every
+  invocation), `adapters/zcode/` (plugin package + install /
+  uninstall scripts, the workspace `config.example.json`, and
+  a README with the queue story and the redaction posture),
+  real-payload fixtures under `tests/data/zcode/` with a
+  provenance note, 28 adapter/profile tests, and the live-run
+  record in `docs/slice12-live-run.md`.
+- **Integration note (provenance of two design points).** A
+  parallel completion pass landed changes in this slice's
+  working clone mid-run (hook +80 lines, one test re-aimed);
+  they were verified (full suite, plus a second live run) and
+  integrated, not silently absorbed: (1) tools outside the
+  four governed classes get NO hook output — the host's own
+  permission flow governs them — because a deny would break
+  host bookkeeping tools the profile does not model; passes
+  are still counted in the sidecar, and fail-closed still
+  holds for governed classes and for adapter errors; (2) on
+  PostToolUse / PostToolUseFailure the hook reports a released
+  shell action's outcome against its action machine, so the
+  log records what actually ran. The registration surfaces
+  gained the Post events so (2) is live, and run 2 of the
+  live-run record exercises it — including its attribution
+  nuance for identical repeated commands (oldest-first
+  confirm), recorded in that document.
+- **Live evidence (docs/slice12-live-run.md).** In a real
+  interactive ZCode session: a Read fast-pathed (4.1 ms
+  decision), a Write and a Bash each queued with proposal id
+  + binding hash quoted back by the agent, were approved
+  hash-bound via `tools/jq.py`, and their identical retries
+  were allowed exactly once each; the file was created, the
+  program ran, the queue drained, and every proposal's
+  `jq replay` ends closed. Fast path measured over 60
+  synthetic Read proposals: 43.65 ms median wall per hook
+  invocation (8.34 ms median decision inside it), p95
+  49.19 / 13.10 ms (`docs/slice12-latency.json`).
+- **The V2 contrast, as it actually played out.** ZCode's
+  hook is synchronous, so the queued action itself blocks —
+  but the agent was never stuck: the deny reason carried the
+  queue coordinates, the operator decided the batch in one
+  CLI pass, and the retry fast-pathed on the consumed
+  approval. Nothing timed out into a rejection (Permit's
+  shape), and no permanent allow-rule was created (the
+  incumbent alternative): one approval authorised exactly one
+  execution, and the next identical action queued again,
+  ready to be governed by a standing rule when the learner
+  compiles one.
+- **Host state after the slice.** The demo plugin and the
+  probe plugin were uninstalled and their marketplaces
+  removed; the workspace trust granted to the probe workspace
+  was revoked; the global-config test files from the hook
+  investigation were already removed mid-investigation. The
+  demo workspace (`~/jacquard-slice12-demo`) and its kernel
+  log remain on the Oracle as the run's raw record.
