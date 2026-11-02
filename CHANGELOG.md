@@ -3,6 +3,75 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 0.3.0 — 2026-11-02
+
+Specification 0.3; Phase 4 of the build. The completeness
+probes (docs/completeness-probes-2026-11-02.md) closed the
+shadow trial's three expressiveness findings with no new
+primitives (the count stays 26) and no new fold section (the
+nine sections stay nine).
+
+### Added
+- Two built-in senses (spec §11.3): `contention` —
+  parameterised interval contention over committed bookings,
+  its value carrying the contenders, their count, the maximum
+  contender rank, the top contender's id, and any unclassified
+  seat strings; and `authority` — grant ceilings proven from
+  operator executions alone (three filters, last-wins, so a
+  later lower grant is a downward revocation). The authority
+  unit's current value alone is not evidence of a grant.
+- Conditional starts (spec §7.1): a proposal body may carry
+  `wait: {"guard", "deadline_seq"}`. The guard (an ordinary
+  pure dictionary word) is validated and evaluated before
+  anything is appended — including an underdeclared pre-check,
+  because a queued waiter never reaches the normal path's
+  check. A false guard queues the proposal with the wait spec
+  on its decision entry; the sequencer's pump re-evaluates
+  outstanding guards after commits under the pinned ordering
+  rules (post-fold evaluation; guard-true beats deadline;
+  fixpoint; refusing guards recorded as `wait-guard-refused`
+  and treated not-true; supersession via `releases`; the
+  deadline an absolute log position, queueing's own entries
+  included). A fired guard re-decides through the policy gate
+  fresh — it never bypasses it. `release_queued`,
+  `reject_queued` and `expire_queued` gain an optional reason
+  parameter (defaults unchanged).
+- Booking application profile (spec §11.4), shipped as
+  definitions beside the lifecycle machines: the booking
+  machine, seven guard/rank words (`booking-clear`,
+  `booking-contended`, `booking-outranks`, `booking-tied`,
+  `rank-granted`, `effective-rank`, `rank-below`), and the live
+  flow with preemption records. Booking records store the
+  effective rank (asserted clamped to the granted ceiling)
+  beside the asserted rank; ties queue under a named `tie`
+  transition with the incumbent holding the interval;
+  unclassified seats fail closed in the `booking-clear` guard.
+- Operator CLI: the queue listing annotates items carrying a
+  wait (`waiting: <guard> (deadline seq N)`) and booking items
+  whose latest taken transition is a tie (`authority tie`).
+- Golden vectors: a `senses` section — contention readings
+  for a clear candidate, a two-contender candidate, and an
+  unclassified-seat candidate; authority readings for an
+  ungranted producer (a self-grant write, inert) and a
+  granted-then-regranted producer (last-wins) — verified via
+  fold + compute_sense.
+
+### Changed
+- Spec seal is now `jacquard-spec/0.3`; golden vectors and
+  both conformance fixtures (full-log, replay-log) regenerated
+  under 0.3. The TypeScript checker passes all checks; sense
+  computation is declared SKIP there (conformance/ts/GAPS.md
+  #16: readings are published values computed by kernels, not
+  folded).
+- Probe B (tests/probes/test_probe_b.py): the 7 prototype
+  action-list tests are declared SKIP under the coordinator
+  ruling recorded in the builder's log — production
+  internalised the pump into Sequencer exits, legitimately
+  pre-empting the prototype driver's manual pump. The same
+  scenarios live on, strengthened, as tests/test_wait.py
+  (23 tests). No assertion was weakened; the probe remains in
+  the tree as the experiment record.
+
 ## 0.2.0 — 2026-11-02
 
 Specification 0.2; Phases 2 and 3 of the build.

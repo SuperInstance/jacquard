@@ -876,3 +876,93 @@ visible. Result: test_probe_b.py reports 6 passed, 7 skipped;
 the full suite's only failures are gone without weakening any
 check -- the probe remains in the tree as the experiment
 record, skips and all.
+
+## Phase 4 -- implementation slice: close (2026-11-02)
+
+Steps 5 and 6 of the slice brief, completing the slice the
+stopped builder left at steps 1-4 plus the Probe B ruling.
+
+- **Spec 0.3 (20e55b4).** Version and seal moved everywhere
+  the version is named (title, entry `spec` field, seal string
+  `jacquard-spec/0.3`; canonical.py SPEC_VERSION / SPEC_SEAL
+  aligned). §11.3 gains the contention and authority senses
+  in full -- subject grammars, read sets, filters, value shapes
+  including `unclassified`, the three-filter + last-wins
+  authority method, and the published-value determinism note
+  split into its two true halves (refold reproduces state;
+  recomputation at as_of_seq reproduces the reading). §7.1 is
+  new: the `wait` field -- shape, pre-append validation
+  (including the underdeclared pre-check the previous builder
+  added, recorded at 2523e88), submission-time evaluation,
+  queueing with no approval instance, the pump and its ordering
+  rules (post-fold evaluation, guard-true beats deadline,
+  fixpoint to 64 passes, refusing guards recorded as
+  `wait-guard-refused` and treated not-true, supersession via
+  `releases`, deadline an absolute log position including
+  queueing's own entries, composition -- a fired guard
+  re-decides through policy fresh, never bypasses it). §11.4
+  is the booking application profile: record schema with rank
+  + asserted_rank, grants with the authority sense as the only
+  sanctioned reading, preemption records, tie semantics with
+  the incumbent-holds interim disposition, seat classification
+  with unclassified fail-closed in the guard. §2.1 lists the
+  `wait` / `wait_refusal_at` decision fields; §3 points at
+  §7.1 from the proposal body; §9 describes the senses
+  vectors. Placements: the wait text sits at §7.1 (it is the
+  policy gate it composes with) with the §3 pointer, and the
+  profile sits at §11.4, the section booking.py's docstring
+  already cited.
+- **Vectors.** tools/gen_vectors.py gains a "senses" section
+  built from stated entry lists folded by the tool: contention
+  clear / two-contender / unclassified-seat cases, authority
+  ungranted (a self-grant write, inert under the producer
+  filter) / granted-then-regranted (last-wins, ceiling 5 -> 2)
+  cases, each {"entries", "subject", "expect":
+  {"value", "method", "as_of_seq"}} grouped by sense.
+  tests/test_vectors.py verifies the section via fold +
+  compute_sense and pins the named expectations in words.
+- **Conformance (143c92c).** Fixtures regenerated under 0.3:
+  conformance/gen_full_log.py rerun (25 entries, all 11
+  emitted kinds). The replay log needed a note: contrary to
+  the slice brief's premise, tools/replay_gpu_queue.py has no
+  fixture writer -- run_replay() returns a summary and keeps
+  its Sequencer internal. Regeneration therefore drove that
+  exact code path with a capturing Sequencer subclass and
+  wrote the replay's own log in the fixture's established
+  shape: 3,295 entries, 1,637 dispatches matching the recorded
+  order, chain verified, fold hash recorded. TS checker:
+  version constants in conformance/ts/jacquard.ts aligned to
+  0.3 (no fold logic changed; the header now says so), sense
+  computation declared SKIP in the checker output
+  (`vectors.senses`), and GAPS.md gains entry #16 (readings
+  are published values computed by kernels, not folded).
+  Checker result: 7 PASS (a-g), 3 SKIP (definitions, state,
+  senses), exit 0.
+- **Probe B disposition (55739d5)** executed as ruled; see the
+  ruling entry above. Suite before this close-out's steps:
+  197 passed, 7 failed (all probe-B action lists). After:
+  198 passed, 7 skipped -- the 7 failures became the 7
+  declared skips, and the +1 pass is the new senses-vector
+  test. Nothing else moved.
+- **Known residual -- two refusing waiters (not fixed).** The
+  pump's refusal re-recording skip keys on the waiter's own
+  refusal record still being the LAST log entry. One refusing
+  waiter: bounded to one record per state change, as specced.
+  Two waiters whose guards both refuse defeat the key: each
+  pass appends both records alternately (neither record is
+  last when its waiter's turn comes), so every pass "changes"
+  something and the pump runs to its 64-pass cap -- bounded
+  re-recording (at most 64 passes x the refusing waiters'
+  records per triggering call), then it stops. Neither waiter
+  is lost or crashed into an unrelated submission; both stay
+  queued and are re-evaluated on the next commit. The fix (a
+  per-waiter last-recorded-position check instead of a
+  head-entry check) is a later spec sentence; recorded here as
+  a known residual, per instruction, and not fixed in this
+  slice.
+- **Release.** pyproject 0.3.0; CHANGELOG 0.3.0 derived from
+  this log; README status brought current (Phase 4 complete,
+  spec 0.3; the "not built yet" line still names only the
+  network service and distribution beyond the repo). Tag
+  v0.3.0 follows push; cold-clone and tag verification are
+  recorded in the addendum entry after this one.

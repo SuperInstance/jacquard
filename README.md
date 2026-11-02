@@ -15,8 +15,8 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 ## Repository layout
 
-- `spec/` — the specification (SPEC.md, currently version 0.2) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), and state export bundles (`bundle.py`).
+- `spec/` — the specification (SPEC.md, currently version 0.3) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`).
 - `adapters/` — adapters that live outside the kernel: decision-model providers (the kernel imports no provider-specific code) and the sandboxed executor.
 - `tools/` — operator and build tools: the operator CLI (`jq.py`), the golden-vector generator, the shadow-trial runner.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
@@ -32,6 +32,8 @@ Phase 2 (complete): lifecycle machines and the machine-profile checker have land
 Phase 3 (complete): second-language conformance has landed — a TypeScript implementation written from the spec alone reproduces the golden vectors and folds the 3,295-entry real replay log to the identical state hash (conformance/).
 
 Phase 3 (continued): a sandboxed executor adapter has landed (`adapters/executor.py`, spec section 10.5) together with a live shadow trial on the fleet's real booking board — 88% agreement with the incumbent process, every disagreement classified (docs/shadow-trial-2026-11-02.md). The operator CLI has also landed (`tools/jq.py`): the decision queue as a command-line surface with hash-bound batch approvals, executor driving, and per-proposal replay — see the quickstart below; a cold agent reproduced the drill from this README alone.
+
+Phase 4 (complete): the completeness probes closed the shadow trial's three expressiveness findings (docs/completeness-probes-2026-11-02.md) with no new primitives and no new fold section. Interval contention is a kernel sense consumed by machine guards (spec section 11.3); conditional starts are a `wait` field on the proposal body, re-evaluated by a sequencer pump under pinned ordering rules (spec section 7.1); authority priority is rank as data, an authority sense that recognises only operator grants, and preemption as ordinary operator proposals, in a booking application profile shipped as definitions (spec section 11.4). The operator CLI annotates waiting items and authority ties in the queue listing.
 
 Not built yet: any network service; packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
 
