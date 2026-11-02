@@ -326,3 +326,48 @@ below. One critique item was an artifact of the review prompt's
 section splicing, not of the spec; noted and dismissed. Cost:
 ~3.6k tokens, fractions of a cent — the contra-find alone was
 worth it.
+
+## 2026-11-02 — Slice 5: WFQ scheduling, budgets/prices, senses, provider seam
+
+**Delivered.** `scheduler.py` — one WFQ implementation for the
+three arenas (admission via `Sequencer.submit_batch`, executor
+slots, decision-queue attention via `Sequencer.decision_order`):
+finish-tag queueing over (producer, class) flows, baseline
+weight 1, purchased extra weight decaying with a virtual-time
+half-life, aging past a wait threshold. `Sequencer.grant_budget`
+/ `post_price` / `buy_weight` over the folded accounts (budget
+entries grant, price entries post, applied spends deduct at the
+price in force at their log position; default price 1; an
+unaffordable purchase is a CONSERVATION refusal — degrade, never
+borrow). `senses.py` — compute/publish framework: queue-depth,
+output-use:<producer> (records projection as a reading),
+starvation (live scheduler counters), calibration-drift
+(honestly a stub; its method text says per-rule calibration is
+the learner's). Values are canonical types only — rates are
+integer basis points, because sense entries live in the log and
+the log admits no floats. `providers.py` — the decision-model
+seam (spec section 13), plus `adapters/typesafe_jev.py`, the
+first adapter, deliberately OUTSIDE the kernel package.
+Tests: 24 new (101 total), including the acceptance shapes —
+quiet flow served within its first four tags under a 57-item
+flood; a weight-4 buyer landing at 36–44 of 50 serves against a
+baseline flow (purchased share 40, capture bounded, baseline not
+starved); spend accounting replayed from the log alone to the
+unit and to the same state hash.
+
+**Jev experiment (advisor measurement, tools/jev_experiment.py).**
+11 blind judgements against record-derived ground truth: 6
+routine dispatches from the real gpu-queue record, the hold and
+halt reconstructed fixtures, 3 policy/1 cases. Agreement 10/11
+(91%), latency mean 0.60s / max 0.76s per call. The single
+disagreement is the finding: on the hold fixture Jev said DENY
+where the rule says HOLD (queue). That distinction is
+load-bearing in this design — a hold is a reversible batching
+for a human, a deny is terminal — and the model flattened it.
+Exactly the failure mode the constitution predicts: a decision
+model is a witness with a flattening habit, so its readings are
+senses (evidence, labelled, ignorable), never gate inputs. A
+constitutional test pins this: decisions are byte-identical with
+and without a 99%-confident judgement sense published, and the
+kernel's decision-path modules contain no provider imports
+(asserted by grep in the test suite).

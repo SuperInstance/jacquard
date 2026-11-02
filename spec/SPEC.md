@@ -363,3 +363,75 @@ installed runs its lifecycles through the machines:
 A kernel without the lifecycle machines installed behaves exactly
 as the 0.1 kernel: lifecycle stepping is active only for machines
 present in the kernel's registry.
+
+## 11. Scheduling, budgets, senses
+
+### 11.1 Fair scheduling
+
+Admission to the sequencer, executor slots, and attention in
+the decision queue are one mechanism: weighted fair queueing
+over flows. A flow is a (producer, service class) pair. Every
+flow has baseline weight 1. An item arriving at virtual time v
+for a flow whose last finish tag is f receives start tag
+max(v, f) and finish tag start + size / weight, with weight the
+flow's weight at arrival; the scheduler serves the smallest
+finish tag, ties by arrival order. Virtual time is the start
+tag of the most recently served item (0 before any service).
+
+Extra weight is purchased from the producer's budget (11.2) at
+the posted price of a resource per unit of extra weight. A
+purchase is recorded as a `budget` entry with reason
+`weight-purchase` (the evidence) and takes effect at the
+virtual time of purchase; its contribution decays, halving
+every HALF_LIFE virtual-time units (reference default 1000),
+back to baseline — a purchase buys a temporary share, never a
+permanent one. Aging is a secondary guarantee: an item whose
+wait exceeds AGING_THRESHOLD virtual-time units (reference
+default 50) has its finish tag reduced by (wait − threshold) ×
+AGING_RATE (reference default 0.01). The guarantees are:
+baseline weight always earns its share (no starvation), and no
+flow exceeds its purchased share by more than tag slack (no
+capture).
+
+### 11.2 Budgets and prices
+
+One accounting unit for everything. `budget` entries grant
+(`delta` > 0) or record purchases (`delta` < 0); `price` entries
+post the price of a resource. The folded balance of a producer
+is the sum of its grants minus, for each applied `spend` effect
+in its `execution` entries, amount × the price in force at that
+point in the log (the latest `price` entry for the resource
+before it; default price 1 when never posted). Exhaustion
+degrades, never blocks and never borrows: a purchase the
+balance cannot cover is refused CONSERVATION, and spending
+authority itself remains a policy matter (section 7).
+
+### 11.3 Senses
+
+A sense is a read-only projection of the log and folded state,
+published as a `sense` entry whose value is `{"value", "method",
+"as_of_seq"}`: the reading, how it was derived, and the log
+position it describes. Sense values use canonical types only;
+rates are integer basis points. Computing a sense appends
+nothing. Built-in senses: `queue-depth` (folded queue size),
+`output-use:<producer>` (the records projection as a reading:
+outputs, used, ratio in basis points), `starvation` (per-flow
+waiting/served/weight evidence from a live scheduler's
+counters), `calibration-drift` (a stub — kernel-wide allow-rate
+drift between fixed windows; per-rule calibration is section
+12's business, and the stub's method says so).
+
+## 13. Decision-model providers
+
+Deployments may plug in decision models (judgement models that
+return typed probabilities or choices) behind one interface: a
+provider has a name and a `judge(text, question, choices)`
+operation returning a choice among the given labels and a
+probability in basis points for the first label, or declining.
+A provider's reading may be published only as a sense (section
+11.3), with the provider named in the reading. Providers are
+advisors: no allow, deny, queue, release, or lifecycle outcome
+may depend on a provider's verdict, and the kernel imports no
+provider-specific code — adapters live outside the kernel, and
+changing providers changes which senses exist, never how
+decisions are made. The record gates; the model only testifies.

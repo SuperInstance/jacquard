@@ -31,6 +31,7 @@ from .machines import check_machine, find_transition, parse_machine
 from .policy import POLICY_VERSION, decide
 from .primitives import TIER_E, EvalContext
 from .records import records as project_records
+from .scheduler import Scheduler
 from .state import Refusal, fold
 
 
@@ -40,6 +41,7 @@ class Sequencer:
         self.standing = standing if standing is not None else {}
         self.tentative = {}
         self._verdicts = {}
+        self.admission = Scheduler()
         self.state = fold(self.log.entries)
         self.dictionary = Dictionary(
             self.state, lambda: self.log.entries,
@@ -79,6 +81,85 @@ class Sequencer:
             "name": name, "state_hash": self.state.state_hash()})
         self._refold()
         return entry
+
+    # --------------------------------------- budgets and prices
+    def grant_budget(self, producer, amount, by="operator"):
+        """Grant accounting units to a producer. A log entry: the
+        folded balance is grants minus priced spends."""
+        entry = self.log.append("budget", {
+            "producer": producer, "delta": int(amount), "by": by})
+        self._refold()
+        return {"entry": entry["hash"],
+                "balance": self.state.budgets.get(producer, 0)}
+
+    def post_price(self, resource, price, by="operator"):
+        """Post the price of a resource in the accounting unit.
+        Prices are versioned by the log: a spend is charged at the
+        price posted at its point in the log."""
+        entry = self.log.append("price", {
+            "resource": resource, "price": int(price), "by": by})
+        self._refold()
+        return {"entry": entry["hash"], "price": int(price)}
+
+    def buy_weight(self, producer, cls, extra, resource="compute"):
+        """Purchase extra scheduling weight for a flow from the
+        producer's budget, at the posted price of `resource` per
+        unit of extra weight. The purchase is a budget entry (the
+        evidence) plus a scheduler record (the mechanism); the
+        extra weight decays to baseline with virtual time.
+        Insufficient budget is a CONSERVATION refusal: budgets
+        degrade, they never borrow."""
+        extra = int(extra)
+        price = self.state.prices.get(resource, 1)
+        cost = extra * price
+        balance = self.state.budgets.get(producer, 0)
+        if cost > balance:
+            raise Refusal("CONSERVATION",
+                          "weight purchase costs %d, budget is %d"
+                          % (cost, balance))
+        self.log.append("budget", {
+            "producer": producer, "delta": -cost,
+            "reason": "weight-purchase", "flow": [producer, cls],
+            "extra": extra, "resource": resource})
+        self.admission.purchase((producer, cls), extra)
+        self._refold()
+        return {"cost": cost,
+                "balance": self.state.budgets.get(producer, 0),
+                "weight": self.admission.weight((producer, cls))}
+
+    # --------------------------------------- batch admission
+    def submit_batch(self, envelopes):
+        """Admit a batch of proposals through the WFQ admission
+        scheduler: every proposal is queued under its flow, then
+        served in fair order and submitted through the normal
+        path. Non-proposal envelopes bypass the scheduler in
+        arrival order. Returns verdicts in served order."""
+        verdicts = []
+        queued = []
+        for envelope in envelopes:
+            if envelope.get("kind") == "proposal":
+                flow = (envelope["producer"],
+                        envelope["body"].get("class", "work"))
+                self.admission.submit(flow, envelope)
+                queued.append(envelope)
+            else:
+                verdicts.append(self.submit(envelope))
+        while True:
+            envelope = self.admission.serve_next()
+            if envelope is None:
+                break
+            verdicts.append(self.submit(envelope))
+        return verdicts
+
+    def decision_order(self):
+        """The decision queue in WFQ presentation order: flows by
+        their current (possibly purchased) weights, items in
+        queueing order within the rule of the finish tags."""
+        items = []
+        for proposal_id, body in self.state.decision_queue.items():
+            flow = (body["producer"], body.get("class", "work"))
+            items.append((flow, proposal_id, 1))
+        return self.admission.order(items)
 
     # -------------------------------------------------- submit
     def submit(self, envelope):
