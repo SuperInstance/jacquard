@@ -1254,3 +1254,78 @@ disposition.
   12/13 builders), so pushes went to a `gh` remote pointing at
   GitHub directly; the local clone fast-forwards on its next
   pull. Nothing was pushed into another builder's working tree.
+## Phase 5 — slice 12: the ZCode adapter (in progress, 2026-11-02)
+
+Builder's log for slice 12, written during the work. Host
+investigation came first, because the hook schema decides the
+adapter's shape — and the investigation overturned two things
+the opening entry above states.
+
+- **Hook payload/output schema (empirical, captured from the
+  real ZCode 3.16.3-40).** A probe hook recorded live payloads
+  (fixtures land with the adapter's tests): the input is one
+  JSON object carrying BOTH camelCase and snake_case spellings
+  (`toolName`/`tool_name`, `toolInput`/`tool_input`,
+  `hookEventName`/`hook_event_name`, `sessionId`/`session_id`,
+  `toolCallId`/`tool_use_id`), plus `cwd`, `mode`,
+  `riskLevel`, `sideEffectScope`, `timestamp`, `traceId`,
+  `turnId`, `transcript_path`. Tool inputs observed: Read
+  `{file_path}`, Write `{file_path, content}`, Bash
+  `{command, description}`. The output the host accepts is
+  `{"hookSpecificOutput": {"hookEventName": "PreToolUse",
+  "permissionDecision": "allow"|"ask"|"deny",
+  "permissionDecisionReason": ...}}` (the decision fields are
+  visible in the shipped bundle's output schema).
+- **Decision point: PreToolUse, not PermissionRequest.** With
+  the probe returning `allow` from PreToolUse, Write and Bash
+  executed with NO native permission prompt, and no
+  PermissionRequest hook fired at all (4 PreToolUse captures,
+  0 PermissionRequest). A PreToolUse decision pre-empts the
+  native flow, so the adapter registers on PreToolUse alone.
+- **FINDING — configuration-file hooks do not run on this
+  host, in any scope, despite the vendor skill docs.** The
+  diagnosing-hooks skill says configuration-file hooks "have
+  no trust gate" and run with `hooks.enabled: true`. Observed
+  on 3.16.3-40 (Oracle): (1) workspace `.zcode/config.json`
+  hooks were blocked as `config.project_hooks.pending_trust`
+  until `zcode hooks trust grant` was run for the workspace
+  (a trust CLI the skill never mentions; digests are per hook
+  declaration, so any config edit re-pends trust); (2) after
+  the grant (`workspace_hooks_trusted_persistent`), sessions
+  still logged `workspace_hook.feature_disabled` at
+  session start and no hook ever fired — with the workspace
+  config, with a user-scope config in `~/.zcode/cli/config.json`,
+  and with `hooks.enabled: true` added to
+  `~/.zcode/cli/setting.json` (both test files removed
+  afterwards; the host was restored). The bundle's admission
+  code gates workspace hooks on a host-supplied
+  `workspaceHookTrustEnabled` flag that the interactive TUI
+  host does not supply in this build (the one construction
+  passing it is a background-task host). (3) **Plugin hooks
+  DO run**: the same probe, packaged as a local plugin
+  (`.zcode-plugin/plugin.json` with `"hooks":
+  "hooks/hooks.json"`) and installed from a local marketplace
+  via `zcode plugins`, fired for Read/Write/Bash in a live
+  interactive session. Consequence for this slice: the
+  adapter ships BOTH surfaces — the workspace config snippet
+  (the documented surface; it is what the config.example
+  promises, and it will take effect wherever config hooks are
+  enabled) and a plugin package carrying the identical hook
+  registration, which is the surface the live run uses.
+  Recorded here rather than engineered around silently.
+- **Profile (src/jacquard/coding_agent.py).** Four words
+  against the profile checker, following booking.py's pattern:
+  `agent-read` (pure — Tier-P `get`; computed effects []),
+  `agent-write` (emits `write`), `agent-shell` (emits
+  `dispatch` with the executor's `{"cmd": [...]}` action
+  shape), `agent-network` (emits `send`). Install asserts the
+  kernel-computed effects equal the profile's table. Policy is
+  data (`TOOL_CLASSES`): reads fast-path; the other classes
+  queue — writes/shell by carrying a `notify` request beside
+  the real request (the booking flow's mechanism; `notify` is
+  policy/1-protected), network on its own `send` effect. An
+  active learner standing rule for the shape overrides the
+  queue through the sequencer's existing rule hook. Approval
+  consumption is one-shot and in the log: a release authorises
+  exactly one later identical action, and consuming it
+  publishes a sense entry, so replay shows the whole story.

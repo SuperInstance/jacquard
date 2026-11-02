@@ -13,6 +13,8 @@ from .machines import check_machine, find_transition, parse_machine
 from .booking import (BOOKING_MACHINE, BookingFlow, effective_rank,
                       install_booking, publish_authority,
                       publish_contention)
+from .coding_agent import (TOOL_CLASSES, install_coding_agent,
+                           profile_installed)
 from .bundle import BUNDLE_FORMAT, export_bundle, import_bundle
 from .learner import Learner
 from .providers import (DecisionModelProvider, FakeProvider,
@@ -33,6 +35,7 @@ __all__ = [
     "BUNDLE_FORMAT", "export_bundle", "import_bundle",
     "output_use_ratio", "outputs_and_uses", "records",
     "BOOKING_MACHINE", "BookingFlow", "effective_rank",
+    "TOOL_CLASSES", "install_coding_agent", "profile_installed",
     "install_booking", "publish_authority", "publish_contention",
     "Scheduler", "SENSES", "compute_sense", "publish_senses",
     "Sequencer", "Refusal", "State", "fold", "rule_stage",
