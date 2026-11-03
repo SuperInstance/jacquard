@@ -8,12 +8,11 @@ clone of the tag artifact itself, not the working tree.
 ## Items
 
 - [x] **Python suite green** — 314 passed, 7 skipped
-  (release tree; re-run from the tag clone in the post-tag
-  addendum).
+  (314 passed, 7 skipped FROM THE TAG CLONE).
 - [x] **TypeScript conformance green** — 13 PASS / 0 SKIP /
-  0 FAIL (release tree; re-run from the tag clone).
+  0 FAIL (13 PASS / 0 FAIL FROM THE TAG CLONE).
 - [x] **Rust conformance green** — 13 PASS / 0 SKIP / 0 FAIL
-  (release tree; re-run from the tag clone).
+  (13 PASS / 0 FAIL FROM THE TAG CLONE).
 - [x] **Three-kernel cross-drill byte-identical** — one
   38-op stream through Python, TS and Rust: log sha256
   `411bb3e7…` and verdicts sha256 `25746e6f…` identical in
@@ -21,7 +20,9 @@ clone of the tag artifact itself, not the working tree.
   re-run from the tag clone).
 - [x] **Cold-agent drill from the release README** — a fresh
   agent with only the tagged repo reproduces the operator
-  drill (result recorded in the post-tag addendum).
+  drill (PASS from the tag clone: a fresh agent ran the
+  README operator drill end-to-end, all predicted final
+  states reproduced; see the builder's log addendum).
 - [x] **Anchoring drill green** — from cold clones of the
   two public repos: the proof-run-2 log verifies 507/507
   under the key registry in Python and TS; the forged

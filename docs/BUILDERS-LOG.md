@@ -3114,3 +3114,43 @@ passes with evidence. Ground facts established first:
   shelf listing). Tag follows the checklist's pre-tag
   items; the from-the-tag verification is recorded in the
   post-tag addendum entry.
+
+### Slice 23 — post-tag verification addendum (v1.0.0)
+
+Tag **v1.0.0** = commit e068a13 (annotated tag 691bdef),
+pushed and ls-remote-verified. All verification below ran
+from a **fresh clone of the tag** (`/tmp/jq-tag`), not the
+working tree:
+
+- Python suite: **314 passed, 7 skipped**.
+- TypeScript checker: **13 PASS, 0 FAIL**.
+- Rust checker (built from the tag): **13 PASS, 0 FAIL,
+  0 SKIP**.
+- Three-kernel cross-drill from the tag: logs and verdicts
+  **byte-identical** (all three).
+- Anchoring, tag clone against a fresh clone of the public
+  witness repo: proof-run-2 **verified 507/507, tail 0**
+  under the key registry; the gpu-queue live log
+  **verified 91/91, tail 0** via the explicit successor-key
+  form; the forged fixture **failed at checkpoint 0**
+  (stage: prefix) with `internal_chain_ok: true`, exit 1 —
+  the designed outcome.
+- **Cold-agent drill from the release README: PASS.** A
+  fresh agent with only the tagged repo ran the README's
+  operator drill end-to-end (seed → queue → hash-bound
+  approve/deny → execute → replay), reproduced every
+  predicted final state (approved closed, denied refused,
+  dispatched closed-and-confirmed), and ran the suite at
+  314 passed. Friction was very low: manual transcription
+  of the 64-char ids/bindings (unambiguous, did not block)
+  and one README paraphrase of the execute output that did
+  not match the tool's single-line form verbatim — the
+  paraphrase is corrected in the same commit as this
+  addendum.
+
+Phase 8 is complete: slices 20–23 all landed with their
+documentation, and the phase's remaining owner actions are
+the batched list in `docs/release-readiness-1.0.md`
+(anchor-passphrase re-wrap; PyPI / crates.io / npm first
+publishes; the shelf listing). The Oracle board booking for
+this lane is marked DONE.

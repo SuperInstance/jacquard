@@ -91,8 +91,7 @@ python3 tools/jq.py --log /tmp/kernel.jsonl decide deny <id> --hash <binding>
 
 # 4. Execute the dispatched action through the sandboxed executor
 python3 tools/jq.py --log /tmp/kernel.jsonl execute
-#    prints: executed <action id>: exit 0 via <sandbox>
-#            -> state confirmed
+#    prints: executed <id>/action-0: exit 0 via subprocess -> state confirmed
 
 # 5. Replay proposals end to end — once per id
 python3 tools/jq.py --log /tmp/kernel.jsonl replay <approved-id>
