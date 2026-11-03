@@ -4020,3 +4020,35 @@ count as discovery), fit judgement, adoption cost, and
 the agent's unfiltered verdict in its own words. The
 coordinator does not rescue a run that stalls on the
 docs: the stall is the data.
+
+**Slice 36 — results (2026-11-03).** All four primary
+tasks passed on their own merits, each graded
+independently of any Jacquard question (details and
+evidence: docs/slice36-outside-test.md). Jacquard was
+adopted zero times. Run 1 (strong fit, GPU governance):
+considered seriously, rejected on adoption cost (git-only
+install; vendoring + adapter > the ~250 stdlib lines it
+would replace) with the flip condition named unprompted —
+multi-process scale. Run 4 (strong fit, batched
+approvals): the deepest evaluation of the phase; rejected
+on three findings the coordinator verified against the
+repo — the registry absence hit live (pip install fails),
+NO generic submit verb in tools/jq.py (subcommands are
+exactly seed-demo/queue/status/decide/execute/replay),
+and the shipped surface never demonstrates a class-based
+auto-allow pattern (true of starter + policy/1; the
+kernel expresses it in policy, undocumented where a new
+adopter looks). Run 2 (partial fit): never considered —
+the provenance-shaped need routed to attestation tooling;
+non-adoption correct, recorded as a positioning boundary,
+not a defect. Run 3 (poor fit): never mentioned; correct
+rejection by omission — the pass this profile exists for.
+Method caveat, recorded in the report's first section:
+the agents ran on the fleet's own coordinator VM, whose
+standing context already contains this programme's
+records (Run 1's own words: "the fleet's own governance
+kernel"), so outside DISCOVERY is not creditable on this
+harness; consideration, fit judgement, adoption cost and
+verdicts are. Slice 37 takes the three actionable
+findings: the submit verb, the auto-allow demonstration,
+and fit-signalling honesty in the front-door docs.
