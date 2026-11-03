@@ -6,16 +6,19 @@
 //!   jacquard-verify-anchor <log.jsonl> --checkpoints <dir> --keys <registry>
 //!
 //! --keys reads the witness key registry (spec 15.3,
-//! jacquard/anchor-keys/1) from a keys.json file or a transport
-//! directory holding one, and builds the pinned schedule for
-//! the presented log's id — mirroring the TS twin and
-//! `jqanchor verify --keys`.
+//! jacquard/anchor-keys/1 or jacquard/anchor-keys/2) from a
+//! keys.json file or a transport directory holding one, and
+//! builds the pinned schedule for the presented log's id —
+//! mirroring the TS twin and `jqanchor verify --keys`. The
+//! /1 grammar is read under the legacy rule and the /2
+//! grammar under the null-window rule (spec 15.3, erratum 2);
+//! any other registry format is refused by name.
 //!
 //! Prints the result as JSON (the same eight fields as the
 //! Python tool) and exits 0 for verified / verified_to_anchor,
 //! 1 for failed, 3 for unanchored, 2 for tool refusal.
 
-use jacquard_kernel::anchor::verify_anchor;
+use jacquard_kernel::anchor::{schedule_from_registry, verify_anchor};
 use jacquard_kernel::value::{obj, parse_json, pretty_json, s, Value};
 use std::path::Path;
 
@@ -128,10 +131,15 @@ fn main() {
             .ok()
             .and_then(|text| parse_json(&text).ok());
         let registry = match registry {
-            Some(r) if r.get("format") == Some(&s("jacquard/anchor-keys/1")) && r.has("keys") => r,
+            Some(r)
+                if r.get("format") == Some(&s("jacquard/anchor-keys/1"))
+                    || r.get("format") == Some(&s("jacquard/anchor-keys/2")) =>
+            {
+                r
+            }
             _ => {
                 eprintln!(
-                    "{}: not a jacquard/anchor-keys/1 registry",
+                    "{}: not a jacquard/anchor-keys/1 or jacquard/anchor-keys/2 registry",
                     registry_file.display()
                 );
                 std::process::exit(2);
@@ -146,45 +154,15 @@ fn main() {
                 .unwrap_or("")
                 .to_string()
         };
-        let mut intervals: Vec<(i64, Option<i64>, String)> = Vec::new();
-        if let Some(keys) = registry.get("keys").and_then(|v| v.as_array()) {
-            for k in keys {
-                let from = k
-                    .get("signs_from")
-                    .and_then(|m| m.get(&log_id))
-                    .and_then(|v| v.as_int())
-                    .unwrap_or(0);
-                let until = k
-                    .get("signs_until")
-                    .and_then(|m| m.get(&log_id))
-                    .and_then(|v| v.as_int());
-                let pk = k
-                    .get("pubkey")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("")
-                    .to_string();
-                intervals.push((from, until, pk));
-            }
-        }
-        intervals.sort_by_key(|iv| iv.0);
-        if intervals.is_empty() || intervals[0].0 != 0 {
-            eprintln!("registry does not cover checkpoint_seq 0 for {}", log_id);
-            std::process::exit(2);
-        }
-        for w in intervals.windows(2) {
-            let (prev, next) = (&w[0], &w[1]);
-            if prev.1.is_none() || next.0 != prev.1.unwrap() + 1 {
-                eprintln!("registry windows for {} do not partition the sequence", log_id);
+        let derived = match schedule_from_registry(&registry, &log_id) {
+            Ok(sch) => sch,
+            Err(err) => {
+                eprintln!("{}", err);
                 std::process::exit(2);
             }
-        }
-        pinned = Some(intervals[0].2.clone());
-        schedule = Some(
-            intervals
-                .into_iter()
-                .map(|(from, _, pk)| (from, pk))
-                .collect(),
-        );
+        };
+        pinned = Some(derived[0].1.clone());
+        schedule = Some(derived);
     }
     let result = verify_anchor(
         &entries,
