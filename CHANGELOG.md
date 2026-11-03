@@ -3,6 +3,34 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 1.0.1 — 2026-11-03
+
+### Slice 24 — the registry-grammar fix (Phase 9)
+- Spec 0.6 **erratum 2**: the anchor key registry learns null
+  windows. A registry document of format
+  `jacquard/anchor-keys/2` reads a `log_id` omitted from BOTH
+  of a key's maps as "this key signs nothing for that log";
+  `/1` documents keep the legacy reading, and verifiers accept
+  both, each under its own grammar. No checkpoint, entry or
+  seal byte changes.
+- The defect this fixes: at 1.0.0 no registry could schedule
+  a log born after a key rotation (the gpu-queue live log),
+  because an empty window was inexpressible; such logs
+  verified only in explicit-key form. All three verifiers
+  (Python, TypeScript, Rust) now verify that log via the
+  registry path — 91/91 — and the pre-rotation proof log
+  still verifies 507/507 under the same registry. A registry
+  claiming a window outside the truth fails by name at the
+  envelope binding.
+- Conformance: new `anchor_registry` vector section (9
+  schedule cases, 2 authentication cases) run by all three
+  checkers — 14 PASS / 0 SKIP / 0 FAIL each; Python suite
+  318 passed, 7 skipped, including real-log acceptance tests
+  over vendored witness fixtures.
+- The witness registry (SuperInstance/jacquard-anchors) is
+  republished as /2, entries unchanged; both repositories'
+  limitation statements updated.
+
 ## 1.0.0 — 2026-11-03
 
 The 1.0 release: three implementations of one contract

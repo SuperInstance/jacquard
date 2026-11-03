@@ -90,3 +90,33 @@ clone of the tag artifact itself, not the working tree.
    `jacquard-kernel` 1.0.0 on the curated shelf (si-ready)
    per its usual intake; the release tag and this checklist
    are the intake evidence.
+
+## Addendum — v1.0.1 (2026-11-03, Phase 9 slice 24)
+
+v1.0.1 is a one-defect release: the registry-grammar fix
+recorded in this checklist for 1.0.0 ("the key-registry
+grammar makes a registry unable to schedule a log born after
+a rotation") is **fixed and the limitation is retired**.
+Spec 0.6 erratum 2: registry format `jacquard/anchor-keys/2`
+adds null windows (a `log_id` omitted from both of a key's
+maps = that key signs nothing for that log); /1 documents
+keep the legacy reading; verifiers accept both, each under
+its own grammar. No checkpoint, entry or seal byte changed.
+
+Evidence (all from the v1.0.1 tree): Python suite 318 passed
++ 7 skipped; TypeScript and Rust checkers 14 PASS / 0 SKIP /
+0 FAIL (new `anchor_registry` vector section: 9 schedule
+cases, 2 authentication cases). The gpu-queue live log
+verifies via the registry path — not explicit-key — in all
+three implementations (91/91, checkpoints seq 0/1), and the
+pre-rotation proof log verifies 507/507 under the same
+registry; a forged-window registry fails by name at
+checkpoint 0. The witness registry
+(SuperInstance/jacquard-anchors @ d1fa84c) stands republished
+as /2 with entries byte-identical apart from the format
+string, and its README's limitation section rewritten.
+
+The batched owner steps above carry forward unchanged, with
+**1.0.1** as the version to publish wherever they say 1.0.0;
+docs/PUBLISHING.md (Phase 9 slice 26) supersedes them with
+exact strings and paved workflows.
