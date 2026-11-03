@@ -2043,3 +2043,24 @@ conformance: **7 PASS, 4 SKIP**. Cold-clone evidence is
 recorded in the verification addendum the coordinator runs at
 phase close; the pre-close fresh-clone runs of both suites were
 green from this tree (see the close commit's verification).
+
+### Slice 18 — cold-clone verification addendum (2026-11-02)
+
+Run after the close commit (fec4206) was pushed, from fresh
+clones of both public repos, on the Oracle:
+
+- `git clone https://github.com/SuperInstance/jacquard.git` at
+  fec4206 → `python3 -m pytest -q`: **285 passed, 7 skipped**.
+- Same clone, `conformance/ts`: `node check.ts` → **7 PASS,
+  4 SKIP** (definitions, state, anchor, senses), exit 0.
+- Same clone, drill against a fresh clone of
+  `jacquard-anchors` with the pubkey taken from that clone's
+  `pubkey.txt`: true proof log → `verified`, 507 anchored,
+  tail 0; forged fixture → exit 1, `failed` at checkpoint 0,
+  `internal_chain_ok: true`.
+- Secret scan of the slice: `git log -p` of both repos greps
+  zero for any PEM private-key header and zero for a fragment
+  of the operator key's PEM body; the key filename is tracked
+  in neither repo; the key file itself is mode 0600 at
+  `~/.jacquard/anchor-key.ed25519` on the Oracle and nowhere
+  else.
