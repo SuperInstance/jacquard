@@ -1205,11 +1205,26 @@ implements.
   the scheduled key for its sequence (below).
 - *The key registry.* The anchor transport carries a registry
   file, `keys.json` at the transport root, of the form
-  `{"format": "jacquard/anchor-keys/1", "keys": [...]}`. Each
+  `{"format": "jacquard/anchor-keys/2", "keys": [...]}`. Each
   entry is `{"pubkey": hex64, "status": "active" | "retired",
   "signs_from": {<log_id>: first checkpoint_seq},
-  "signs_until": {<log_id>: last checkpoint_seq}}`; the two
-  maps may omit a `log_id`, meaning unbounded on that side.
+  "signs_until": {<log_id>: last checkpoint_seq}}`. A `log_id`
+  omitted from one map is unbounded on that side; a `log_id`
+  omitted from BOTH maps is a null window \u2014 the key signs
+  nothing for that log and contributes no window to its
+  schedule. ERRATUM (2026-11-03, spec 0.6 erratum 2): the /1
+  grammar had no null window \u2014 every key participated in
+  every log's schedule, an omitted side meaning unbounded
+  \u2014 so no /1 registry could schedule a log born after a
+  rotation and signed only by a successor the retired key
+  never named. Verifiers MUST accept /1 registries under the
+  legacy rule stated for them (every key participates, omitted
+  sides unbounded) and /2 registries under the null-window
+  rule, and MUST refuse a registry of any other format by
+  name. The change is confined to the registry document, which
+  carries its own format version for this reason: no
+  checkpoint, entry or seal byte changes, so the spec seal
+  and every recorded hash stand.
   Entries are ordered by first use. The registry is how a
   verifier learns the *schedule*: for a presented log, the key
   scheduled for a checkpoint is the entry whose window for that

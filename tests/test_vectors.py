@@ -152,3 +152,57 @@ def test_anchor_vector():
     with __import__("pytest").raises(InvalidSignature):
         pub.verify(bytes.fromhex(envelope["sig"]),
                    canonical(dict(body, log_length=3)))
+
+
+def test_anchor_registry_vectors():
+    # Spec 15.3 (erratum 2): the registry grammar. Schedule cases
+    # run the registry -> schedule derivation; refusal cases pin
+    # the failure text; auth cases run the section 15.5 procedure
+    # over the anchor vector's own history under a registry
+    # schedule. The first schedule cases carry the live witness
+    # registry verbatim: the gpu-queue log's null window is the
+    # defect this grammar fixes.
+    import pytest
+    from jacquard.anchor import (AnchorError, schedule_from_registry,
+                                 verify_entries)
+    section = load()["anchor_registry"]
+    for case in section["schedule_cases"]:
+        if "expect_schedule" in case:
+            got = schedule_from_registry(case["registry"],
+                                         case["log_id"])
+            assert [list(pair) for pair in got] == \
+                case["expect_schedule"], case["name"]
+        else:
+            with pytest.raises(AnchorError) as excinfo:
+                schedule_from_registry(case["registry"],
+                                       case["log_id"])
+            assert case["expect_refusal"] in str(excinfo.value), \
+                case["name"]
+    # The vectors carry entry projections (seq/kind/body/hash);
+    # rebuild the full entries the section 15.5 procedure needs.
+    # The reconstruction is self-validating: verify_entries
+    # recomputes every hash, so a wrong prev or spec fails the
+    # chain check instead of passing silently.
+    entries = []
+    prev = "0" * 64
+    for projection in load()["entries"]:
+        entries.append({"seq": projection["seq"],
+                        "kind": projection["kind"],
+                        "body": projection["body"],
+                        "prev": prev, "spec": "jacquard/0.6",
+                        "hash": projection["hash"]})
+        prev = projection["hash"]
+    envelope = load()["anchor"]["envelope"]
+    for case in section["auth_cases"]:
+        schedule = schedule_from_registry(case["registry"],
+                                          case["log_id"])
+        result = verify_entries(entries, [envelope], schedule[0][1],
+                                schedule=schedule)
+        assert result["outcome"] == case["expect_outcome"], \
+            case["name"]
+        if "expect_detail" in case:
+            assert result["failure"]["detail"] == \
+                case["expect_detail"], case["name"]
+        else:
+            assert result["anchored_length"] == 4, case["name"]
+            assert result["unanchored_tail"] == 0, case["name"]

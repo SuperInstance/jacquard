@@ -170,6 +170,135 @@ def main():
                          "envelope": anchor_envelope,
                          "checkpoint_hash": hash_of(anchor_body)}
 
+    # The key-registry grammar (spec 15.3, erratum 2): schedule
+    # cases over registry documents, plus authentication cases
+    # over the anchor vector's own history above. The first two
+    # schedule cases carry the LIVE witness registry verbatim
+    # (SuperInstance/jacquard-anchors keys.json, republished as
+    # /2): the retired key never names the gpu-queue log, which
+    # is precisely the null window the /1 grammar could not
+    # express. The bystander key in the auth cases is that same
+    # retired public key -- public witness data, and not the
+    # signer of the vector history.
+    PROOF_LOG = ("5f4bf2b400dc3de3c6b4798028592650ca606facabf"
+                 "5c7a43e68ecd90db1814e")
+    GPU_LOG = ("9cbf80c8e820d49a10da9d92b0f18d2770b48d562c8164"
+               "36628c881d14abaff1")
+    RETIRED = ("1aa240acef0058b732e6093e3728e65a6d95a4178f776"
+               "64ea92772bfb3072be5")
+    SUCCESSOR = ("ce805efd20de4b8a6f7bee1544c8db1173678cfbe1"
+                 "9a3f9814315b48845f5072")
+    KEY_A = "aa" * 32
+    KEY_B = "bb" * 32
+    live_keys = [
+        {"pubkey": RETIRED, "status": "retired",
+         "signs_from": {},
+         "signs_until": {PROOF_LOG: 1}},
+        {"pubkey": SUCCESSOR, "status": "active",
+         "signs_from": {PROOF_LOG: 2, GPU_LOG: 0},
+         "signs_until": {}}]
+    vec_log = anchor_body["log_id"]
+    vectors["anchor_registry"] = {
+        "schedule_cases": [
+            {"name": "gpu-shape-null-window",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": live_keys},
+             "log_id": GPU_LOG,
+             "expect_schedule": [[0, SUCCESSOR]]},
+            {"name": "proof-rotation-schedule",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": live_keys},
+             "log_id": PROOF_LOG,
+             "expect_schedule": [[0, RETIRED], [2, SUCCESSOR]]},
+            {"name": "legacy-reading-of-gpu-shape-refuses",
+             "registry": {"format": "jacquard/anchor-keys/1",
+                          "keys": live_keys},
+             "log_id": GPU_LOG,
+             "expect_refusal": "do not partition"},
+            {"name": "two-key-partition",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "retired",
+                               "signs_from": {"L": 0},
+                               "signs_until": {"L": 2}},
+                              {"pubkey": KEY_B, "status": "active",
+                               "signs_from": {"L": 3},
+                               "signs_until": {}}]},
+             "log_id": "L",
+             "expect_schedule": [[0, KEY_A], [3, KEY_B]]},
+            {"name": "one-sided-omission-unbounded",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "retired",
+                               "signs_from": {},
+                               "signs_until": {"L": 1}},
+                              {"pubkey": KEY_B, "status": "active",
+                               "signs_from": {"L": 2},
+                               "signs_until": {}}]},
+             "log_id": "L",
+             "expect_schedule": [[0, KEY_A], [2, KEY_B]]},
+            {"name": "gap-refuses",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "retired",
+                               "signs_from": {"L": 0},
+                               "signs_until": {"L": 1}},
+                              {"pubkey": KEY_B, "status": "active",
+                               "signs_from": {"L": 3},
+                               "signs_until": {}}]},
+             "log_id": "L",
+             "expect_refusal": "do not partition"},
+            {"name": "overlap-refuses",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "active",
+                               "signs_from": {"L": 0},
+                               "signs_until": {}},
+                              {"pubkey": KEY_B, "status": "active",
+                               "signs_from": {"L": 2},
+                               "signs_until": {}}]},
+             "log_id": "L",
+             "expect_refusal": "do not partition"},
+            {"name": "uncovered-refuses",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "active",
+                               "signs_from": {"L": 2},
+                               "signs_until": {}}]},
+             "log_id": "L",
+             "expect_refusal": "does not cover checkpoint_seq 0"},
+            {"name": "malformed-window-refuses",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": KEY_A, "status": "active",
+                               "signs_from": {"L": 5},
+                               "signs_until": {"L": 3}}]},
+             "log_id": "L",
+             "expect_refusal": "malformed"}],
+        "auth_cases": [
+            {"name": "null-window-bystander-verifies",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": test_pub, "status": "active",
+                               "signs_from": {vec_log: 0},
+                               "signs_until": {}},
+                              {"pubkey": RETIRED, "status": "retired",
+                               "signs_from": {},
+                               "signs_until": {}}]},
+             "log_id": vec_log,
+             "expect_outcome": "verified"},
+            {"name": "window-claim-outside-truth-fails",
+             "registry": {"format": "jacquard/anchor-keys/2",
+                          "keys": [
+                              {"pubkey": RETIRED, "status": "active",
+                               "signs_from": {vec_log: 0},
+                               "signs_until": {}}]},
+             "log_id": vec_log,
+             "expect_outcome": "failed",
+             "expect_detail": ("checkpoint 0: envelope pubkey is "
+                               "not the pinned key for its "
+                               "sequence")}]}
+
     # An envelope and its id.
     env = make_envelope("operator", "proposal",
                         {"requests": [{"verb": "write",

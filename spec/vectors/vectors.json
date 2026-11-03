@@ -17,6 +17,314 @@
   },
   "test_seed": "0d08490c05dd95a108030729bcf6dd1889595d413b7b3bfcd38b456ce09a1795"
  },
+ "anchor_registry": {
+  "auth_cases": [
+   {
+    "expect_outcome": "verified",
+    "log_id": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+    "name": "null-window-bystander-verifies",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "601d0652c968641455ed71fdb668b368b522372af454e128a703a99d6e368a99",
+       "signs_from": {
+        "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      },
+      {
+       "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
+       "signs_from": {},
+       "signs_until": {},
+       "status": "retired"
+      }
+     ]
+    }
+   },
+   {
+    "expect_detail": "checkpoint 0: envelope pubkey is not the pinned key for its sequence",
+    "expect_outcome": "failed",
+    "log_id": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+    "name": "window-claim-outside-truth-fails",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
+       "signs_from": {
+        "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   }
+  ],
+  "schedule_cases": [
+   {
+    "expect_schedule": [
+     [
+      0,
+      "ce805efd20de4b8a6f7bee1544c8db1173678cfbe19a3f9814315b48845f5072"
+     ]
+    ],
+    "log_id": "9cbf80c8e820d49a10da9d92b0f18d2770b48d562c816436628c881d14abaff1",
+    "name": "gpu-shape-null-window",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
+       "signs_from": {},
+       "signs_until": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 1
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "ce805efd20de4b8a6f7bee1544c8db1173678cfbe19a3f9814315b48845f5072",
+       "signs_from": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 2,
+        "9cbf80c8e820d49a10da9d92b0f18d2770b48d562c816436628c881d14abaff1": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_schedule": [
+     [
+      0,
+      "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5"
+     ],
+     [
+      2,
+      "ce805efd20de4b8a6f7bee1544c8db1173678cfbe19a3f9814315b48845f5072"
+     ]
+    ],
+    "log_id": "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e",
+    "name": "proof-rotation-schedule",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
+       "signs_from": {},
+       "signs_until": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 1
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "ce805efd20de4b8a6f7bee1544c8db1173678cfbe19a3f9814315b48845f5072",
+       "signs_from": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 2,
+        "9cbf80c8e820d49a10da9d92b0f18d2770b48d562c816436628c881d14abaff1": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_refusal": "do not partition",
+    "log_id": "9cbf80c8e820d49a10da9d92b0f18d2770b48d562c816436628c881d14abaff1",
+    "name": "legacy-reading-of-gpu-shape-refuses",
+    "registry": {
+     "format": "jacquard/anchor-keys/1",
+     "keys": [
+      {
+       "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
+       "signs_from": {},
+       "signs_until": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 1
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "ce805efd20de4b8a6f7bee1544c8db1173678cfbe19a3f9814315b48845f5072",
+       "signs_from": {
+        "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e": 2,
+        "9cbf80c8e820d49a10da9d92b0f18d2770b48d562c816436628c881d14abaff1": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_schedule": [
+     [
+      0,
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ],
+     [
+      3,
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+     ]
+    ],
+    "log_id": "L",
+    "name": "two-key-partition",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {
+        "L": 0
+       },
+       "signs_until": {
+        "L": 2
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "signs_from": {
+        "L": 3
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_schedule": [
+     [
+      0,
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ],
+     [
+      2,
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+     ]
+    ],
+    "log_id": "L",
+    "name": "one-sided-omission-unbounded",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {},
+       "signs_until": {
+        "L": 1
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "signs_from": {
+        "L": 2
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_refusal": "do not partition",
+    "log_id": "L",
+    "name": "gap-refuses",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {
+        "L": 0
+       },
+       "signs_until": {
+        "L": 1
+       },
+       "status": "retired"
+      },
+      {
+       "pubkey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "signs_from": {
+        "L": 3
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_refusal": "do not partition",
+    "log_id": "L",
+    "name": "overlap-refuses",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {
+        "L": 0
+       },
+       "signs_until": {},
+       "status": "active"
+      },
+      {
+       "pubkey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "signs_from": {
+        "L": 2
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_refusal": "does not cover checkpoint_seq 0",
+    "log_id": "L",
+    "name": "uncovered-refuses",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {
+        "L": 2
+       },
+       "signs_until": {},
+       "status": "active"
+      }
+     ]
+    }
+   },
+   {
+    "expect_refusal": "malformed",
+    "log_id": "L",
+    "name": "malformed-window-refuses",
+    "registry": {
+     "format": "jacquard/anchor-keys/2",
+     "keys": [
+      {
+       "pubkey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "signs_from": {
+        "L": 5
+       },
+       "signs_until": {
+        "L": 3
+       },
+       "status": "active"
+      }
+     ]
+    }
+   }
+  ]
+ },
  "definitions": [
   {
    "definition": {

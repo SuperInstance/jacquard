@@ -38,7 +38,14 @@ ANCHOR_FORMAT = "jacquard/anchor/1"
 # carry the current SPEC_VERSION.
 ANCHOR_SPEC_VERSIONS = frozenset({"jacquard/0.5", "jacquard/0.6"})
 PASSPHRASE_ENV = "JACQUARD_ANCHOR_PASSPHRASE"
+# Registry grammar versions (SPEC 15.3, erratum 2): /1 documents
+# are read under the legacy rule (every key participates in every
+# log's schedule, an omitted side is unbounded); /2 documents add
+# null windows (a log_id omitted from BOTH of a key's maps means
+# that key signs nothing for that log). Writers emit /2.
 REGISTRY_FORMAT = "jacquard/anchor-keys/1"
+REGISTRY_FORMAT_V2 = "jacquard/anchor-keys/2"
+REGISTRY_FORMATS = (REGISTRY_FORMAT, REGISTRY_FORMAT_V2)
 BODY_KEYS = frozenset({
     "format", "log_id", "label", "checkpoint_seq", "log_length",
     "head_hash", "spec", "prev_checkpoint"})
@@ -389,11 +396,11 @@ def load_key_registry(root):
     except Exception as exc:
         raise AnchorError("cannot parse key registry %s: %s" % (path, exc))
     if not isinstance(registry, dict) \
-            or registry.get("format") != REGISTRY_FORMAT \
+            or registry.get("format") not in REGISTRY_FORMATS \
             or not isinstance(registry.get("keys"), list) \
             or not registry["keys"]:
-        raise AnchorError("key registry %s is not a %s document"
-                          % (path, REGISTRY_FORMAT))
+        raise AnchorError("key registry %s is not a %s or %s document"
+                          % (path, REGISTRY_FORMAT, REGISTRY_FORMAT_V2))
     for entry in registry["keys"]:
         if not isinstance(entry, dict) \
                 or not _is_hex(entry.get("pubkey"), 64) \
@@ -408,9 +415,17 @@ def load_key_registry(root):
 def schedule_from_registry(registry, log_id):
     """The pinned key schedule for one log (SPEC 15.3): a sorted
     [(from_seq, pubkey_hex), ...] whose windows partition the
-    log's checkpoint sequence. A gap or overlap is malformed."""
+    log's checkpoint sequence. A gap or overlap is malformed.
+    Under the /2 grammar a key that names the log in neither map
+    holds a null window for it and contributes no interval; /1
+    documents keep the legacy reading (every key participates,
+    an omitted side unbounded)."""
     intervals = []
     for entry in registry["keys"]:
+        if registry.get("format") == REGISTRY_FORMAT_V2 \
+                and log_id not in entry.get("signs_from", {}) \
+                and log_id not in entry.get("signs_until", {}):
+            continue  # null window: this key signs nothing here
         frm = entry.get("signs_from", {}).get(log_id, 0)
         until = entry.get("signs_until", {}).get(log_id)
         if not _is_int(frm) or frm < 0 \

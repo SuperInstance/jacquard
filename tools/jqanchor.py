@@ -60,7 +60,7 @@ from jacquard.anchor import (  # noqa: E402
     generate_key, history_for, key_is_encrypted, load_checkpoints,
     load_entries, load_key_registry, load_private_key, log_id_of,
     public_key_hex, registry_file_bytes, schedule_from_registry,
-    verify_entries)
+    verify_entries, REGISTRY_FORMAT_V2)
 
 EXIT_CODES = {"verified": 0, "verified_to_anchor": 0,
               "failed": 1, "unanchored": 3}
@@ -109,8 +109,12 @@ def cmd_rotate(args):
     registry_path = os.path.join(args.checkpoints, "keys.json")
     if os.path.exists(registry_path):
         registry = load_key_registry(registry_path)
+        # A rotation republishes the registry under the current
+        # grammar (/2, SPEC 15.3 erratum 2): windows it records
+        # are per-log by construction, which /2 reads exactly.
+        registry["format"] = REGISTRY_FORMAT_V2
     else:
-        registry = {"format": "jacquard/anchor-keys/1",
+        registry = {"format": REGISTRY_FORMAT_V2,
                     "keys": [{"pubkey": old_pub, "status": "active",
                               "signs_from": {}, "signs_until": {}}]}
     envelopes, problems = load_checkpoints(args.checkpoints)
