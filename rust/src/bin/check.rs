@@ -6,8 +6,9 @@
 //! section (canonical form + hash chain, fold, envelope,
 //! dictionary + evaluator, sequencer end to end, sense
 //! computation, the section 15 anchor verifier, the section
-//! 12.1 shape signature over both proof-run corpora, and the
-//! token-form battery).
+//! 15.3 anchor key registry (dual /1 + /2 grammar), the
+//! section 12.1 shape signature over both proof-run corpora,
+//! and the token-form battery).
 //!
 //! Run from the repository root:
 //!   cargo run --release --manifest-path rust/Cargo.toml --bin jacquard-check
@@ -15,7 +16,8 @@
 //! the directory that carries spec/vectors/vectors.json.)
 
 use jacquard_kernel::anchor::{
-    checkpoint_hash, ed25519_pub_from_seed, ed25519_verify, verify_anchor,
+    checkpoint_hash, ed25519_pub_from_seed, ed25519_verify, schedule_from_registry,
+    verify_anchor,
 };
 use jacquard_kernel::core::{
     entry_hash, envelope_id, fold, fold_state_hash, make_entry, spec_seal,
@@ -610,6 +612,171 @@ fn main() {
             "vectors.anchor",
             if problems.is_empty() {
                 "test-key pubkey derives from the recorded seed, checkpoint hash recomputes, Ed25519 signature verifies (and fails over a tampered body), and the §15.5 procedure reports the vector chain verified, 4/4 anchored, tail 0".to_string()
+            } else {
+                problems.join("; ")
+            },
+        );
+    }
+
+    // --- vectors.anchor_registry ---
+    {
+        // Spec 15.3 (erratum 2): the registry grammar. Schedule
+        // cases run the registry -> schedule derivation; refusal
+        // cases pin the failure text; auth cases run the section
+        // 15.5 procedure over the anchor vector's own history
+        // under a registry schedule. Mirrors
+        // tests/test_vectors.py::test_anchor_registry_vectors.
+        let section = vectors
+            .get("anchor_registry")
+            .cloned()
+            .unwrap_or(Value::Null);
+        let mut problems: Vec<String> = Vec::new();
+        let mut schedule_count = 0usize;
+        let mut auth_count = 0usize;
+        if let Some(cases) = section.get("schedule_cases").and_then(|v| v.as_array()) {
+            for case in cases {
+                schedule_count += 1;
+                let name = case.get("name").and_then(|v| v.as_str()).unwrap_or("");
+                let registry = case.get("registry").cloned().unwrap_or(Value::Null);
+                let log_id = case.get("log_id").and_then(|v| v.as_str()).unwrap_or("");
+                match case.get("expect_schedule") {
+                    Some(expected) => match schedule_from_registry(&registry, log_id) {
+                        Ok(got) => {
+                            let got_value = arr(got
+                                .iter()
+                                .map(|(frm, pk)| {
+                                    arr(vec![Value::Int(*frm), s(pk)])
+                                })
+                                .collect());
+                            if !deep_eq(&got_value, expected) {
+                                problems.push(format!(
+                                    "{}: schedule {} != expected {}",
+                                    name,
+                                    canonical(&got_value).unwrap_or_default(),
+                                    canonical(expected).unwrap_or_default()
+                                ));
+                            }
+                        }
+                        Err(err) => problems.push(format!(
+                            "{}: schedule derivation refused: {}",
+                            name, err
+                        )),
+                    },
+                    None => {
+                        let expect_refusal = case
+                            .get("expect_refusal")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("");
+                        match schedule_from_registry(&registry, log_id) {
+                            Ok(got) => problems.push(format!(
+                                "{}: expected refusal containing {:?}, got schedule {:?}",
+                                name, expect_refusal, got
+                            )),
+                            Err(err) => {
+                                if !err.contains(expect_refusal) {
+                                    problems.push(format!(
+                                        "{}: refusal {:?} does not contain {:?}",
+                                        name, err, expect_refusal
+                                    ));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            problems.push("anchor_registry.schedule_cases is missing".to_string());
+        }
+        if let Some(cases) = section.get("auth_cases").and_then(|v| v.as_array()) {
+            // The rebuilt vector entries and the single anchor
+            // envelope, as in the vectors.anchor section above:
+            // verify_anchor recomputes every hash, so a wrong
+            // reconstruction fails the chain check instead of
+            // passing silently.
+            let envelope = vectors
+                .get("anchor")
+                .and_then(|a| a.get("envelope"))
+                .cloned()
+                .unwrap_or(Value::Null);
+            for case in cases {
+                auth_count += 1;
+                let name = case.get("name").and_then(|v| v.as_str()).unwrap_or("");
+                let registry = case.get("registry").cloned().unwrap_or(Value::Null);
+                let log_id = case.get("log_id").and_then(|v| v.as_str()).unwrap_or("");
+                let schedule = match schedule_from_registry(&registry, log_id) {
+                    Ok(sch) => sch,
+                    Err(err) => {
+                        problems.push(format!(
+                            "{}: schedule derivation refused: {}",
+                            name, err
+                        ));
+                        continue;
+                    }
+                };
+                if schedule.is_empty() {
+                    problems.push(format!("{}: empty schedule", name));
+                    continue;
+                }
+                let pinned = schedule[0].1.clone();
+                let result = verify_anchor(
+                    &rebuilt,
+                    &[envelope.clone()],
+                    &pinned,
+                    Some(&schedule),
+                );
+                let expect_outcome = case
+                    .get("expect_outcome")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("");
+                if result.outcome.as_deref() != Some(expect_outcome) {
+                    problems.push(format!(
+                        "{}: outcome {:?} != expected {:?}: {}",
+                        name,
+                        result.outcome,
+                        expect_outcome,
+                        canonical(&result.to_value()).unwrap_or_default()
+                    ));
+                    continue;
+                }
+                if let Some(expect_detail) =
+                    case.get("expect_detail").and_then(|v| v.as_str())
+                {
+                    let detail = result
+                        .failure
+                        .as_ref()
+                        .and_then(|f| f.get("detail"))
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    if detail != expect_detail {
+                        problems.push(format!(
+                            "{}: failure detail {:?} != expected {:?}",
+                            name, detail, expect_detail
+                        ));
+                    }
+                } else if result.anchored_length != 4 || result.unanchored_tail != 0 {
+                    problems.push(format!(
+                        "{}: anchored_length {} / unanchored_tail {}, expected 4 / 0",
+                        name, result.anchored_length, result.unanchored_tail
+                    ));
+                }
+            }
+        } else {
+            problems.push("anchor_registry.auth_cases is missing".to_string());
+        }
+        if schedule_count != 9 || auth_count != 2 {
+            problems.push(format!(
+                "anchor_registry case counts are {} schedule + {} auth, expected 9 + 2",
+                schedule_count, auth_count
+            ));
+        }
+        rep.report(
+            problems.is_empty(),
+            "vectors.anchor_registry",
+            if problems.is_empty() {
+                format!(
+                    "all {} schedule cases (derivations and refusals by substring) and all {} auth cases (§15.5 over the vector entries + anchor envelope under registry-derived schedules) match the vectors",
+                    schedule_count, auth_count
+                )
             } else {
                 problems.join("; ")
             },

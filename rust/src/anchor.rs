@@ -9,6 +9,15 @@ use crate::value::{canonical_bytes, hash_of, hex_decode, obj, py_repr, s, sort_s
 use ed25519_dalek::{Signature, SigningKey, VerifyingKey};
 
 pub const ANCHOR_FORMAT: &str = "jacquard/anchor/1";
+/// Registry grammar versions (spec 15.3, erratum 2): /1
+/// documents are read under the legacy rule (every key
+/// participates in every log's schedule, an omitted side is
+/// unbounded); /2 documents add null windows (a log_id omitted
+/// from BOTH of a key's maps means that key signs nothing for
+/// that log). Verifiers accept both, each under its own
+/// grammar, and refuse any other format by name.
+pub const REGISTRY_FORMAT: &str = "jacquard/anchor-keys/1";
+pub const REGISTRY_FORMAT_V2: &str = "jacquard/anchor-keys/2";
 const BODY_KEYS: [&str; 8] = [
     "format", "log_id", "label", "checkpoint_seq", "log_length", "head_hash", "spec",
     "prev_checkpoint",
@@ -169,6 +178,128 @@ impl AnchorResult {
             ("failure", self.failure.clone().unwrap_or(Value::Null)),
         ])
     }
+}
+
+/// The pinned key schedule for one log (spec 15.3): a sorted
+/// [(from_seq, pubkey_hex), ...] whose windows partition the
+/// log's checkpoint sequence. A gap or overlap is malformed.
+/// Under the /2 grammar a key that names the log in neither map
+/// holds a null window for it and contributes no interval; /1
+/// documents keep the legacy reading (every key participates,
+/// an omitted side unbounded). Any other registry format is
+/// refused by name. Mirrors `schedule_from_registry` in
+/// `src/jacquard/anchor.py`, including its error texts.
+pub fn schedule_from_registry(
+    registry: &Value,
+    log_id: &str,
+) -> Result<Vec<(i64, String)>, String> {
+    let format = registry
+        .get("format")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    if format != REGISTRY_FORMAT && format != REGISTRY_FORMAT_V2 {
+        return Err(format!(
+            "key registry is not a {} or {} document",
+            REGISTRY_FORMAT, REGISTRY_FORMAT_V2
+        ));
+    }
+    let is_v2 = format == REGISTRY_FORMAT_V2;
+    let empty: Vec<Value> = Vec::new();
+    let keys = registry
+        .get("keys")
+        .and_then(|v| v.as_array())
+        .unwrap_or(&empty);
+    let mut intervals: Vec<(i64, Option<i64>, String)> = Vec::new();
+    for entry in keys {
+        let from_map = entry.get("signs_from");
+        let until_map = entry.get("signs_until");
+        if from_map.map(|m| !m.is_object()).unwrap_or(false)
+            || until_map.map(|m| !m.is_object()).unwrap_or(false)
+        {
+            return Err(format!(
+                "key registry window for log {} is malformed: {}",
+                log_id,
+                py_repr(entry)
+            ));
+        }
+        let from_entry = from_map.and_then(|m| m.get(log_id));
+        let until_entry = until_map.and_then(|m| m.get(log_id));
+        if is_v2 && from_entry.is_none() && until_entry.is_none() {
+            continue; // null window: this key signs nothing here
+        }
+        let frm = match from_entry {
+            None => 0,
+            Some(v) => match v.as_int() {
+                Some(n) => n,
+                None => {
+                    return Err(format!(
+                        "key registry window for log {} is malformed: {}",
+                        log_id,
+                        py_repr(entry)
+                    ))
+                }
+            },
+        };
+        if frm < 0 {
+            return Err(format!(
+                "key registry window for log {} is malformed: {}",
+                log_id,
+                py_repr(entry)
+            ));
+        }
+        let until = match until_entry {
+            None => None,
+            Some(v) => match v.as_int() {
+                Some(n) => Some(n),
+                None => {
+                    return Err(format!(
+                        "key registry window for log {} is malformed: {}",
+                        log_id,
+                        py_repr(entry)
+                    ))
+                }
+            },
+        };
+        if let Some(u) = until {
+            if u < frm {
+                return Err(format!(
+                    "key registry window for log {} is malformed: {}",
+                    log_id,
+                    py_repr(entry)
+                ));
+            }
+        }
+        let pk = entry
+            .get("pubkey")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        intervals.push((frm, until, pk));
+    }
+    intervals.sort_by_key(|iv| iv.0);
+    if intervals.is_empty() || intervals[0].0 != 0 {
+        return Err(format!(
+            "key registry does not cover checkpoint_seq 0 for log {}",
+            log_id
+        ));
+    }
+    for w in intervals.windows(2) {
+        let (prev, next) = (&w[0], &w[1]);
+        if prev.1.is_none() || next.0 != prev.1.unwrap() + 1 {
+            let after = match prev.1 {
+                Some(u) => u.to_string(),
+                None => "None".to_string(),
+            };
+            return Err(format!(
+                "key registry windows for log {} do not partition its checkpoint sequence (gap or overlap after seq {})",
+                log_id, after
+            ));
+        }
+    }
+    Ok(intervals
+        .into_iter()
+        .map(|(frm, _until, pk)| (frm, pk))
+        .collect())
 }
 
 fn scheduled_key(schedule: &[(i64, String)], checkpoint_seq: i64) -> Option<String> {
