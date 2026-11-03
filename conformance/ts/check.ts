@@ -83,6 +83,18 @@ function loadJson(path: string): Json {
   return JSON.parse(readFileSync(path, "utf8")) as Json;
 }
 
+interface RegistryKey {
+  pubkey: string;
+  status?: string;
+  signs_from?: Record<string, unknown>;
+  signs_until?: Record<string, unknown>;
+}
+
+interface RegistryDoc {
+  format?: string;
+  keys?: RegistryKey[];
+}
+
 const vectors = loadJson(vectorsPath) as {
   spec_seal: string;
   entries: { seq: number; kind: string; body: StoredEntry["body"]; hash: string }[];
@@ -100,6 +112,22 @@ const vectors = loadJson(vectorsPath) as {
     test_seed: string;
     envelope: JsonObject;
     checkpoint_hash: string;
+  };
+  anchor_registry: {
+    schedule_cases: {
+      name: string;
+      registry: RegistryDoc;
+      log_id: string;
+      expect_schedule?: [number, string][];
+      expect_refusal?: string;
+    }[];
+    auth_cases: {
+      name: string;
+      registry: RegistryDoc;
+      log_id: string;
+      expect_outcome: string;
+      expect_detail?: string;
+    }[];
   };
 };
 
@@ -466,6 +494,167 @@ if (replay === null) {
     problems.length
       ? problems.join("; ")
       : "test-key pubkey derives from the recorded seed, checkpoint hash recomputes, Ed25519 signature verifies (and fails over a tampered body), and the §15.5 procedure reports the vector chain verified, 4/4 anchored, tail 0",
+  );
+}
+
+// --- vectors.anchor_registry: key-registry grammar (spec §15.3) --------------
+// Mirrors tests/test_vectors.py::test_anchor_registry_vectors.
+// scheduleFromRegistry is the TS twin of the Python
+// load_key_registry + schedule_from_registry pair (and of the
+// registry logic in verify-anchor.ts): /1 documents are read
+// under the legacy rule (every key participates, an omitted side
+// unbounded), /2 documents add null windows (a log_id omitted
+// from BOTH of a key's maps contributes no interval), and any
+// other format is refused with both accepted formats named.
+// Participating windows must partition the log's checkpoint
+// sequence from 0, with the Python refusal texts.
+function scheduleFromRegistry(
+  registry: RegistryDoc,
+  logId: string,
+): [number, string][] {
+  if (
+    (registry.format !== "jacquard/anchor-keys/1" &&
+      registry.format !== "jacquard/anchor-keys/2") ||
+    !Array.isArray(registry.keys) ||
+    registry.keys.length === 0
+  ) {
+    throw new Error(
+      "key registry is not a jacquard/anchor-keys/1 or " +
+        "jacquard/anchor-keys/2 document",
+    );
+  }
+  const nullWindows = registry.format === "jacquard/anchor-keys/2";
+  const intervals: { from: number; until: number | null; pubkey: string }[] =
+    [];
+  for (const k of registry.keys) {
+    const hasFrom =
+      k.signs_from != null &&
+      Object.prototype.hasOwnProperty.call(k.signs_from, logId);
+    const hasUntil =
+      k.signs_until != null &&
+      Object.prototype.hasOwnProperty.call(k.signs_until, logId);
+    if (nullWindows && !hasFrom && !hasUntil) continue;
+    const from: unknown = hasFrom ? k.signs_from![logId] : 0;
+    const until: unknown = hasUntil ? k.signs_until![logId] : null;
+    if (
+      typeof from !== "number" || !Number.isInteger(from) || from < 0 ||
+      (until !== null &&
+        (typeof until !== "number" || !Number.isInteger(until) ||
+          until < (from as number)))
+    ) {
+      throw new Error(
+        `key registry window for log ${logId} is malformed: ${JSON.stringify(k)}`,
+      );
+    }
+    intervals.push({
+      from: from as number,
+      until: until as number | null,
+      pubkey: k.pubkey,
+    });
+  }
+  intervals.sort((a, b) => a.from - b.from);
+  if (!intervals.length || intervals[0].from !== 0) {
+    throw new Error(
+      `key registry does not cover checkpoint_seq 0 for log ${logId}`,
+    );
+  }
+  for (let i = 1; i < intervals.length; i++) {
+    if (
+      intervals[i - 1].until === null ||
+      intervals[i].from !== intervals[i - 1].until! + 1
+    ) {
+      throw new Error(
+        `key registry windows for log ${logId} do not partition its ` +
+          `checkpoint sequence (gap or overlap after seq ${intervals[i - 1].until})`,
+      );
+    }
+  }
+  return intervals.map((iv) => [iv.from, iv.pubkey] as [number, string]);
+}
+
+{
+  const section = vectors.anchor_registry;
+  const problems: string[] = [];
+  for (const c of section.schedule_cases) {
+    if (c.expect_schedule !== undefined) {
+      let got: [number, string][] | null = null;
+      try {
+        got = scheduleFromRegistry(c.registry, c.log_id);
+      } catch (err) {
+        problems.push(
+          `${c.name}: refused unexpectedly: ${(err as Error).message}`,
+        );
+        continue;
+      }
+      if (!deepEq(got, c.expect_schedule)) {
+        problems.push(
+          `${c.name}: schedule ${canonical(got as unknown as Json)} != recorded ${canonical(c.expect_schedule as unknown as Json)}`,
+        );
+      }
+    } else {
+      let message: string | null = null;
+      try {
+        scheduleFromRegistry(c.registry, c.log_id);
+      } catch (err) {
+        message = (err as Error).message;
+      }
+      if (message === null) {
+        problems.push(
+          `${c.name}: schedule derived, expected refusal containing ${JSON.stringify(c.expect_refusal)}`,
+        );
+      } else if (!message.includes(c.expect_refusal as string)) {
+        problems.push(
+          `${c.name}: refusal ${JSON.stringify(message)} does not contain ${JSON.stringify(c.expect_refusal)}`,
+        );
+      }
+    }
+  }
+  for (const c of section.auth_cases) {
+    let schedule: [number, string][] | null = null;
+    try {
+      schedule = scheduleFromRegistry(c.registry, c.log_id);
+    } catch (err) {
+      problems.push(
+        `${c.name}: registry refused: ${(err as Error).message}`,
+      );
+      continue;
+    }
+    const result = verifyAnchor(
+      rebuiltEntries, [vectors.anchor.envelope], schedule[0][1], schedule,
+    );
+    if (result.outcome !== c.expect_outcome) {
+      problems.push(
+        `${c.name}: outcome ${result.outcome} != recorded ${c.expect_outcome} (${JSON.stringify(result)})`,
+      );
+    }
+    if (c.expect_detail !== undefined) {
+      const detail = result.failure
+        ? (result.failure.detail as string)
+        : null;
+      if (detail !== c.expect_detail) {
+        problems.push(
+          `${c.name}: detail ${JSON.stringify(detail)} != recorded ${JSON.stringify(c.expect_detail)}`,
+        );
+      }
+    } else {
+      if (result.anchored_length !== 4) {
+        problems.push(
+          `${c.name}: anchored_length ${result.anchored_length} != 4`,
+        );
+      }
+      if (result.unanchored_tail !== 0) {
+        problems.push(
+          `${c.name}: unanchored_tail ${result.unanchored_tail} != 0`,
+        );
+      }
+    }
+  }
+  report(
+    problems.length ? "FAIL" : "PASS",
+    "vectors.anchor_registry",
+    problems.length
+      ? problems.join("; ")
+      : `all ${section.schedule_cases.length} schedule cases and ${section.auth_cases.length} auth cases match: the /1 legacy reading and the /2 null-window grammar (including the live witness registry's gpu-queue null window) derive the recorded schedules or refuse with the recorded texts (partition / cover-0 / malformed), and §15.5 under the registry-derived schedules gives both recorded auth outcomes — verified for the null-window bystander, failed at checkpoint 0 with the recorded detail for the window claim outside truth`,
   );
 }
 
