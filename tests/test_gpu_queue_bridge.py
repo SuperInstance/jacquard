@@ -78,6 +78,15 @@ def test_policy_record_precedes_and_classify():
     assert classify("jacquard-build",
                     "curl -s https://x.example/data -o d")[0] == "hold"
     assert classify("mystery", BENCH)[0] == "hold"
+    # Regression (live run, slice 22): prose that merely
+    # MENTIONS gpuq and the feeder is not a feeder invocation;
+    # the first live sentinel submission was denied by the
+    # over-broad shape and the denial stands in the live log.
+    prose = ("python3 -c 'print(1)'  # stays queued in gpuq "
+             "under the successor rule, feeder OFF")
+    assert classify("jacquard-build", prose)[0] == "allow"
+    assert classify("jacquard-build",
+                    "gpuq --lane x feeder on")[0] == "deny"
 
 
 def test_policy_record_is_in_log_before_proposals(tmp_path):

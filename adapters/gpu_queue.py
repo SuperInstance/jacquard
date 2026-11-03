@@ -95,7 +95,8 @@ POLICY = {
             "denied by shape, with the reason recorded",
 }
 
-_FEEDER = re.compile(r"gpuq[^\n]*\bfeeder\b|materialise_feeder|--feeder\b")
+_FEEDER = re.compile(
+    r"\bgpuq\s+(?:-\S+\s+)*feeder\b|materialise_feeder|--feeder\b")
 _FETCH = re.compile(r"\b(curl|wget)\b")
 _PIPE_SHELL = re.compile(r"\|\s*(sudo\s+)?(sh|bash|dash|zsh)\b")
 _SHELL_C = re.compile(r"\b(sh|bash|dash|zsh)\s+-c\b")
