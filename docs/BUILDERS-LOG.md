@@ -2254,3 +2254,52 @@ fold-covered only, and the log records exactly where that
 boundary sits. No spec bug was found in part 2 either: the
 drill agreed byte-for-byte on the first complete run, after
 part 1's fold alignment.
+
+### Slice 19 — close, and Phase 7 close (2026-11-02)
+
+All acceptance items from the design entry, with evidence:
+
+1. **Zero SKIPs.** `node check.ts`: 13 PASS, 0 SKIP, 0 FAIL,
+   exit 0 — run on the builder's machine and re-run on the
+   Oracle against the pushed tree (identical output).
+2. **Cross-language drill.** 38 ops → 52 entries; logs
+   byte-identical (sha256 0cde737c…), verdicts byte-identical
+   (sha256 021bce65…); evidence committed under
+   `conformance/ts/cross-drill/` and regenerated cleanly on
+   the Oracle (no tree drift after the rerun).
+3. **Python suite.** 285 passed, 7 skipped on the Oracle —
+   the baseline, unchanged; the port touched no Python code.
+4. **GAPS.** Closures and the port-scope note are in
+   `conformance/ts/GAPS.md` (slice 19 section): 16/17/18
+   closed; 3/7/10/11/14 closed with discriminating checks
+   named; 13 closed in part; 1/2/5/15 left open, with reasons.
+5. **Spec bugs: none.** The standing rule was not triggered —
+   no divergence survived contact with the reference as a
+   contract defect. The one real reading change (the fold's
+   decision chain) was a TS-side guess from the GAPS-#7 era
+   that §2.1 had already superseded in prose; it is recorded
+   in part 1 and in GAPS #7's closure, not in the spec.
+
+Deviations, with reasons: (a) the drill's "standing rules
+defined once" is realised as one standing-rule *record*
+appended identically in both kernels plus its recogniser
+definition — the learner pipeline that *creates* rules
+(§§12.2–12.4, machine-staged) is outside the port's charter,
+so the drill pins the record's fold and the recogniser's
+dictionary behaviour, which are the parts the two kernels
+share; the §12.1 signature — the learner piece the charter
+does name — is proven over both real corpora instead.
+(b) The TS sequencer refuses `machine` envelopes with a
+scope-naming SPEC verdict (GAPS, port scope): §10 is
+fold-covered (check g), not sequencer-ported, and naming the
+boundary in the verdict itself keeps the divergence honest
+at the exact surface where it occurs.
+
+Phase 7 is complete: anchoring (slice 18) made the record
+verifiable without trusting its holder, and the port
+(slice 19) made it reproducible without trusting its
+implementation. Tag **v0.5.0** is cut at this close; the
+tag-clone verification (Python suite line, TS checker line,
+TS anchor verification of the true proof-run-2 log against
+the public anchors repo) is recorded in the addendum that
+follows it, as with slice 18.

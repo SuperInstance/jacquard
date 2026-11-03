@@ -5,9 +5,56 @@ record (decisions, reasons, dead ends).
 
 ## 0.5.0 — 2026-11-02
 
-Specification 0.5; Phase 7, slice 18 (chain-head anchoring).
-Slice 19 (the full TypeScript port) completes the phase and is
-not in this entry.
+Specification 0.5; Phase 7 — slice 18 (chain-head anchoring)
+and slice 19 (the full TypeScript port), which completes the
+phase. Tagged v0.5.0.
+
+### Slice 19 — the full TypeScript port
+- `conformance/ts/kernel.ts`: a deliberate port of the Python
+  reference (the opposite method from slice 8's spec-only fold
+  implementation, and recorded as such) — dictionary +
+  evaluator (§§4–5: computed effects as the union over
+  expansion, the form-agnostic walk, unknown dict forms
+  REFUSED(SPEC) by name), sequencer + policy gate + decision
+  queue + the §7.1 wait pump, sense computation (§11.3,
+  contention and authority), the §12.1 shape signature, and
+  the §15.5 anchor verifier (Ed25519 via Node's built-in
+  crypto — no new dependency).
+- The TS conformance checker now runs the FULL golden-vector
+  suite with **zero SKIP lines**: 13 PASS, exit 0. Every
+  former SKIP (`vectors.definitions`, `vectors.state`,
+  `vectors.senses`, `vectors.anchor`) is a real check with
+  comparisons at least as strict as the Python suite's for the
+  same vectors, plus the §12.1 signature comparison over both
+  proof-run corpora (8 + 27 queued decisions, item-for-item
+  and by canonical hash, against a Python-generated fixture)
+  and the stock-kernel half of the slice 17 token-form
+  battery.
+- Cross-language drill (`conformance/ts/cross-drill/`): one
+  38-operation stream through both sequencers → 52 log
+  entries, **byte-identical logs and byte-identical verdicts**
+  (sha256 in the committed `EVIDENCE.txt`).
+- `conformance/ts/verify-anchor.ts`: the TS twin of
+  `jqanchor verify`; against the public anchors repo it
+  reproduces the Python outcomes exactly (true log verified
+  507/507; forgery failed at checkpoint 0 with
+  `internal_chain_ok: true`; tail 250/257; truncation failed
+  at checkpoint 1; Phase 5 log unanchored).
+- GAPS.md: items 16, 17, 18 closed; items 3, 7, 10, 11, 14
+  closed with the discriminating check named; item 13 closed
+  in part; items 1, 2, 5, 15 remain open (no discriminating
+  fixture exists); the TS port's §10 boundary recorded as
+  port scope, not a spec gap.
+- `docs/anchor-drill.md` corrections from the cold-verifier
+  pass (the eighth output field `log_id` named; §4 starts
+  from a clean scratch dir and echoes its exit code; the
+  recursive `--checkpoints` search explained at the point of
+  use; the drill's guided-not-blind limit stated).
+- Evidence: Python suite unchanged at **285 passed,
+  7 skipped**; no spec bug was found by the port — every
+  divergence was a TS-side reading corrected against the
+  reference (one, the fold's decision chain, is recorded in
+  the builder's log).
 
 ### Added
 - Chain-head anchoring (spec §15): signed Ed25519 checkpoints
