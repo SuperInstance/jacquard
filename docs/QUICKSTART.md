@@ -205,12 +205,26 @@ The board is a **git clone** (the fleet's is
 `agent-inbox`) containing a `schedule/` directory of
 per-box files, and applied bookings are **git commits
 pushed to its origin**. `--inbox` must therefore be a real
-clone with an `origin` remote — jqbook now checks this up
-front and refuses a plain copy before anything is decided,
-rather than failing mid-booking.
+clone with an `origin` remote — jqbook checks this up
+front and refuses a plain copy before anything is decided.
+The check proves an origin exists, not that pushing to it
+is safe: **never propose against a copy whose origin is
+the live board** (a copied `.git` keeps the live origin,
+and a successful propose would push your booking onto it).
+For a scratch or test board, give the copy its own remote:
+
+```
+git clone <board> scratch-board
+git clone --bare <board> scratch-board-origin.git
+git -C scratch-board remote set-url origin <abs path>/scratch-board-origin.git
+#    every push now lands in the scratch remote, never the live board
+```
 
 ```
 # one-time: import the board's live rows as facts
+#    (a fresh log only — init refuses a non-empty log;
+#     `imported` counts rows still live at their check-by,
+#     `skipped` the dead ones; --boxes <a,b> limits the import)
 python3 tools/jqbook.py --log <log> --inbox <board-clone> init
 # each booking is then a proposal the kernel decides first
 python3 tools/jqbook.py --log <log> --inbox <board-clone> propose \
@@ -223,11 +237,16 @@ python3 tools/jqbook.py --log <log> --inbox <board-clone> complete --id <booking
 python3 tools/jqbook.py --log <log> counts
 ```
 
-Authority, in one breath: `--lane` names who is booking
-(your own lane by default); a lane's **effective rank** is
-the lower of the rank it asserts (`--rank`) and the
-**ceiling** it has been granted (`--grant` records a grant
-for the proposing lane). A lane with no grant books at
+All times are **UTC** ("YYYY-MM-DD HH:MM"). `propose`
+prints the decision as JSON: a booking that proceeds shows
+`machine_state: "active"` with `committed: true` and a
+`board_commit`; the `booking_id` in that output is the id
+every later verb takes. Authority, in one breath: `--lane`
+names who is booking (your own lane by default); a lane's
+**effective rank** is the lower of the rank it asserts
+(`--rank`, default 10) and the **ceiling** it has been
+granted (`--grant` records a grant for the proposing
+lane). A lane with no grant books at
 effective rank 0 — fine for an uncontended seat, and it
 loses any contest. Against a live booking of higher
 effective rank you are preempted or held; at **equal**
@@ -235,8 +254,9 @@ rank the challenger **holds** for an operator (the interim
 tie disposition) — `queue` shows it, `release --id` is the
 operator letting it proceed anyway, `complete --id` closes
 a booking whose work is done (marking its board row DONE
-if this deployment applied it, or recording the close
-kernel-side only for a row another lane owns).
+— itself a commit pushed to the board — if this
+deployment applied it, or recording the close kernel-side
+only for a row another lane owns).
 
 The deployment record is `docs/slice30-device-matrix.md`.
 
