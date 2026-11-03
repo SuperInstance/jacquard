@@ -3785,3 +3785,50 @@ in the smoke left a duplicated row.
 Battery: tests/test_booking_board.py (5 tests: live-only
 import, clear commit+apply, tie hold + release semantics,
 reject/complete, the seat-slug regression).
+
+## Slice 30, device legs (ProArt verified; Orin taken over)
+
+**ProArt — deployed, verified from artifacts.** The
+adapter (plugin surface) was installed into
+~/jacquard-p11-seat/ only; a detached zcode session ran
+the full suite and wrote its platform report under
+governance. Verified from the artifacts themselves: the
+kernel log (109 entries, sha256 3f6423b1…22ee9, folds
+clean) records 6 proposals queued, 6 operator releases,
+6 executions; the hook's latency sidecar records the same
+session as 36 invocations (30 Bash, 6 Write — 24
+queue-denies retried identically, 6 allows, 6 passes);
+run output records the suite at **332 passed, 7 skipped**
+on WSL2 x86_64 and the measured platform facts (kernel
+6.18.54.1-microsoft-standard-WSL2, Python 3.14.4, Node
+v24.21.0, zcode-app-cli 3.16.3-40, mcode 0.6.12, RTX
+4050). The leg agent's summary of this deployment
+reported aggregate counts exceeding its own log's entry
+count and platform versions matching the fleet's stale
+notes rather than the seat's measurements; none of those
+figures is used anywhere — the matrix record
+(docs/slice30-device-matrix.md) is built from the
+artifacts, and the discrepancy is recorded there and
+here. The deployment is real; the summary was not.
+
+**Orin — leg agent aborted mid-flight; coordinator
+completes.** The leg's setup work was found intact and
+correct on inspection: clone, plugin install
+(jacquard-zcode enabled by the adapter's own installer),
+a 34-entry smoke log, a staged session launcher and an
+on-brief prompt; the governed session itself had not run
+— it was waiting, correctly, on the coordinator's release
+of the held Orin booking. The coordinator operates the
+release and the session directly (below, at the
+incumbent's window end).
+
+**MCode, cross-box finding.** On ProArt (0.6.12), Orin
+(0.6.12) and Thor (0.6.13) alike, MCode exposes no
+pre-execution decision surface: no hook/plugin/settings
+seam in its CLI or shipped code, no replayable transcript
+store; the adjacent ~/.mcode-dynamic-workflows sqlite is
+a workflow service's post-hoc records. Its supervision
+ceiling is process level. Jacquard's answer is structural
+and already how the booking cell treats every lane:
+govern what a producer EMITS (files, commits, board
+rows) when the producer itself exposes nothing to gate.
