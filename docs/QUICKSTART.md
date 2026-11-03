@@ -178,8 +178,8 @@ thing that strands newcomers): a finite job in gpuq runs
 only when another job is queued **behind** it. The fleet
 keeps a declared sentinel job standing last in the queue
 for exactly this reason. When you dispatch a job, dispatch
-a sentinel behind it (the slice-22/25 reports show the
-shape), or your job waits — `jqgpu poll` will simply keep
+a sentinel behind it (the deployment record linked
+below shows the shape), or your job waits — `jqgpu poll` will simply keep
 reporting it queued, and the queue's own status file shows
 the `no_successor_holds` reason. Re-running `dispatch` is
 safe: it re-lists already-dispatched jobs as it reconciles
@@ -270,7 +270,7 @@ install; keep the log under your home directory (every
 tool takes `--log`) and let your automations submit
 through `tools/jq.py` / the service on loopback
 (`tools/jqserve.py`, see the README's service section).
-Fleet status: this profile is prepared but not yet
+Status: this profile is prepared but not yet
 deployed on the fleet's laptop — see `docs/DEVICES.md`
 for the honest state of that cell.
 

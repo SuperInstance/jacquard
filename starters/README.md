@@ -11,15 +11,16 @@ you can read back.
   shared expensive queue: jobs reach it only if the kernel
   allowed them; holds wait for a batched decision; a
   sentinel stands last so finite jobs can run. (The Thor's
-  gpu-queue, slices 22/25/30 and the slice-31 stranger
-  run.)
+  gpu-queue, in production; deployment record in
+  `docs/slice30-device-matrix.md`.)
 - [Coding-agent supervision](coding-agent-supervision.md)
   — a coding agent's tool calls under kernel decision, with
-  a batched operator queue. (The ZCode adapter, slices
-  12/30/31.)
+  a batched operator queue. (The ZCode adapter, in
+  production on workstation and front-room devices.)
 - [Anchored audit record](anchored-audit-record.md) — a
   record whose history a third party can verify without
-  trusting you. (Slices 18/21: the public anchors repo.)
+  trusting you. (The public
+  `SuperInstance/jacquard-anchors` witness repo.)
 - [Batched approvals for a solo operator](batched-approvals-solo.md)
   — your own scripts and automations proposing, you
   deciding in batches, the log on your machine as the

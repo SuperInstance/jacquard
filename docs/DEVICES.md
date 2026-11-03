@@ -1,11 +1,21 @@
-# Devices — what differs per machine
+# Support & compatibility — what runs where
 
-Per-device notes for the profiles in `docs/QUICKSTART.md`,
-from the deployments' own evidence (Phase 11, slice 30's
-device matrix is the source record:
-`docs/slice30-device-matrix.md`). Where a device fact was
-measured, the measured value is given — fleet notes drift;
-these pages record what the deployments found.
+Platform notes for the profiles in `docs/QUICKSTART.md`:
+what runs on each class of machine, its requirements, and
+its platform limitations. Support states are summarised
+here from production deployments; the deployment evidence
+behind every statement is the device matrix,
+`docs/slice30-device-matrix.md`, and the per-deployment
+records it links. Where a device fact was measured, the
+measured value is given.
+
+| Platform | Profile | State |
+|---|---|---|
+| Linux server (x86_64) | Shared schedule; service host | In production |
+| Jetson AGX Thor (aarch64) | GPU job-queue governance (bridge) | In production — no resident process, by design |
+| WSL2 workstation (x86_64) | Coding-agent seat supervision | In production |
+| Jetson Orin Nano Super (aarch64) | Coding-agent seat supervision | In production, with the tegra limitation below |
+| Laptop (single-user) | Solo automations | Prepared — not yet deployed |
 
 ## The Oracle (server / coordination point)
 
@@ -15,7 +25,7 @@ these pages record what the deployments found.
 - The board inbox is a git clone with an `origin` remote;
   applied bookings are commits pushed to it. jqbook
   preflights this and refuses a plain copy before deciding
-  anything (slice-31 fix).
+  anything, before any kernel write.
 - Moving files to or from the Oracle: the fleet's access
   wrapper runs commands only; use `scp` with the same
   options (egress proxy, instance key, pinned known-hosts)
@@ -48,8 +58,10 @@ these pages record what the deployments found.
 - Measured platform: WSL2 kernel
   6.18.54.1-microsoft-standard-WSL2, Python 3.14.4,
   node v24.21.0, zcode-app-cli 3.16.3-40 (runtime 0.17.0),
-  mcode 0.6.12, Claude Code also present. Full suite here:
-  **332 passed, 7 skipped**.
+  mcode 0.6.12, Claude Code also present. Full suite at its
+  deployment measurement: **332 passed, 7 skipped**
+  (counts are platform- and version-dependent; see the
+  Orin note).
 - GPU: NVIDIA GeForce RTX 4050; `nvidia-smi` is **not on
   PATH** in this WSL — it lives at
   `/usr/lib/wsl/lib/nvidia-smi`.
@@ -58,8 +70,9 @@ these pages record what the deployments found.
   192.168.0.78:2206). `Connection refused` on **both**,
   with the other boxes' slots listening, means the box or
   its WSL is down — a desk state, not a credential or
-  client error. (During slice 31 the box was dark for a
-  full booked window; no remote action can wake it.)
+  client error. The box has been observed dark for a full
+  booked working window in exactly this signature; no
+  remote action can wake it.
 - Casey's own tmux sessions on this box are his: list at
   most, never enter or capture. Seat work runs detached in
   its own directory.
@@ -99,8 +112,8 @@ an `exec` headless mode (`--permission smart|full|off`,
 vocabulary in the shipped bundles — SessionStart,
 PreToolUse, PermissionRequest, PostToolUse — with a
 Claude/Codex-format plugin loader (`hooks/hooks.json`).
-**No MCode hook has been live-fired yet**: as of this
-writing MCode is supervised by governing what it emits
+**No MCode hook has been live-fired**: MCode is
+supervised by governing what it emits
 (board rows, files, jobs), and a Jacquard adapter via its
 plugin route is a feasible, unbuilt next step. TUI seats
 are driven through tmux; seat sessions belong to their
@@ -108,10 +121,11 @@ lanes.
 
 ## The laptop (HP) — pending
 
-Not yet meshed: no tunnel slot answers for it, its mDNS
-names do not resolve from the fleet, and joining is a desk
-action (power on, join the LAN, cross-authorise the fleet
-key or take tunnel slot 2226). The single-user profile in
+Not yet deployed, and not yet reachable by the fleet: no
+tunnel slot answers for it, its mDNS names do not resolve
+from the fleet, and joining is a desk action (power on,
+join the LAN, cross-authorise the fleet key or take
+tunnel slot 2226). The single-user profile in
 the QUICKSTART is prepared for it; this cell fills when
 the box joins and a deployment record can be counted from
 its log — not before.

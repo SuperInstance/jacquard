@@ -6,11 +6,13 @@ reaches the queue only if the kernel allowed it; an
 unknown producer's job holds for a batched operator
 decision; outcomes journal back into the same log.
 
-**Proven by:** the Thor's gpu-queue — live since slice 22
-(17 submitted / 10 allowed / 2 held / 5 denied / 12
-dispatched / 10 completed / 1 failed at the slice-30
-audit; the slice-31 stranger run took it to 19 submitted
-and 12 completed, including its own bench job).
+**Proven by:** the Thor's gpu-queue, in production on the
+fleet's GPU server. At the last full audit its log counted
+17 submitted / 10 allowed / 2 held / 5 denied / 12
+dispatched / 10 completed / 1 failed; a later
+independently-operated session took it to 19 submitted
+and 12 completed. The deployment record is
+`docs/slice30-device-matrix.md`.
 
 ## 1. Copy the log, both halves
 
@@ -73,7 +75,8 @@ show your job completed and the sentinel standing.
 
 - The gate prices a declared successor as ordinary
   production until a real successor marker exists (a named
-  residual from the consumption-policy work).
+  residual, recorded in
+  `docs/slice27-consumption-policy-v2.md`).
 - The consumption gate (`--consumption-gate`) is built
   and tested but activates only for a job class running
   ≥ ~5 GPU-minutes; below that, governance is the allow /

@@ -6,10 +6,13 @@ run at once; writes, shell commands and network actions
 queue for your batched decision; one approval authorises
 one execution of exactly the action you saw.
 
-**Proven by:** the ZCode adapter — slice 12's live run,
-the slice-30 deployments (ProArt: 6 proposals, 109-entry
-log; Orin: 10 proposals, 117-entry log), and the slice-31
-stranger runs on both boxes.
+**Proven by:** the ZCode adapter in production —
+deployments on a WSL2 workstation (6 proposals governed,
+109-entry log) and a Jetson front room (10 proposals,
+117-entry log), plus cold-start runs by operators working
+from these documents alone. Records:
+`docs/slice12-live-run.md`,
+`docs/slice30-device-matrix.md`.
 
 ## 1. Pick a workspace
 
@@ -72,10 +75,11 @@ decisions in milliseconds.
 ## Limits, honestly
 
 - The adapter's verdicts were correct in every observed
-  mode; the host's hook lifecycle is the variable — the
-  slice-12 headless anomaly (approvals landed after the
-  seat stopped retrying) is the failure shape to watch
-  for, and the retry rule + prompt decisions are the fix.
+  mode; the host's hook lifecycle is the variable — a
+  recorded headless failure shape (approvals landing after
+  the seat stopped retrying;
+  `docs/slice12-live-run.md`) is the one to watch for,
+  and the retry rule + prompt decisions are the fix.
 - The log records tool-call contents verbatim (Bash
   strings, file contents) — treat it as sensitive; the
   sidecar is safe to share.

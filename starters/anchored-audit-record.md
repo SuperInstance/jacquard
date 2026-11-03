@@ -6,9 +6,9 @@ for a small regulated operator. The hash chain proves a
 log is self-consistent; anchoring proves it wasn't
 rewritten.
 
-**Proven by:** slices 18/21 — the frozen proof log
-anchored in the public `SuperInstance/jacquard-anchors`
-repo (the 507-entry log at checkpoints 0–2 across a key
+**Proven by:** the public `SuperInstance/jacquard-anchors`
+witness repo — the reference proof log anchored there
+(the 507-entry log at checkpoints 0–2 across a key
 rotation), and the attack fixture: the same log with one
 decision flipped and its chain recomputed passes internal
 verification and **fails** anchor verification at
