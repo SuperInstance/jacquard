@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: "22"
       - name: Install test dependencies
-        run: pip install pytest
+        run: pip install pytest cryptography
       - name: Python suite (kernel, vectors, acceptance, CLI drill)
         run: python3 -m pytest -q
       - name: TypeScript conformance (spec-only second implementation)

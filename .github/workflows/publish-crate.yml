@@ -52,12 +52,12 @@ jobs:
         run: |
           grep -n '^publish = false' rust/Cargo.toml
           cargo package --manifest-path rust/Cargo.toml --allow-dirty
-          ls -la target/package/*.crate
+          ls -la rust/target/package/*.crate
       - name: Upload the crate as a run artifact (dry-run evidence)
         uses: actions/upload-artifact@v4
         with:
           name: crate-${{ inputs.ref }}
-          path: target/package/*.crate
+          path: rust/target/package/*.crate
           retention-days: 14
       - name: Detect the bootstrap token (publish runs only)
         if: ${{ !inputs.dry_run }}
