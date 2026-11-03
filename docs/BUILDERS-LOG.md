@@ -2303,3 +2303,29 @@ tag-clone verification (Python suite line, TS checker line,
 TS anchor verification of the true proof-run-2 log against
 the public anchors repo) is recorded in the addendum that
 follows it, as with slice 18.
+
+### Slice 19 — tag-clone verification addendum (2026-11-02)
+
+Run after the close commit (5442cbf) was tagged **v0.5.0**,
+from fresh clones of both public repos, on the Oracle:
+
+- `git clone --branch v0.5.0` of `SuperInstance/jacquard`
+  (at 5442cbf) → `python3 -m pytest -q`: **285 passed,
+  7 skipped**.
+- Same clone, `conformance/ts`: `node check.ts` → **13 PASS,
+  0 SKIP, 0 FAIL**, exit 0.
+- Same clone, TS anchor verification of the true proof-run-2
+  log against a fresh clone of `SuperInstance/jacquard-anchors`
+  (pubkey taken from that clone's `pubkey.txt`):
+  `node conformance/ts/verify-anchor.ts docs/proof-run-2/kernel.jsonl
+  --checkpoints <anchors clone> --pubkey 1aa240ac…b3072be5`
+  → outcome `verified`, `log_length` 507,
+  `anchored_length` 507, `unanchored_tail` 0,
+  `checkpoints_checked` 2, `internal_chain_ok` true,
+  `failure` null, exit 0.
+- Secret scan of the slice (60a2321..5442cbf): `git log -p`
+  greps zero for any PEM private-key header; no key file is
+  tracked; the anchor private key remains mode 0600 at
+  `~/.jacquard/anchor-key.ed25519` on the Oracle and nowhere
+  else (the single diff match for its filename is prose
+  stating where it lives, as the spec requires).
