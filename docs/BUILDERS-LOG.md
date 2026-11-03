@@ -3276,3 +3276,33 @@ envelope-binding detail. Suite after: 318 passed + 7 skipped.
 TS and Rust twins in flight on branches slice24-ts /
 slice24-rust; witness republish and the v1.0.1 tag wait on
 both.
+
+**Twins + acceptance + close (2026-11-03).** The TS twin
+(branch slice24-ts @ 70f7c7c) and Rust twin (branch
+slice24-rust @ 7774c9c) landed the same grammar in
+verify-anchor.ts/check.ts and verify_anchor.rs/check.rs +
+lib.rs; both checkers report **14 PASS / 0 SKIP / 0 FAIL**
+with the new `registry` section running all 11 vector cases.
+Process notes worth keeping: the TS agent found check.ts's
+in-file `authenticateHistory` was a REDUCED §15.5 (no
+envelope-binding check — the full check lived only in
+verify-anchor.ts) and strengthened the checker to mirror
+Python exactly rather than weakening the case; the Rust
+agent found the registry copy in vectors.json parses its
+string sequence bounds as JSON numbers (its JVal model) —
+handled in its JSON->registry conversion. Both were caught
+*because* the vectors carry a case (window-claim-outside-
+truth) that a reduced procedure passes wrongly.
+
+The witness registry was republished as /2 (anchors
+d1fa84c; keys.json diff is exactly the format line) and its
+README's limitation section rewritten as a doc event. Final
+acceptance against the published registry, all three
+implementations: gpu live log verified 91/91, proof log
+507/507. Release paperwork: versions 1.0.1 (pyproject,
+Cargo.toml + lock, package.json), CHANGELOG 1.0.1 entry,
+README gains the Phase 9 paragraph and loses the
+registry-grammar item from its not-built list,
+release-readiness addendum appended. Slice 24 ships as tag
+**v1.0.1**; cold-clone verification from the tag follows in
+the next entry.
