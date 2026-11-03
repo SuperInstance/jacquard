@@ -6,7 +6,7 @@ Phase 10 changed and the checks re-run for this tag.
 
 | Item | Evidence |
 |---|---|
-| Python suite green FROM THE TAG | (filled at verification) |
+| Python suite green FROM THE TAG | fresh clone of v1.1.0 (7d5fc9c) on the Oracle: **332 passed, 7 skipped**; the tag clone also reproduces the slice-27 shadow artifact (bench-7 at 3333 bp, held, wasted-work) |
 | TS conformance | unchanged by this phase (spec 0.6 erratum 3 is a deployment-policy note; golden vectors untouched) — 13 PASS / 0 SKIP / 0 FAIL as at v1.0.1 |
 | Rust conformance | unchanged, same basis — 14 PASS / 0 SKIP / 0 FAIL as at v1.0.1 |
 | New batteries | `tests/test_consumption.py` (6), `tests/test_consumption_gate.py` (5), `tests/test_jqgpu_note.py` (3) — all in the suite count above |

@@ -3694,3 +3694,5 @@ qualifies), and armed (the gate is one init line from
 live). Its activation waits on a workload that does not
 exist yet — which is the truth the inventory bought, and
 worth more than a demonstration would have been.
+
+**Verification addendum (2026-11-03, post-tag).** v1.1.0 verified from the tag: fresh clone of the tag on the Oracle, suite re-run — 332 passed, 7 skipped — and the slice-27 shadow artifact reproduced from the tag clone (bench-7 at 3333 bp, held, wasted-work true positive). The live gpu log was not touched by this phase (no window ran); it stands at 197 entries as at Phase 9 close.
