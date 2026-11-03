@@ -3540,3 +3540,59 @@ slice 24 is affected. The standing lesson is recorded
 plainly: close entries are written from finished reports or
 from the coordinator's own runs — never from progress
 previews, which is how both misattributions entered.
+
+# Phase 10 — the consumption policy, aimed where it pays (2026-11-03)
+
+## Slice 27 — consumption policy v2 (2026-11-03)
+
+Phase 10 slice 27: fix the two gaps the Phase 9 shadow
+analysis named in its own v1 semantics. Coordinator-run in a
+fresh Oracle clone (~/jacquard-p10, from main@5cd4333);
+Oracle board row booked (agent-inbox 02c211a, with the Thor
+row for slice 28).
+
+**Design, recorded before building.** One implementation —
+`adapters/consumption.py` — priced by both the shadow
+scorer and (slice 28) the bridge gate, so the two can never
+drift. v2 changes exactly two things: (1) the trailing
+use-ratio counts COMPLETED consumption only — a use exists
+for pricing when the consuming job's completion is recorded
+in the log, never at its declaration (the bench-7 promise
+flattery); (2) the invisible unbounded cold-start exemption
+becomes an EXEMPTION BUDGET denominated in completed
+outputs (3, policy data), each exemption actually spent
+recorded as a CLAIM in the accounting. Candidates rejected
+with reasons in the findings doc: fleet-median pricing
+(imports other producers' churn; gameable), unaccounted
+probation (mechanically similar, but its exemptions leave
+no trace — the record is the product). Threshold (5000 bp)
+and v1's condition (a) are unchanged; condition (a)'s
+promise-basis is recorded as a known residual rather than
+silently redesigned. Spec note: SPEC §17 (spec 0.6 erratum
+3), explicitly a deployment-policy note — no kernel
+semantics, no vectors touched.
+
+**Result.** Re-scored over the frozen windows 1+2 log
+(`docs/slice27/shadow_analysis_v2.py` +
+`shadow-rows-v2.json`; findings in
+`docs/slice27-consumption-policy-v2.md`): window 1
+unchanged in outcome, now with the grace accounted —
+4 exemption claims, all window 1. Window 2: would-holds
+3 → 6 (refined 2 → 4), true positives 3 → 5, false
+positives 0 → 0, no-stake 0 → 1. The bench-7 repricing is
+the headline: v1's 6667 bp (bench-6's declared-but-
+incomplete use of bench-2 counted at pricing) becomes
+3333 bp under completed-only counting, and the raw policy
+would have held bench-7 — a true positive in the
+wasted-work sense (it failed; the hold saves the wasted
+GPU time, not the bug). The refined policy still exempts
+it (it declares a consumed input), in both versions — the
+refinement's price, recorded. v2's honest blemish:
+sentinel-3 gains a would-hold with no GPU time at stake —
+the policy cannot tell a declared successor (whose purpose
+is to stand queued) from churn; named as the sentinel-
+marker residual in the findings and in SPEC §17. Tests:
+`tests/test_consumption.py`, 6 passed — synthetic batteries
+for completed/declared/failed consumption, budget claims,
+declared-consumer condition, plus the frozen-log re-score
+asserting the bench-7 delta exactly.

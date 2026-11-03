@@ -1636,3 +1636,48 @@ more, and this section states the rest.
   for those values. The confidentiality-relevant case — a
   private log, a shared export — is the design's target, and
   its limits are the ones above.
+
+## 17. Consumption pricing (deployment policy note)
+
+NOTE (2026-11-03, spec 0.6 erratum 3): this section is a
+deployment-policy note, not kernel semantics. It constrains
+no conforming kernel; it records the semantics the
+reference deployment (the gpu-queue bridge) implements in
+`adapters/consumption.py`, so that a shadow score and a
+live decision are the same arithmetic. The kernel's own
+downstream-use sense (section 11.3) is unchanged.
+
+A consumption policy prices a producer's submissions to a
+governed job class by the producer's trailing output-use
+ratio, computed from the log, strictly causally (a
+submission is priced only on entries recorded before it):
+
+- A producer's completed outputs are the declared outputs
+  of its submissions whose producing job's completion is
+  recorded in the log. An output counts as USED only when
+  a consuming job whose completion is also recorded named
+  it in its execution entry's uses. A use declared at a
+  consumer's submission but never completed — including a
+  consumer that failed — counts for nothing (completed
+  consumption only; no promise flattery).
+- Cold start is an EXEMPTION BUDGET denominated in
+  completed outputs (reference value 3, policy data):
+  while a producer's completed-output count is below the
+  budget, its submissions are exempt from a consumption
+  hold, and each exemption actually spent is recorded as a
+  claim in the policy's accounting (the per-item policy
+  sense entry, when live). Once the budget is exhausted
+  the ratio rules; it is then defined by construction.
+- A submission is held when it declares an output with no
+  declared consumer in an earlier execution entry, the
+  budget is exhausted, and the ratio is below the
+  threshold (reference value 5000 basis points, policy
+  data). Held items enter the batched decision queue like
+  any other hold; the operator's release or reject is the
+  decision of record.
+
+Known residual, stated at adoption: the policy has no
+marker for a declared successor/sentinel job — a job whose
+purpose is to stand queued — and will price one as
+ordinary production until such a marker exists in the
+policy record.
