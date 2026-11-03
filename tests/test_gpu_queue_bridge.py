@@ -86,7 +86,7 @@ def test_policy_record_precedes_and_classify():
              "under the successor rule, feeder OFF")
     assert classify("jacquard-build", prose)[0] == "allow"
     assert classify("jacquard-build",
-                    "gpuq --lane x feeder on")[0] == "deny"
+                    "/home/x/gpu-queue/gpuq feeder off")[0] == "deny"
 
 
 def test_policy_record_is_in_log_before_proposals(tmp_path):
