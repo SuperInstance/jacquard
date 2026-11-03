@@ -228,3 +228,23 @@ def rewrite_status(seq, record, status):
         raise RuntimeError("status rewrite of %s refused: %r"
                            % (record["id"], verdict))
     return updated
+
+
+def preflight_inbox(inbox):
+    """The board is applied by git commit + push. Fail loudly —
+    before any kernel write — if the inbox cannot be committed
+    and pushed. (Slice 31 finding: a stranger's plain directory
+    copy passed `init` silently and would only have failed
+    mid-propose, after the kernel had already decided.)"""
+    inside = git(inbox, "rev-parse", "--is-inside-work-tree")
+    if inside.returncode != 0 or inside.stdout.strip() != "true":
+        raise RuntimeError(
+            "inbox %s is not a git working tree: applied bookings "
+            "are git commits pushed to origin, so --inbox must be "
+            "a git clone of the board" % inbox)
+    origin = git(inbox, "remote", "get-url", "origin")
+    if origin.returncode != 0 or not origin.stdout.strip():
+        raise RuntimeError(
+            "inbox %s has no origin remote: applied bookings are "
+            "pushed to origin, so --inbox must be a git clone "
+            "with origin set" % inbox)

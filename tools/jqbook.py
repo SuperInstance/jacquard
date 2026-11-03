@@ -29,7 +29,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from adapters.booking_board import (  # noqa: E402
     apply_row, fmt_min, git, journal, mark_row, normalise_seat,
-    open_flow, parse_board, parse_duration_min, rewrite_status,
+    open_flow, parse_board, parse_duration_min, preflight_inbox,
+    rewrite_status,
     row_is_done, slug, to_epoch_min, write_record)
 from jacquard import install_booking  # noqa: E402
 from jacquard.booking import publish_contention  # noqa: E402
@@ -358,6 +359,11 @@ def main():
     if args.cmd in ("init", "propose", "release", "complete",
                     "cancel") and not args.inbox:
         raise SystemExit("--inbox is required for %s" % args.cmd)
+    if args.inbox:
+        try:
+            preflight_inbox(args.inbox)
+        except RuntimeError as exc:
+            raise SystemExit(str(exc))
     return args.fn(args)
 
 
