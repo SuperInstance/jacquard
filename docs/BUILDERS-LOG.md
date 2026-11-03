@@ -3901,3 +3901,57 @@ understated completion (write "still queued", file
 absent) against its own log — artifact outranks
 summary in both directions; the matrix document
 records it.
+
+**Slice 31 — the stranger test (2026-11-03).** Four cold
+agents, the draft QUICKSTART alone, four device profiles,
+booked 19:45 UTC. T1 (schedule) completed with doc
+friction and one product face: jqbook pushed to the
+inbox's origin without the doc ever saying the inbox had
+to be a committable clone, and init passed a plain copy
+silently. T3 (Orin seat) completed — and falsified the
+coordinator's own morning: the booking-board battery's
+fixtures were pinned to a 19:00 UTC check-by, so the
+suite the coordinator had verified at "338 passed" began
+failing at 19:00, on the device, in the stranger's hands
+(5 of the 6 battery tests; the sixth failure is the known
+tegra bubblewrap one). T4 (gpu) completed both stages:
+held for unknown-producer exactly as designed, released
+on the coordinator's decision, dispatched, completed —
+plus one governed deviation by the agent (a sentinel
+submitted behind its stranded job, restoring the
+canonical end state) that the coordinator's imprecise
+brief made necessary; the successor rule was the profile's
+biggest doc gap. T2 (ProArt seat) never started: the box
+was dark on both routes for the whole window (both booked
+windows, re-probed at 21:32 — still dark), and the agent
+substituted nothing. The coordinator VM also restarted
+twice more during the slice (≈20:22, ≈21:27 UTC); the
+day's restart count is three, and two interim handoff
+renderings and one agent friction item were all corrected
+by their own sources before entering the record — the
+standing rule held: artifacts over summaries, in both
+directions. Fixes: product (e18de9a — relative-time
+fixtures, 8/8 battery green at 21:24 UTC, full suite
+340+7; jqbook inbox preflight before any kernel write),
+docs (0c59ca7 — QUICKSTART rewritten per profile from the
+friction register; adapter README's headless limit
+rewritten to the observed position). Re-runs with fresh
+agents: T1 completed and caught a trap inside the fix
+itself (a copied board keeps the LIVE origin — the
+scratch-remote recipe and the warning are now the doc's,
+ac3651c); T3 completed clean, the battery passing 8/8 on
+the Orin. Full report: docs/slice31-stranger-test.md.
+
+**Slice 32 — the grab-and-go layer (2026-11-03).**
+ONBOARDING (the four ideas in meeting order), DEVICES
+(per-device evidence, including the honest cells: the
+laptop pending, MCode evidenced-not-verified, the ProArt
+reachability semantics that slice 31 paid for), four
+starter kits built from the deployments they name, and
+the README reworked to lead with uses and a verified-
+state head (56593e8). The release addendum
+(docs/release-readiness-1.2.md) states the matrix cell by
+cell: four real, one pending a desk join. Phase 11
+closes at v1.2.0; the standing residuals are unchanged
+(the interim tie, the inactive consumption gate, MCode's
+unbuilt adapter, registry publication with the owner).
