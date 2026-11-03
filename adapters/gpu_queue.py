@@ -546,6 +546,27 @@ class GpuQueueBridge:
                 if self.seq.machine_instance_state(action_id)
                 == "dispatched"]
 
+    # ------------------------------------------------ operator notes
+    def operator_note(self, event, action, cause=None,
+                      job_log=None, producer="operator"):
+        """Record an operator intervention on the governed
+        queue as a `gpu-operator-note` sense entry — the
+        record that had to be improvised by hand in window 2
+        (seq 188 of that log: a gpuq halt cleared by editing
+        queue.json, its note appended ad hoc). The verb
+        changes nothing on the Thor and grants the bridge no
+        new powers; it makes the note a first-class,
+        hash-chained part of the log, in the same shape the
+        improvised entry used: {event, action[, cause]
+        [, job_log]}."""
+        value = {"event": event, "action": action}
+        if cause:
+            value["cause"] = cause
+        if job_log:
+            value["job_log"] = job_log
+        return self.seq.submit_sense("gpu-operator-note",
+                                     value, producer)
+
     # ------------------------------------------------ outcomes
     def poll_outcomes(self):
         """Read gpuq state for dispatched job ids and write

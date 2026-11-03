@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jacquard-kernel"
-version = "1.0.1"
+version = "1.1.0"
 description = "A supervised runtime: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only log."
 requires-python = ">=3.11"
 license = {text = "MIT"}

@@ -21,6 +21,8 @@ gpuq over its existing SSH door, per invocation.
     python3 tools/jqgpu.py --log LOG poll
     python3 tools/jqgpu.py --log LOG senses
     python3 tools/jqgpu.py --log LOG counts
+    python3 tools/jqgpu.py --log LOG note --event TITLE \
+        --text WHAT-WAS-DONE [--cause WHY] [--job-log PATH]
 
 Held jobs are released or rejected with the existing operator
 CLI (tools/jq.py queue / decide), hash-bound as always; the
@@ -69,6 +71,15 @@ def main():
                         help="job class (default: the governed "
                              "gpu-bench class)")
     sub.add_parser("dispatch")
+    note = sub.add_parser("note")
+    note.add_argument("--event", required=True,
+                      help="short title of the intervention")
+    note.add_argument("--text", required=True,
+                      help="what the operator did (the action)")
+    note.add_argument("--cause", default=None,
+                      help="why it was necessary")
+    note.add_argument("--job-log", default=None,
+                      help="path of the relevant gpuq job log")
     sub.add_parser("poll")
     sub.add_parser("senses")
     sub.add_parser("counts")
@@ -98,6 +109,14 @@ def main():
                                     uses=uses,
                                     job_class=args.job_class)
         print(json.dumps(verdict, indent=1))
+        return 0
+    if args.command == "note":
+        entry = bridge.operator_note(args.event, args.text,
+                                     cause=args.cause,
+                                     job_log=args.job_log)
+        print(json.dumps(
+            {"note": "recorded", "seq": entry["seq"],
+             "entries": len(bridge.seq.log.entries)}, indent=1))
         return 0
     if args.command == "dispatch":
         records = bridge.dispatch_pending()

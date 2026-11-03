@@ -3,6 +3,75 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 1.1.0 — 2026-11-03
+
+### Slice 27 — consumption policy v2 (Phase 10)
+- Spec 0.6 **erratum 3**: new section 17, a deployment-
+  policy note recording the consumption-pricing semantics
+  the reference deployment implements. No kernel semantics
+  change; no vector changes; the section 11.3
+  downstream-use sense is unchanged.
+- `adapters/consumption.py`: one pricing implementation
+  shared by the shadow scorer and the bridge gate. The
+  trailing use-ratio counts **completed consumption only**
+  (a use counts when the consuming job's completion is
+  recorded — never at declaration; a failed consumer
+  counts for nothing), fixing the promise-flattery gap
+  the Phase 9 shadow named in its own v1 semantics. The
+  unbounded invisible cold-start exemption becomes an
+  **exemption budget** denominated in completed outputs
+  (reference 3), each exemption spent recorded as a claim
+  in the accounting.
+- Re-scored windows 1+2 (frozen log): would-holds 3 → 6,
+  true positives 3 → 5, false positives 0 → 0, no-stake
+  0 → 1 (sentinel-3, the named sentinel-marker residual);
+  bench-7 repriced 6667 → 3333 bp and held (wasted-work
+  true positive); 4 exemption claims, all in window 1.
+  Findings: `docs/slice27-consumption-policy-v2.md`;
+  scorer + rows: `docs/slice27/`.
+
+### Slice 28 — the expensive class: inventory and gate
+- Thor inventory from records (`docs/slice28/`): the
+  gpu-queue's complete history holds 1,647 finished jobs,
+  max 180.3 s, **zero ≥ ~5 GPU-minutes**; image studio
+  and foundry portal records are seconds-scale on GPU.
+  **No qualifying expensive class exists; the brief's
+  honesty gate fired — no live window was run and none
+  was manufactured.** The feeder class was shadow-scored
+  at class level: 16,667 assets, 39 ever used (23 bp);
+  ≈18.3 GPU-hours priced — validating the standing
+  feeder-off ruling.
+- The gate is built as machinery: a `consumption_gate`
+  in a log's policy record (job class, threshold,
+  exemption budget, optional `exempt_self_consuming`
+  refinement) makes the bridge hold that class's
+  submissions through the kernel's rule hook as
+  `gpu-consumption-policy/2`, priced by
+  `adapters/consumption.py`, accounted per item in
+  `gpu-policy` sense entries. `jqgpu init
+  --consumption-gate`, `jqgpu submit --class`. Battery:
+  `tests/test_consumption_gate.py` (5 tests). **Not
+  active on any live log.**
+- Defect found in passing, fixed: declared uses rode
+  only on the proposal body, which the rule hook never
+  sees — the refinement was unpriceable live.
+  `submit_job` now carries declared uses on the dispatch
+  request as well (the body-level list remains the
+  canonical record).
+
+### Slice 29 — the note verb, v1.1 tidy
+- `jqgpu note --event --text [--cause] [--job-log]`:
+  the operator-note record window 2 improvised by hand
+  (that log's seq 188) is now a verb —
+  `GpuQueueBridge.operator_note` appends the
+  `gpu-operator-note` sense entry in the same shape.
+  Battery: `tests/test_jqgpu_note.py` (3 tests).
+- README currency: the Phase 10 state above; a stale
+  "Phase 8 (in progress)" line for slice 20 corrected.
+- Suite at the tag: 332 passed, 7 skipped (was 318 + 7);
+  TS/Rust conformance unchanged (the erratum is a
+  deployment note; vectors untouched).
+
 ## 1.0.1 — 2026-11-03
 
 ### Slice 24 — the registry-grammar fix (Phase 9)

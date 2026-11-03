@@ -3648,3 +3648,49 @@ carries declared uses on the dispatch request too
 proposals byte-identical to the windows 1+2 form. The
 refinement gate test failed before this fix and passes
 after — the failure is recorded here rather than smoothed.
+
+## Slice 29 — the note verb, v1.1 tidy, Phase 10 close (2026-11-03)
+
+The missing verb: window 2's halt-clear reached the log by
+hand (seq 188, an improvised gpu-operator-note appended ad
+hoc after an edit of queue.json). Now `jqgpu note --event
+--text [--cause] [--job-log]` → GpuQueueBridge.operator_note
+appends the same sense entry in the same shape
+({event, action[, cause][, job_log]}, producer `operator`),
+changing nothing on the Thor. Battery
+tests/test_jqgpu_note.py (3 passed), including a NullThor
+that raises if the verb touches the queue transport, and a
+CLI end-to-end over a real file log.
+
+Small defects in passing: the slice-28 uses-on-request fix
+(recorded there); a stale README line announcing slice 20
+as "Phase 8 (in progress)" two phases after it completed,
+corrected; README gained the Phase 10 paragraph and an
+honest not-built list (gate activation outstanding for
+want of a qualifying class; the sentinel marker).
+
+**Tag decision: v1.1.0, taken.** The evidence supports a
+minor release: a new policy capability with its spec note
+(erratum 3), new tested machinery (the gate), a new
+operator verb, and no defect or honesty item outstanding
+that a patch number would say better. Suite before the
+tag: 332 passed, 7 skipped (318 + 14 new: consumption 6,
+gate 5, note 3). TS/Rust conformance untouched by this
+phase (no vector or seal change; the only rust/ edit is
+the Cargo.toml version) and stands as verified at v1.0.1
+(TS 13/0/0; Rust 14/0/0). Versions bumped together:
+pyproject, conformance/ts/package.json, rust/Cargo.toml
+→ 1.1.0. Release addendum: docs/release-readiness-1.1.md —
+including, stated plainly, that the cold-agent drill was
+NOT re-run for 1.1.0 (the operator-surface delta is one
+additive verb and one additive init option, both
+battery-covered and CLI-smoked; the 1.0 drill's README
+path is unchanged).
+
+Phase 10 closes here. What the consumption question looks
+like now: the policy is honest (v2), aimed (the inventory
+says where it pays and where nothing on this box yet
+qualifies), and armed (the gate is one init line from
+live). Its activation waits on a workload that does not
+exist yet — which is the truth the inventory bought, and
+worth more than a demonstration would have been.
