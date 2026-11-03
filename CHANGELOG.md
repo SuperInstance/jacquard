@@ -3,7 +3,50 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
-## Unreleased
+## 1.0.0 — 2026-11-03
+
+The 1.0 release: three implementations of one contract
+(Python reference, TypeScript and Rust ports) at spec 0.6,
+a live adapter surface (coding-agent hooks, network service,
+gpu-queue governance), key-managed anchoring with a public
+witness, sealed exports, and package shapes built for PyPI,
+crates.io and npm under the qualified name `jacquard-kernel`
+(registry publication itself waits on the batched owner
+steps — see `docs/release-readiness-1.0.md`).
+
+### Slice 23 — packaging and the 1.0 release (Phase 8)
+- Spec 0.6 **erratum 1**: section 1's string-escaping prose
+  corrected to the raw-UTF-8 form the golden vectors and all
+  three implementations have always used. Prose only — the
+  spec seal derives from the version string, so no canonical
+  byte and no recorded hash changed. The divergence record
+  stands in `rust/GAPS.md`.
+- **MIT LICENSE** added (the repo carried none; MIT is the
+  fleet norm) and claimed in all three package metadata
+  files.
+- Python distribution renamed `jacquard` → `jacquard-kernel`
+  (the name `jacquard` is taken on PyPI, npm and crates.io);
+  the import package stays `jacquard`. Version 1.0.0 across
+  pyproject, `rust/Cargo.toml` and the new
+  `conformance/ts/package.json`.
+- Package evidence (local builds, nothing published): sdist
+  + wheel built; the wheel installed into a fresh venv
+  verifies the spec seal and canonical hashing standalone.
+  `cargo package` produces `jacquard-kernel-1.0.0.crate`
+  (compiles from the packaged tree). `npm pack` produces
+  the `jacquard-kernel` tarball (6 files).
+- Witness registry: the gpu-queue live log's true window
+  (successor key from seq 0) published in
+  `SuperInstance/jacquard-anchors`, and a defect named
+  plainly — as built, the 0.6 registry grammar cannot
+  schedule a log no registered key is listed for *not*
+  signing (every key defaults to signing from seq 0), so
+  post-rotation logs verify via the explicit single-key
+  form until the grammar learns null windows. The gpu live
+  log verifies 91/91 that way from cold clones; the
+  limitation is stated in the anchors repo README and in
+  the not-built list below in this repo's README.
+
 
 ### Slice 22 — gpu-queue live (Phase 8)
 - `adapters/gpu_queue.py` + `tools/jqgpu.py`: the gpu-queue

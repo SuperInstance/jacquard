@@ -174,7 +174,7 @@ dependencies = [
 
 [[package]]
 name = "jacquard-kernel"
-version = "0.6.0"
+version = "1.0.0"
 dependencies = [
  "ed25519-dalek",
  "flate2",

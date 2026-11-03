@@ -3052,3 +3052,65 @@ passes with evidence. Ground facts established first:
   key from seq 0) as a published statement in the witness
   repo, the procedure is documented, and a `register-window`
   verb is named as future work in the not-built list.
+
+### Slice 23 — work record (2026-11-03)
+
+- **Spec erratum** landed (part 1, 110227b): §1's escaping
+  paragraph now states the raw-UTF-8 rule, with the erratum
+  note in the text. Verified no-hash impact by construction
+  (seal = `sha256("jacquard-spec/0.6")`) and by suite: 314
+  passed on the edited tree before the commit.
+- **Licence**: MIT, © 2026 SuperInstance (fleet norm —
+  pincher's file is the template), claimed in pyproject,
+  Cargo.toml and the new conformance/ts/package.json.
+- **Packaging** (part 2, 6a356e6 + builds): distribution
+  renamed to `jacquard-kernel`, versions aligned at 1.0.0.
+  `python -m build` produced sdist + wheel; the wheel was
+  installed into a fresh venv and, run from /tmp against the
+  site-packages copy only, verified `SPEC_SEAL` against
+  spec/vectors and canonical hashing (SMOKE OK). `cargo
+  package --allow-dirty` produced `jacquard-kernel-1.0.0.crate`
+  (52,693 B; the packaged tree compiles). `npm pack
+  --dry-run` produced the `jacquard-kernel-1.0.0.tgz` shape
+  (6 files, 39.7 kB). Nothing published; `publish = false`
+  stays in Cargo.toml for the owner steps.
+- **Registry defect — analysis, not assumption.** The
+  coordinator first "fixed" slice 22's blocker by publishing
+  the gpu log's window (successor from seq 0) into the
+  witness `keys.json` (anchors badd09d after repair, below).
+  Cold verification then STILL raised the partition error,
+  which forced the actual read of `schedule_from_registry`
+  (src/jacquard/anchor.py:408): every registered key
+  contributes an interval for every log_id, defaulting
+  `signs_from` to 0 when unlisted, and an empty window is
+  inexpressible (until < from is malformed). So no registry
+  content can schedule a post-rotation log under the 0.6
+  grammar — slice 22's blocker is a grammar defect, not an
+  operator-procedure gap. Disposition for 1.0.0: the true
+  window stays published as a statement of fact; the
+  limitation is stated in the anchors README (rewritten
+  accordingly), this repo's README not-built list, and the
+  release checklist; the gpu live log verifies 91/91 from
+  cold clones via the explicit successor-key form
+  (`--pubkey ce805efd…`, reproduced this slice). The null-
+  window grammar fix is named owed work.
+- **Process incidents (coordinator's own, recorded)**: two
+  heredoc appends through the SSH wrapper lost their quoting
+  in transport and executed backtick fragments as shell
+  commands. The first (spec bullet + this log's opening
+  entry) was caught before any commit and redone via
+  base64 transfer. The second reached the anchors repo
+  README as a mangled fragment inside commit 972fba6; it
+  was caught on read-back, removed in 1a48bfe, and the
+  section was later rewritten whole (badd09d is the
+  correction commit for the procedure text). No content
+  was lost in either case; every repair was verified by
+  reading the file back. Lesson restated: base64 for any
+  non-trivial text through this transport, always.
+- **Checklist + tag**: `docs/release-readiness-1.0.md`
+  carries the itemised evidence and the batched owner
+  steps (anchor passphrase re-wrap; PyPI pending publisher
+  or token; crates.io token + publish flag; npm token; the
+  shelf listing). Tag follows the checklist's pre-tag
+  items; the from-the-tag verification is recorded in the
+  post-tag addendum entry.
