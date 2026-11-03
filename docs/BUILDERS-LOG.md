@@ -3382,3 +3382,42 @@ stake. A refinement — exempt submissions that themselves
 declare a consumed input — is scored alongside, and the
 operator-decision cost of the would-holds is counted with
 the same accounting formula.
+
+**Slice 25 close (2026-11-03).** Window 2 ran as designed
+in shape and honestly in outcome; full record in
+docs/slice25-live-report.md, evidence in docs/slice25/.
+Counts, window 2: submitted 9 (plan said 8 — deviation 2
+below), allowed 7, held 1 (net-1, released by one hash-bound
+operator decision), denied 2, dispatched 7, completed
+in-window 6 + window 1's sentinel, failed 1. Headline:
+downstream-use over the whole log is 3 of 10 outputs used
+(3000 bp, up from window 1's 1 of 4 / 2500 bp).
+
+Two deviations, both owned here. (1) bench-7 was authored
+to read a `sum` field the sentinel artifact does not carry;
+it failed twice at start and gpuq halted the whole queue —
+the incumbent's documented fail-stop. The coordinator
+cleared `meta.halted` in queue.json under queue.lock (the
+operator route; no CLI verb exists and the daemon never
+clears it in code), recorded as a `gpu-operator-note` in
+the log (seq 188); the failed job stayed failed. (2) A
+third sentinel was submitted behind bench-6 so the
+consuming job could run; sentinel-2 therefore ran (against
+its name) and sentinel-3 stands queued at close, the only
+queued job; feeder OFF throughout.
+
+Carry-in and accounting: mining found 0 candidates before
+the window and 0 after it over 17 joined decisions — for
+this job class every command text is unique, so shape
+support never reaches the bar; the queue did not shrink
+(≈11 operator-min/100 vs window 1's ≈12.5, same formula).
+Shadow consumption policy, scored causally: 3 would-holds
+(bench-4/5/6), all true positives, 0 false positives — and
+the saved GPU time (~60 s) is worth less than the 3 added
+operator decisions; the policy prices the wrong resource
+at bench scale. Policy gaps named in the report: cold-start
+blindness, and declared-use flattery of the trailing ratio.
+The grown log verifies 197/197 via the registry path in all
+three implementations (anchors seq 2 open @92, seq 3 close
+@197). Slice 25 verdict: PASS, with the failure and both
+deviations on the record rather than edited out of it.
