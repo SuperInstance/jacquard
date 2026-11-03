@@ -3696,3 +3696,92 @@ exist yet — which is the truth the inventory bought, and
 worth more than a demonstration would have been.
 
 **Verification addendum (2026-11-03, post-tag).** v1.1.0 verified from the tag: fresh clone of the tag on the Oracle, suite re-run — 332 passed, 7 skipped — and the slice-27 shadow artifact reproduced from the tag clone (bench-7 at 3333 bp, held, wasted-work true positive). The live gpu log was not touched by this phase (no window ran); it stands at 197 entries as at Phase 9 close.
+
+---
+
+# Phase 11 — general device (2026-11-03)
+
+Casey's direction: make Jacquard for every user —
+onboarding, quickstarts, tutorials, examples — proven by
+running it on the fleet's real devices (laptop, ProArt,
+Thor, Orin, Oracle) against the work each box already does.
+Slice 30 is the device matrix; slice 31 the stranger test;
+slice 32 the grab-and-go layer. Bookings for every box were
+placed on the schedule board before any work (agent-inbox
+31dc096: oracle box, thor cpu, proart zcode-detached,
+orin zcode-detached).
+
+## Slice 30, coordinator's own cells (Thor audit, Oracle)
+
+**Thor — audit of the standing deployment.** The Phase 8/9
+gpu-queue governance is intact and verifiable: the live
+log folds clean from a fresh read (197 entries, chain_ok
+true; counts 17 submitted / 10 allowed / 2 held /
+5 denied / 12 dispatched / 10 completed / 1 failed —
+identical to the Phase 9 close), gpuq shows the feeder
+OFF, jacquard-sentinel-3 still queued by design, 1,647
+jobs done / 1 failed all-time, and every governed artifact
+is present in ~/jacquard-gpu-live/ on the Thor. The
+gpu-queue service is active; the download-governor
+service is inactive (its attempt ledgers remain on disk)
+— recorded, not touched: the Thor is Casey's bench and
+this phase's charter there is the bridge surface only.
+Seats on the Thor: zcode (nvm v22.23.4 and v24.22.2 bins),
+mcode 0.6.13, kimi 2.3.2; the muse/muse2 watch stage is
+down (tmux holds only Casey's own agent-world session,
+not entered). Second-use assessment, from records: the
+only other governed-queue candidate on the box is the
+download-governor's serial download queue — a real
+governance shape (attempt budgets, one-at-a-time
+admission) but a new Thor surface outside this phase's
+charter; named here as evident-not-chartered, not
+deployed. The bridge's consumption gate remains inactive
+(Phase 10: no qualifying job class exists on this box).
+
+**Oracle — the booking board, governed.** New machinery:
+`adapters/booking_board.py` + `tools/jqbook.py` put the
+schedule board's own booking flow through the booking
+profile (spec 11.4). The board stays the board — git
+commits are still the bookings — but every booking the
+tool applies is first decided by the kernel (contention +
+authority senses, the booking machine), and the board
+commit is journalled back into the log as a sense entry.
+Imports are facts, not decisions: `init` read the live
+board at agent-inbox 31dc096 and wrote its 7 live rows as
+committed records (83 dead/DONE rows skipped), with
+provenance — original row text, source commit, and the
+seat normalisation map ("zcode (own tmux lane-tt)" ->
+"zcode", "cpu" -> "detached") — published in a
+`board-import` sense entry. Nothing is silently rewritten:
+the normalisation is data in the log.
+
+First governed proposals (all real bookings this phase
+needs): four slice-31 bookings committed and applied
+(board commits 53c54f1, 8f2b49d, 612024f, 2049f7d after
+the id rebuild below), and the slice-30 Orin seat booking
+proposed at rank 5 against rolling-perception's effective
+rank 5 for an overlapping window (17:50-20:00 vs their
+16:10-18:10): the kernel's answer was **held** — the
+interim tie disposition on real contention, nothing
+applied to the board — with release scheduled after the
+incumbent's window passes. No proposal from this lane
+preempted anybody.
+
+Two defects found by the smoke and the first deployment,
+both fixed with tests rather than worked around:
+(1) `release` looked the held booking's record up in
+committed state, where a held booking does not exist yet —
+its record rides in the queued proposal; the lookup now
+reads it from there. (2) Booking ids slugged
+lane+box+start collided gitpp's two live Oracle rows
+(zcode and mcode, same start) into one unit — the slug
+now includes the seat, a regression test covers the dual
+row, and the deployment log was rebuilt from genesis with
+the four already-applied board rows removed and
+re-applied under corrected ids in one explained board
+commit (agent-inbox e366fa9). Also: `apply_row` is now
+idempotent on the (jq:<id>) marker, after a failed push
+in the smoke left a duplicated row.
+Battery: tests/test_booking_board.py (5 tests: live-only
+import, clear commit+apply, tie hold + release semantics,
+reject/complete, the seat-slug regression).
