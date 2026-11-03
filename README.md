@@ -95,6 +95,28 @@ python3 tools/jq.py --log /tmp/kernel.jsonl replay <dispatched-id>
 
 Success looks like: step 3 prints `approved <id>` / `denied <id>` and a following `queue` reports the queue empty; step 4 reports the action confirmed; step 5's replay shows the queued decision, the operator's decision, and the execution, in log order.
 
+Your own proposals enter the same way the demo's did, with
+`submit`. A proposal is a small JSON document:
+
+```
+{"producer": "ops-bot", "id": "deploy-42",
+ "declared_effects": ["notify"],
+ "body": {"class": "ops",
+          "requests": [{"verb": "notify",
+                        "args": ["ops", "deploy done"]}]}}
+```
+
+```
+python3 tools/jq.py --log /tmp/kernel.jsonl submit proposal.json
+```
+
+`submit` prints the verdict as JSON: `decided` with outcome
+`queue` for a protected effect, `allow` for an unprotected
+one, or `REFUSED` with a named reason when the envelope
+does not check out. Resubmitting the identical file is
+safe: the recorded verdict is replayed and nothing is
+decided or executed twice.
+
 ## The network service
 
 The kernel is also reachable over HTTP, so a second machine can operate it: the same verbs as the operator CLI, against the same log, with the hash-binding rules unchanged. The service is standard-library only.
@@ -197,6 +219,7 @@ Stated plainly, as they stand:
 - **Hash-mode sealed commitments hide nothing over low-entropy values** (spec 16.4); use keyed mode where the values are guessable.
 - **MCode has no adapter.** Its bundles expose a plugin/hook surface (PreToolUse, PermissionRequest, PostToolUse, among others), but no MCode hook has been live-fired; MCode seats are supervised by governing what they emit (board rows, files, jobs), not their tool calls.
 - **At equal authority rank, a challenger holds for an operator.** That is the standing tie disposition for contested bookings; the alternative (a named refusal on ties) is a one-line policy change that has not been taken.
+- **Small, single-process work does not need it.** A one-off job with a handful of items is served as well by the script itself. Jacquard earns its place when several producers or processes propose against shared state, when approvals should compile into standing rules, or when a decision has to be shown to a third party. (Outside testing with working agents measured exactly this boundary; the record is `docs/slice36-outside-test.md`.)
 - **A small number of spec ambiguities remain open** where the golden fixtures do not discriminate between readings; they are recorded in `conformance/ts/GAPS.md` and `rust/GAPS.md`.
 
 ## Repository layout

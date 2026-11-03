@@ -73,6 +73,11 @@ show your job completed and the sentinel standing.
 
 ## Limits, honestly
 
+- One producer running its own jobs in order does not
+  need a governor. The kernel earns its place when
+  producers are several or untrusted, when they contend
+  for the same resource, or when the record of who ran
+  what — and why — has to be shown to someone else.
 - The gate prices a declared successor as ordinary
   production until a real successor marker exists (a named
   residual, recorded in

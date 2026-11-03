@@ -80,6 +80,35 @@ batch, hash-bound, in one pass), and the **record** (the log
 replays every step). Everything else in Jacquard is one of
 these four, at larger scale.
 
+## Submit your own proposal
+
+The drill's proposals were seeded; yours arrive with
+`submit`. Write the proposal as JSON — a producer, an
+idempotency id, the effects it declares, and the requests
+it makes:
+
+```
+{"producer": "newsletter", "id": "send-2026-11-04",
+ "declared_effects": ["send"],
+ "body": {"class": "outbound",
+          "requests": [{"verb": "send",
+                        "args": ["https://example.org/post",
+                                 "Harbor Notes #43 is out"]} ]}}
+```
+
+```
+python3 tools/jq.py --log ~/kernel.jsonl submit proposal.json
+#    (or pipe it in:  ... submit -  )
+```
+
+The verdict prints as JSON. Effects in the protected set
+(`send`, `notify`, `spend`, `irreversible`) queue for a
+decision when the producer is not the operator; anything
+else is decided on submission. Resubmitting the identical
+file replays the recorded verdict — nothing is decided or
+executed twice. From here the flow is the drill's: `queue`,
+`decide`, `execute`, `replay`.
+
 ## Pick your profile
 
 ### A coding-agent seat (workstation or front-room box)
