@@ -40,7 +40,7 @@ enough):
 cargo run --release --manifest-path rust/Cargo.toml --bin jacquard-check
 ```
 
-It prints one PASS/FAIL line per check — the same 13 checks
+It prints one PASS/FAIL line per check — the same 14 checks
 as `conformance/ts/check.ts` — and exits non-zero on any FAIL.
 There are **no SKIP lines**: every golden-vector section is
 executed and compared (seal, entry chain, checkpoint fold,
@@ -76,7 +76,9 @@ prints the §15.5 result as JSON (the same eight fields as
 verified / verified-to-anchor, 1 for failed, 3 for
 unanchored, 2 for a tool refusal. The `--keys` form reads
 the witness key registry (`keys.json`,
-`jacquard/anchor-keys/1`) — from the file itself or a
+`jacquard/anchor-keys/1` under the legacy reading, or
+`jacquard/anchor-keys/2` with null windows — spec 15.3
+erratum 2) — from the file itself or a
 directory holding it — and builds the pinned key schedule
 for the presented log's id from its `signs_from` /
 `signs_until` windows, exactly as the TS twin and

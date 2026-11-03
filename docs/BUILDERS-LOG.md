@@ -3519,3 +3519,24 @@ the close entry was written from a partial progress preview
 instead of the finished report; it is corrected here, in
 the open, rather than edited silently. No verdict, count,
 or artifact in slice 24 is affected.
+
+**Correction 2 (2026-11-03, post-close).** The same close
+entry also credited the Rust agent with finding that
+vectors.json's registry copy "parses its string sequence
+bounds as JSON numbers (its JVal model)". The Rust agent's
+full report — likewise delivered after the entry was
+written — reports no such finding; its two judgement calls
+were the format-refusal placement (inside
+`schedule_from_registry`, the same call the TS twin made
+independently) and a stale-doc flag: `rust/README.md` still
+said "13 checks / anchor-keys/1". That flag was correct and
+the README is updated in this commit (14 checks; both
+registry formats named). The JVal sentence is withdrawn on
+the same terms as the TS sentence above: written from a
+partial preview, not from the finished report. For the
+record, the Rust report also states `cargo test --release`:
+1 passed, 0 failed. No verdict, count, or artifact in
+slice 24 is affected. The standing lesson is recorded
+plainly: close entries are written from finished reports or
+from the coordinator's own runs — never from progress
+previews, which is how both misattributions entered.
