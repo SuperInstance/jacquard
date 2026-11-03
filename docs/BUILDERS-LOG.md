@@ -2064,3 +2064,96 @@ clones of both public repos, on the Oracle:
   in neither repo; the key file itself is mode 0600 at
   `~/.jacquard/anchor-key.ed25519` on the Oracle and nowhere
   else.
+
+# Phase 7 — slice 19: the full TypeScript port (2026-11-02)
+
+## Slice 19 — design, recorded before building (2026-11-02)
+
+This is a **port, not a clean-room reimplementation**. The
+distinction matters and is stated plainly so nobody misremembers
+it later: Phase 3's spec-only rule applied to the fold checker
+(`conformance/ts/jacquard.ts`, already landed — its author never
+read the Python source, and its GAPS.md is the record of that
+experiment). Slice 19's charter is the opposite method: the
+Python source in `src/jacquard/` is the reference behaviour and
+`spec/SPEC.md` is the contract, and the TS code in
+`conformance/ts/kernel.ts` is written *from* the Python —
+`dictionary.py`, `sequencer.py`, `senses.py`, `learner.py`
+(signatures only), `policy.py`, `anchor.py` — section by
+section. Where Python and spec diverge, the standing rule
+applies: divergence is a spec bug first — fix the SPEC,
+regenerate the vectors, re-run both suites, record it; never
+silently align the implementations.
+
+Scope, in build order:
+
+1. **Dictionary + evaluator** (§§4–5): definitions, the
+   form-agnostic effects walk with REFUSED(SPEC) on unknown
+   dict forms (slice 17 semantics, the first sorted key named),
+   typed stack simulation, examples, computed effects as the
+   union over expansion. Closes `vectors.definitions`.
+2. **Sequencer** (§7 + §7.1 + policy gate): envelope
+   validation and idempotency, submissions, decisions,
+   queueing / release / reject / expire, the wait pump,
+   budgets / prices / senses / checkpoints as public sequencer
+   operations — reproducing the state the vectors record.
+   Lifecycle *machines* are not ported: a kernel without the
+   lifecycle machines installed behaves as the 0.1 kernel
+   (spec §10.4), and the TS sequencer is exactly such a kernel;
+   every lifecycle step in the Python reference is a no-op
+   under that configuration, so the logs agree byte-for-byte
+   on the drill stream. Closes `vectors.state`.
+3. **Sense computation** (§11.3): the contention and authority
+   methods over entry prefixes (plus the other built-in senses
+   the Python module ships), reproducing the `vectors.senses`
+   expected readings byte-identically, method strings included.
+   Closes `vectors.senses` and GAPS item 16.
+4. **Anchor verification** (§15): Ed25519 checkpoint signature
+   verification and the §15.5 prefix/tail outcome logic, using
+   Node's built-in `crypto` (Ed25519 is supported natively —
+   no new dependency; if a real obstacle appears it is recorded
+   here, not routed around silently). Closes `vectors.anchor`
+   and GAPS item 18.
+5. **§12.1 shape signatures**: the learner's
+   `shape_signature` in TS, proven identical to the Python
+   computation over BOTH proof-run corpora
+   (`docs/proof-run/kernel.jsonl`,
+   `docs/proof-run-2/kernel.jsonl`) by a committed comparison:
+   a Python-generated expectations fixture (per queued decision:
+   seq, signature, and the set hash) that `check.ts` recomputes
+   from the TS side and compares exactly.
+
+Acceptance, stated before building: (1) `node check.ts` runs
+the full golden-vector suite with **zero SKIP lines**, exit 0;
+(2) a cross-language drill — one fixture (dictionary
+definitions and a standing-rule record defined once, plus a
+proposal stream exercising allow / queue / release / reject /
+expire / underdeclared / wait-true / wait-false-then-fired /
+wait-expired / spend-with-price / sense / checkpoint) driven
+through BOTH sequencers — produces **byte-identical logs**
+(sha256 compared, evidence committed); (3) the Python suite
+stays at its 285 passed / 7 skipped baseline or better;
+(4) GAPS.md gains dated closure notes for items 16, 17, 18,
+items 1–15 close only where a check now genuinely discriminates
+the reading, and any new gap the port exposes is recorded;
+(5) on all-green main, tag **v0.5.0** is cut and verified from
+a fresh clone OF THE TAG (Python suite line, TS checker line,
+one anchor verification of the true proof-run-2 log against
+the public anchors repo — all verbatim).
+
+Preliminary bookkeeping, landed as this slice's first commit:
+an independent verifier ran `docs/anchor-drill.md` cold, passed
+it, and flagged four document defects, all fixed in that
+commit: (1) §2's "exactly" field list omitted the eighth
+output field, `log_id` — the list now names all eight fields
+with the log's id value; (2) §4 now starts from a clean
+scratch directory (`rm -rf /tmp/tail-check`) and carries the
+`echo "exit=$?"` line the other sections have; (3) §4's copied
+layout drops the anchor repo's `checkpoints/` level — the
+drill now explains at the point of use that `--checkpoints`
+searches recursively, so the shallower layout is found;
+(4) the drill now states its honest limit up front: it is
+GUIDED, not blind — the fixture path and provenance disclose
+the forgery, so it tests procedure and mechanism, not
+verifier blindness. The rank-tie interim disposition is
+untouched by this slice.

@@ -18,6 +18,18 @@ account anywhere. Every expected value below is stated exactly;
 if your run differs, that difference is the finding — do not
 adjust the drill to match your output.
 
+**Honest limit — this drill is GUIDED, not blind.** The forged
+log is handed to you at a committed path
+(`tests/data/forged/…`) whose provenance note states exactly
+how it was forged, and every expected value is printed in
+advance. The drill therefore tests the *procedure* (can a
+fresh verifier run the steps cold?) and the *mechanism* (does
+anchor verification catch a chain-valid rewrite?) — it does
+**not** test verifier blindness: nobody here is asked to spot
+an undisclosed forgery among undisclosed logs. A blind trial
+would need a presenter who does not say which log is forged,
+and is a different exercise.
+
 ## 0. Setup
 
 ```
@@ -89,8 +101,10 @@ python3 tools/jqanchor.py verify docs/proof-run-2/kernel.jsonl \
 echo "exit=$?"
 ```
 
-Success looks like exit **0** and JSON with exactly:
-`"outcome": "verified"`, `"log_length": 507`,
+Success looks like exit **0** and JSON with exactly these
+eight fields: `"outcome": "verified"`,
+`"log_id": "5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e"`,
+`"log_length": 507`,
 `"anchored_length": 507`, `"unanchored_tail": 0`,
 `"checkpoints_checked": 2`, `"internal_chain_ok": true`,
 `"failure": null`. This is spec 15.5's VERIFIED: both published
@@ -141,14 +155,26 @@ prefix covers the rewrite.
 
 Verify the true log against **only** the mid-log checkpoint:
 
+Start from a clean scratch directory (a stale `000001.json`
+left by an earlier run would silently change the exercise):
+
 ```
+rm -rf /tmp/tail-check
 mkdir -p /tmp/tail-check/5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e
 cp ../jacquard-anchors/checkpoints/5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e/000000.json \
    /tmp/tail-check/5f4bf2b400dc3de3c6b4798028592650ca606facabf5c7a43e68ecd90db1814e/
 python3 tools/jqanchor.py verify docs/proof-run-2/kernel.jsonl \
     --checkpoints /tmp/tail-check \
     --pubkey 1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5
+echo "exit=$?"
 ```
+
+Note the copied layout: the file lands at
+`/tmp/tail-check/<log_id>/000000.json` — the anchor repo's
+`checkpoints/` directory level is *not* reproduced. That is
+fine, and deliberate to show: `--checkpoints` searches the
+given tree **recursively** for `*.json` checkpoint envelopes
+(see Trip points), so the history is found at either depth.
 
 Success looks like exit **0** with `"outcome":
 "verified_to_anchor"`, `"anchored_length": 250`,
