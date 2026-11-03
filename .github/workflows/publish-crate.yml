@@ -1,0 +1,72 @@
+# Publish jacquard-kernel (Rust) to crates.io.
+#
+# Manual dispatch only (docs/PUBLISHING.md has the exact
+# owner steps). The build always runs from the `ref` input
+# (a release tag). The tagged tree carries `publish = false`
+# in rust/Cargo.toml as a standing guard: the build step
+# asserts it is present, and only a real publish strips it —
+# in the CI checkout only; the repository keeps its guard.
+#
+# Authentication, in order: if the CARGO_REGISTRY_TOKEN repo
+# secret is set it is used (the bootstrap path — crates.io
+# has no pending publishers, so the FIRST publish needs a
+# token; see docs/PUBLISHING.md). Otherwise the workflow
+# exchanges an OIDC token via crates-io-auth-action, which
+# works once Trusted Publishing is registered for the crate.
+# With dry_run=true (the default) the workflow packages the
+# crate from the tag and uploads the .crate as a run
+# artifact; the auth and publish steps are skipped entirely.
+
+name: Publish to crates.io
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build (a release tag)"
+        required: true
+        default: "v1.0.1"
+        type: string
+      dry_run:
+        description: "Build and inspect only; publish nothing"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # OIDC for crates.io Trusted Publishing (auth step only).
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Package the crate from the ref (guard asserted)
+        run: |
+          grep -n '^publish = false' rust/Cargo.toml
+          cargo package --manifest-path rust/Cargo.toml --allow-dirty
+          ls -la target/package/*.crate
+      - name: Upload the crate as a run artifact (dry-run evidence)
+        uses: actions/upload-artifact@v4
+        with:
+          name: crate-${{ inputs.ref }}
+          path: target/package/*.crate
+          retention-days: 14
+      - name: Authenticate to crates.io (OIDC trusted publishing)
+        if: ${{ !inputs.dry_run && secrets.CARGO_REGISTRY_TOKEN == '' }}
+        id: auth
+        uses: rust-lang/crates-io-auth-action@v1
+      - name: Publish to crates.io
+        if: ${{ !inputs.dry_run }}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN || steps.auth.outputs.token }}
+        run: |
+          sed -i '/^publish = false$/d' rust/Cargo.toml
+          cargo publish --manifest-path rust/Cargo.toml

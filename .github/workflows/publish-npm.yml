@@ -1,0 +1,62 @@
+# Publish jacquard-kernel (TypeScript) to npm.
+#
+# Manual dispatch only (docs/PUBLISHING.md has the exact
+# owner steps). The build always runs from the `ref` input
+# (a release tag): the conformance checker runs against the
+# tagged tree first, and only a green checker packs. The
+# publish step uses the NPM_TOKEN repo secret (a granular
+# access token for the jacquard-kernel package — see
+# docs/PUBLISHING.md). With dry_run=true (the default) the
+# workflow packs the tarball and uploads it as a run
+# artifact; the publish step is skipped entirely.
+
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build (a release tag)"
+        required: true
+        default: "v1.0.1"
+        type: string
+      dry_run:
+        description: "Build and inspect only; publish nothing"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Conformance check on the tagged tree
+        run: node conformance/ts/check.ts
+      - name: Pack the tarball (dry-run evidence)
+        working-directory: conformance/ts
+        run: |
+          npm pack
+          ls -la *.tgz
+          tar -tzf *.tgz
+      - name: Upload the tarball as a run artifact (dry-run evidence)
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarball-${{ inputs.ref }}
+          path: conformance/ts/*.tgz
+          retention-days: 14
+      - name: Publish to npm
+        if: ${{ !inputs.dry_run }}
+        working-directory: conformance/ts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish

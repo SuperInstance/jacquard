@@ -1,0 +1,65 @@
+# Publish jacquard-kernel (Python) to PyPI.
+#
+# Manual dispatch only — there are no push/tag triggers; a
+# publish is a deliberate owner act (docs/PUBLISHING.md has
+# the exact steps). The build always runs from the `ref`
+# input (a release tag), so what publishes is the tagged
+# tree, never a working branch. Publishing uses PyPI Trusted
+# Publishing (OIDC): no token exists or is needed; PyPI must
+# carry the pending publisher described in docs/PUBLISHING.md
+# (project jacquard-kernel, owner SuperInstance, repository
+# jacquard, workflow publish-pypi.yml, no environment).
+# With dry_run=true (the default) the workflow builds the
+# sdist + wheel from the tag, runs `twine check`, and uploads
+# them as run artifacts — the publish step is skipped
+# entirely and nothing reaches PyPI.
+
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build (a release tag)"
+        required: true
+        default: "v1.0.1"
+        type: string
+      dry_run:
+        description: "Build and inspect only; publish nothing"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # OIDC for PyPI Trusted Publishing; only the publish
+      # step below ever requests a token.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel from the ref
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          python -m twine check dist/*
+          ls -la dist/
+      - name: Upload distributions as run artifacts (dry-run evidence)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pypi-dist-${{ inputs.ref }}
+          path: dist/
+          retention-days: 14
+      - name: Publish to PyPI (Trusted Publishing)
+        if: ${{ !inputs.dry_run }}
+        uses: pypa/gh-action-pypi-publish@release/v1
