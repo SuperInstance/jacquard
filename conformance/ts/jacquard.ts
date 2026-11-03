@@ -1,8 +1,10 @@
 // Jacquard — independent TypeScript implementation, Phase 3 slice 8.
 //
 // Written from spec/SPEC.md (version 0.2) ONLY; the version
-// constants below were aligned to spec 0.3 in Phase 4 (the
-// fold scope is unchanged). No reference-implementation
+// constants below were aligned to spec 0.3 in Phase 4, to 0.4
+// in Phase 6, and to 0.5 in Phase 7 slice 18 (the fold scope
+// is unchanged; spec section 15 anchoring is verifier work,
+// declared SKIP in check.ts — see GAPS.md #18). No reference-implementation
 // source was consulted. Scope, per the slice brief: canonical serialisation
 // + SHA-256 hashing (spec §1), envelope validation + envelope id (§3),
 // log entry construction + hash-chain verification (§2), and the log fold
@@ -117,8 +119,8 @@ export function hashString(s: string): string {
 // §3 Envelopes and the spec seal
 // ---------------------------------------------------------------------------
 
-export const SPEC_VERSION = "jacquard/0.4";
-export const SPEC_SEAL = hashString("jacquard-spec/0.4");
+export const SPEC_VERSION = "jacquard/0.5";
+export const SPEC_SEAL = hashString("jacquard-spec/0.5");
 export const GENESIS_PREV = "0".repeat(64);
 const HEX64 = /^[0-9a-f]{64}$/;
 const ENVELOPE_KINDS = ["proposal", "definition", "machine"];
@@ -156,7 +158,7 @@ export function validateEnvelope(env: unknown): string[] {
   if (typeof env.spec_seal !== "string" || !HEX64.test(env.spec_seal)) {
     problems.push("spec_seal must be a hex64 string");
   } else if (env.spec_seal !== SPEC_SEAL) {
-    problems.push("spec_seal does not match the seal of jacquard-spec/0.4");
+    problems.push("spec_seal does not match the seal of jacquard-spec/0.5");
   }
   return problems;
 }
@@ -231,7 +233,7 @@ export interface ChainResult {
 
 // Verify a chain of stored entries: seq runs 0,1,2,…; each prev is the
 // previous entry's recorded hash (genesis prev = 64 zeros); spec is
-// "jacquard/0.4"; and every recorded hash recomputes from the entry.
+// "jacquard/0.5"; and every recorded hash recomputes from the entry.
 export function verifyChain(entries: StoredEntry[]): ChainResult {
   let prev = GENESIS_PREV;
   for (let i = 0; i < entries.length; i++) {

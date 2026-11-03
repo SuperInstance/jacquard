@@ -1,4 +1,22 @@
 {
+ "anchor": {
+  "checkpoint_hash": "200d5a6c11f9daef4cf29acd69179d11ea1d3a74f152695186c976eb2f57c5fe",
+  "envelope": {
+   "body": {
+    "checkpoint_seq": 0,
+    "format": "jacquard/anchor/1",
+    "head_hash": "0f77a6f4b5ba24910e641c00ddda5e400739e44fbb34f5363d7f1623c71c8f69",
+    "label": "golden-vectors",
+    "log_id": "b2fe48be9d4d74f038592d35d9aed9918deb475f815bc875cac5c125b411c1ab",
+    "log_length": 4,
+    "prev_checkpoint": null,
+    "spec": "jacquard/0.5"
+   },
+   "pubkey": "601d0652c968641455ed71fdb668b368b522372af454e128a703a99d6e368a99",
+   "sig": "99e54cc95a9e76de715d9693f56f8b1d44cfcd2b91b74f558141a4d9f28c8ae18075812c27a21638a4ca8fa06917e9a73047159a1c9500c5ace0d51c39413a02"
+  },
+  "test_seed": "0d08490c05dd95a108030729bcf6dd1889595d413b7b3bfcd38b456ce09a1795"
+ },
  "definitions": [
   {
    "definition": {
@@ -116,7 +134,7 @@
     "producer": "operator",
     "value": false
    },
-   "hash": "9c96ed56f2bc87682212e14f0922d9a850bedf98f715491140a957b2878f8f35",
+   "hash": "b2fe48be9d4d74f038592d35d9aed9918deb475f815bc875cac5c125b411c1ab",
    "kind": "sense",
    "seq": 0
   },
@@ -151,25 +169,25 @@
     },
     "producer": "operator"
    },
-   "hash": "d11462818a4dfa93b52b34721fc67d4c640d0d6ba832901c77c604349162d6c1",
+   "hash": "0859dda2a9687eb621f86980d860741c543d2864bef3d4e82fbaabf665cc36e4",
    "kind": "definition",
    "seq": 1
   },
   {
    "body": {
     "name": "after-two",
-    "state_hash": "87933da529c24205e383002c7578d362a8503cef1a777f554636e7db9d35de02"
+    "state_hash": "0fd8eb9b9ab21f8d68ea724b572984615b55628d4658a2e3498f5f680ace5aa5"
    },
-   "hash": "9278ea87b9c5815bd3b81755a38e6efd050c5446af9b3bc0da8dfb2db6a7cc36",
+   "hash": "77c75b20ba585513ca5ec0629d6ec539ad4ad5c76ffe2df013ef4ac20d447d52",
    "kind": "checkpoint",
    "seq": 2
   },
   {
    "body": {
     "name": "caf\u00e9-\u2603",
-    "state_hash": "87933da529c24205e383002c7578d362a8503cef1a777f554636e7db9d35de02"
+    "state_hash": "0fd8eb9b9ab21f8d68ea724b572984615b55628d4658a2e3498f5f680ace5aa5"
    },
-   "hash": "291ce8222dd773a6db5ac2c672f175a5a90be5e1241e43cf8cc6ac0a81aecf48",
+   "hash": "0f77a6f4b5ba24910e641c00ddda5e400739e44fbb34f5363d7f1623c71c8f69",
    "kind": "checkpoint",
    "seq": 3
   }
@@ -193,10 +211,10 @@
    "id": "vectors-1",
    "kind": "proposal",
    "producer": "operator",
-   "spec_seal": "c226c265aae76ead6492c1bc378996230a5b6e2ee45f99a856262ea2bfcf5460",
+   "spec_seal": "3409270c967588a0bb85e640391f531a0ad05a9d745dcc5ff84a51f7e6c79700",
    "v": 1
   },
-  "id": "ca82611944c0040975f8268040f9ebb71c53d3bc6209f73fb2fe0a9360ab67b9"
+  "id": "14e606512018d100ec2dff5185ab4d79e09d12213dc293076474e280d2e4c755"
  },
  "senses": {
   "authority": [
@@ -218,11 +236,11 @@
        "proposal_id": "sv-self-grant",
        "uses": []
       },
-      "hash": "f419a4a9bb00a382af6283dc7b44bc2eafc8e34767ecf7b6e1d8963178d65c5f",
+      "hash": "07b67e5a52723dff339ab643345c68a1e42e2a08e3bcd154b1b9f974232f1f2a",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      }
     ],
     "expect": {
@@ -253,11 +271,11 @@
        "proposal_id": "sv-grant-1",
        "uses": []
       },
-      "hash": "d3b12716363ca98966dfca118cd35cd6d1a143bf4977286fe8caa9f86e2e43e5",
+      "hash": "a2b4ee0cdd3d7a53bedf558d89880a7070075b71d42335994a8bf3bb7608ba5f",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      },
      {
       "body": {
@@ -275,11 +293,11 @@
        "proposal_id": "sv-grant-2",
        "uses": []
       },
-      "hash": "0d83b5278ec59cbe09461156673442ce20608b5dbfc25629604fcba0322fb9b0",
+      "hash": "14d8d49d95a3b6a828a6d663239bc2c325e5464b0327ba428762644d26899b33",
       "kind": "execution",
-      "prev": "d3b12716363ca98966dfca118cd35cd6d1a143bf4977286fe8caa9f86e2e43e5",
+      "prev": "a2b4ee0cdd3d7a53bedf558d89880a7070075b71d42335994a8bf3bb7608ba5f",
       "seq": 1,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      }
     ],
     "expect": {
@@ -323,11 +341,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "a08f014a3f10bb3c2ad736662579d6a9c48837bd11947552f07555e443988eaa",
+      "hash": "0d8ec2641e91c82b093830fbb723f9c5a9673f82214da86e7933441b4fa60b88",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      }
     ],
     "expect": {
@@ -372,11 +390,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "23abd2571e36b25f19159ef839f180371fe15d81ec60373da8d7d22e575063ff",
+      "hash": "b225d53958d860c3727dd781ce03c0a85aa3abeeb163677fafdd3270d4dd13b2",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      },
      {
       "body": {
@@ -405,11 +423,11 @@
        "proposal_id": "sv-bk-2",
        "uses": []
       },
-      "hash": "62726ae8cfac108f6d1b86f00eddd1a2280b7990bb57356a395ae93d85e8c168",
+      "hash": "18b74b4847193993c63de2cf62c5bd5c3ded2cda0deb32608817e9582cf81071",
       "kind": "execution",
-      "prev": "23abd2571e36b25f19159ef839f180371fe15d81ec60373da8d7d22e575063ff",
+      "prev": "b225d53958d860c3727dd781ce03c0a85aa3abeeb163677fafdd3270d4dd13b2",
       "seq": 1,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      }
     ],
     "expect": {
@@ -471,11 +489,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "45c7f0a024b10cd7f60d89c9cf4bbc3977c9d1e9d5a250bc94451bbe1cf45cb7",
+      "hash": "07afb249dd92faa61d2f382bb9a021431d35bc6b6790752059780fd4b8910fed",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.4"
+      "spec": "jacquard/0.5"
      }
     ],
     "expect": {
@@ -495,9 +513,9 @@
    }
   ]
  },
- "spec_seal": "c226c265aae76ead6492c1bc378996230a5b6e2ee45f99a856262ea2bfcf5460",
+ "spec_seal": "3409270c967588a0bb85e640391f531a0ad05a9d745dcc5ff84a51f7e6c79700",
  "state": {
-  "state_hash": "cdd566d85906cf2dfd1cac9740dfaf5abd5a13ecd4c0ae7991ce5059f692b49b",
+  "state_hash": "c7fd8b64f95e2d8106bc27a87e1c482ab85b5703fd2f6b1a8ba317943d8a008b",
   "units": {
    "answer": 42
   }

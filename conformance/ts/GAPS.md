@@ -234,3 +234,34 @@ omits the schemas and representations a second implementer needs.
   quotation in an if branch, composition smuggling, hybrid
   forms, literal-carried verb-shaped data, forged-body
   evaluation) plus the re-aimed probe-(f) tests.
+
+## 18. §15 — Chain-head anchoring is verifier work, not fold work (Phase 7, spec 0.5)
+
+- **What changed:** spec 0.5 adds section 15: signed Ed25519
+  checkpoints of (log length, head hash, spec version), published
+  outside the kernel's store, with a stated verification procedure
+  whose outcomes are VERIFIED / VERIFIED-TO-ANCHOR (anchored
+  prefix and unanchored tail reported separately) / UNANCHORED /
+  FAILED naming the first divergent checkpoint. The golden
+  vectors gain an `anchor` section: one checkpoint over the
+  vector entry chain under a published test key (seed recorded in
+  the vectors; Ed25519 is deterministic, so the signature is a
+  stable vector).
+- **Chosen:** unchanged scope — this checker implements the
+  fold, not the verifier, so the checker reports the section as
+  SKIP (`vectors.anchor`), exactly as for senses (§11.3, #16).
+  Version constants and the seal were aligned to 0.5 in this
+  slice, and both conformance fixtures (full-log, replay-log)
+  were regenerated under the 0.5 kernel, so checks a–g stand as
+  before. A future full TS port (slice 19) must implement §15.5
+  in full: history selection by genesis `log_id`, the checkpoint
+  hash chain (`prev_checkpoint`), pinned-key signature
+  verification, and the four-outcome report — never a bare
+  boolean.
+- **Caught by:** the Python suite — tests/test_vectors.py
+  verifies the anchor vector's signature with the `cryptography`
+  package directly, and tests/test_anchor.py exercises the
+  reference verifier end to end, including the forged-log fixture
+  (a rewrite-and-rechain forgery that passes internal chain
+  verification and fails anchor verification at the first
+  divergent checkpoint).

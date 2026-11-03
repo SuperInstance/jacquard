@@ -18,7 +18,7 @@ def load():
 
 def test_spec_seal():
     assert load()["spec_seal"] == SPEC_SEAL
-    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.4").hexdigest()
+    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.5").hexdigest()
 
 
 def test_entry_zero_hash_from_handwritten_canonical_string():
@@ -27,7 +27,7 @@ def test_entry_zero_hash_from_handwritten_canonical_string():
     literal = (
         '{"body":{"name":"gpu-foreign","producer":"operator","value":false},'
         '"kind":"sense","prev":"' + "0" * 64 + '","seq":0,'
-        '"spec":"jacquard/0.4"}')
+        '"spec":"jacquard/0.5"}')
     expect = hashlib.sha256(literal.encode("utf-8")).hexdigest()
     assert load()["entries"][0]["hash"] == expect
 
@@ -114,3 +114,41 @@ def test_senses_vectors():
     authority = [c["expect"]["value"] for c in section["authority"]]
     assert authority[0] == {"ceiling": None, "grants": 0}
     assert authority[1] == {"ceiling": 2, "grants": 2}
+
+
+def test_anchor_vector():
+    # Spec 15: the vectors carry one checkpoint over the vector
+    # entry chain, signed under the published test key whose seed
+    # they record. Verified here with the `cryptography` package
+    # directly (not through jacquard.anchor), so the vector pins
+    # the format independently of the anchor tooling.
+    from cryptography.exceptions import InvalidSignature
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+        Ed25519PrivateKey, Ed25519PublicKey)
+    from jacquard.canonical import canonical, hash_of
+
+    section = load()["anchor"]
+    seed = bytes.fromhex(section["test_seed"])
+    key = Ed25519PrivateKey.from_private_bytes(seed)
+    from cryptography.hazmat.primitives.serialization import (
+        Encoding, PublicFormat)
+    pub_hex = key.public_key().public_bytes(
+        Encoding.Raw, PublicFormat.Raw).hex()
+    envelope = section["envelope"]
+    assert envelope["pubkey"] == pub_hex
+    body = envelope["body"]
+    entries = load()["entries"]
+    assert body == {"format": "jacquard/anchor/1",
+                    "log_id": entries[0]["hash"],
+                    "label": "golden-vectors",
+                    "checkpoint_seq": 0,
+                    "log_length": 4,
+                    "head_hash": entries[3]["hash"],
+                    "spec": "jacquard/0.5",
+                    "prev_checkpoint": None}
+    assert section["checkpoint_hash"] == hash_of(body)
+    pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(pub_hex))
+    pub.verify(bytes.fromhex(envelope["sig"]), canonical(body))
+    with __import__("pytest").raises(InvalidSignature):
+        pub.verify(bytes.fromhex(envelope["sig"]),
+                   canonical(dict(body, log_length=3)))
