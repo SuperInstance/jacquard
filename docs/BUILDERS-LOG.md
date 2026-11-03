@@ -3244,3 +3244,35 @@ cold clone of the tag; (6) both READMEs' limitation
 statements updated as a doc event (this repo's not-built
 list loses the registry-grammar item; the anchors README's
 limitation section is rewritten to record the fix).
+
+**Python implementation (2026-11-03).** `anchor.py`:
+`REGISTRY_FORMATS` accepts /1 and /2; `schedule_from_registry`
+skips a key for a log under /2 when the log_id is in neither
+map (null window); the loader's refusal names both formats.
+`tools/jqanchor.py rotate` now writes /2 (a rotation over an
+existing registry republishes it as /2). SPEC.md §15.3 carries
+erratum 2 (grammar statement + dual-reading rule; no seal or
+hash moves). Vectors: new `anchor_registry` section —
+9 schedule cases (incl. the live registry verbatim: gpu-shape
+null window, proof rotation schedule, and the /1 reading of
+the same document refusing, pinning the legacy grammar) and
+2 auth cases over the anchor vector's own history (bystander
+null window verifies; a window claim outside the truth fails
+with the named envelope-binding detail). Suite: 315 passed +
+7 skipped, then the real-log acceptance below.
+
+**Real-log acceptance, Python (2026-11-03).** The witness
+registry republished as /2 is byte-identical to the /1
+document apart from the format string (509 bytes both,
+entries verified equal). Against it, via the registry path
+(`jqanchor verify --keys`), NOT explicit-key: the gpu live
+log verifies 91/91 over checkpoints seq 0/1 and the proof log
+507/507 over seq 0–2. The acceptance is pinned in the suite
+(tests/test_anchor_registry_live.py) over vendored witness
+fixtures (tests/data/anchor-registry/, PROVENANCE.md recorded)
+plus a forged-window case: a registry handing the gpu window
+to the retired key fails at checkpoint 0 with the
+envelope-binding detail. Suite after: 318 passed + 7 skipped.
+TS and Rust twins in flight on branches slice24-ts /
+slice24-rust; witness republish and the v1.0.1 tag wait on
+both.
