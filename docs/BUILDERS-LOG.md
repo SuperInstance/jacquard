@@ -3421,3 +3421,37 @@ The grown log verifies 197/197 via the registry path in all
 three implementations (anchors seq 2 open @92, seq 3 close
 @197). Slice 25 verdict: PASS, with the failure and both
 deviations on the record rather than edited out of it.
+
+## Slice 26 — pave the publish path: design (2026-11-03)
+
+Three dispatch-only workflows — publish-pypi.yml,
+publish-crate.yml, publish-npm.yml — plus docs/PUBLISHING.md.
+Shared shape, chosen so a dispatch can build the release
+and a dry run can never publish:
+
+- `workflow_dispatch` only; no push/tag triggers, ever.
+  Publishing is a deliberate owner dispatch (docs/PUBLISHING.md
+  carries the exact steps and strings).
+- Inputs: `ref` (the release tag to build, default v1.0.1)
+  and `dry_run` (boolean, default true). The build always
+  checks out `ref`, so the artifacts come from the tagged
+  tree even though the workflow file lives on main.
+- Build + inspect steps always run (PyPI: build + twine
+  check; crates: cargo package with the tagged tree's
+  `publish = false` guard asserted present, stripped only
+  in the CI checkout on a real publish; npm: the conformance
+  checker on the tagged tree, then npm pack). Built
+  artifacts are uploaded as run artifacts — that is the
+  dry-run evidence, comparable against the 1.0.1 checklist's
+  local builds (same source tree, same file inventory, same
+  metadata; byte-identity is not claimed where a format
+  embeds build timestamps).
+- Publish steps sit behind `if: !inputs.dry_run`. PyPI uses
+  Trusted Publishing (OIDC, no token); crates.io uses the
+  CARGO_REGISTRY_TOKEN secret when set (the bootstrap path —
+  crates.io has no pending publishers) and falls back to
+  the crates-io-auth-action OIDC exchange once Trusted
+  Publishing is registered; npm uses the NPM_TOKEN secret
+  (granular token). Nothing is published by this slice:
+  the workflows are dry-run-dispatched and the publish steps
+  verified skipped.
