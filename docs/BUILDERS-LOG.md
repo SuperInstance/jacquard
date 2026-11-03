@@ -2484,3 +2484,71 @@ baseline + 9 new key-management tests); TS checker **13 PASS,
 0 SKIP, 0 FAIL**. Remaining in this slice: the rotation on the
 real anchors setup, §16 sealing (implementation + live run),
 and the compliance mapping.
+
+### Slice 21 — implementation, part 2: rotation on the real setup + sealing (2026-11-02)
+
+**Rotation, executed on the live anchors setup.** An interim
+passphrase was generated on the Oracle into
+`~/.jacquard/PHASE8-INTERIM-PASSPHRASE.txt` (mode 0600, outside
+any repo; the value appears in no commit, log, or report — the
+coordinator batches the owner's re-wrap from that path).
+`jqanchor rotate` generated the successor
+(`ce805efd…48845f5072`) encrypted under it and wrote
+`keys.json` into the witness repo: retired key
+`1aa240ac…b3072be5` with `signs_until` = seq 1 for the
+proof-run log, successor `signs_from` = seq 2. The retired key
+file was re-wrapped encrypted under the same interim
+passphrase (it was unencrypted — the pre-0.6 state §15.3 now
+describes as migration debt) and the successor installed at the
+default key path, also encrypted; both files mode 0600.
+Witness repo, two commits, pushed and ls-remote-verified:
+`df7f705` (registry + `pubkey.txt` advanced + README rotation
+note) then `34f1c24` (checkpoint seq 2, length 507, spec
+`jacquard/0.6`, `prev_checkpoint` chaining to seq 1's body
+hash). Verification, Python and TS identical: registry
+schedule → `verified`, 3 checkpoints, 507/507, tail 0; old key
+alone → failed at seq 2; successor alone → failed at seq 0;
+explicit `--rotation-seq 2` flags → verified; the forged log
+against the registry → failed at checkpoint 0 with
+`internal_chain_ok` true.
+
+**Sealing.** `src/jacquard/sealing.py` + `tools/jqseal.py`
+implement §16 as designed: `seal` appends a seal entry to a
+COPY (the source is never modified), `export` writes the
+prefix-only redacted document, `verify` runs the §16.3
+procedure and reports the §15.5 vocabulary plus
+`seals_applied` / `seals_anchored` / `commitments_checked`.
+Twelve new tests: roundtrip, unanchored-seal reporting, prefix
+slices with `checkpoints_beyond`, five tamper shapes (sealed
+marker, seal entry, unsealed field, clear-text leak, omitted
+entry — all detected, stage named), the wrong-value seal that
+passes consistency and fails against the original, keyed-mode
+dictionary resistance, the refusal set, and the proof-log
+twin of the live run. One test caught its own author: the
+"value is gone" assertion tripped on the CLASS name
+`operator-identity` containing the substring — the value is
+sealed, the class is disclosed by design; the assertion now
+checks the value fragment exactly.
+
+**Live run** (record: `docs/slice21/README.md`, export +
+demonstration checkpoint committed there): working log = the
+frozen 507 + seal entries at 507/508 sealing the 27
+operator-identity fields the log carries (26 `released_by` +
+1 `rejected_by`). Export vs the public anchors:
+`verified_to_anchor`, anchored 507, tail 2 — the tail IS the
+seal entries, and `seals_anchored` honestly reads false;
+against a scratch store adding a successor-signed checkpoint
+at 509: `verified`, tail 0, `seals_anchored` true,
+`commitments_checked` full. Frozen original: still `verified`
+507/507. Tampered marker: `failed`, stage `seals`, entry 23
+named. The public anchors history was NOT extended to 509 —
+deliberately: the frozen log's cold verification against the
+public repo must stay exactly `verified` 507/507, and a
+checkpoint beyond 507 would make the frozen log read as
+truncated under §15.5. The 509 checkpoint is committed here as
+evidence instead.
+
+State after part 2: Python **306 passed, 7 skipped**; TS
+checker **13 PASS, 0 SKIP, 0 FAIL** (re-run at the close).
+Remaining: the compliance mapping, README/CHANGELOG close,
+cold-clone verification.
