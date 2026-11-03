@@ -33,6 +33,12 @@ from .canonical import SPEC_VERSION, canonical, hash_of
 from .log import GENESIS_PREV
 
 ANCHOR_FORMAT = "jacquard/anchor/1"
+# Checkpoint bodies issued under spec 0.5 remain valid under 0.6:
+# the anchor format did not change (SPEC 15.1). New checkpoints
+# carry the current SPEC_VERSION.
+ANCHOR_SPEC_VERSIONS = frozenset({"jacquard/0.5", "jacquard/0.6"})
+PASSPHRASE_ENV = "JACQUARD_ANCHOR_PASSPHRASE"
+REGISTRY_FORMAT = "jacquard/anchor-keys/1"
 BODY_KEYS = frozenset({
     "format", "log_id", "label", "checkpoint_seq", "log_length",
     "head_hash", "spec", "prev_checkpoint"})
@@ -69,13 +75,31 @@ def _inside_work_tree(path):
         current = parent
 
 
-def generate_key(path=DEFAULT_KEY_PATH):
+def _resolve_passphrase(passphrase):
+    """SPEC 15.3: an explicit argument wins, then the
+    JACQUARD_ANCHOR_PASSPHRASE environment variable. A tty prompt
+    is the caller's (the CLI's) job; the library never prompts,
+    so unattended callers fail closed rather than hang."""
+    if passphrase is not None:
+        return passphrase
+    return os.environ.get(PASSPHRASE_ENV)
+
+
+def _pem_is_encrypted(pem):
+    return b"ENCRYPTED" in pem
+
+
+def generate_key(path=DEFAULT_KEY_PATH, passphrase=None):
     """Generate the operator keypair once (SPEC 15.3).
 
     Refuses to overwrite an existing key and refuses a path
-    inside a version-controlled tree. Writes the private key PEM
-    (PKCS#8, unencrypted) with mode 0600 and returns the public
-    key hex. The private key is never printed or returned.
+    inside a version-controlled tree. From spec 0.6 the private
+    key is written passphrase-encrypted (PKCS#8, best-available
+    encryption), mode 0600; an unencrypted key is never written,
+    so a passphrase is required (argument or the
+    JACQUARD_ANCHOR_PASSPHRASE environment variable). Returns
+    the public key hex. The private key and the passphrase are
+    never printed or returned.
     """
     if os.path.exists(path):
         raise AnchorError("key already exists, refusing to "
@@ -83,11 +107,16 @@ def generate_key(path=DEFAULT_KEY_PATH):
     if _inside_work_tree(os.path.dirname(path) or "."):
         raise AnchorError("key path is inside a version-controlled "
                           "tree, refusing: %s" % path)
+    passphrase = _resolve_passphrase(passphrase)
+    if not passphrase:
+        raise AnchorError(
+            "a passphrase is required to generate an encrypted "
+            "anchor key: pass one or set %s" % PASSPHRASE_ENV)
     key = Ed25519PrivateKey.generate()
     pem = key.private_bytes(
         serialization.Encoding.PEM,
         serialization.PrivateFormat.PKCS8,
-        serialization.NoEncryption())
+        serialization.BestAvailableEncryption(passphrase.encode("utf-8")))
     parent = os.path.dirname(path)
     if parent:
         os.makedirs(parent, exist_ok=True)
@@ -100,7 +129,12 @@ def generate_key(path=DEFAULT_KEY_PATH):
     return public_key_hex(key)
 
 
-def load_private_key(path=DEFAULT_KEY_PATH):
+def key_is_encrypted(path=DEFAULT_KEY_PATH):
+    with open(path, "rb") as fh:
+        return _pem_is_encrypted(fh.read())
+
+
+def load_private_key(path=DEFAULT_KEY_PATH, passphrase=None):
     if not os.path.exists(path):
         raise AnchorError("no anchor key at %s (run keygen first)"
                           % path)
@@ -111,8 +145,19 @@ def load_private_key(path=DEFAULT_KEY_PATH):
             "by group or others (chmod 600)" % (path, mode))
     with open(path, "rb") as fh:
         pem = fh.read()
+    if _pem_is_encrypted(pem):
+        passphrase = _resolve_passphrase(passphrase)
+        if not passphrase:
+            raise AnchorError(
+                "anchor key at %s is passphrase-encrypted; supply "
+                "the passphrase or set %s" % (path, PASSPHRASE_ENV))
+        password = passphrase.encode("utf-8")
+    else:
+        # A pre-0.6 unencrypted key still loads (SPEC 15.3:
+        # migration must be able to anchor; rotation replaces it).
+        password = None
     try:
-        key = serialization.load_pem_private_key(pem, password=None)
+        key = serialization.load_pem_private_key(pem, password=password)
     except Exception as exc:
         raise AnchorError("cannot load anchor key at %s: %s"
                           % (path, exc))
@@ -237,8 +282,9 @@ def validate_body(body):
         return "log_length is not an integer >= 0"
     if not _is_hex(body["head_hash"], 64):
         return "head_hash is not hex64"
-    if body["spec"] != SPEC_VERSION:
-        return "spec is %r, expected %r" % (body["spec"], SPEC_VERSION)
+    if body["spec"] not in ANCHOR_SPEC_VERSIONS:
+        return "spec is %r, expected one of %s" % (
+            body["spec"], sorted(ANCHOR_SPEC_VERSIONS))
     prev = body["prev_checkpoint"]
     if body["checkpoint_seq"] == 0 and prev is not None:
         return "checkpoint_seq 0 must carry prev_checkpoint null"
@@ -261,7 +307,9 @@ def load_checkpoints(root):
         candidates = []
         for dirpath, _dirs, files in os.walk(search):
             for name in sorted(files):
-                if name.endswith(".json"):
+                # keys.json is the key registry (SPEC 15.3), a
+                # transport file, not a checkpoint envelope.
+                if name.endswith(".json") and name != "keys.json":
                     candidates.append(os.path.join(dirpath, name))
     envelopes, problems = [], []
     for path in sorted(candidates):
@@ -324,6 +372,71 @@ def authenticate_history(history, schedule):
                            % expected_seq), expected_seq
         prev_hash = checkpoint_hash(body)
     return True, None, None
+
+
+# ------------------------------------------------------------ registry
+
+def load_key_registry(root):
+    """Load keys.json from a transport root (a directory holding
+    it, or the file itself). Returns the registry dict, raising
+    AnchorError on a malformed document (SPEC 15.3)."""
+    path = root if os.path.isfile(root) else os.path.join(root, "keys.json")
+    if not os.path.exists(path):
+        raise AnchorError("no key registry at %s" % path)
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            registry = json.load(fh)
+    except Exception as exc:
+        raise AnchorError("cannot parse key registry %s: %s" % (path, exc))
+    if not isinstance(registry, dict) \
+            or registry.get("format") != REGISTRY_FORMAT \
+            or not isinstance(registry.get("keys"), list) \
+            or not registry["keys"]:
+        raise AnchorError("key registry %s is not a %s document"
+                          % (path, REGISTRY_FORMAT))
+    for entry in registry["keys"]:
+        if not isinstance(entry, dict) \
+                or not _is_hex(entry.get("pubkey"), 64) \
+                or entry.get("status") not in ("active", "retired") \
+                or not isinstance(entry.get("signs_from", {}), dict) \
+                or not isinstance(entry.get("signs_until", {}), dict):
+            raise AnchorError("key registry %s has a malformed entry: %r"
+                              % (path, entry))
+    return registry
+
+
+def schedule_from_registry(registry, log_id):
+    """The pinned key schedule for one log (SPEC 15.3): a sorted
+    [(from_seq, pubkey_hex), ...] whose windows partition the
+    log's checkpoint sequence. A gap or overlap is malformed."""
+    intervals = []
+    for entry in registry["keys"]:
+        frm = entry.get("signs_from", {}).get(log_id, 0)
+        until = entry.get("signs_until", {}).get(log_id)
+        if not _is_int(frm) or frm < 0 \
+                or (until is not None and (not _is_int(until)
+                                           or until < frm)):
+            raise AnchorError(
+                "key registry window for log %s is malformed: %r"
+                % (log_id, entry))
+        intervals.append((frm, until, entry["pubkey"]))
+    intervals.sort()
+    if not intervals or intervals[0][0] != 0:
+        raise AnchorError(
+            "key registry does not cover checkpoint_seq 0 for log %s"
+            % log_id)
+    for (frm, until, _pub), (nfrm, _nuntil, _npub) in zip(
+            intervals, intervals[1:]):
+        if until is None or nfrm != until + 1:
+            raise AnchorError(
+                "key registry windows for log %s do not partition its "
+                "checkpoint sequence (gap or overlap after seq %r)"
+                % (log_id, until))
+    return [(frm, pub) for frm, _until, pub in intervals]
+
+
+def registry_file_bytes(registry):
+    return canonical(registry) + b"\n"
 
 
 # ------------------------------------------------------------- verify
@@ -407,7 +520,7 @@ def verify_entries(entries, envelopes, pubkey_hex, schedule=None):
 # ------------------------------------------------------------- anchor
 
 def anchor_entries(entries, key, label, checkpoints_root,
-                   log_length=None):
+                   log_length=None, history_schedule=None):
     """Build, sign and store the next checkpoint for `entries`.
 
     Refuses a log whose internal chain fails, a checkpoint file
@@ -427,11 +540,21 @@ def anchor_entries(entries, key, label, checkpoints_root,
                           % "; ".join(problems))
     history = history_for(envelopes, log_id_of(entries))
     if history:
-        ok, detail, _seq = authenticate_history(
-            history, [(0, public_key_hex(key))])
+        # Default: the whole history must authenticate under the
+        # signing key. With a rotation, the caller supplies the
+        # published schedule; the signing key must then be the
+        # scheduled key for the NEW checkpoint's sequence.
+        schedule = history_schedule or [(0, public_key_hex(key))]
+        ok, detail, _seq = authenticate_history(history, schedule)
         if not ok:
             raise AnchorError("existing history does not authenticate "
-                              "under this key: %s" % detail)
+                              "under the key schedule: %s" % detail)
+        next_seq = history[-1]["body"]["checkpoint_seq"] + 1
+        if _scheduled_key(schedule, next_seq) != public_key_hex(key):
+            raise AnchorError(
+                "the signing key is not the scheduled key for "
+                "checkpoint_seq %d (rotation boundary not reached, "
+                "or already passed)" % next_seq)
         last = history[-1]["body"]
         if log_length is not None and log_length < last["log_length"]:
             raise AnchorError(
@@ -440,6 +563,11 @@ def anchor_entries(entries, key, label, checkpoints_root,
         seq = last["checkpoint_seq"] + 1
         prev = checkpoint_hash(last)
     else:
+        if history_schedule is not None and _scheduled_key(
+                history_schedule, 0) != public_key_hex(key):
+            raise AnchorError(
+                "the signing key is not the scheduled key for "
+                "checkpoint_seq 0")
         seq, prev = 0, None
     body = build_body(entries, label, seq, prev, log_length)
     envelope = sign_body(body, key)

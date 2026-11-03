@@ -123,8 +123,8 @@ export function hashString(s: string): string {
 // §3 Envelopes and the spec seal
 // ---------------------------------------------------------------------------
 
-export const SPEC_VERSION = "jacquard/0.5";
-export const SPEC_SEAL = hashString("jacquard-spec/0.5");
+export const SPEC_VERSION = "jacquard/0.6";
+export const SPEC_SEAL = hashString("jacquard-spec/0.6");
 export const GENESIS_PREV = "0".repeat(64);
 const HEX64 = /^[0-9a-f]{64}$/;
 const ENVELOPE_KINDS = ["proposal", "definition", "machine"];
@@ -162,7 +162,7 @@ export function validateEnvelope(env: unknown): string[] {
   if (typeof env.spec_seal !== "string" || !HEX64.test(env.spec_seal)) {
     problems.push("spec_seal must be a hex64 string");
   } else if (env.spec_seal !== SPEC_SEAL) {
-    problems.push("spec_seal does not match the seal of jacquard-spec/0.5");
+    problems.push("spec_seal does not match the seal of jacquard-spec/0.6");
   }
   return problems;
 }
@@ -237,7 +237,7 @@ export interface ChainResult {
 
 // Verify a chain of stored entries: seq runs 0,1,2,…; each prev is the
 // previous entry's recorded hash (genesis prev = 64 zeros); spec is
-// "jacquard/0.5"; and every recorded hash recomputes from the entry.
+// "jacquard/0.6"; and every recorded hash recomputes from the entry.
 export function verifyChain(entries: StoredEntry[]): ChainResult {
   let prev = GENESIS_PREV;
   for (let i = 0; i < entries.length; i++) {
@@ -248,7 +248,12 @@ export function verifyChain(entries: StoredEntry[]): ChainResult {
     if (e.prev !== prev) {
       return { ok: false, checked: i, failure: `entry ${i}: prev mismatch` };
     }
-    if (e.spec !== SPEC_VERSION) {
+    // The entry spec names the version it was written under; a
+    // chain may carry earlier versions (the replay corpus is a
+    // 0.5 log). The hash recompute below binds the exact value,
+    // which is the check the Python reference performs — it does
+    // not require the current version.
+    if (typeof e.spec !== "string" || !e.spec.startsWith("jacquard/")) {
       return { ok: false, checked: i, failure: `entry ${i}: spec is ${e.spec}` };
     }
     if (typeof e.hash !== "string" || !HEX64.test(e.hash)) {

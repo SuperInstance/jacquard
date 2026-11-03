@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jacquard"
-version = "0.5.0"
+version = "0.6.0"
 description = "A supervised runtime: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only log."
 requires-python = ">=3.11"
 

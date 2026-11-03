@@ -6,7 +6,22 @@
         [--length N] [--checkpoints DIR] [--key PATH]
         [--commit] [--push]
     python3 tools/jqanchor.py verify <log> --checkpoints DIR
-        --pubkey HEX [--rotation-seq N --rotated-pubkey HEX]
+        (--pubkey HEX [--rotation-seq N --rotated-pubkey HEX]
+         | --keys REGISTRY)
+    python3 tools/jqanchor.py rotate --checkpoints DIR
+        [--key OLD] [--new-key PATH]
+
+From spec 0.6 the private key is passphrase-encrypted at rest:
+`keygen` and `rotate` require a passphrase, taken from the
+JACQUARD_ANCHOR_PASSPHRASE environment variable or an interactive
+terminal prompt — never from argv, never printed. `rotate`
+generates the successor key (encrypted) and updates the
+transport's keys.json registry: the old key's signs_until is set,
+per log, to the last checkpoint it signed, and the successor's
+signs_from to the next sequence. Publish the registry, a README
+rotation note and pubkey.txt as one commit, then `anchor` with
+--history-keys REGISTRY so the first successor checkpoint
+authenticates the old history under the published schedule.
 
 `keygen` creates the operator keypair once, at
 ~/.jacquard/anchor-key.ed25519 (mode 0600, outside every repo);
@@ -32,6 +47,7 @@ presented log. It prints the result as JSON and exits 0 for
 divergent checkpoint (or the history / internal stage).
 """
 import argparse
+import getpass
 import json
 import os
 import subprocess
@@ -40,8 +56,10 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from jacquard.anchor import (  # noqa: E402
-    AnchorError, DEFAULT_KEY_PATH, anchor_entries, generate_key,
-    load_checkpoints, load_entries, load_private_key, public_key_hex,
+    AnchorError, DEFAULT_KEY_PATH, PASSPHRASE_ENV, anchor_entries,
+    generate_key, history_for, key_is_encrypted, load_checkpoints,
+    load_entries, load_key_registry, load_private_key, log_id_of,
+    public_key_hex, registry_file_bytes, schedule_from_registry,
     verify_entries)
 
 EXIT_CODES = {"verified": 0, "verified_to_anchor": 0,
@@ -55,23 +73,89 @@ def _git_root_of(path):
     return proc.stdout.strip() if proc.returncode == 0 else None
 
 
+def _passphrase(confirm=False):
+    """The run-time passphrase (SPEC 15.3): environment variable
+    first, else an interactive tty prompt. Never argv."""
+    env = os.environ.get(PASSPHRASE_ENV)
+    if env:
+        return env
+    if sys.stdin.isatty():
+        first = getpass.getpass("anchor key passphrase: ")
+        if confirm:
+            if getpass.getpass("confirm passphrase: ") != first:
+                raise AnchorError("passphrases do not match")
+        return first
+    return None
+
+
 def cmd_keygen(args):
-    pub = generate_key(args.key)
-    print(json.dumps({"key": args.key, "pubkey": pub}, indent=1))
+    pub = generate_key(args.key, passphrase=_passphrase(confirm=True))
+    print(json.dumps({"key": args.key, "pubkey": pub,
+                      "encrypted": key_is_encrypted(args.key)}, indent=1))
     return 0
 
 
 def cmd_pubkey(args):
-    print(public_key_hex(load_private_key(args.key)))
+    print(public_key_hex(load_private_key(
+        args.key, passphrase=_passphrase())))
+    return 0
+
+
+def cmd_rotate(args):
+    old_key = load_private_key(args.key, passphrase=_passphrase())
+    old_pub = public_key_hex(old_key)
+    new_pub = generate_key(args.new_key,
+                           passphrase=_passphrase(confirm=True))
+    registry_path = os.path.join(args.checkpoints, "keys.json")
+    if os.path.exists(registry_path):
+        registry = load_key_registry(registry_path)
+    else:
+        registry = {"format": "jacquard/anchor-keys/1",
+                    "keys": [{"pubkey": old_pub, "status": "active",
+                              "signs_from": {}, "signs_until": {}}]}
+    envelopes, problems = load_checkpoints(args.checkpoints)
+    if problems:
+        raise AnchorError("checkpoint store has problems: %s"
+                          % "; ".join(problems))
+    log_ids = sorted({e["body"]["log_id"] for e in envelopes
+                      if isinstance(e.get("body"), dict)})
+    by_old = [e for e in registry["keys"] if e["pubkey"] == old_pub]
+    if not by_old:
+        raise AnchorError("the old key %s is not in the registry"
+                          % old_pub)
+    old_entry = by_old[0]
+    old_entry["status"] = "retired"
+    boundaries = {}
+    for log_id in log_ids:
+        history = history_for(envelopes, log_id)
+        signed = [e["body"]["checkpoint_seq"] for e in history
+                  if e["pubkey"] == old_pub]
+        if signed:
+            old_entry.setdefault("signs_until", {})[log_id] = max(signed)
+            boundaries[log_id] = max(signed) + 1
+    new_entry = {"pubkey": new_pub, "status": "active",
+                 "signs_from": dict(boundaries), "signs_until": {}}
+    registry["keys"].append(new_entry)
+    with open(registry_path, "wb") as fh:
+        fh.write(registry_file_bytes(registry))
+    print(json.dumps({"old_pubkey": old_pub, "new_pubkey": new_pub,
+                      "new_key": args.new_key,
+                      "registry": registry_path,
+                      "signs_from": boundaries}, indent=1))
     return 0
 
 
 def cmd_anchor(args):
     entries = load_entries(args.log)
-    key = load_private_key(args.key)
+    key = load_private_key(args.key, passphrase=_passphrase())
+    history_schedule = None
+    if args.history_keys:
+        registry = load_key_registry(args.history_keys)
+        history_schedule = schedule_from_registry(
+            registry, log_id_of(entries))
     envelope, path = anchor_entries(
         entries, key, args.label, args.checkpoints,
-        log_length=args.length)
+        log_length=args.length, history_schedule=history_schedule)
     body = envelope["body"]
     published = None
     if args.commit or args.push:
@@ -110,6 +194,15 @@ def cmd_verify(args):
                                    % "; ".join(problems)}},
             indent=1))
         return 1
+    if args.keys:
+        registry = load_key_registry(args.keys)
+        schedule = schedule_from_registry(registry, log_id_of(entries))
+        result = verify_entries(entries, envelopes, schedule[0][1],
+                                schedule=schedule)
+        print(json.dumps(result, indent=1))
+        return EXIT_CODES[result["outcome"]]
+    if not args.pubkey:
+        raise AnchorError("verify requires --pubkey or --keys")
     schedule = [(0, args.pubkey)]
     if args.rotation_seq is not None:
         if not args.rotated_pubkey:
@@ -139,19 +232,27 @@ def main():
     anchor.add_argument("--length", type=int, default=None)
     anchor.add_argument("--checkpoints", default="checkpoints")
     anchor.add_argument("--key", default=DEFAULT_KEY_PATH)
+    anchor.add_argument("--history-keys", default=None)
     anchor.add_argument("--commit", action="store_true")
     anchor.add_argument("--push", action="store_true")
 
     verify = sub.add_parser("verify")
     verify.add_argument("log")
     verify.add_argument("--checkpoints", required=True)
-    verify.add_argument("--pubkey", required=True)
+    verify.add_argument("--pubkey", default=None)
+    verify.add_argument("--keys", default=None)
     verify.add_argument("--rotation-seq", type=int, default=None)
     verify.add_argument("--rotated-pubkey", default=None)
 
+    rotate = sub.add_parser("rotate")
+    rotate.add_argument("--key", default=DEFAULT_KEY_PATH)
+    rotate.add_argument("--new-key", required=True)
+    rotate.add_argument("--checkpoints", default="checkpoints")
+
     args = parser.parse_args()
     handler = {"keygen": cmd_keygen, "pubkey": cmd_pubkey,
-               "anchor": cmd_anchor, "verify": cmd_verify}[args.command]
+               "anchor": cmd_anchor, "verify": cmd_verify,
+               "rotate": cmd_rotate}[args.command]
     try:
         return handler(args)
     except AnchorError as exc:

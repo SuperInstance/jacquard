@@ -2435,3 +2435,52 @@ operated — one operator, one machine, no HSM; no SIEM; no
 retention policy; no access review process). Written last,
 against what pieces 1–2 actually shipped.
 
+
+### Slice 21 — implementation, part 1: version 0.6 + key management (2026-11-02)
+
+Shipped in this part: `SPEC_VERSION` → `jacquard/0.6` (seal
+regen, vectors regenerated, conformance full-log fixture
+regenerated — the replay corpus was NOT regenerated: it is a
+historical 0.5 log, see the TS note below); `seal` added to the
+entry kinds (fold ignores it, like `import`); checkpoint-body
+validation accepts `jacquard/0.5` and `jacquard/0.6` per §15.1.
+
+Key management, per the §15.3 design: `generate_key` requires a
+passphrase (argument, else `JACQUARD_ANCHOR_PASSPHRASE`) and
+writes PKCS#8 best-available-encryption, mode 0600;
+`load_private_key` resolves the passphrase the same way for
+encrypted files and still loads a pre-0.6 unencrypted key;
+`key_is_encrypted` reports the at-rest state. The CLI prompts on
+a tty when the variable is unset — never argv. Registry:
+`load_key_registry` + `schedule_from_registry` (windows must
+partition the sequence; gap/overlap refused by name).
+`anchor_entries` takes `history_schedule`: existing history
+authenticates under the schedule and the signing key must be
+the scheduled key for the new sequence — a retired key
+anchoring past its boundary is a tool refusal, tested. New CLI
+verb `rotate`: loads the old key, generates the encrypted
+successor, and writes `keys.json` with per-log `signs_until` /
+`signs_from` derived from the checkpoints actually published.
+`verify` gains `--keys`. Existing anchor tests were adapted to
+the new keygen contract (fixture supplies the passphrase via
+the environment channel; assertions unchanged).
+
+Two findings worth the record. (1) The registry file broke the
+checkpoint scan: `load_checkpoints` walks `*.json` and reported
+`keys.json: not a checkpoint envelope` on the first post-rotate
+anchor. The registry is a transport file, not an envelope —
+both loaders (Python and TS) now skip it by name. (2) The TS
+chain verifier required every entry's `spec` to equal the
+CURRENT version, which the 0.6 bump exposed against the frozen
+0.5 replay corpus (check e). The Python reference performs no
+such check — the hash recompute binds the exact spec value —
+so the TS reading was the divergence: `verifyChain` now
+requires a `jacquard/` spec string and lets the recompute do
+the binding. This is the slice-19 pattern (a TS-side reading
+corrected against the reference), not a spec change.
+
+State after part 1: Python **294 passed, 7 skipped** (285
+baseline + 9 new key-management tests); TS checker **13 PASS,
+0 SKIP, 0 FAIL**. Remaining in this slice: the rotation on the
+real anchors setup, §16 sealing (implementation + live run),
+and the compliance mapping.

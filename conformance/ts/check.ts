@@ -121,7 +121,7 @@ try {
 
 // --- a. spec_seal -----------------------------------------------------------
 // The seal computed from the spec text's rule (§3: hash of the string
-// "jacquard-spec/0.5") must equal the seal recorded in vectors.json.
+// "jacquard-spec/0.6") must equal the seal recorded in vectors.json.
 {
   const ok = SPEC_SEAL === vectors.spec_seal;
   report(
@@ -135,7 +135,7 @@ try {
 
 // --- b. vector entries rebuild + chain --------------------------------------
 // Rebuild the three vector entries from (kind, body), supplying seq, the
-// prev chain and spec "jacquard/0.5"; each must reproduce its recorded hash,
+// prev chain and spec "jacquard/0.6"; each must reproduce its recorded hash,
 // and the chain must verify.
 const rebuiltEntries: StoredEntry[] = [];
 {
@@ -417,7 +417,7 @@ if (replay === null) {
     checkpoint_seq: 0,
     log_length: 4,
     head_hash: vectors.entries[3].hash,
-    spec: "jacquard/0.5",
+    spec: "jacquard/0.6",
     prev_checkpoint: null,
   };
   if (!deepEq(body, expectedBody)) {

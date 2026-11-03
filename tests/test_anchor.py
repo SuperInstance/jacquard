@@ -32,8 +32,14 @@ TRUE_HEAD_250 = "9a3f33a27ecb5c2e77b59131672675379816a92a6221b5d1d8e821be808bb07
 TRUE_HEAD_507 = "1e02bd867b777e165189d1adc0cc3a21227400ca2ee916003d38ce630740c8d5"
 
 
+TEST_PASSPHRASE = "slice21-test-passphrase"
+
+
 @pytest.fixture()
-def key_path(tmp_path):
+def key_path(tmp_path, monkeypatch):
+    # Spec 0.6: keygen requires a passphrase (here via the
+    # environment variable, the documented run-time channel).
+    monkeypatch.setenv("JACQUARD_ANCHOR_PASSPHRASE", TEST_PASSPHRASE)
     path = str(tmp_path / "anchor-key.ed25519")
     generate_key(path)
     return path
@@ -75,7 +81,8 @@ def test_keygen_mode_and_location(key_path):
 def test_keygen_refuses_repo_path(tmp_path):
     (tmp_path / ".git").mkdir()
     with pytest.raises(AnchorError):
-        generate_key(str(tmp_path / "key.ed25519"))
+        generate_key(str(tmp_path / "key.ed25519"),
+                     passphrase=TEST_PASSPHRASE)
 
 
 def test_kernel_import_does_not_require_cryptography():
@@ -191,7 +198,7 @@ def test_wrong_pinned_key_fails_history(tmp_path, key_path, small_log):
     root = tmp_path / "checkpoints"
     _anchor(entries, key, "small", root)
     other = str(tmp_path / "other-key")
-    generate_key(other)
+    generate_key(other, passphrase=TEST_PASSPHRASE)
     wrong = public_key_hex(load_private_key(other))
     result = verify_entries(entries, _history(root), wrong)
     assert result["outcome"] == "failed"
@@ -305,8 +312,9 @@ def test_forged_log_fails_anchor_at_first_divergent_checkpoint(
 # ---------------------------------------------------------------- CLI
 
 def _run_cli(*argv, expect=None):
+    env = dict(os.environ, JACQUARD_ANCHOR_PASSPHRASE=TEST_PASSPHRASE)
     proc = subprocess.run([sys.executable, JQANCHOR] + list(argv),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, env=env)
     if expect is not None:
         assert proc.returncode == expect, (argv, proc.stdout, proc.stderr)
     return proc

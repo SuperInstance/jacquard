@@ -2267,8 +2267,10 @@ export function validateAnchorBody(body: unknown): string | null {
   if (typeof body.head_hash !== "string" || !HEX64_RE.test(body.head_hash)) {
     return "head_hash is not hex64";
   }
-  if (body.spec !== SPEC_VERSION) {
-    return `spec is ${pyRepr(body.spec)}, expected ${pyRepr(SPEC_VERSION)}`;
+  // Spec 15.1 (0.6): the anchor format did not change in 0.6, so
+  // checkpoints issued under 0.5 remain valid; refuse any other.
+  if (body.spec !== "jacquard/0.5" && body.spec !== "jacquard/0.6") {
+    return `spec is ${pyRepr(body.spec)}, expected "jacquard/0.5" or "jacquard/0.6"`;
   }
   const prev = body.prev_checkpoint;
   if (body.checkpoint_seq === 0 && prev !== null) {

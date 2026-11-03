@@ -11,7 +11,7 @@ from .canonical import SPEC_VERSION, canonical, hash_of
 GENESIS_PREV = "0" * 64
 ENTRY_KINDS = ("proposal", "decision", "definition", "execution",
                "sense", "checkpoint", "machine", "transition",
-               "budget", "price", "rule", "import")
+               "budget", "price", "rule", "import", "seal")
 
 
 class Log:
