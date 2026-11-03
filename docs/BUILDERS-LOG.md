@@ -3866,3 +3866,38 @@ coordinator's own brief: the brief's "dedicated settings
 file" route does not exist in the v1.1.0 adapter README
 (Install is plugin-only) — the leg followed the README
 over the brief, correctly.
+
+**Correction addendum 2 — the Orin leg, the restart,
+and the clock (2026-11-03, later).** The status line
+earlier in this entry ("Orin: coordinator completing")
+is superseded. Reconstructed from artifacts after the
+fact: the Orin leg agent completed the governed session
+itself — the seat queued 3 shell calls + later the
+report write; the leg operated every approval
+hash-bound from the queue; all executed, and the
+seat's own read-back of the written report is in the
+log (117 entries, sha256 5717625e…). What the leg did
+not survive to do was REPORT: the coordinator VM
+restarted at ≈17:28 UTC mid-slice (uptime evidence),
+killing the leg agent and garbling the ProArt leg's
+interim handoff — both disruptions trace to that one
+event. The coordinator's VM clock was also running
+≈ +40 min fast before the restart, which mistimed the
+tie release in the coordinator's working notes: the
+release executed at true ≈17:31 UTC, before the
+incumbent's 18:30 check-by, on observed idleness (the
+incumbent's session rollout closed 17:23 UTC; no
+process). Recorded as a judgement on an observation;
+the board, kept on the Oracle's clock, was never
+affected. Verified Orin results: suite 1 failed (the
+bwrap sandbox test — bubblewrap does not hold under
+the tegra kernel; coordinator's re-run reproduced it
+exactly), 333 passed, 10 skipped; TS conformance 14
+PASS / 0 / 0 — the checker gained
+vectors.anchor_registry in Phase 9, and the repo
+README still says 13 checks: staleness noted as a doc
+defect for slice 32. The seat's closing summary
+understated completion (write "still queued", file
+absent) against its own log — artifact outranks
+summary in both directions; the matrix document
+records it.
