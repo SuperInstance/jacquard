@@ -3154,3 +3154,93 @@ the batched list in `docs/release-readiness-1.0.md`
 (anchor-passphrase re-wrap; PyPI / crates.io / npm first
 publishes; the shelf listing). The Oracle board booking for
 this lane is marked DONE.
+
+# Phase 9 — fix the defect, prove it on the real queue, pave the publish path (2026-11-03)
+
+## Slice 24 — design, recorded before building (2026-11-03)
+
+Phase 9 slice 24: the registry-grammar fix named as owed work
+at v1.0.0. Coordinator-run in a fresh Oracle clone
+(~/jacquard-p9, from main@f66b769); Oracle board row booked
+(agent-inbox e1a3975).
+
+**The defect, from the source** (`schedule_from_registry`,
+src/jacquard/anchor.py): every registered key contributes a
+window for every log_id; a log_id missing from `signs_from`
+defaults to 0 and one missing from `signs_until` is
+open-ended, so an empty window is inexpressible. The live
+witness registry therefore cannot schedule the gpu-queue live
+log (9cbf80c8…): the retired key names that log in neither
+map, defaults to a full window from seq 0, and collides with
+the successor's true window — the recorded error is "key
+registry windows for log 9cbf80c8… do not partition its
+checkpoint sequence (gap or overlap after seq None)". The log
+was born after the rotation and is signed only by the
+successor; the 0.6 grammar has no way to say so.
+
+**The fix — null windows.** A log_id omitted from BOTH maps
+of a key's entry means the key signs nothing for that log:
+it contributes no interval to that log's schedule. A log_id
+omitted from one side only keeps its 0.6 meaning (unbounded
+on that side). All other rules unchanged: participating
+windows must still partition the log's checkpoint sequence,
+gaps and overlaps still refuse by name, and a schedule that
+leaves seq 0 uncovered still refuses.
+
+**Format version: the registry document bumps, the spec
+takes an erratum.** The registry carries its own format
+string; it becomes `jacquard/anchor-keys/2`. Verifiers accept
+both: /1 documents are read under the legacy rule (every key
+participates, defaults as in 0.6) and /2 documents under the
+null-window rule — a document is never read by a grammar it
+was not written under. Spec version: **0.6 erratum 2**, not
+0.7, reasoning recorded here per the brief: no log-entry,
+checkpoint, envelope, or seal byte changes; the kernel
+SPEC_VERSION and seal are untouched (slice 23's erratum-1
+precedent: the seal derives from the version string, and
+nothing a seal covers moves); the registry is a transport
+document whose own format version is exactly the seam slice
+21 built for its evolution, and the /1→/2 bump is what makes
+the grammar change honest — a /1 reader refuses a /2 registry
+by name (the format check is exact-match), so the new reading
+can never be silently applied by old tooling. The erratum
+text in §15.3 states the grammar change openly, as erratum 1
+stated its correction. The witness keys.json is republished
+as /2 with its key entries byte-identical apart from the
+format string — its content already states the /2 reading as
+fact; the republish makes it schedulable.
+
+**Safety.** Null windows cannot manufacture acceptance: the
+§15.5 procedure still requires the envelope pubkey to equal
+the scheduled key and the signature to verify, so a registry
+claiming a key signed outside its true window fails at the
+envelope binding, naming the checkpoint seq ("envelope pubkey
+is not the pinned key for its sequence"); a registry that
+drops a key whose checkpoints exist leaves those sequences
+covered by another key's window (binding failure again) or
+uncovered (partition refusal). The registry remains a
+description that verification checks, never a source of trust.
+
+**Vectors + twins.** New `anchor_registry` section in
+spec/vectors/vectors.json: schedule cases (/2 null window,
+/2 rotation partition, /1 legacy reading pinned, overlap
+refusal, gap refusal, uncovered-seq-0 refusal) and
+authentication cases (a window claim outside the truth fails
+with the named detail). Python implements first
+(anchor.py + tools/jqanchor.py unchanged at the CLI surface),
+then the TS twin (conformance/ts/verify-anchor.ts + check.ts)
+and the Rust twin (rust/src/anchor.rs + its checker), each
+running the same section.
+
+**Acceptance (pinned by the brief).** (1) The REAL gpu live
+log verifies via the registry path — not explicit-key — in
+all three implementations (91/91 over checkpoints seq 0/1);
+(2) the pre-rotation proof log still verifies 507/507 via
+the registry in all three; (3) a registry scheduling a key
+outside its true window fails by name (vectors + tests);
+(4) all suites green; (5) ship as v1.0.1 — version strings,
+CHANGELOG, release-readiness addendum, tag verified from a
+cold clone of the tag; (6) both READMEs' limitation
+statements updated as a doc event (this repo's not-built
+list loses the registry-grammar item; the anchors README's
+limitation section is rewritten to record the fix).
