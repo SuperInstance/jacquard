@@ -15,10 +15,10 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 ## Repository layout
 
-- `spec/` — the specification (SPEC.md, currently version 0.4) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`, Phase 5 slice 13).
+- `spec/` — the specification (SPEC.md, currently version 0.5) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Also in the package, but outside the kernel, is the anchoring tooling (`anchor.py`, spec section 15) — the package's only non-standard-library dependency (`cryptography`, for Ed25519) is confined to it, and `import jacquard` never pulls it in. Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`, Phase 5 slice 13).
 - `adapters/` — adapters that live outside the kernel: decision-model providers (the kernel imports no provider-specific code), the sandboxed executor, and the ZCode coding-agent adapter (`zcode_hook.py` plus the installable surfaces in `zcode/`), which puts a real coding agent's tool calls under kernel decision (Phase 5 slice 12; the coding-agent profile itself is `src/jacquard/coding_agent.py`).
-- `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the golden-vector generator, the shadow-trial runner.
+- `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the anchoring CLI (`jqanchor.py`), the golden-vector generator, the shadow-trial runner.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: an independent TypeScript implementation written from the spec alone, its gap report, and the fixtures it folds (see `conformance/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
@@ -41,7 +41,9 @@ Phase 5 (complete): beachhead 1 — the supervision layer for coding-agent fleet
 
 Phase 6 (complete): slice 16 — the operator-trained learner (spec section 12 as of 0.4). Queued shapes now carry a signature: a pure, log-derivable function of the proposal's requests that discriminates within the queued population (a shell command's skeleton with paths, urls and numbers abstracted; a write's file extension; a send's host), so the proof run's one regrettable shell shape splits into the distinct commands it actually covered. Operator release/reject decisions on queued items are first-class training labels, joined to the proposals they decided (the wait pump's mechanical re-decisions carry no operator field and never label). Mining runs two passes — the policy pass as before, and an operator pass whose candidates predict the operator's verdict — and operator-origin rules climb the same eval → shadow → canary → active ladder, scored on operator verdicts alone: rule-made decisions never grade themselves, and later operator rejects of a shape count against the rule that released it (canary-era rejects block activation; post-activation rejects demote). The replay proof runs in the test suite (`tests/test_operator_learner.py`) against the frozen Phase 5 proof log: a candidate mined from operator-released writes reaches shadow, climbs to active on rehearsal rounds, and then auto-decides the repeated writes, while the denied fetch-and-execute shape is covered by no release candidate. The live second proof run (`docs/proof-run-2-2026-11-02.md`, raw inputs in `docs/proof-run-2/`) shows the queue shrinking against Phase 5's baseline: session 1 queued 14 of 15 governed actions; session 2, with both learned rules active, queued 1 of 16 — an estimated ≈3 operator-minutes per 100 governed actions at the margin against ≈11 — and the planted fetch-and-execute was denied as a rejected twin and never executed. Slice 17 (the `any`-quotation accounting) completed spec 0.4: the token forms are enumerated in section 5, the effects walk descends into every token position except a literal's value, unknown dict forms are REFUSED(SPEC) with the form named, and C2 is stated in section 4 with the quotation case included — the Phase 4 hazard is closed in both implementations' terms (stock kernel refuses the form by name; the quarantined extension that keeps the form now accounts its verbs), with an adversarial battery in `tests/test_quotation_battery.py` and a dated addendum on the findings document. Tagged v0.4.0; suite at the tag: 266 passed, 7 skipped.
 
-Not built yet: packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
+Phase 7 (in progress): slice 18 — chain-head anchoring (spec section 15, spec 0.5) — has landed; slice 19 (the full TypeScript port) has not. The log's hash chain proves self-consistency, not history: a holder could rewrite an entry and recompute the chain into a perfect forgery. Anchoring closes that with signed Ed25519 checkpoints of (log length, head hash, spec version), hash-chained per log and published outside the kernel's store in a separate public repo, [`SuperInstance/jacquard-anchors`](https://github.com/SuperInstance/jacquard-anchors), under an append-only publisher discipline. Verification (spec 15.5) reports one of four outcomes — verified, verified-to-anchor with the unanchored tail stated numerically, unanchored, or failed naming the first divergent checkpoint — never a bare boolean. The frozen Phase 6 proof log is anchored there at lengths 250 and 507, and the suite carries the attack as a fixture: the proof log with one decision outcome flipped and its chain recomputed passes internal chain verification and fails anchor verification at checkpoint 0 (`tests/data/forged/`, `tests/test_anchor.py`). The cold-verifier drill is `docs/anchor-drill.md`. See the anchoring section below.
+
+Not built yet: the full TypeScript port (Phase 7 slice 19 — the TS checker currently covers the fold, with dictionary evaluation, sense computation and anchor verification declared SKIP); packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 
@@ -228,3 +230,55 @@ are in `adapters/zcode/README.md`; the live-run record is
 `docs/slice12-live-run.md` and the measured comparison with
 the host's native permission flow is
 `docs/proof-run-2026-11-02.md`.
+
+## Chain-head anchoring (Phase 7, slice 18 — built)
+
+The hash-chained log proves a presented log is *self-consistent*.
+It does not prove it is *the* history: whoever holds a log can
+rewrite a middle entry, recompute the chain from that point on,
+and present a forgery that chain verification accepts. Anchoring
+(spec section 15) is the countermeasure: the operator
+periodically signs a checkpoint — the log's length, the hash of
+its last entry at that length, the spec version — and publishes
+it **outside** the kernel's store, so history the operator cannot
+silently rewrite witnesses the log's head.
+
+- Tooling: `tools/jqanchor.py` (module `src/jacquard/anchor.py`,
+  outside the kernel; its Ed25519 work via the `cryptography`
+  package is that tooling's only non-stdlib dependency).
+  `keygen` creates the operator key once, at
+  `~/.jacquard/anchor-key.ed25519` (mode 0600, never in any repo;
+  the tool refuses to overwrite it). `anchor` signs and stores
+  the next checkpoint; `verify` needs only the public key, a
+  checkpoint history and a presented log.
+- Transport: checkpoints are transport-agnostic in the spec; the
+  first transport is a dedicated public git repository,
+  [`SuperInstance/jacquard-anchors`](https://github.com/SuperInstance/jacquard-anchors),
+  one file per checkpoint (`checkpoints/<log_id>/<seq>.json`),
+  one commit per checkpoint, adds only — never amend, rebase or
+  force-push. Its README carries the operator public key and the
+  verification summary. The frozen Phase 6 proof log
+  (`docs/proof-run-2/kernel.jsonl`) is anchored there at lengths
+  250 and 507 and verifies fully against a fresh clone.
+- Outcomes, never a bare boolean: `verified` (tail 0),
+  `verified_to_anchor` (anchored prefix and `unanchored_tail`
+  reported as distinct numbers — an extension of an anchored log
+  is this, not a forgery), `unanchored`, and `failed` naming the
+  first divergent checkpoint (truncation below an anchored
+  length is a failure, never a tail). Exit codes: 0, 0, 3, 1.
+- The attack is a test fixture: `tests/data/forged/` holds the
+  proof log with seq 100's outcome flipped and its chain
+  recomputed (generator + provenance committed). It passes
+  internal chain verification; anchor verification fails it at
+  checkpoint 0. Both directions are asserted in
+  `tests/test_anchor.py`.
+- Cold-verifier drill: `docs/anchor-drill.md` — given only the
+  public anchor repo, the spec and a presented log, an
+  independent verifier reproduces all of the above, with exact
+  expected values at every step.
+- Honest bound (spec 15.6): anchoring proves a prefix existed in
+  exactly that form no later than its checkpoint's publication,
+  and detects post-anchor rewrites of the anchored prefix. It
+  proves nothing about the unanchored tail, nothing about
+  whether the decisions were wise, and not that a presented log
+  is complete.

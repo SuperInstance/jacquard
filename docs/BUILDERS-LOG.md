@@ -1956,3 +1956,90 @@ fixture and its provenance note are committed under `tests/`;
 public anchor repo, the spec and a presented log, reproduce all
 of it cold; (5) cold clone: Python suite + TS checker green.
 The rank-tie interim disposition is untouched by this slice.
+
+### Slice 18 — implementation and close (2026-11-02)
+
+Built as designed, in the stated order: spec §15 first
+(18a30a1), version mechanics (550970a), the anchor module +
+CLI (a1ecaa7), the forged fixture + battery (1a114f6), a
+consistency fix (f77b924), the drill (1fa191c), and this docs
+close. Evidence for each acceptance item from the design entry:
+
+1. *True log verifies against published history.* Key generated
+   on the Oracle at `~/.jacquard/anchor-key.ed25519` (mode 0600;
+   public key `1aa240ac…b3072be5`). Anchor repo
+   `SuperInstance/jacquard-anchors` opened at 51a2f73 (README +
+   pubkey.txt); checkpoint 0 (length 250, head 9a3f33a2…)
+   committed 1f1309b; checkpoint 1 (length 507, head 1e02bd86…)
+   committed 89a6de3 — one commit per checkpoint, adds only.
+   Verified from a *fresh clone* of the anchor repo: outcome
+   `verified`, 507/507, tail 0, exit 0.
+2. *The forgery.* `tests/data/forged/proof-run-2-forged.jsonl`:
+   seq 100's outcome flipped `allow` → `deny`, chain recomputed
+   from seq 100 (generator + PROVENANCE.md committed). It loads
+   through the kernel's `Log` class and `verify_chain()` returns
+   true; against the published history it FAILS at checkpoint 0
+   (expected head 9a3f33a2…, actual de47470f…), exit 1, with
+   `internal_chain_ok: true` in the same result. Both directions
+   are asserted in `tests/test_anchor.py` (18 tests), alongside
+   tail-exactness (250 anchored / 257 tail against the
+   mid-checkpoint alone), extension-is-tail, truncation-is-
+   failure, dropped-checkpoint and bad-signature history
+   failures, wrong pinned key, keygen refusals (overwrite,
+   in-repo path, loose mode), and a fresh-interpreter check that
+   `import jacquard` pulls in neither the anchor module nor
+   `cryptography`.
+3. *Drill.* `docs/anchor-drill.md`, every step executed verbatim
+   before commit — including the `sed -n '250p'` spot check and
+   the three exercises beyond the headline pair (tail subset,
+   truncation at 300 → FAILED naming checkpoint 1, the Phase 5
+   log → UNANCHORED, exit 3).
+
+Findings during the build, none smoothed: (1) exercising the
+drill's truncation step caught a wart in my own verifier — on a
+prefix failure it reported `anchored_length` advanced but
+`unanchored_tail` still at its initial value, arithmetically
+inconsistent numbers a cold verifier would trip on; fixed
+(f77b924) so lengths recompute on every return path, with a
+regression assertion. (2) A first-draft test asserted
+`not hasattr(jacquard, "anchor")` — false reasoning: importing a
+submodule anywhere in the suite sets it as a package attribute.
+Replaced with the fresh-interpreter check, which tests the
+actual invariant. No test was weakened in either case; both
+fixes strengthened the assertion.
+
+Deviations from the design entry and from prior-phase patterns,
+with reasons: (a) TS SKIP count moves 3 → 4 — the new
+`vectors.anchor` SKIP, recorded at GAPS item 18; the alternative
+(a TS verifier in this slice) is slice 19's charter, not a
+bookkeeping dodge. (b) `pyproject.toml` version bumped
+0.3.0 → 0.5.0: the 0.4 release left it at 0.3.0 while the spec
+moved to 0.4, a stale-version wart this close corrects rather
+than repeats (no tag is cut by this slice; v0.5.0 belongs to
+the phase close, after slice 19). (c) Spec §15.5's genesis step
+is realised as *selection* semantics: a history whose `log_id`
+names a different genesis is not applicable to the presented
+log, so the outcome is UNANCHORED (with `internal_chain_ok`
+still computed and reported), not FAILED — FAILED is reserved
+for histories that claim this log and fail it. (d) The replay
+fixture's gzip is back to the ~1.48 MB indent-1 form (the 0.4
+regen's compact dump was the outlier); content is the same
+3,295 entries re-run through the 0.5 kernel, dispatch record
+exact.
+
+Rotation posture at close: the verifier takes a key schedule
+(CLI: `--pubkey` plus `--rotation-seq` / `--rotated-pubkey`),
+and no rotation has occurred. The private key's only copy is
+the Oracle file named above; a stage-and-scan of every push in
+this slice (`git log -p` grep for key material at close) found
+none in either repo — the strings that match "anchor-key" in
+the history are prose stating where the key lives, as the spec
+requires.
+
+Slice 18 is complete. Remaining Phase 7 work: slice 19 (the
+full TS port, including a TS §15 verifier that retires the
+anchor SKIP). Suite at close: **285 passed, 7 skipped**; TS
+conformance: **7 PASS, 4 SKIP**. Cold-clone evidence is
+recorded in the verification addendum the coordinator runs at
+phase close; the pre-close fresh-clone runs of both suites were
+green from this tree (see the close commit's verification).

@@ -3,6 +3,57 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 0.5.0 — 2026-11-02
+
+Specification 0.5; Phase 7, slice 18 (chain-head anchoring).
+Slice 19 (the full TypeScript port) completes the phase and is
+not in this entry.
+
+### Added
+- Chain-head anchoring (spec §15): signed Ed25519 checkpoints
+  of (log length, head hash, spec version) published outside
+  the kernel's store. A checkpoint body has exactly eight keys;
+  what is signed is the body's canonical bytes; checkpoints for
+  one log hash-chain via `prev_checkpoint`; a log is named by
+  its genesis hash (`log_id`), with the stated limitation that
+  identity names a lineage and the (length, head) pair does the
+  binding. No signed timestamp: existence-at-a-time rests on
+  the transport's publication record.
+- Anchor tooling (`src/jacquard/anchor.py`,
+  `tools/jqanchor.py`): `keygen` (operator key at
+  `~/.jacquard/anchor-key.ed25519`, mode 0600, outside every
+  repo, overwrite refused), `anchor`, `verify`. Verification
+  reports VERIFIED / VERIFIED-TO-ANCHOR (anchored prefix and
+  unanchored tail as distinct numbers) / UNANCHORED / FAILED
+  naming the first divergent checkpoint — never a bare
+  boolean. Anchoring is the tooling's only non-stdlib
+  dependency (`cryptography`); the kernel stays
+  zero-dependency.
+- First transport: the separate public repo
+  `SuperInstance/jacquard-anchors` (append-only discipline:
+  one commit per checkpoint, adds only). The frozen Phase 6
+  proof log is anchored there at lengths 250 and 507.
+- Forged-log fixture (`tests/data/forged/`, generator +
+  provenance): the proof log with seq 100's outcome flipped
+  and the chain recomputed — fully self-consistent under §2,
+  caught by §15 at checkpoint 0. Both directions asserted in
+  `tests/test_anchor.py` (18 tests).
+- Cold-verifier drill (`docs/anchor-drill.md`): exact steps
+  and expected values for an independent verifier given only
+  the public anchor repo, the spec and a presented log.
+- Golden vectors gain an `anchor` section (§15): one
+  checkpoint over the vector chain under a published test
+  key. TS conformance: version aligned to 0.5, both fixtures
+  regenerated, `vectors.anchor` declared SKIP (verifier work,
+  not fold work; GAPS item 18) — 7 PASS, 4 SKIP.
+
+### Evidence
+- Suite at this entry: 285 passed, 7 skipped (266 + 18 anchor
+  + 1 anchor vector). TS checker: 7 PASS, 4 SKIP.
+- The true proof log verifies `verified` (507/507, tail 0)
+  against a fresh clone of the anchor repo; the forged log
+  fails at checkpoint 0 with `internal_chain_ok: true`.
+
 ## 0.4.0 — 2026-11-02
 
 Specification 0.4; Phase 6 of the build, landing in two steps
