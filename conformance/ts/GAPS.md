@@ -265,3 +265,115 @@ omits the schemas and representations a second implementer needs.
   (a rewrite-and-rechain forgery that passes internal chain
   verification and fails anchor verification at the first
   divergent checkpoint).
+
+---
+
+## Slice 19 closures (2026-11-02) — the full TS port
+
+Slice 19 ported the Python reference into `kernel.ts` (see the
+builder's log for the method note: this file's earlier items
+were written by a spec-only implementer; the port is a port,
+and the readings below are now the *reference* readings, tested
+against the reference behaviour directly). The checker now runs
+13 checks with zero SKIP lines. Item by item:
+
+- **16. Sense computation — CLOSED.** `kernel.ts` computes the
+  contention and authority senses (and the other built-ins)
+  over entry prefixes; check `vectors.senses` compares every
+  case's full reading {value, method, as_of_seq} against the
+  vectors, exactly as `tests/test_vectors.py` does.
+- **17. Token-form accounting — CLOSED.** The TS dictionary
+  implements the form-agnostic walk and the named SPEC refusal;
+  check `i. token-form battery` runs the stock-kernel half of
+  the Python adversarial battery (original probe, nested
+  quotation, quotation in an if branch, composition smuggling
+  via refusal, both hybrid forms, forged body at evaluation,
+  literal-carried data) against it, and the cross-language
+  drill's stream contains the probe definition, refused with a
+  byte-identical verdict detail in both languages. The hybrid
+  reading recorded in the original item (first key in sorted
+  order names the refusal) is the reference's `_form_key` and
+  the port reproduces it.
+- **18. Chain-head anchoring — CLOSED.** `kernel.ts` implements
+  §15.5 in full (history selection by genesis `log_id`, the
+  `prev_checkpoint` hash chain, pinned-key Ed25519 verification
+  via Node's built-in crypto, the four-outcome report) plus a
+  CLI twin of `jqanchor verify` (`verify-anchor.ts`). Check
+  `vectors.anchor` verifies the vector checkpoint both ways
+  (signature valid over the body, invalid over a tampered body)
+  and runs the procedure over the vector chain. Against the
+  public anchors repo the TS verifier reproduces the Python
+  outcomes exactly: true proof log `verified` (507/507, tail
+  0), forged fixture `failed` at checkpoint 0 with
+  `internal_chain_ok: true`, tail subset 250/257
+  `verified_to_anchor`, truncation `failed` at checkpoint 1,
+  Phase 5 log `unanchored`.
+
+Closures among items 1–15, only where a check now genuinely
+discriminates the reading:
+
+- **3. String escaping — CLOSED by check b.** The vector chain's
+  fourth entry carries the non-ASCII checkpoint name
+  (`café-☃`); its recorded hash recomputes in TS only under the
+  raw-UTF-8 reading (an ASCII-escaped serialisation hashes
+  differently and fails). The earlier "caught by: none" was
+  written against the replay/full fixtures; the golden entries
+  themselves discriminate, and did since the entry was added —
+  recorded here as a correction to that line.
+- **7. Queued outcome literal / release shape — CLOSED by the
+  cross-language drill.** The drill stream queues four
+  proposals and closes them by release, rejection and expiry;
+  both sequencers emit byte-identical decision bodies
+  (`queued` literal, `releases`/`rejects`/`expires` plus
+  `released_by`/`rejected_by`/`expired_by`), and the TS fold
+  was aligned to the reference's if/elif chain (a queued body
+  enters; only a non-queued closing body removes).
+- **10. Budget/price body schemas — CLOSED by the drill + g.**
+  The drill's grant and price ops make both sequencers *emit*
+  `budget` {producer, delta, by} and `price` {resource, price,
+  by} entries byte-identically, and check g already pinned the
+  fold reading of such entries from the Python-generated
+  full log.
+- **11. Folded value per rule id — CLOSED by the drill.** The
+  stream appends one standing-rule record identically in both
+  kernels; the drill's closing checkpoint state hash is
+  byte-identical, which holds only if the folded `rules` value
+  is the `rule` object itself in both folds.
+- **13. Entry body schemas — CLOSED IN PART.** The port +
+  drill now pin, end to end (emission and fold, byte-compared
+  against the reference): proposal-submission outcomes for
+  decision, execution, definition, sense, budget, price and
+  rule bodies. Machine, transition and import bodies remain
+  fold-pinned only (check g), because the TS sequencer does
+  not emit them (see port scope below).
+- **14. Budget key existence — CLOSED by the drill.** The
+  stream's final proposal is an operator spend with no prior
+  grant; both folds create the key from the spend (balance
+  −6 at price 3), inside the byte-identical log and its
+  closing state hash.
+
+Items **1, 2, 5, 15 remain open**, honestly: no fixture yet
+contains an astral or non-ASCII *key* (1), an integer near
+2^53 (2), a negative envelope-validation case (5 — the port
+implements the reference's ordered validation and the drill
+compares refusal verdicts for definitions and proposals, but
+no malformed-envelope vector exists), or an unknown-kind /
+malformed-body log entry (15 — both writers refuse unknown
+kinds; the fold stays total, undiscriminated by any vector).
+
+### Slice 19 port scope (not spec gaps)
+
+The TS port covers §§1–5, 7 (+7.1), 11.2–11.3, 12.1 and 15.5.
+Not ported, by the slice's charter: the machine profile and
+lifecycle machines (§10 — the TS sequencer is a kernel without
+them installed, which §10.4 defines as 0.1 behaviour, and the
+drill's byte-identity holds under exactly that configuration),
+the WFQ scheduler and `buy_weight` (§11.1), the booking
+profile (§11.4), the learner pipeline beyond its signature
+function (§§12.2–12.4), state bundles (§14), and the service /
+CLI surfaces. `submit` of a `machine` envelope in TS returns a
+REFUSED(SPEC) verdict naming this scope instead of a machine
+check — a deliberate, recorded divergence from a Python kernel
+*with* the profile installed, and identical to no Python
+configuration's verdict for a *valid* machine text; it is
+recorded here so nobody mistakes it for conformance on §10.

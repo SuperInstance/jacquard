@@ -2204,3 +2204,53 @@ signature comparison (h) and the stock-kernel half of the
 slice 17 token-form battery (i). No spec bug was found in
 part 1: every divergence encountered was a TS-side reading
 corrected against the reference, not a contract defect.
+
+### Slice 19 — implementation, part 2: the cross-language drill (2026-11-02)
+
+One fixture, defined once (`conformance/ts/cross-drill/
+fixture.json`: 7 dictionary definitions, a standing-rule
+record, budgets/prices, and a proposal stream), driven through
+both sequencers by twin drivers (`run_python.py`, `run_ts.ts`),
+compared by `cross_drill.py`, evidence committed in
+`EVIDENCE.txt` next to both logs and both verdict streams.
+The stream was designed to make byte-identity earn its keep:
+protected-effect queueing with release / reject / expire, a
+priced spend (alice 100 − 5×3 = 85), an operator spend with no
+prior grant (operator −6, the budget key created by the spend),
+a define-in-proposal, an underdeclared fault decision, a
+suspension deny, the full wait repertoire (queued-then-fired
+by a later write, a guard that starts refusing mid-wait —
+recorded once as `wait-guard-refused:FIELD` with
+`wait_refusal_at` — then fires when the divisor lands, a
+deadline-0 waiter expired by its own submission's pump, and a
+wait satisfied at submission), idempotent resubmission, a
+sense, and a closing checkpoint.
+
+Result: **38 ops → 52 log entries; python log sha256
+0cde737c…, ts log sha256 0cde737c… — byte-identical; verdict
+streams byte-identical too** (sha256 021bce65…), including the
+two refusal verdicts' detail strings (the `any` probe refused
+SPEC by name, the misdeclared definition refused
+UNDERDECLARED, in both languages word-for-word).
+
+The TS anchor CLI (`conformance/ts/verify-anchor.ts`) was run
+against the public anchors repo before the docs close: true
+proof log `verified` 507/507 tail 0 (exit 0); forged fixture
+`failed` at checkpoint 0, `internal_chain_ok: true` (exit 1);
+tail subset `verified_to_anchor` 250/257; truncation at 300
+`failed` naming checkpoint 1; Phase 5 log `unanchored`. Every
+outcome and every failure field matches the Python tool.
+
+GAPS.md gained the slice 19 closure section: items 16, 17, 18
+closed; items 3, 7, 10, 11, 14 closed with the discriminating
+check named (item 3's closure corrects the original "caught
+by: none" — the golden entries discriminate the escaping
+reading and had since the non-ASCII entry landed); item 13
+closed in part, kinds named; items 1, 2, 5, 15 left open with
+the reason (no discriminating fixture exists). One new
+recorded item, filed as port scope rather than a spec gap:
+the TS sequencer's machine-envelope refusal — §10 is
+fold-covered only, and the log records exactly where that
+boundary sits. No spec bug was found in part 2 either: the
+drill agreed byte-for-byte on the first complete run, after
+part 1's fold alignment.

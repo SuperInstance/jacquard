@@ -1,0 +1,9 @@
+cross-language drill (slice 19) — fixture.json driven through both sequencers
+ops in stream: 38
+log entries: 52
+python log sha256: 0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261
+ts     log sha256: 0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261
+logs byte-identical: True
+python verdicts sha256: 021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333
+ts     verdicts sha256: 021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333
+verdicts byte-identical: True
