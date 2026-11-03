@@ -7,6 +7,7 @@ entry that queued it. If the item changed since presentation,
 the hash will not match and the decision fails, item untouched.
 
     python3 tools/jq.py --log kernel.jsonl seed-demo
+    python3 tools/jq.py --log kernel.jsonl submit proposal.json
     python3 tools/jq.py --log kernel.jsonl queue
     python3 tools/jq.py --log kernel.jsonl decide approve <id> --hash <h>
     python3 tools/jq.py --log kernel.jsonl decide deny --batch decisions.txt
@@ -17,6 +18,13 @@ the hash will not match and the decision fails, item untouched.
 `decisions.txt` lines: `<proposal_id> <binding_hash>` (decided
 with the command's action), or `<approve|deny> <proposal_id>
 <binding_hash>` for a mixed batch in one file.
+`submit` takes a proposal file (JSON, or `-` for stdin):
+{"producer": ..., "id": <idempotency id>,
+ "declared_effects": [...], "body": {"class": ...,
+ "requests": [{"verb": ..., "args": [...]}, ...]}}.
+On a fresh log it installs the standard lifecycles first,
+like seed-demo. It prints the kernel's verdict as JSON.
+
 Exit code is 0 when everything asked for succeeded, 1 when any
 item failed (the rest of a batch still processes).
 """
@@ -118,11 +126,82 @@ def cmd_seed_demo(seq, args):
     return 0
 
 
+def cmd_submit(seq, args):
+    if args.proposal == "-":
+        raw = sys.stdin.read()
+    else:
+        try:
+            with open(args.proposal, encoding="utf-8") as fh:
+                raw = fh.read()
+        except OSError as exc:
+            print("FAIL submit: cannot read %s: %s"
+                  % (args.proposal, exc))
+            return 1
+    try:
+        spec = json.loads(raw)
+    except ValueError as exc:
+        print("FAIL submit: not valid JSON: %s" % exc)
+        return 1
+    if not isinstance(spec, dict):
+        print("FAIL submit: proposal must be a JSON object")
+        return 1
+    for field in ("producer", "id", "declared_effects", "body"):
+        if field not in spec:
+            print("FAIL submit: proposal missing field: %s" % field)
+            return 1
+    if not isinstance(spec["declared_effects"], list):
+        print("FAIL submit: declared_effects must be a list")
+        return 1
+    body = spec["body"]
+    if not isinstance(body, dict) \
+            or not isinstance(body.get("requests"), list):
+        print("FAIL submit: body.requests must be a list of requests")
+        return 1
+    envelope = make_envelope(
+        spec["producer"], "proposal", body,
+        spec["declared_effects"], spec["id"])
+    # Idempotency across processes: the kernel's verdict cache
+    # is per-process, so a fresh CLI invocation must consult
+    # the folded record itself. If this exact envelope was
+    # already decided, print the recorded verdict (the latest
+    # decision entry for the proposal) and change nothing.
+    from jacquard.envelope import envelope_hash
+    env_hash = envelope_hash(envelope)
+    prior = None
+    for entry in seq.log.entries:
+        if entry["kind"] == "decision" \
+                and entry["body"].get("proposal_id") == env_hash:
+            prior = entry["body"]
+    if prior is not None:
+        if prior.get("fault"):
+            print(json.dumps({
+                "status": "REFUSED", "refusal": prior["fault"],
+                "detail": "; ".join(prior.get("reasons", [])),
+                "proposal_id": env_hash, "duplicate": True}, indent=1))
+            return 1
+        outcome = {"allow": "allow", "deny": "deny",
+                   "queued": "queue"}[prior["outcome"]]
+        print(json.dumps({
+            "status": "decided", "outcome": outcome,
+            "proposal_id": env_hash,
+            "reasons": prior.get("reasons", []),
+            "duplicate": True}, indent=1))
+        return 0
+    if not seq.log.entries:
+        install_lifecycles(seq)
+    verdict = seq.submit(envelope)
+    print(json.dumps(verdict, indent=1))
+    return 1 if verdict.get("status") == "REFUSED" else 0
+
+
 def main():
     parser = argparse.ArgumentParser(prog="jq")
     parser.add_argument("--log", required=True, help="kernel log (JSONL)")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("seed-demo")
+    submit = sub.add_parser("submit")
+    submit.add_argument("proposal",
+                        help="proposal JSON file, or - for stdin")
     sub.add_parser("queue")
     sub.add_parser("status")
     decide = sub.add_parser("decide")
@@ -137,7 +216,8 @@ def main():
     replay.add_argument("proposal_id")
     args = parser.parse_args()
     seq = open_kernel(args.log)
-    handler = {"seed-demo": cmd_seed_demo, "queue": cmd_queue,
+    handler = {"seed-demo": cmd_seed_demo, "submit": cmd_submit,
+               "queue": cmd_queue,
                "status": cmd_status, "decide": cmd_decide,
                "execute": cmd_execute, "replay": cmd_replay}[args.command]
     return handler(seq, args)
