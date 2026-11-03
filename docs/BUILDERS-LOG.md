@@ -3832,3 +3832,37 @@ ceiling is process level. Jacquard's answer is structural
 and already how the booking cell treats every lane:
 govern what a producer EMITS (files, commits, board
 rows) when the producer itself exposes nothing to gate.
+
+**Correction to the entry above (same day, on receipt of
+the leg's final report).** Two statements in the
+preceding entry do not stand. (1) The ProArt leg's final
+report reconciles with its artifacts figure for figure
+(log sha and every count verified independently by the
+coordinator); the irreconcilable aggregates the
+coordinator reacted to arrived in an interim handoff
+rendering, not in the leg's report — and the leg itself
+flagged a phantom queue-check snapshot (a proposal id
+absent from its log) in its own friction list. The
+record is corrected here rather than smoothed: the
+deployment's numbers in the matrix are artifact-derived,
+as they should have been regardless. (2) The MCode
+conclusion above ("no pre-execution decision surface")
+was the coordinator's own first-pass error — a truncated
+`mcode --help` and too narrow a grep. The leg's deeper
+inventory found plugin subcommands, an `exec` headless
+mode (--permission/--config/--output-format), and a hook
+event vocabulary (SessionStart, PreToolUse,
+PermissionRequest, PostToolUse, …) with a
+Claude/Codex-format plugin loader in the shipped
+bundles. Corrected finding: MCode's plugin hook surface
+is evidenced statically, unverified live; an adapter by
+that route is feasible and unbuilt. Also new from the
+final report: on this run headless PostToolUse DID fire
+for all five Bash calls — approvals landed while the
+session was actively retrying; recorded as an
+observation refining slice 12's anomaly note, not a
+refutation. And a doc-gap the leg caught in the
+coordinator's own brief: the brief's "dedicated settings
+file" route does not exist in the v1.1.0 adapter README
+(Install is plugin-only) — the leg followed the README
+over the brief, correctly.
