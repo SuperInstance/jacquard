@@ -15,10 +15,10 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 
 ## Repository layout
 
-- `spec/` — the specification (SPEC.md, currently version 0.5) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
-- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Also in the package, but outside the kernel, is the anchoring tooling (`anchor.py`, spec section 15) — the package's only non-standard-library dependency (`cryptography`, for Ed25519) is confined to it, and `import jacquard` never pulls it in. Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`, Phase 5 slice 13).
+- `spec/` — the specification (SPEC.md, currently version 0.6) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `src/jacquard/` — the Python reference implementation of the kernel, including the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Also in the package, but outside the kernel, is the anchoring tooling (`anchor.py`, spec section 15) — the package's only non-standard-library dependency (`cryptography`, for Ed25519) is confined to it, and `import jacquard` never pulls it in — and the sealed-export tooling (`sealing.py`, spec section 16, stdlib only). Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`, Phase 5 slice 13).
 - `adapters/` — adapters that live outside the kernel: decision-model providers (the kernel imports no provider-specific code), the sandboxed executor, and the ZCode coding-agent adapter (`zcode_hook.py` plus the installable surfaces in `zcode/`), which puts a real coding agent's tool calls under kernel decision (Phase 5 slice 12; the coding-agent profile itself is `src/jacquard/coding_agent.py`).
-- `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the anchoring CLI (`jqanchor.py`), the golden-vector generator, the shadow-trial runner.
+- `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the anchoring CLI (`jqanchor.py`), the sealed-export CLI (`jqseal.py`), the golden-vector generator, the shadow-trial runner.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: a TypeScript implementation in two parts — the original fold implementation written from the spec alone, and (slice 19) a full kernel port in `ts/kernel.ts` written from the Python reference — its gap report with the slice 19 closure notes, and the fixtures it folds (see `conformance/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
@@ -45,7 +45,9 @@ Phase 7 (complete): slice 18 — chain-head anchoring (spec section 15, spec 0.5
 
 Phase 7 (complete): slice 19 — the full TypeScript port. The TypeScript implementation in `conformance/ts/` now covers the whole kernel surface the golden vectors exercise: the original spec-only fold implementation (slice 8) plus `kernel.ts`, a deliberate port of the Python reference — dictionary and evaluator with computed effects and the slice 17 token-form refusals, the sequencer with the policy gate, the decision queue and the section 7.1 wait pump, sense computation (contention and authority included), the section 12.1 shape signature, and the section 15 anchor verifier (Ed25519 via Node's built-in crypto, no new dependency). The conformance checker runs **13 checks with zero SKIPs**: every golden-vector section is executed and compared, the shape signature is proven identical to the Python learner's over both proof-run corpora (8 + 27 queued decisions, item-for-item and by hash), and a cross-language drill — one 38-operation stream driven through both sequencers — produces **byte-identical logs and byte-identical verdicts** (`conformance/ts/cross-drill/`, evidence committed). The TS anchor verifier reproduces the Python tool's outcomes against the public anchors repo exactly, forged log included. Port scope, recorded in `conformance/ts/GAPS.md`: the machine profile and lifecycle machines, the WFQ scheduler, the booking profile, the learner pipeline beyond its signature function, and state bundles are not ported — the TS sequencer is a kernel without the lifecycle machines installed, which spec 10.4 defines as 0.1 behaviour. Tagged **v0.5.0**.
 
-Not built yet: packaging beyond this release (the repo is the distribution). See the builder's log for the current state and honest per-slice verdicts.
+Phase 8, slice 21 (complete): beachhead 2 remainder — product integrity, spec 0.6. Three pieces. (1) **Key management as a product surface** (spec 15.3 rewritten): the anchor key is passphrase-encrypted at rest (passphrase via environment variable or tty prompt, never argv), and rotation with continuity was executed on the real anchors setup — the witness repo now carries a key registry (`keys.json`) with per-log validity windows, the retired key signed checkpoints 0–1, the successor signed checkpoint 2 over the same 507-entry prefix, and both single-key verifications fail at exactly the boundary while the registry schedule verifies 507/507 in both implementations. (2) **Sealed exports** (new spec section 16): designated fields are redacted in an export under commitments committed in the log before export; the anchored log is never altered; the export names the classes sealed and still verifies. Live run over the real proof log in `docs/slice21/`: 27 operator-identity fields sealed, export `verified_to_anchor` against the public anchors and `verified` against a demonstration checkpoint covering the seal entries, tamper with a sealed field detected. (3) **Compliance mapping** (`docs/compliance-mapping.md`): the built mechanisms mapped to SOC 2 CC6/CC7/CC8 and ISO 27001 A.8 control shapes, honestly labelled — a mapping, not a certification — with the gaps an auditor would still find named in the document itself. Suite at this slice: 306 passed, 7 skipped; TS checker 13 PASS, 0 SKIP.
+
+Not built yet: packaging (Phase 8 slice 23 — registry publication waits on the batched owner steps). See the builder's log for the current state and honest per-slice verdicts.
 
 ## Running the tests
 
@@ -284,3 +286,38 @@ silently rewrite witnesses the log's head.
   proves nothing about the unanchored tail, nothing about
   whether the decisions were wise, and not that a presented log
   is complete.
+
+## Key management and sealed exports (Phase 8, slice 21 — built)
+
+Two surfaces on top of anchoring, both spec-first (spec 0.6).
+
+- **Keys** (spec 15.3): `jqanchor keygen` writes the operator
+  key passphrase-encrypted (PKCS#8, best-available encryption)
+  at `~/.jacquard/anchor-key.ed25519`, mode 0600; the passphrase
+  comes from `JACQUARD_ANCHOR_PASSPHRASE` or a tty prompt —
+  never argv, never logged. `jqanchor rotate` generates the
+  successor and updates the witness repo's `keys.json` registry
+  (per-log `signs_from` / `signs_until` windows that must
+  partition each log's checkpoint sequence); verifiers take the
+  schedule from `--pubkey`, from `--rotation-seq` +
+  `--rotated-pubkey`, or from the registry via `--keys`, and
+  the anchoring tool refuses to sign with a key outside its
+  scheduled window. The checkpoint body itself did not change —
+  continuity across rotation is the registry plus the
+  `prev_checkpoint` hash chain.
+- **Sealed exports** (spec 16): `tools/jqseal.py` — `seal`
+  appends a seal entry to a copy of a log, committing to the
+  redaction of a named field wherever it occurs (commitments
+  are domain-bound hashes, or HMACs under an operator-held
+  redaction key in `keyed` mode); `export` writes a prefix-only
+  redacted document whose sealed values are replaced by their
+  commitments; `verify` checks it against the anchors and
+  reports the section 15.5 outcomes plus `seals_applied`,
+  `seals_anchored` and `commitments_checked`. Redaction is a
+  view, not a rewrite — and section 16.4 states its limits,
+  including that a hash-mode commitment over a low-entropy
+  value hides nothing. Live-run record: `docs/slice21/`.
+- **Compliance mapping**: `docs/compliance-mapping.md` maps the
+  built mechanisms to common control families and names the
+  gaps (key custody as operated, no SIEM, no retention policy)
+  in the document itself. It is a mapping, not a certification.

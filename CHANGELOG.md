@@ -3,6 +3,80 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 0.6.0 — 2026-11-02 (Phase 8, slice 21 — beachhead 2 remainder)
+
+Specification 0.6. Slice 23 will tag the release; this entry
+records the slice.
+
+### Key management (spec 15.3 rewritten)
+- Anchor keys are passphrase-encrypted at rest (PKCS#8,
+  best-available encryption), mode 0600, outside every repo;
+  the passphrase is supplied per run via the
+  `JACQUARD_ANCHOR_PASSPHRASE` environment variable or a tty
+  prompt — never argv, never logged. `keygen` refuses to write
+  an unencrypted key; a pre-0.6 unencrypted key still loads
+  (migration), and rotation replaces it.
+- Key registry `keys.json` (`jacquard/anchor-keys/1`) in the
+  witness transport: per-log `signs_from` / `signs_until`
+  windows must partition each log's checkpoint sequence;
+  verifiers take the schedule from the registry (`--keys`), an
+  explicit `--pubkey`, or `--rotation-seq` + `--rotated-pubkey`.
+  New CLI verb `rotate`; the anchoring tool refuses to sign
+  outside the signing key's scheduled window.
+- Rotation executed on the real setup: retired key signed
+  checkpoints 0–1; successor (passphrase-encrypted under an
+  interim passphrase held only in a mode-0600 file on the
+  Oracle, pending the owner's re-wrap) signed checkpoint 2 at
+  length 507, `prev_checkpoint`-chained across the boundary.
+  Registry schedule verifies 507/507 in Python and TypeScript;
+  either key alone fails at the boundary.
+- The checkpoint body is unchanged (still exactly eight keys);
+  checkpoints issued under spec 0.5 remain valid — a 0.6
+  verifier accepts `jacquard/0.5` and `jacquard/0.6` checkpoint
+  bodies (spec 15.1).
+
+### Sealed exports (new spec section 16)
+- New entry kind `seal` (no fold effect): commits, in the log
+  before export, to the redaction of designated body fields —
+  (entry, field, class, mode, commitment), the commitment a
+  domain-bound hash (`hash` mode) or an HMAC under an
+  operator-held redaction key (`keyed` mode).
+- Redacted exports (`jacquard/redacted-export/1`) are
+  prefix-only views: sealed values are replaced by their
+  commitments, the seal set is bound by a `seal_set_hash`, the
+  anchored log is never altered, and verification reports the
+  section 15.5 outcomes plus `seals_applied`,
+  `seals_anchored` and `commitments_checked`. Tooling:
+  `src/jacquard/sealing.py`, `tools/jqseal.py`.
+- Live run over the real proof-run log (`docs/slice21/`): 27
+  operator-identity fields sealed; the export verifies
+  `verified_to_anchor` against the public anchors and
+  `verified` against a demonstration checkpoint covering the
+  seal entries; the frozen original still verifies; a flipped
+  sealed marker fails at stage `seals`, entry named.
+
+### Compliance mapping
+- `docs/compliance-mapping.md`: built mechanisms mapped to
+  SOC 2 CC6/CC7/CC8 and ISO 27001 A.8 control shapes —
+  labelled a mapping, not a certification — with auditor
+  gaps named (key custody as operated, no SIEM/monitoring,
+  no retention policy, asserted-not-authenticated identity,
+  single-operator duties).
+
+### Conformance
+- Python suite: **306 passed, 7 skipped** (285 baseline + 9
+  key-management + 12 sealing tests; existing anchor tests
+  adapted to the passphrase-required keygen, assertions
+  unchanged). Golden vectors and the conformance full-log
+  fixture regenerated at spec 0.6; the historical 0.5 replay
+  corpus was NOT regenerated — the TS chain verifier now
+  accepts earlier `jacquard/` entry specs, matching the Python
+  reference (the hash recompute binds the exact value).
+- TypeScript checker: **13 PASS, 0 SKIP, 0 FAIL**;
+  `verify-anchor.ts` gained `--keys` registry support and
+  reproduces the rotation outcomes exactly.
+
+
 ## 0.5.0 — 2026-11-02
 
 Specification 0.5; Phase 7 — slice 18 (chain-head anchoring)

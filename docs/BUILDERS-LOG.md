@@ -2552,3 +2552,57 @@ State after part 2: Python **306 passed, 7 skipped**; TS
 checker **13 PASS, 0 SKIP, 0 FAIL** (re-run at the close).
 Remaining: the compliance mapping, README/CHANGELOG close,
 cold-clone verification.
+
+### Slice 21 — close (2026-11-02)
+
+All three pieces against their acceptance, with evidence:
+
+1. **Key management.** Spec §15.3 rewritten before the code
+   existed and now describes exactly what shipped. The live
+   key is encrypted at rest (successor at the default path,
+   successor-signed checkpoint 2 in the public witness repo);
+   the retired key is re-wrapped encrypted; the interim
+   passphrase lives only at `~/.jacquard/PHASE8-INTERIM-
+   PASSPHRASE.txt` (mode 0600, outside any repo) for the
+   coordinator's batched owner re-wrap. Rotation continuity:
+   checkpoints 0–1 verify under the retired key's window, 2
+   under the successor's, the registry schedule verifies the
+   frozen log 507/507 in Python and TS, and each key alone
+   fails at the boundary (seq 2 / seq 0 respectively).
+2. **Sealing.** §16 as designed (critique-informed, deviations
+   reasoned in the design entry). Tests: 12, including five
+   tamper shapes and the proof-log twin. Live run:
+   `docs/slice21/` — export `verified_to_anchor` against the
+   public anchors (tail = the seal entries, `seals_anchored`
+   false, stated), `verified` with commitments `full` against
+   the demonstration checkpoint at 509, frozen original still
+   `verified`, tamper detected at stage `seals`.
+3. **Compliance mapping.** `docs/compliance-mapping.md` —
+   access control, change management, audit logging and key
+   management mapped to SOC 2 CC6/CC7/CC8 and ISO 27001 A.8
+   shapes, labelled a mapping not a certification, with eight
+   auditor gaps named, the interim-passphrase custody state
+   among them.
+
+Deviations from the brief, all recorded above where they
+happened: the checkpoint body was NOT amended (registry +
+hash chain carry continuity instead — the brief's conditional
+TS obligation was met anyway, since verification semantics
+changed); the public anchors history was not extended past
+507 (the frozen log's cold verification must stay
+`verified`, and §15.5 reads a longer history as truncation
+evidence against it — the 509 checkpoint is evidence in this
+repo instead); the conformance full-log fixture regenerated
+at 0.6 while the historical replay corpus did not (TS chain
+verifier relaxed to the Python reference's semantics, a
+reading correction, not a spec change); the Phase 7
+cross-drill fixtures stand as the 0.5 drill's evidence and
+were not re-filed.
+
+Final state: spec **0.6**; Python **306 passed, 7 skipped**;
+TS **13 PASS, 0 SKIP, 0 FAIL**; cold-clone verification from
+fresh clones of both public repos recorded in the addendum
+that follows this entry, per the standing pattern. Casey's
+remaining item from this slice is the one already batched by
+the coordinator: re-wrap the anchor keys with his own
+passphrase and delete the interim file.
