@@ -4,10 +4,16 @@
 //   node verify-anchor.ts <log.jsonl> --checkpoints <dir> --pubkey <hex>
 //   node verify-anchor.ts <log.jsonl> --checkpoints <dir> --keys <registry>
 //
-// --keys reads the witness key registry (spec 15.3,
-// jacquard/anchor-keys/1) from a keys.json file or a transport
-// directory holding one, and builds the pinned schedule for the
-// presented log's id — the TS twin of jqanchor verify --keys.
+// --keys reads the witness key registry (spec 15.3) from a
+// keys.json file or a transport directory holding one, and builds
+// the pinned schedule for the presented log's id — the TS twin of
+// jqanchor verify --keys. Both registry grammars are accepted,
+// each read under its own rule: jacquard/anchor-keys/1 under the
+// legacy reading (every key participates in every log's schedule,
+// an omitted side unbounded) and jacquard/anchor-keys/2 with null
+// windows (a log_id omitted from BOTH of a key's maps means that
+// key signs nothing for that log and contributes no interval to
+// its schedule). Any other format is refused by name.
 //
 // Prints the result as JSON (the same eight fields as the
 // Python tool) and exits 0 for verified / verified_to_anchor,
@@ -98,29 +104,67 @@ if (keysPath) {
     format?: string;
     keys?: {
       pubkey: string;
-      signs_from?: Record<string, number>;
-      signs_until?: Record<string, number>;
+      signs_from?: Record<string, unknown>;
+      signs_until?: Record<string, unknown>;
     }[];
   };
-  if (registry.format !== "jacquard/anchor-keys/1" || !registry.keys) {
-    console.error(`${registryFile}: not a jacquard/anchor-keys/1 registry`);
+  if (
+    (registry.format !== "jacquard/anchor-keys/1" &&
+      registry.format !== "jacquard/anchor-keys/2") ||
+    !registry.keys
+  ) {
+    console.error(
+      `${registryFile}: not a jacquard/anchor-keys/1 or jacquard/anchor-keys/2 registry`,
+    );
     process.exit(2);
   }
   const logId = entries.length ? (entries[0].hash as string) : "0".repeat(64);
-  const intervals = registry.keys
-    .map((k) => ({
-      from: k.signs_from?.[logId] ?? 0,
-      until: k.signs_until?.[logId] ?? null,
+  // Spec 15.3 schedule derivation, mirroring the Python
+  // schedule_from_registry: under /2 a key naming the log in
+  // neither map holds a null window and is skipped; under /1 (and
+  // for a one-sided omission under /2) an omitted side is
+  // unbounded — from defaults to 0, until to open-ended.
+  const nullWindows = registry.format === "jacquard/anchor-keys/2";
+  const intervals: { from: number; until: number | null; pubkey: string }[] = [];
+  for (const k of registry.keys) {
+    const hasFrom =
+      k.signs_from != null &&
+      Object.prototype.hasOwnProperty.call(k.signs_from, logId);
+    const hasUntil =
+      k.signs_until != null &&
+      Object.prototype.hasOwnProperty.call(k.signs_until, logId);
+    if (nullWindows && !hasFrom && !hasUntil) continue;
+    const from: unknown = hasFrom ? k.signs_from![logId] : 0;
+    const until: unknown = hasUntil ? k.signs_until![logId] : null;
+    if (
+      typeof from !== "number" || !Number.isInteger(from) || from < 0 ||
+      (until !== null &&
+        (typeof until !== "number" || !Number.isInteger(until) ||
+          until < (from as number)))
+    ) {
+      console.error(
+        `key registry window for log ${logId} is malformed: ${JSON.stringify(k)}`,
+      );
+      process.exit(2);
+    }
+    intervals.push({
+      from: from as number,
+      until: until as number | null,
       pubkey: k.pubkey,
-    }))
-    .sort((a, b) => a.from - b.from);
+    });
+  }
+  intervals.sort((a, b) => a.from - b.from);
   if (!intervals.length || intervals[0].from !== 0) {
-    console.error(`registry does not cover checkpoint_seq 0 for ${logId}`);
+    console.error(
+      `key registry does not cover checkpoint_seq 0 for log ${logId}`,
+    );
     process.exit(2);
   }
   for (let i = 1; i < intervals.length; i++) {
     if (intervals[i - 1].until === null || intervals[i].from !== intervals[i - 1].until! + 1) {
-      console.error(`registry windows for ${logId} do not partition the sequence`);
+      console.error(
+        `key registry windows for log ${logId} do not partition its checkpoint sequence (gap or overlap after seq ${intervals[i - 1].until})`,
+      );
       process.exit(2);
     }
   }
