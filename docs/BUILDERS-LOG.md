@@ -2969,3 +2969,52 @@ invocation CLI: init/submit/dispatch/poll/senses/counts),
 in-memory FakeThor: policy record first, exactly-once
 dispatch, adoption, two-sided denial, hold-until-release,
 poll + downstream-use both ways, failure reporting).
+
+### Slice 22 — live run and close (2026-11-02)
+
+The live window ran 2026-11-03 01:37–01:42 UTC inside the
+booking. Anchored at open before any submission (anchors
+`bbc41c6`, checkpoint seq 0 at length 8, successor signer),
+then, in order: bench-1 allowed → gpuq job-3; bench-2
+allowed → job-4 (its queueing released bench-1 under the
+successor rule); feeder-shaped submission DENIED
+(`feeder-shape`) and fetch-and-execute DENIED — neither in
+`gpuq list`, feeder verified still OFF afterwards; held-1
+from unknown producer `mystery-lane` HELD in the kernel
+queue (binding `9a77f702…06b38`, absent from gpuq),
+released hash-bound via `tools/jq.py`, then dispatched →
+job-5; bench-3 allowed with declared use of bench-1's
+artifact → job-6, its output file embedding bench-1's exact
+sum (25602.857421875); sentinel v1 DENIED — a bridge false
+positive (prose mentioning gpuq + feeder matched the shape;
+see the report's disagreement classification), shape
+tightened in part 2, sentinel v2 allowed → job-7, still
+queued in gpuq at close as the declared successor end-state.
+Poll wrote all four completions into the log (confirm +
+`gpu-outcome` entries); senses published (`queue-depth`,
+two `output-use`, `gpu-downstream-use`: 1 of 4 completed
+outputs used, ratio 2500 bp). Dispatch was invoked after
+every step and once more at the end: 5 jacquard jobs in
+gpuq, exactly one per allowed action — no re-adds.
+Anchored at close (anchors `4b339e9`, seq 1 at length 91);
+verification `--pubkey ce805efd…f5072`: **verified 91/91,
+tail 0**. The `--keys` registry route cannot schedule a
+post-rotation log_id (partition error, exact text in the
+report) — recorded as a policy/tooling gap, not forced.
+
+Final counts (log-derived): submitted 8, allowed 4, held 1
+(→released→dispatched), denied 3, dispatched 5, completed
+4, failed 0. Full evidence and the complete Thor-action
+list: `docs/slice22-live-report.md`; live log + journal
+committed under `docs/slice22/`, canonical log on the
+Oracle at `~/jacquard-gpu-live/kernel.jsonl` (sha256
+`a0fa08c7…`, identical to the committed copy).
+
+Thor-side actions (complete): read-only probes listed in
+the opening entry; five `gpuq add` calls via the bridge
+(job-3…job-7); artifacts created by the jobs themselves
+under `~/jacquard-gpu-live/` (bench-1/2, held-1, bench-3;
+no sentinel.json — it never ran). Feeder never invoked, no
+services touched, nothing installed, zero new persistent
+processes. The Thor booking row is marked DONE in the
+follow-up agent-inbox commit.

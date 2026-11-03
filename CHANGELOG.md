@@ -5,6 +5,25 @@ record (decisions, reasons, dead ends).
 
 ## Unreleased
 
+### Slice 22 — gpu-queue live (Phase 8)
+- `adapters/gpu_queue.py` + `tools/jqgpu.py`: the gpu-queue
+  bridge — Jacquard governs real submissions to the Thor's
+  GPU queue (lane `jacquard`, class `gpu-bench`) per dispatch
+  over the existing SSH door, zero new Thor processes.
+  Policy as data through the kernel's rule hook (feeder and
+  fetch-and-execute shapes denied by shape; network-fetch
+  and unknown producers held for hash-bound operator
+  decision); journal-before-add dispatch with adopt-by-name
+  crash recovery; poll-written outcomes; the downstream-use
+  sense (C3 as a live reading). 8 FakeThor tests.
+- Live run (report: `docs/slice22-live-report.md`, log +
+  journal in `docs/slice22/`): 8 submitted, 4 allowed, 1
+  held→released, 3 denied, 5 dispatched (gpuq job-3…job-7),
+  4 completed; downstream-use 1 of 4 outputs used; the live
+  log anchored at open and close under its own log_id
+  (verified 91/91). One bridge false positive (sentinel v1)
+  found live, fixed, and left standing in the log.
+
 ### Slice 20 — the Rust kernel port (Phase 8)
 - `rust/`: the third implementation of the kernel contract,
   a port of the TS port mirroring its layout — `value`
