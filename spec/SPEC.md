@@ -20,14 +20,23 @@ All hashed or stored structures use one canonical JSON form:
   -(2^53 - 1) .. 2^53 - 1: an implementation that cannot
   represent an integer exactly must refuse it rather than emit
   approximate canonical bytes.
-- Strings are escaped in the ASCII-safe form: `"` and `\` are
+- Strings are emitted as raw UTF-8: `"` and `\` are
   backslash-escaped; backspace, form feed, newline, carriage
   return and tab use their short escapes (`\b`, `\f`, `\n`,
-  `\r`, `\t`); every other character outside printable ASCII
-  — including ALL non-ASCII characters — is escaped as
-  `\uXXXX` with lowercase hex digits, astral characters as
-  surrogate pairs. (The golden vectors include a non-ASCII
-  checkpoint name so this rule is exercised, not just stated.)
+  `\r`, `\t`); control characters without a short escape are
+  escaped as `\uXXXX` with lowercase hex digits; ALL other
+  characters — including ALL non-ASCII characters — are
+  emitted literally as UTF-8. (The golden vectors include a
+  non-ASCII checkpoint name so this rule is exercised, not
+  just stated.) ERRATUM (2026-11-03, spec 0.6 erratum 1):
+  this paragraph previously prescribed the ASCII-safe
+  `\uXXXX` form for all non-ASCII characters. That reading
+  was never implemented: the golden vectors and all three
+  implementations (Python, TypeScript, Rust) have always
+  used the raw-UTF-8 form stated here — the café-☃ vector
+  recomputes only under it. The correction is to the prose
+  only; no canonical byte ever changed, so the spec seal
+  and every recorded hash stand.
 - The hash of a structure is the lowercase hex SHA-256 of its
   canonical bytes.
 

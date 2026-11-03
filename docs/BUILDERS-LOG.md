@@ -3018,3 +3018,37 @@ no sentinel.json — it never ran). Feeder never invoked, no
 services touched, nothing installed, zero new persistent
 processes. The Thor booking row is marked DONE in the
 follow-up agent-inbox commit.
+
+### Slice 23 — packaging and the 1.0 release (Phase 8, coordinator-run)
+
+Opening entry, written before the work. Scope per the Phase 8
+brief: package the finished thing for the curated shelf and
+tag **v1.0.0** only when the release-readiness checklist
+passes with evidence. Ground facts established first:
+
+- Registry names: `jacquard` is taken on PyPI (a University
+  of Michigan bioinformatics tool), on npm (a reserved-name
+  package), and on crates.io (an AT Protocol library).
+  `jacquard-kernel` is free on all three (PyPI 404, npm 404,
+  crates.io per slice 20) — one qualified name across every
+  registry; the Python import package stays `jacquard`.
+- Licence: the repo carried none. The fleet norm is MIT
+  (pincher, cocapn, signal-chain, exoj all carry LICENSE
+  files; pincher's is MIT, © SuperInstance). Slice 23 adds
+  MIT for SuperInstance and claims it in all three package
+  metadata files.
+- Spec §1 erratum: the string-escaping prose (ASCII-safe
+  form) contradicts the vectors and all three implementations
+  (raw UTF-8) — recorded as a divergence by slice 20 and
+  carried unchanged into 0.6. The seal derives from the spec
+  version string (`sha256("jacquard-spec/0.6")`), not the
+  spec text, so the prose correction moves no hash: it
+  lands in this slice as spec 0.6 erratum 1, prose only.
+- Slice 22's recorded blocker — `verify --keys` cannot
+  schedule a log_id absent from the witness registry (both
+  keys default from seq 0, windows collide) — is treated
+  as an operator-procedure gap, not a licence to guess: the
+  registry gains the live gpu log's true window (successor
+  key from seq 0) as a published statement in the witness
+  repo, the procedure is documented, and a `register-window`
+  verb is named as future work in the not-built list.
