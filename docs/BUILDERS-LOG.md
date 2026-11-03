@@ -3955,3 +3955,28 @@ cell: four real, one pending a desk join. Phase 11
 closes at v1.2.0; the standing residuals are unchanged
 (the interim tie, the inactive consumption gate, MCode's
 unbuilt adapter, registry publication with the owner).
+
+**Phase 12 — the production voice (2026-11-03).**
+Documentation only. The README is rewritten as a mature
+product's front door (what it is, who it serves, the uses,
+install, the operator surfaces, a support matrix, known
+limitations stated more plainly than the build narrative
+ever stated them, and a short Development & history
+pointer); DEVICES.md becomes Support & compatibility;
+QUICKSTART and the starter kits lose their build
+attributions for production statements carrying the same
+numbers and the same records linked deeper. Two
+invariants governed: no fact changed meaning (every
+verified claim and every limitation survives, several
+stated more plainly), and nothing was deleted — this log
+and the slice/phase reports are untouched in substance.
+A zero-shot cold read of the new README alone reproduced
+the product, its uses, its start path and its full
+limitation set with no load-bearing misunderstanding, so
+no corrective edit was needed. Honesty pass: every
+document path referenced by the rewritten docs resolves;
+the three suites re-run in the release clone match
+v1.2.0 exactly (Python 340 passed + 7 skipped; TS and
+Rust conformance 14/0/0 each). No code file changed.
+Shipped as v1.2.1; addendum:
+docs/release-readiness-1.2.1.md.

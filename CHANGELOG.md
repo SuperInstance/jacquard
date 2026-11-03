@@ -3,6 +3,30 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 1.2.1 — 2026-11-03
+
+Documentation release. No code changes; the suite state is
+unchanged from 1.2.0 (Python 340 passed, 7 skipped;
+TypeScript and Rust conformance 14 PASS, 0 SKIP, 0 FAIL).
+
+- `README.md` rewritten in production voice: the product,
+  its uses, install, the operator surfaces, a support
+  matrix, and known limitations stated plainly. The
+  build narrative moves behind a Development & history
+  pointer to this changelog, the builder's log and the
+  programme record — nothing is deleted.
+- `docs/DEVICES.md` becomes "Support & compatibility":
+  support states summarised up front, platform limitations
+  stated as such, deployment evidence linked deeper.
+- `docs/QUICKSTART.md` and the starter kits swept to the
+  same voice; every measured claim and record link
+  survives unchanged in meaning.
+- A zero-shot cold read of the rewritten README
+  reproduced the product and its limitations without a
+  load-bearing misunderstanding (Phase 12 record in
+  `docs/BUILDERS-LOG.md`; addendum
+  `docs/release-readiness-1.2.1.md`).
+
 ## 1.1.0 — 2026-11-03
 
 ### Slice 27 — consumption policy v2 (Phase 10)
