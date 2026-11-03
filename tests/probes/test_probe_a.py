@@ -212,6 +212,10 @@ def test_a_sum_over_list_of_maps_is_a_field_refusal():
 
 @pytest.fixture(scope="module")
 def built():
+    if not (corpus.DEFAULT_INBOX / ".git").exists():
+        pytest.skip("agent-inbox corpus absent at %s; the "
+                    "real-corpus probes run where the fleet "
+                    "board lives" % corpus.DEFAULT_INBOX)
     data = corpus.build()
     corpus.self_test(data)
     return data
