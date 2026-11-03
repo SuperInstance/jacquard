@@ -1,7 +1,7 @@
 # Jacquard — Rust implementation
 
 The third implementation of the Jacquard kernel contract
-(`spec/SPEC.md`, version 0.5), built in Phase 8 slice 20 as a
+(`spec/SPEC.md`, version 0.6), built in Phase 8 slice 20 as a
 port of the TypeScript conformance port (`conformance/ts/`),
 which itself ports the Python reference (`src/jacquard/`).
 The layout mirrors the TS tree:
@@ -67,21 +67,31 @@ orchestrator builds the Rust binary with cargo itself).
 ```
 cargo run --release --manifest-path rust/Cargo.toml --bin jacquard-verify-anchor -- \
   docs/proof-run-2/kernel.jsonl --checkpoints <anchors-repo-clone> --pubkey <hex>
+cargo run --release --manifest-path rust/Cargo.toml --bin jacquard-verify-anchor -- \
+  docs/proof-run-2/kernel.jsonl --checkpoints <anchors-repo-clone> --keys <anchors-repo-clone>
 ```
 
 prints the §15.5 result as JSON (the same eight fields as
 `tools/jqanchor.py verify`) and exits 0 for
 verified / verified-to-anchor, 1 for failed, 3 for
-unanchored, 2 for a tool refusal. This verifier is a spec
-0.5 verifier: slice 21 rotated the anchors-repo key during
-Phase 8 and checkpoint 2 there carries spec `jacquard/0.6`
-under a successor key — see `GAPS.md` item 5 for the
-boundary and the evidence set used.
+unanchored, 2 for a tool refusal. The `--keys` form reads
+the witness key registry (`keys.json`,
+`jacquard/anchor-keys/1`) — from the file itself or a
+directory holding it — and builds the pinned key schedule
+for the presented log's id from its `signs_from` /
+`signs_until` windows, exactly as the TS twin and
+`jqanchor verify --keys` do: against the live anchors repo
+the frozen proof-run-2 log verifies 507/507 across the
+rotation (retired key seq 0-1, successor from seq 2), while
+either single key alone fails at exactly the boundary.
+Checkpoint bodies naming spec `jacquard/0.5` or
+`jacquard/0.6` are both accepted (spec 15.1 (0.6): the
+anchor format did not change). See `GAPS.md` item 5.
 
 ## Crate metadata
 
 `Cargo.toml` is publish-shaped: name, version aligned with
-the release line (0.5.0), description, repository, keywords,
+the release line (0.6.0), description, repository, keywords,
 categories, pinned `Cargo.lock`. Two facts gate the actual
 publish, both batched for slice 23's owner steps (see
 `docs/BUILDERS-LOG.md`, slice 20):

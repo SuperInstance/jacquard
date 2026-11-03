@@ -3,7 +3,7 @@
 //! which ports `src/jacquard/anchor.py`. Ed25519 via the
 //! ed25519-dalek crate.
 
-use crate::core::{genesis_prev, SPEC_VERSION};
+use crate::core::genesis_prev;
 use crate::kernel::verify_internal_chain;
 use crate::value::{canonical_bytes, hash_of, hex_decode, obj, py_repr, s, sort_strings, Value};
 use ed25519_dalek::{Signature, SigningKey, VerifyingKey};
@@ -114,11 +114,14 @@ pub fn validate_anchor_body(body: &Value) -> Option<String> {
         Some(Value::Str(v)) if is_hex(v, 64) => {}
         _ => return Some("head_hash is not hex64".to_string()),
     }
-    if body.get("spec") != Some(&s(SPEC_VERSION)) {
+    // Spec 15.1 (0.6): the anchor format did not change in
+    // 0.6, so checkpoints issued under 0.5 remain valid;
+    // refuse any other.
+    let body_spec = body.get("spec").and_then(|v| v.as_str()).unwrap_or("");
+    if body_spec != "jacquard/0.5" && body_spec != "jacquard/0.6" {
         return Some(format!(
-            "spec is {}, expected {}",
-            py_repr(body.get("spec").unwrap_or(&Value::Null)),
-            py_repr(&s(SPEC_VERSION))
+            "spec is {}, expected \"jacquard/0.5\" or \"jacquard/0.6\"",
+            py_repr(body.get("spec").unwrap_or(&Value::Null))
         ));
     }
     let seq = body.get("checkpoint_seq").unwrap().as_int().unwrap();

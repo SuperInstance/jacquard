@@ -2633,3 +2633,244 @@ ran on that merged tree):
   private-key headers in `git log -p`; no key or passphrase
   file tracked; the private keys remain mode 0600 under
   `~/.jacquard/` on the Oracle and nowhere else.
+# Phase 8 — slice 20: the Rust kernel port (2026-11-02)
+
+## Slice 20 — design, recorded with the slice's first commit (2026-11-02)
+
+Third implementation of the kernel contract, chartered by the
+Phase 8 brief: port to Rust in a new in-repo `rust/` tree,
+mirroring the TS conformance layout; the full golden-vector
+suite with zero SKIPs; the cross-drill extended to three
+kernels; §12.1 signatures identical on both real corpora;
+crate metadata publish-ready with the crates.io name checked
+and nothing published. Spec read-only for this slice (slice
+21 owns spec edits this phase); divergences are recorded,
+never silently aligned.
+
+Decisions, with reasons:
+
+- **Port the port.** The Rust tree mirrors `conformance/ts/`
+  module for module — `core.rs` for `jacquard.ts`, `kernel.rs`
+  for `kernel.ts`, with senses / signature / anchor split out
+  of the latter — and the method is slice 19's: a deliberate
+  port of the reference behaviour, checked against the Python
+  where the TS is ambiguous. Two proven readings beat one
+  fresh reading of the prose.
+- **Scope = the TS port's scope.** A kernel without the
+  lifecycle machines installed (§10.4 defines that as 0.1
+  behaviour): §§1–5, 7 (+7.1), 11.2–11.3, 12.1, 15.5. The
+  machine profile, WFQ scheduler, booking profile, learner
+  beyond §12.1 and bundles stay fold-covered / out of scope,
+  and a `machine` envelope gets the same scope-naming SPEC
+  refusal the TS port gives (language name changed).
+- **Own canonical code; three crates only.** The brief
+  permits sha2 / ed25519-dalek / serde_json but requires any
+  canonical serialisation to be own code, byte-exact. The
+  port goes further: no JSON library anywhere — values are a
+  custom insertion-ordered type (Python dict order matters to
+  `py_repr` in refusal details and to object iteration in the
+  fold and the wait pump) with an own parser (exact integers;
+  Python's duplicate-key rule) and an own serialiser. Crates:
+  `sha2`, `ed25519-dalek`, `flate2` (the last only so the
+  checker can read the `.gz` fixtures). Integers are i64
+  internally; the serialiser refuses outside ±(2^53−1),
+  mirroring the TS reading (TS GAPS #2 stays honestly open).
+- **Python semantics are a surface, not an accident.** The
+  refusal `detail` strings embed Python `repr()` of lists and
+  strings, Python truthiness, `True == 1` equality, and floor
+  division — the cross-drill compares verdicts byte-for-byte,
+  so `py_repr` / `py_eq` / `py_truthy` / `py_compare` and
+  `div_euclid` / `rem_euclid` are ported as first-class
+  helpers, exactly as kernel.ts did.
+- **Rust is installed user-level on the build box** (rustup,
+  minimal profile, stable — cargo 1.99.1 there at install
+  time), never system-wide.
+- **Crate name checked before metadata was written** (the
+  brief's order): `jacquard` on crates.io is TAKEN — an AT
+  Protocol client library (created 2025-10-04, 25 versions,
+  latest 0.12.2, checked via the crates.io API from the build
+  box). `jacquard-kernel`, `jacquard-rs` and
+  `superinstance-jacquard` were all free at the same check;
+  the package takes `jacquard-kernel` (library crate
+  `jacquard_kernel`), version 0.5.0 aligned with the release
+  line. The repository carries no licence, so none is
+  claimed; `publish = false` stays until slice 23's batched
+  owner steps clear the name/licence decisions. Nothing is
+  published by this slice.
+- **One divergence was already visible before the first
+  build** and is recorded under Implementation below rather
+  than discovered mid-port: spec §1's string-escaping prose
+  contradicts the vectors and both existing implementations.
+  The port follows the vectors (raw UTF-8), as the brief
+  itself states the rule.
+
+## Slice 20 — implementation (2026-11-02)
+
+The port landed in one pass per module (`value` → `core` →
+`senses` / `signature` / `anchor` → `kernel` → the three
+binaries), and the evidence came back clean on the first
+complete runs — recorded as it happened:
+
+- **Checker: 13 PASS, 0 SKIP, 0 FAIL, exit 0** on the first
+  full run — seal, vector chain (the non-ASCII checkpoint
+  name `café-☃` included), checkpoint fold, envelope id, the
+  3,295-entry replay log (hashes + fold), the 25-entry
+  all-kinds full log, dictionary stored forms, sequencer
+  end-to-end state (live and refolded), all 5 sense cases
+  (method strings byte-identical), the anchor checkpoint
+  (signature verifies, fails over a tampered body, §15.5
+  reports verified 4/4 tail 0), §12.1 signatures over both
+  proof-run corpora (8 + 27 queued decisions, item lists and
+  their canonical hashes equal to Python's), and the §§4–5
+  token-form battery.
+- **Cross-drill: three identical hashes on the first run.**
+  The extended orchestrator drives the 38-op stream through
+  Python, TS and Rust: 52 entries, log sha256 `0cde737c…`
+  in all three, verdict sha256 `021bce65…` in all three —
+  the same hashes slice 19 committed for two kernels, now
+  reproduced by a third. `cross_drill.py` builds the Rust
+  binary itself; `rust.jsonl` / `rust-verdicts.json` are
+  committed beside the existing artifacts.
+- **Anchor CLI against the public anchors repo** (pubkey from
+  the anchors clone): true proof-run-2 log `verified`
+  507/507 tail 0 (exit 0); the forged fixture `failed` at
+  checkpoint 0 with `internal_chain_ok: true` (exit 1); a
+  257-entry prefix under a checkpoint-0-only history
+  `verified_to_anchor` 250/257 (exit 0); a 300-entry
+  truncation `failed` naming checkpoint 1 (exit 1); the
+  Phase 5 log `unanchored` (exit 3). Every outcome and
+  failure field matches the Python tool and the TS twin.
+- **The §1 divergence, stated precisely** (also in
+  `rust/GAPS.md` item 1): §1's prose prescribes the ASCII
+  `\uXXXX` escaping form for all non-ASCII, but vector entry
+  3's recorded hash recomputes only under raw UTF-8 — the
+  reading the Python reference (`ensure_ascii=False`), the
+  TS port (GAPS #3, closed in slice 19 on exactly this
+  evidence) and the Phase 8 brief all carry. Expected per
+  prose vs actual per vectors is a one-fixture discrimination
+  (`vectors.json` entries[3]). The port follows the vectors;
+  the spec was NOT edited; the prose correction is slice
+  21's, as this phase's discipline assigns spec edits there.
+- Compile hygiene: the release build finished with zero
+  warnings on the final tree; `Cargo.lock` is committed so
+  the drill's build is reproducible.
+
+## Slice 20 — close (2026-11-02)
+
+Acceptance, per item, with evidence:
+
+1. **Full golden-vector suite in Rust, zero SKIPs** —
+   `jacquard-check`: 13 PASS / 0 SKIP / 0 FAIL, exit 0,
+   reproduced from the pushed tree on the build box (see the
+   verification addendum pattern of prior slices; the numbers
+   above are from the final tree).
+2. **Three-kernel cross-drill** — 38 ops → 52 entries; logs
+   byte-identical across Python / TS / Rust (sha256
+   `0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261`);
+   verdicts byte-identical (sha256
+   `021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333`);
+   evidence committed in `conformance/ts/cross-drill/EVIDENCE.txt`.
+3. **§12.1 signatures identical on both real corpora** —
+   checker item h: proof-run 8 queued decisions, items hash
+   `eea8d627…` == Python; proof-run-2 27 queued decisions,
+   items hash `176375f0…` == Python.
+4. **Crate metadata publish-ready** — `rust/Cargo.toml`:
+   name `jacquard-kernel` (the unqualified `jacquard` is
+   taken on crates.io — AT Protocol client, latest 0.12.2,
+   API-checked 2026-11-02; `jacquard-kernel` free at the
+   same check), version 0.5.0, description / repository /
+   keywords / categories set, `Cargo.lock` committed.
+   Outstanding for slice 23's batched owner steps, stated
+   plainly: no licence exists in the repo to claim, and
+   `publish = false` stays set until then. Nothing was
+   published.
+5. **No Python/TS regressions** — the slice touches no
+   Python or TS source except the drill orchestrator
+   (extended, still byte-comparing the original two outputs);
+   the Python suite and the TS checker were re-run from the
+   final tree at close (numbers in the coordinator's report).
+
+Spec divergences found: exactly one — the §1 string-escaping
+prose (item above + `rust/GAPS.md` #1), recorded for slice
+21 and not edited. Port-scope and inherited-gap notes are in
+`rust/GAPS.md` (items 2–4): the machine-envelope scope
+refusal mirrors the TS port's recorded boundary, and TS
+GAPS items 1, 2, 5, 15 remain open for the same stated
+reason — no discriminating fixture exists — with the Rust
+readings matching the TS ones.
+
+### Slice 20 — addendum: the anchors rotation (2026-11-02)
+
+Recorded at close, because it changes what the anchor
+evidence above refers to: while this slice ran, slice 21
+rotated the operator anchor key on the public anchors repo
+(its charter — key management is beachhead 2's remainder).
+Checkpoint 2 for the proof-run-2 log is signed under a
+successor key with checkpoint-body spec `jacquard/0.6`, and
+a `keys.json` registry records the windows (retired key
+signs seq 0–1; successor from seq 2). The anchor outcomes in
+the implementation entry above were reproduced on the build
+box against the published **0.5 history (checkpoints 0–1)**,
+before and independently of that rotation, and match the
+v0.5.0 Python tool and the TS twin exactly. The Rust
+verifier is a spec 0.5 verifier and refuses the 0.6
+checkpoint at history authentication — the correct 0.5
+behaviour; 0.6-aware verification is slice 21's
+deliverable. Full note: `rust/GAPS.md` item 5.
+
+### Slice 20 — alignment to spec 0.6 (2026-11-02, after slice 21 landed)
+
+Slice 21 landed while this port was in flight (its close
+rebased cleanly onto slice 20's part 1, 88d5222), and the
+coordinator directed slice 20 to treat spec 0.6 as its port
+target on the merged tree. What the alignment changed in
+`rust/`:
+
+- Version constants and seal to `jacquard/0.6`; crate
+  version to 0.6.0, aligned with the release line.
+- The `seal` entry kind (section 16): accepted by the log
+  layer, NO fold effect. The golden vectors do not exercise
+  the kind (the regenerated full-log fixture carries none),
+  so the port owes it acceptance only — a crate unit test
+  (`seal_kind_round_trips_and_is_inert`) proves the
+  canonical round-trip and the inert fold; jqseal-equivalent
+  tooling is export-layer work, out of scope, and was not
+  built.
+- Chain verification relaxed to the reference's semantics,
+  matching the TS fix: an entry's `spec` must be a
+  `jacquard/` string and the hash recompute binds its exact
+  value — the historical 0.5 replay corpus (3,295 entries)
+  still verifies end to end under the 0.6 kernel.
+- Anchor verification is registry-aware: checkpoint bodies
+  naming spec `jacquard/0.5` or `jacquard/0.6` are both
+  accepted (section 15.1 (0.6)), and
+  `jacquard-verify-anchor --keys <registry>` builds the
+  pinned schedule from the `keys.json` windows for the
+  presented log's id, as the TS twin does. Checkpoint body
+  unchanged: exactly the same 8 keys; no key id added.
+- The cross-drill orchestrator now falls back to
+  `~/.cargo/bin/cargo` when cargo is not on PATH (it failed
+  once on exactly that, on this box).
+
+Evidence on the merged tree (main 0b99a9e + this slice):
+Rust checker **13 PASS, 0 SKIP, 0 FAIL** (new 0.6 values:
+seal 0d639ec0…, envelope id f2f036a0…, vector fold
+403bea8c…); crate unit test 1 passed; three-kernel drill
+exit 0 — log sha256
+411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
+and verdicts sha256
+25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7,
+identical in Python, TS and Rust; section 12.1 signatures
+unchanged and identical on both corpora (eea8d627… /
+176375f0…). Anchor battery against the live anchors repo
+(34f1c24): `--keys` verifies the frozen proof-run-2 log
+507/507 (3 checkpoints, exit 0); retired key alone fails
+at checkpoint 2, successor key alone at checkpoint 0
+("envelope pubkey is not the pinned key for its
+sequence"); the forged fixture under `--keys` fails at
+checkpoint 0 with `internal_chain_ok: true` — the Python
+tool's registry run agrees (verified, 507). Python suite
+306 passed, 7 skipped; TS checker 13 PASS, 0 SKIP,
+0 FAIL. The section 1 escaping divergence (GAPS item 1)
+survives into spec 0.6 unchanged — still recorded, still
+not edited by this slice.

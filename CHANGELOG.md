@@ -3,6 +3,67 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## Unreleased
+
+### Slice 20 — the Rust kernel port (Phase 8)
+- `rust/`: the third implementation of the kernel contract,
+  a port of the TS port mirroring its layout — `value`
+  (canonical values, own JSON parser, the §1 serialiser),
+  `core` (envelope, log, fold — the `jacquard.ts`
+  equivalent), `kernel` (26 primitives, dictionary +
+  evaluator, policy gate, sequencer + §7.1 wait pump),
+  `senses` (§11.3), `signature` (§12.1), `anchor` (§15.5).
+  Dependencies: `sha2`, `ed25519-dalek`, `flate2` only;
+  canonical serialisation is the crate's own code.
+- The Rust conformance checker (`jacquard-check`) runs the
+  FULL golden-vector suite with **zero SKIPs**: 13 PASS —
+  every section the TS checker runs, including the §12.1
+  signature comparison over both proof-run corpora
+  (8 + 27 queued decisions, item-for-item and by hash).
+- Cross-language drill extended to three kernels: the same
+  38-operation stream through Python, TS and Rust produces
+  **byte-identical logs and byte-identical verdicts**;
+  evidence (with the sha256s of the day) in
+  `conformance/ts/cross-drill/EVIDENCE.txt`. At spec 0.6:
+  log sha256 411bb3e7…, verdicts sha256 25746e6f…, all
+  three kernels.
+- `jacquard-verify-anchor`: the Rust twin of `jqanchor
+  verify`, including the spec 0.6 registry form (`--keys`):
+  against the live anchors repo it verifies the frozen
+  proof-run-2 log **507/507 across slice 21's key rotation**
+  (3 checkpoints), each single key failing at exactly its
+  boundary (retired → checkpoint 2, successor → checkpoint
+  0); the forgery fails at checkpoint 0 with
+  `internal_chain_ok: true`; the 0.5-history outcomes from
+  before the rotation (250/257 verified-to-anchor under a
+  checkpoint-0-only history; truncation failed at
+  checkpoint 1; Phase 5 log unanchored) stand as recorded
+  in the builder's log.
+- Spec divergence recorded in `rust/GAPS.md` (not edited —
+  slice 21 owns spec edits): §1's string-escaping prose
+  states the ASCII `\uXXXX` form, but the golden vectors and
+  both prior implementations prove raw UTF-8; the port
+  follows the vectors.
+- Crate metadata publish-shaped: name checked on crates.io —
+  **`jacquard` is taken** (AT Protocol client, latest
+  0.12.2); the package carries the free qualified name
+  `jacquard-kernel`, version 0.6.0 aligned with the release
+  line (the port was built at spec 0.5 and aligned to 0.6
+  when slice 21 landed it — see the builder's log). The
+  repo carries no licence, so none is claimed;
+  `publish = false` until slice 23's owner steps. Nothing
+  was published.
+- Spec 0.6 deltas ported: the `seal` entry kind (accepted,
+  fold-inert — section 16; a crate unit test proves the
+  round-trip; sealing tooling itself is export-layer and
+  out of scope), the relaxed chain spec rule (the hash
+  binds the entry's own `jacquard/` spec value, so the
+  historical 0.5 replay corpus still verifies), checkpoint
+  bodies naming 0.5 or 0.6, and the registry-aware
+  verifier above.
+- Evidence: Python suite at **306 passed, 7 skipped**; TS
+  checker at **13 PASS, 0 SKIP, 0 FAIL**; Rust checker
+  **13 PASS, 0 SKIP, 0 FAIL** — all from the merged tree.
 ## 0.6.0 — 2026-11-02 (Phase 8, slice 21 — beachhead 2 remainder)
 
 Specification 0.6. Slice 23 will tag the release; this entry

@@ -53,3 +53,24 @@ Also here:
 - `ts/verify-anchor.ts` — the TS twin of `tools/jqanchor.py
   verify`: a presented log, a checkpoint history, a pinned
   public key, one of the four §15.5 outcomes.
+
+## Rust (Phase 8, slice 20)
+
+The third implementation lives in `rust/` at the repository
+root (a crate, so it sits where cargo expects it rather than
+under `conformance/`): a port of the TS port, mirroring its
+layout module for module. Its checker
+(`cargo run --release --manifest-path rust/Cargo.toml --bin jacquard-check`,
+run from the repository root) prints the same 13 PASS lines
+with **zero SKIPs**, and the cross-drill above now drives
+the same 38-operation stream through **three** sequencers —
+Python, TypeScript and Rust — producing byte-identical logs
+and byte-identical verdicts (see `ts/cross-drill/EVIDENCE.txt`;
+the orchestrator builds the Rust binary itself). The Rust
+anchor verifier (`jacquard-verify-anchor`) reproduces the
+Python tool's outcomes against the public anchors repo
+exactly. See `rust/README.md` for how to run everything and
+`rust/GAPS.md` for the port's gap notes — including one spec
+divergence (§1's string-escaping prose vs the raw-UTF-8
+reading the vectors and both prior implementations prove;
+recorded for slice 21, which owns spec edits this phase).

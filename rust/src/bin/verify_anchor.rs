@@ -3,6 +3,13 @@
 //! section 15 verifier in the anchor module.
 //!
 //!   jacquard-verify-anchor <log.jsonl> --checkpoints <dir> --pubkey <hex>
+//!   jacquard-verify-anchor <log.jsonl> --checkpoints <dir> --keys <registry>
+//!
+//! --keys reads the witness key registry (spec 15.3,
+//! jacquard/anchor-keys/1) from a keys.json file or a transport
+//! directory holding one, and builds the pinned schedule for
+//! the presented log's id — mirroring the TS twin and
+//! `jqanchor verify --keys`.
 //!
 //! Prints the result as JSON (the same eight fields as the
 //! Python tool) and exits 0 for verified / verified_to_anchor,
@@ -22,7 +29,9 @@ fn collect_json(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
         let path = entry.path();
         if path.is_dir() {
             collect_json(&path, out);
-        } else if path.extension().map(|e| e == "json").unwrap_or(false) {
+        } else if path.extension().map(|e| e == "json").unwrap_or(false)
+            && path.file_name().map(|n| n != "keys.json").unwrap_or(false)
+        {
             out.push(path);
         }
     }
@@ -33,6 +42,7 @@ fn main() {
     let log_path = args.get(1);
     let mut checkpoints_dir: Option<String> = None;
     let mut pubkey: Option<String> = None;
+    let mut keys_path: Option<String> = None;
     let mut i = 2;
     while i < args.len() {
         if args[i] == "--checkpoints" {
@@ -41,16 +51,24 @@ fn main() {
         } else if args[i] == "--pubkey" {
             i += 1;
             pubkey = args.get(i).cloned();
+        } else if args[i] == "--keys" {
+            i += 1;
+            keys_path = args.get(i).cloned();
         }
         i += 1;
     }
-    let (Some(log_path), Some(checkpoints_dir), Some(pubkey)) = (log_path, checkpoints_dir, pubkey)
-    else {
+    let (Some(log_path), Some(checkpoints_dir)) = (log_path, checkpoints_dir) else {
         eprintln!(
-            "usage: jacquard-verify-anchor <log.jsonl> --checkpoints <dir> --pubkey <hex>"
+            "usage: jacquard-verify-anchor <log.jsonl> --checkpoints <dir> (--pubkey <hex> | --keys <registry>)"
         );
         std::process::exit(2);
     };
+    if pubkey.is_none() && keys_path.is_none() {
+        eprintln!(
+            "usage: jacquard-verify-anchor <log.jsonl> --checkpoints <dir> (--pubkey <hex> | --keys <registry>)"
+        );
+        std::process::exit(2);
+    }
     let entries: Vec<Value> = std::fs::read_to_string(log_path)
         .expect("read log")
         .lines()
@@ -96,7 +114,84 @@ fn main() {
         println!("{}", pretty_json(&out, 0));
         std::process::exit(1);
     }
-    let result = verify_anchor(&entries, &envelopes, &pubkey, None);
+    // --keys: build the pinned schedule for this log's id from
+    // the witness registry, exactly as the TS twin does.
+    let mut schedule: Option<Vec<(i64, String)>> = None;
+    let mut pinned: Option<String> = pubkey.clone();
+    if let Some(keys_path) = &keys_path {
+        let registry_file = if Path::new(keys_path).is_dir() {
+            Path::new(keys_path).join("keys.json")
+        } else {
+            Path::new(keys_path).to_path_buf()
+        };
+        let registry = std::fs::read_to_string(&registry_file)
+            .ok()
+            .and_then(|text| parse_json(&text).ok());
+        let registry = match registry {
+            Some(r) if r.get("format") == Some(&s("jacquard/anchor-keys/1")) && r.has("keys") => r,
+            _ => {
+                eprintln!(
+                    "{}: not a jacquard/anchor-keys/1 registry",
+                    registry_file.display()
+                );
+                std::process::exit(2);
+            }
+        };
+        let log_id = if entries.is_empty() {
+            "0".repeat(64)
+        } else {
+            entries[0]
+                .get("hash")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string()
+        };
+        let mut intervals: Vec<(i64, Option<i64>, String)> = Vec::new();
+        if let Some(keys) = registry.get("keys").and_then(|v| v.as_array()) {
+            for k in keys {
+                let from = k
+                    .get("signs_from")
+                    .and_then(|m| m.get(&log_id))
+                    .and_then(|v| v.as_int())
+                    .unwrap_or(0);
+                let until = k
+                    .get("signs_until")
+                    .and_then(|m| m.get(&log_id))
+                    .and_then(|v| v.as_int());
+                let pk = k
+                    .get("pubkey")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_string();
+                intervals.push((from, until, pk));
+            }
+        }
+        intervals.sort_by_key(|iv| iv.0);
+        if intervals.is_empty() || intervals[0].0 != 0 {
+            eprintln!("registry does not cover checkpoint_seq 0 for {}", log_id);
+            std::process::exit(2);
+        }
+        for w in intervals.windows(2) {
+            let (prev, next) = (&w[0], &w[1]);
+            if prev.1.is_none() || next.0 != prev.1.unwrap() + 1 {
+                eprintln!("registry windows for {} do not partition the sequence", log_id);
+                std::process::exit(2);
+            }
+        }
+        pinned = Some(intervals[0].2.clone());
+        schedule = Some(
+            intervals
+                .into_iter()
+                .map(|(from, _, pk)| (from, pk))
+                .collect(),
+        );
+    }
+    let result = verify_anchor(
+        &entries,
+        &envelopes,
+        pinned.as_deref().unwrap_or(""),
+        schedule.as_deref(),
+    );
     println!("{}", pretty_json(&result.to_value(), 0));
     std::process::exit(match result.outcome.as_deref() {
         Some("failed") => 1,

@@ -1,20 +1,25 @@
-"""Cross-language drill orchestrator (slice 19).
+"""Cross-language drill orchestrator (slice 19; extended to
+three kernels by slice 20).
 
-Runs fixture.json through BOTH sequencers — the Python
-reference (run_python.py) and the TypeScript port (run_ts.ts) —
-and compares the two logs byte-for-byte and the two verdict
-streams byte-for-byte. Writes EVIDENCE.txt with the stream
-size and the sha256 of each artifact. Exit 0 iff both
-comparisons are exact.
+Runs fixture.json through ALL THREE sequencers — the Python
+reference (run_python.py), the TypeScript port (run_ts.ts) and
+the Rust port (the `jacquard-cross-drill` binary from the
+repo's rust/ tree, built here with cargo) — and compares the
+three logs byte-for-byte and the three verdict streams
+byte-for-byte. Writes EVIDENCE.txt with the stream size and
+the sha256 of each artifact. Exit 0 iff every comparison is
+exact.
 
     python3 conformance/ts/cross-drill/cross_drill.py
 """
 import hashlib
+import json
 import os
 import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 FIXTURE = os.path.join(HERE, "fixture.json")
 
 
@@ -23,44 +28,66 @@ def sha256(path):
         return hashlib.sha256(fh.read()).hexdigest()
 
 
+def read_bytes(path):
+    with open(path, "rb") as fh:
+        return fh.read()
+
+
+def rust_binary():
+    """Build (once per run) and locate the Rust drill binary."""
+    manifest = os.path.join(ROOT, "rust", "Cargo.toml")
+    subprocess.run(
+        ["cargo", "build", "--release", "--manifest-path", manifest,
+         "--bin", "jacquard-cross-drill"],
+        check=True, stdout=subprocess.DEVNULL)
+    return os.path.join(
+        ROOT, "rust", "target", "release", "jacquard-cross-drill")
+
+
 def main():
     py_log = os.path.join(HERE, "python.jsonl")
     py_verdicts = os.path.join(HERE, "python-verdicts.json")
     ts_log = os.path.join(HERE, "ts.jsonl")
     ts_verdicts = os.path.join(HERE, "ts-verdicts.json")
+    rs_log = os.path.join(HERE, "rust.jsonl")
+    rs_verdicts = os.path.join(HERE, "rust-verdicts.json")
     subprocess.run([sys.executable, os.path.join(HERE, "run_python.py"),
                     FIXTURE, py_log, py_verdicts], check=True)
     subprocess.run(["node", os.path.join(HERE, "run_ts.ts"),
                     FIXTURE, ts_log, ts_verdicts], check=True)
-    with open(py_log, "rb") as fh:
-        py_bytes = fh.read()
-    with open(ts_log, "rb") as fh:
-        ts_bytes = fh.read()
-    with open(py_verdicts, "rb") as fh:
-        py_v = fh.read()
-    with open(ts_verdicts, "rb") as fh:
-        ts_v = fh.read()
-    entries = py_bytes.count(b"\n")
-    ops = py_v and __import__("json").loads(
-        open(FIXTURE, "r", encoding="utf-8").read())["ops"]
+    subprocess.run([rust_binary(), FIXTURE, rs_log, rs_verdicts],
+                   check=True)
+    logs = {name: read_bytes(path) for name, path in
+            (("python", py_log), ("ts", ts_log), ("rust", rs_log))}
+    verdicts = {name: read_bytes(path) for name, path in
+                (("python", py_verdicts), ("ts", ts_verdicts),
+                 ("rust", rs_verdicts))}
+    entries = logs["python"].count(b"\n")
+    with open(FIXTURE, "r", encoding="utf-8") as fh:
+        ops = json.load(fh)["ops"]
+    logs_identical = len(set(logs.values())) == 1
+    verdicts_identical = len(set(verdicts.values())) == 1
     lines = [
-        "cross-language drill (slice 19) — fixture.json driven "
-        "through both sequencers",
+        "cross-language drill (slice 19; three kernels since "
+        "slice 20) — fixture.json driven through all three "
+        "sequencers",
         "ops in stream: %d" % len(ops),
         "log entries: %d" % entries,
-        "python log sha256: %s" % hashlib.sha256(py_bytes).hexdigest(),
-        "ts     log sha256: %s" % hashlib.sha256(ts_bytes).hexdigest(),
-        "logs byte-identical: %s" % (py_bytes == ts_bytes),
-        "python verdicts sha256: %s" % hashlib.sha256(py_v).hexdigest(),
-        "ts     verdicts sha256: %s" % hashlib.sha256(ts_v).hexdigest(),
-        "verdicts byte-identical: %s" % (py_v == ts_v),
+        "python log sha256: %s" % hashlib.sha256(logs["python"]).hexdigest(),
+        "ts     log sha256: %s" % hashlib.sha256(logs["ts"]).hexdigest(),
+        "rust   log sha256: %s" % hashlib.sha256(logs["rust"]).hexdigest(),
+        "logs byte-identical (all three): %s" % logs_identical,
+        "python verdicts sha256: %s" % hashlib.sha256(verdicts["python"]).hexdigest(),
+        "ts     verdicts sha256: %s" % hashlib.sha256(verdicts["ts"]).hexdigest(),
+        "rust   verdicts sha256: %s" % hashlib.sha256(verdicts["rust"]).hexdigest(),
+        "verdicts byte-identical (all three): %s" % verdicts_identical,
     ]
     text = "\n".join(lines) + "\n"
     with open(os.path.join(HERE, "EVIDENCE.txt"), "w",
               encoding="utf-8") as fh:
         fh.write(text)
     print(text, end="")
-    return 0 if (py_bytes == ts_bytes and py_v == ts_v) else 1
+    return 0 if (logs_identical and verdicts_identical) else 1
 
 
 if __name__ == "__main__":

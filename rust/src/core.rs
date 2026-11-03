@@ -8,19 +8,19 @@
 
 use crate::value::{arr, hash_of, hash_string_raw, obj, s, Value};
 
-pub const SPEC_VERSION: &str = "jacquard/0.5";
+pub const SPEC_VERSION: &str = "jacquard/0.6";
 
 pub fn spec_seal() -> String {
-    hash_string_raw("jacquard-spec/0.5")
+    hash_string_raw("jacquard-spec/0.6")
 }
 
 pub fn genesis_prev() -> String {
     "0".repeat(64)
 }
 
-pub const ENTRY_KINDS: [&str; 12] = [
+pub const ENTRY_KINDS: [&str; 13] = [
     "proposal", "decision", "definition", "execution", "sense", "checkpoint", "machine",
-    "transition", "budget", "price", "rule", "import",
+    "transition", "budget", "price", "rule", "import", "seal",
 ];
 
 const ENVELOPE_KINDS: [&str; 3] = ["proposal", "definition", "machine"];
@@ -63,7 +63,7 @@ pub fn validate_envelope(env: &Value) -> Vec<String> {
     match env.get("spec_seal") {
         Some(Value::Str(seal)) if is_hex64(seal) => {
             if *seal != spec_seal() {
-                problems.push("spec_seal does not match the seal of jacquard-spec/0.5".to_string());
+                problems.push("spec_seal does not match the seal of jacquard-spec/0.6".to_string());
             }
         }
         _ => problems.push("spec_seal must be a hex64 string".to_string()),
@@ -121,8 +121,20 @@ pub fn verify_chain(entries: &[Value]) -> ChainResult {
         if e.get("prev") != Some(&Value::Str(prev.clone())) {
             return ChainResult { ok: false, checked: i, failure: Some(format!("entry {}: prev mismatch", i)) };
         }
-        if e.get("spec") != Some(&s(SPEC_VERSION)) {
-            return ChainResult { ok: false, checked: i, failure: Some(format!("entry {}: spec is {}", i, crate::value::py_repr(e.get("spec").unwrap_or(&Value::Null)))) };
+        // The entry spec names the version it was written under;
+        // a chain may carry earlier versions (the replay corpus
+        // is a 0.5 log). The hash recompute below binds the exact
+        // value, which is the check the reference performs — it
+        // does not require the current version (spec 0.6 reading,
+        // mirroring jacquard.ts).
+        let spec_ok = matches!(e.get("spec"), Some(Value::Str(sp)) if sp.starts_with("jacquard/"));
+        if !spec_ok {
+            let shown = match e.get("spec") {
+                Some(Value::Str(sp)) => sp.clone(),
+                Some(other) => crate::value::py_repr(other),
+                None => "undefined".to_string(),
+            };
+            return ChainResult { ok: false, checked: i, failure: Some(format!("entry {}: spec is {}", i, shown)) };
         }
         match e.get("hash") {
             Some(Value::Str(h)) if is_hex64(h) => {}
@@ -256,7 +268,12 @@ pub fn apply_entry(state: &mut FoldedState, entry: &Value) {
     };
     let kind = entry.get("kind").and_then(|v| v.as_str()).unwrap_or("");
     match kind {
-        "proposal" | "checkpoint" | "import" => {}
+        "proposal" | "checkpoint" | "import" | "seal" => {
+            // Section 2.1: proposal and import entries have no
+            // fold effect of their own; a checkpoint records a
+            // state hash; a seal entry (0.6, section 16) likewise
+            // has NO fold effect — sealing is export work.
+        }
         "decision" => {
             // Section 2.1 / 7: a queued body enters the queue under
             // its proposal_id (value = the full body); only a
@@ -391,4 +408,53 @@ pub fn state_hash(state: &FoldedState) -> String {
 
 pub fn fold_state_hash(entries: &[Value]) -> String {
     state_hash(&fold(entries))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::value::{canonical, parse_json};
+
+    // Spec 0.6 sections 2.1/16: the seal kind is accepted by
+    // the log layer and round-trips through the canonical
+    // form; section 16 gives it NO fold effect. (The golden
+    // vectors do not exercise the kind; this is the whole of
+    // what the port owes it — sealing tooling is export-layer
+    // work, out of this port's scope.)
+    #[test]
+    fn seal_kind_round_trips_and_is_inert() {
+        fn stored(seq: i64, prev: &str, kind: &str, body: Value) -> Value {
+            let mut e = make_entry(seq, prev, kind, body);
+            let h = entry_hash(&e);
+            e.set("hash", s(&h));
+            e
+        }
+        let genesis = genesis_prev();
+        let e0 = stored(0, &genesis, "proposal", obj(vec![("note", s("x"))]));
+        let seal_body = obj(vec![
+            ("producer", s("op")),
+            (
+                "seals",
+                Value::Array(vec![obj(vec![
+                    ("entry_seq", Value::Int(0)),
+                    ("path", s("note")),
+                    ("class", s("identity")),
+                    ("commitment", s(&"a".repeat(64))),
+                ])]),
+            ),
+        ]);
+        let e0_hash = e0.get("hash").and_then(|v| v.as_str()).unwrap().to_string();
+        let e1 = stored(1, &e0_hash, "seal", seal_body);
+        let entries = vec![e0.clone(), e1];
+        assert!(verify_chain(&entries).ok);
+        // Round-trip: canonical bytes -> parse -> re-serialise
+        // -> identical bytes. (Canonical form sorts keys, so
+        // the parsed objects are key-ordered; byte-stability
+        // is the round-trip the form guarantees.)
+        let bytes = canonical(&Value::Array(entries.clone())).unwrap();
+        let parsed = parse_json(&bytes).unwrap();
+        assert_eq!(canonical(&parsed).unwrap(), bytes);
+        // Inert: folding with the seal equals folding without.
+        assert_eq!(fold_state_hash(&[e0]), fold_state_hash(&entries));
+    }
 }

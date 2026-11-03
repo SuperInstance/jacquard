@@ -7,8 +7,9 @@
 # qualified name `jacquard-kernel` was free at the same check.
 # The library crate itself is `jacquard_kernel`.
 #
-# Version aligns with the release line: Python package 0.5.0,
-# spec jacquard/0.5, tag v0.5.0.
+# Version aligns with the release line: Python package 0.6.0,
+# spec jacquard/0.6 (the port was built at spec 0.5 and aligned
+# to 0.6 when slice 21 landed it mid-phase; see rust/GAPS.md).
 #
 # Licence: the repository carries no licence file or licence
 # metadata today (pyproject.toml states none), so no licence is
@@ -17,10 +18,10 @@
 # Nothing in this slice publishes anything.
 [package]
 name = "jacquard-kernel"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 rust-version = "1.74"
-description = "A supervised runtime kernel: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only hash-chained log. Rust port of the Jacquard kernel contract (spec 0.5)."
+description = "A supervised runtime kernel: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only hash-chained log. Rust port of the Jacquard kernel contract (spec 0.6)."
 repository = "https://github.com/SuperInstance/jacquard"
 homepage = "https://github.com/SuperInstance/jacquard"
 keywords = ["audit", "conformance", "kernel", "log", "policy"]

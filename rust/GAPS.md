@@ -36,12 +36,12 @@ places where that method met something worth recording.
   spec edits: §1's string paragraph should be amended to the
   raw-UTF-8 rule both implementations and the vectors prove.
   Recorded here and in the builder's log; the spec was NOT
-  edited by this slice. (Checked against slice 21's spec 0.6
-  design draft, commit 512085f, which landed during this
-  slice: the §1 prose is carried into 0.6 unchanged, so the
-  correction is still owed there. This port targets spec 0.5
-  as chartered — the vectors, seal and entry spec strings it
-  reproduces are the 0.5 ones.)
+  edited by this slice. (Verified again against the landed
+  spec 0.6, slice 21 at main 0b99a9e: the section 1 prose
+  is carried into 0.6 unchanged, so the correction is still
+  owed. The port was aligned to spec 0.6 after slice 21
+  landed — see item 5's closing note — and its serialiser
+  still follows the vectors' raw-UTF-8 rule, unchanged.)
 
 ## 2. Port scope (not a spec gap) — the TS boundary, mirrored
 
@@ -120,3 +120,19 @@ pinned key), which is the correct 0.5 behaviour. The library
 (spec field, registry windows) is slice 21's deliverable,
 not this slice's, and is recorded here so the boundary is
 not mistaken for a Rust defect.
+
+**Closing note (same day).** On the coordinator's update,
+slice 20 aligned the port to spec 0.6 once slice 21 had
+landed. The Rust verifier is now registry-aware in the TS
+twin's form: `jacquard-verify-anchor --keys <registry>`
+builds the pinned schedule from the registry windows for
+the presented log's id, and checkpoint bodies naming spec
+`jacquard/0.5` or `jacquard/0.6` are both accepted
+(spec 15.1 (0.6)). Live evidence against the anchors repo
+at 34f1c24: the frozen proof-run-2 log verifies **507/507**
+under the registry (3 checkpoints checked, exit 0); a
+retired-key-only run fails at checkpoint 2 and a
+successor-key-only run at checkpoint 0 ("envelope pubkey
+is not the pinned key for its sequence"); the forged
+fixture fails at checkpoint 0 with `internal_chain_ok:
+true` — identical to the Python tool and the TS twin.
