@@ -2874,3 +2874,98 @@ tool's registry run agrees (verified, 507). Python suite
 0 FAIL. The section 1 escaping divergence (GAPS item 1)
 survives into spec 0.6 unchanged — still recorded, still
 not edited by this slice.
+
+
+### Slice 22 — gpu-queue live (beachhead 3): opening (2026-11-02)
+
+Builder: the slice-22 lane, working in its own Oracle clone
+(`~/jacquard-gpu`, from main@0b99a9e). Thor booking:
+`jacquard-build` row on the agent-inbox schedule board
+(2026-11-03 01:15 UTC, ~3h, check-by 05:00 UTC).
+
+**Terrain re-verified before relying on it (read-only):**
+`gpuq status` from the Thor's door: queue empty, feeder OFF,
+1,637 jobs done lifetime, 0 failed; state in
+`~/gpu-queue/{queue.json,events.jsonl,status.json}`. The
+daemon's successor rule (read in `daemon.py`, not assumed):
+a finite job dispatches only when another job is queued
+behind it or the feeder is on — so the live chain below
+always carries a named successor, and the window's last job
+is a declared sentinel that stays queued in gpuq (the feeder
+stays OFF; nothing will dispatch the sentinel, and the report
+says so).
+
+**Thor route — verified, with a finding.** The brief offers
+two routes and asks which works to be recorded. From this
+operator VM, `ssh -F ~/workspace/ssh/thor.config thor` works
+end-to-end (ProxyJump via the Oracle to the Thor's reverse
+tunnel slot 2225; the operator VM's key is authorised on the
+Thor). From the Oracle itself, direct SSH to the tunnel slot
+(127.0.0.1:2225) was tried with every key the Oracle holds —
+all denied: no Oracle key is authorised on the Thor, and
+adding one would be a persistent Thor-side change the slice's
+constraints forbid. So: repo work, the live log's canonical
+home, anchoring and verification live on the Oracle; bridge
+invocations execute on the operator VM (the host holding the
+authorised key), each one a fresh process, and after every
+invocation the log + journal are copied to their canonical
+Oracle path with sha256 equality checked and recorded here.
+The bridge transport is a configurable command prefix
+(`JACQUARD_GPU_THOR_CMD`, defaulting to the thor.config
+door) precisely so this is configuration, not code.
+
+**Bounded start — stated BEFORE the first live dispatch**
+(and published into the live kernel log as its policy
+record, a `gpu-policy-record` sense entry at genesis):
+
+- Governed namespace: the gpuq lane **`jacquard`**.
+- Job class: **`gpu-bench`** — short, finite GPU
+  bench/inference jobs submitted through the bridge, each
+  declaring one output artifact under
+  `~/jacquard-gpu-live/` on the Thor. Chosen because a small
+  torch matmul bench in the Thor's `~/ml/.venv` (verified
+  present: torch 2.11.0, CUDA available) genuinely runs in
+  well under a minute and produces a real, consumable result
+  file; the ComfyUI route was not needed and no service was
+  started or touched.
+- Policy (`gpu-bridge-policy/1`, data in
+  `adapters/gpu_queue.py`, applied through the kernel's rule
+  hook so decisions are real kernel decision entries):
+  ALLOW — known producer (`jacquard-build`, `operator`),
+  governed class, no denied/held shape (policy/1 allows the
+  plain dispatch). HOLD — network-fetch shapes (curl/wget
+  without execution) and unknown producers queue for a
+  batched hash-bound operator decision via `tools/jq.py`; a
+  held job dispatches only after a release entry exists.
+  DENY — feeder shapes (any command invoking `gpuq feeder`)
+  and fetch-and-execute shapes (fetch piped to a shell, or a
+  shell `-c` body containing a fetch) are denied by shape,
+  reason recorded in a `gpu-policy` sense entry.
+- Live kernel log: NEW log, own genesis, own log_id, at
+  `/home/ubuntu/jacquard-gpu-live/kernel.jsonl` on the
+  Oracle (canonical home; see the route note above).
+- Live window: **7 governed submissions** (2 plain benches,
+  1 held-then-released bench, 2 denied shapes, 1 consuming
+  bench, 1 sentinel successor), inside the booked window
+  2026-11-03 01:15–05:00 UTC.
+- Anchoring: the live log joins the anchoring cadence —
+  anchored at window open and window close into
+  SuperInstance/jacquard-anchors under its own log_id,
+  successor signer, passphrase via environment only.
+
+**Thor-side actions taken so far: none beyond read-only**
+`gpuq status` / `gpuq list`, reading `gpuq`/`daemon.py`/
+`queue.json`/`status.json`, and a torch availability probe
+(`~/ml/.venv/bin/python -c 'import torch...'` — a read-only
+import + `cuda.is_available()`, no job submitted). Zero new
+persistent processes or services; nothing installed.
+
+Code chunk 1 (this commit): `adapters/gpu_queue.py` (the
+bridge: policy as data + rule hook, journal-before-add
+dispatch with adopt-by-name crash recovery, poll outcomes,
+downstream-use sense, counts), `tools/jqgpu.py` (per-
+invocation CLI: init/submit/dispatch/poll/senses/counts),
+`tests/test_gpu_queue_bridge.py` (8 tests against an
+in-memory FakeThor: policy record first, exactly-once
+dispatch, adoption, two-sided denial, hold-until-release,
+poll + downstream-use both ways, failure reporting).
