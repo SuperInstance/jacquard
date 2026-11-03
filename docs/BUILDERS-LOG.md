@@ -3318,3 +3318,67 @@ tree against a fresh anchors clone: gpu 91/91, proof 507/507
 Slice 24 verdict: PASS — the v1.0.0 known defect is fixed,
 proven on the real logs in all three implementations, and
 retired from both READMEs as a documented event.
+
+## Slice 25 — second live window: design and bounds, recorded before opening (2026-11-03)
+
+Window 2 continues the slice-22 live log (log_id 9cbf80c8…,
+canonical home /home/ubuntu/jacquard-gpu-live/kernel.jsonl
+on the Oracle, 91 entries at open) under slice 22's
+constraints VERBATIM: zero new persistent processes or
+services on the Thor; the feeder stays OFF and is never
+invoked by the bridge; the bridge crosses only per-dispatch
+over the existing SSH door; the incumbent gpuq path is
+untouched and unprivileged; jobs only in the governed lane
+`jacquard`, class `gpu-bench`; bounds stated here, in the
+log (a window-2 `gpu-policy-record` entry), and anchored
+(checkpoint seq 2) before the first window-2 dispatch.
+
+**Carry-in, measured.** The operator-trained learner ran
+over the window-1 log before this window was designed: 8
+joined decisions, **0 candidates mined**. The plain-allow
+shape's in-train support is 2 (bar: min_support 3) and the
+one operator-labelled shape has support 1 — the discipline's
+bars are not met, so no learned rule is carried in and the
+bridge policy stands unchanged (`gpu-bridge-policy/1`).
+Anything else would be the coordinator minting a rule the
+evidence did not earn. Post-window mining over the doubled
+corpus is reported at close, whatever it finds.
+
+**Accounting — one formula, both windows.** operator
+minutes = operator decision events in the log × per-decision
+handling minutes. Per-decision handling is measured in this
+window around the release action and applied to window 1's
+single event as a labelled estimate. Window-1 baseline:
+1 event / 8 submissions. Reported per 100 governed actions
+(submissions).
+
+**Submission plan (8, two beats).** Beat 1: bench-4 and
+bench-5 (plain benches, expect allow); net-1 (producer
+mystery-lane, network fetch without execution, expect hold →
+one hash-bound operator release); feeder-on-2 (expect deny
+by shape); fetch-exec-2 (expect deny by shape). Beat 2:
+bench-6 (declares uses of bench-2's artifact — a window-1
+leftover), bench-7 (declares uses of the sentinel's
+artifact; window 1's job-7 runs once beat-1 dispatches queue
+behind it), sentinel-2 (expect: still queued at close under
+the gpuq successor rule). Expected counts: submitted 8,
+allowed 6, held 1, denied 2, dispatched 7.
+
+**Headline:** the `gpu-downstream-use` sense read over the
+whole log at close — both windows' outputs and how many were
+ever consumed.
+
+**Shadow consumption policy (analysis only — live behaviour
+unchanged).** A submission WOULD have been held instead of
+allowed iff (a) its declared output had no declared consumer
+in the log at submission time and (b) its producer's
+trailing output-use ratio over completed outputs at
+submission time was < 50% (a producer with no completed
+outputs is exempt — no track record to price). Scored over
+both windows' streams at close; each would-hold classified:
+output actually unused = true positive; output actually
+used = false positive; job never completed = no GPU time at
+stake. A refinement — exempt submissions that themselves
+declare a consumed input — is scored alongside, and the
+operator-decision cost of the would-holds is counted with
+the same accounting formula.
