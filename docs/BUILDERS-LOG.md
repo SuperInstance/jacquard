@@ -3980,3 +3980,43 @@ v1.2.0 exactly (Python 340 passed + 7 skipped; TS and
 Rust conformance 14/0/0 each). No code file changed.
 Shipped as v1.2.1; addendum:
 docs/release-readiness-1.2.1.md.
+
+**Phase 13 — the outside test, second kind (2026-11-03).**
+Casey's direction: outside testing means agents in the
+midst of other, unrelated work, carrying their own tasks
+and ambitions, encountering Jacquard as a tool candidate
+mid-flight — not empty-context readers. Slice 36 design:
+four runs spanning the fit spectrum, each a real primary
+task with a gradable deliverable, none of them about
+Jacquard. The briefs carry a standing instruction to
+prefer existing tooling where a sub-problem matches a
+known tool shape (governing worker processes, sharing a
+scarce resource, keeping a defensible record, batching
+human approvals); they never name Jacquard, never point
+at the repo, and adoption is not a success criterion.
+Run 1 (strong fit): a job-governance layer for three
+producers sharing one GPU workstation — serialised heavy
+jobs, batched approval for heavy jobs, per-producer
+budgets, a replayable audit log; graded on invariants
+over a 24-job fixture (15 dispatch / 8 budget-reject /
+1 operator-deny by construction). Run 2 (partial fit): a
+self-hosted vs hosted vector-database briefing with a
+claim-level evidence ledger (≥8 primary sources, a
+disagreement to flag and reconcile); the record-keeping
+sub-problem matches, the research does not. Run 3 (poor
+fit): a 231-row messy-ledger reconciliation under binding
+rules (205 unique expected; 26 duplicates by kind) —
+single producer, single pass, nothing to govern; the
+correct outcome is rejecting governance tooling as
+overhead. Run 4 (strong fit, second shape): a solo
+operator's outbound pipeline — 12 drafts classified
+A (auto-send) / B / C (batched human review, never
+blocking); expected 5 auto / 7 held / 3 approved /
+4 rejected-with-reasons. Grading order is fixed in
+advance: the primary task's outcome first, on its own
+merits; then discovery (and through what surface —
+encounter via the local harness's own files does not
+count as discovery), fit judgement, adoption cost, and
+the agent's unfiltered verdict in its own words. The
+coordinator does not rescue a run that stalls on the
+docs: the stall is the data.
