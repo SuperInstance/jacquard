@@ -252,13 +252,24 @@ def cmd_close(args, event, status, note_word):
         state = seq.machine_instance_state(instance)
     rewrite_status(seq, record, status)
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    commit = mark_row(args.inbox, BOX_FILES[record["box"]], args.id,
-                      "— %s %s (jacquard)" % (note_word, stamp))
+    # Bookings this tool applied carry a (jq:<id>) marker and
+    # get their board row marked. IMPORTED bookings are other
+    # lanes' rows: their owners mark them; the kernel-side
+    # close is journal-only for those.
+    ours = any(e["kind"] == "sense" and e["body"].get("name")
+               == "board-row:" + args.id for e in seq.log.entries)
+    commit = None
+    if ours:
+        commit = mark_row(args.inbox, BOX_FILES[record["box"]],
+                          args.id,
+                          "— %s %s (jacquard)" % (note_word, stamp))
     journal(seq, "board-close:" + args.id,
-            {"commit": commit, "box": record["box"], "status": status})
+            {"commit": commit, "box": record["box"], "status": status,
+             "board_row_marked": ours})
     print(json.dumps({"booking_id": args.id, "status": status,
                       "machine_state": state,
-                      "board_commit": commit}, indent=1))
+                      "board_commit": commit,
+                      "board_row_marked": ours}, indent=1))
     return 0
 
 

@@ -148,3 +148,21 @@ def test_import_ids_unique_per_seat(tmp_path):
     counts = jqbook(log, None, "counts")
     dual = [u for u in counts["bookings"] if "dual-lane" in u]
     assert len(dual) == 2
+
+
+def test_close_imported_booking_is_kernel_side_only(tmp_path):
+    """Completing an IMPORTED booking (another lane's row)
+    rewrites its kernel status — making it inert for
+    contention — without touching the owner's board row."""
+    inbox = board(tmp_path)
+    log = str(tmp_path / "kernel.jsonl")
+    jqbook(log, inbox, "init", "--boxes", "thor")
+    before = open(os.path.join(inbox, "schedule", "thor.md")).read()
+    out = jqbook(log, inbox, "complete",
+                 "--id", "other-lane-thor-gpu-2026-11-03-16-00")
+    assert out["status"] == "done"
+    assert out["board_row_marked"] is False
+    after = open(os.path.join(inbox, "schedule", "thor.md")).read()
+    assert before == after
+    counts = jqbook(log, None, "counts")
+    assert counts["bookings_by_status"].get("done") == 1
