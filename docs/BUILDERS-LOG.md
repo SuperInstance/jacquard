@@ -2606,3 +2606,30 @@ that follows this entry, per the standing pattern. Casey's
 remaining item from this slice is the one already batched by
 the coordinator: re-wrap the anchor keys with his own
 passphrase and delete the interim file.
+
+### Slice 21 — cold-verification addendum (2026-11-02)
+
+Run after the close commit, from fresh clones of both public
+repos on the Oracle (the jacquard clone at the post-rebase
+main, which also carries slice 20's part 1 — the suites below
+ran on that merged tree):
+
+- `git clone SuperInstance/jacquard` → `python3 -m pytest -q`:
+  **306 passed, 7 skipped**.
+- Same clone, `conformance/ts`: `node check.ts` → **13 PASS,
+  0 SKIP, 0 FAIL**.
+- Frozen proof log vs a fresh clone of
+  `SuperInstance/jacquard-anchors`, registry schedule
+  (`--keys`): Python `verified`, anchored 507, tail 0,
+  3 checkpoints; TS `verify-anchor.ts --keys` identical.
+- The slice 21 export from the cold clone alone: vs the public
+  history `verified_to_anchor` (507 anchored, tail 2, 27 seals,
+  `seals_anchored` false); with the committed demonstration
+  checkpoint placed at `checkpoints/<log_id>/000003.json`,
+  `verified` (509, tail 0, `seals_anchored` true) — the cold
+  verifier needed nothing beyond the two public repos and the
+  spec.
+- Secret scan of the slice range (512085f..close): zero PEM
+  private-key headers in `git log -p`; no key or passphrase
+  file tracked; the private keys remain mode 0600 under
+  `~/.jacquard/` on the Oracle and nowhere else.
