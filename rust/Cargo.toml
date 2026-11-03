@@ -1,0 +1,58 @@
+# Jacquard kernel — Rust implementation (Phase 8, slice 20).
+#
+# Package name: the crates.io name `jacquard` is TAKEN (an AT
+# Protocol client library, first published 2025-10-04, latest
+# 0.12.2 — checked against the crates.io API on 2026-11-02; see
+# rust/README.md and docs/BUILDERS-LOG.md slice 20). The
+# qualified name `jacquard-kernel` was free at the same check.
+# The library crate itself is `jacquard_kernel`.
+#
+# Version aligns with the release line: Python package 0.5.0,
+# spec jacquard/0.5, tag v0.5.0.
+#
+# Licence: the repository carries no licence file or licence
+# metadata today (pyproject.toml states none), so no licence is
+# claimed here either; choosing one is an owner decision batched
+# for slice 23. Everything else in this file is publish-shaped.
+# Nothing in this slice publishes anything.
+[package]
+name = "jacquard-kernel"
+version = "0.5.0"
+edition = "2021"
+rust-version = "1.74"
+description = "A supervised runtime kernel: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only hash-chained log. Rust port of the Jacquard kernel contract (spec 0.5)."
+repository = "https://github.com/SuperInstance/jacquard"
+homepage = "https://github.com/SuperInstance/jacquard"
+keywords = ["audit", "conformance", "kernel", "log", "policy"]
+categories = ["data-structures"]
+publish = false
+
+[lib]
+name = "jacquard_kernel"
+path = "src/lib.rs"
+
+[[bin]]
+name = "jacquard-check"
+path = "src/bin/check.rs"
+
+[[bin]]
+name = "jacquard-cross-drill"
+path = "src/bin/run_drill.rs"
+
+[[bin]]
+name = "jacquard-verify-anchor"
+path = "src/bin/verify_anchor.rs"
+
+[dependencies]
+# SHA-256 for the section 1 hash. Canonical serialisation itself
+# is this crate's own code (src/value.rs) — no JSON library is
+# used for values, so insertion order, integer exactness and the
+# section 1 escaping rules are reproduced exactly.
+sha2 = "0.10"
+# Ed25519 verification for section 15 anchor checkpoints.
+ed25519-dalek = "2"
+# Only for reading the .gz conformance fixtures in the checker.
+flate2 = "1"
+
+[profile.release]
+opt-level = 3
