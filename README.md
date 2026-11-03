@@ -2,6 +2,47 @@
 
 A supervised runtime where untrusted producers submit proposals, a small auditable kernel decides what may change shared state or act on the world, learned behaviours are deployed under test, and every decision can be replayed from an append-only log.
 
+## Start here — what would you govern?
+
+- **Coding agents working in your repos** → the seat
+  profile in `docs/QUICKSTART.md` and
+  `starters/coding-agent-supervision.md` (live on two
+  devices: tool calls queue for batched, hash-bound
+  decisions).
+- **A shared GPU or expensive job queue** →
+  `starters/job-queue-governance.md` (live on the fleet's
+  Thor: unknown producers hold, jobs dispatch only through
+  the kernel, outcomes journal back).
+- **A shared schedule of machines** →
+  `starters/batched-approvals-solo.md`'s sibling discipline
+  at fleet scale — the schedule profile in
+  `docs/QUICKSTART.md` (the fleet's own booking board runs
+  through it: contention and rank are kernel senses, ties
+  hold for an operator).
+- **A record a third party can verify** →
+  `starters/anchored-audit-record.md` (signed checkpoints
+  in a public witness repo; a forged log fails at
+  checkpoint 0).
+- **Your own automations, solo** →
+  `starters/batched-approvals-solo.md`.
+
+Install is **from git** — the package is not on PyPI /
+npm / crates.io yet (owner steps in `docs/PUBLISHING.md`):
+`git clone https://github.com/SuperInstance/jacquard`,
+then `docs/QUICKSTART.md` takes you to your first governed
+action in about a minute. Concepts in meeting order:
+`docs/ONBOARDING.md`. Per-device evidence and quirks:
+`docs/DEVICES.md`; the deployment record behind all of the
+above: `docs/slice30-device-matrix.md`.
+
+**Verified state (Phase 11, v1.2.0):** Python suite
+**340 passed, 7 skipped**; TypeScript conformance **14
+PASS, 0 SKIP, 0 FAIL** and Rust the same (the checker
+gained `vectors.anchor_registry` with the Phase 9 registry
+work — older text below says 13, true at its date); spec
+0.6; live deployments on four devices with a fifth
+prepared (`docs/slice30-device-matrix.md`).
+
 ## What this is
 
 Producers (people, language models, programs, sensors) differ enormously in cost, latency, reliability and authority, but they all emit the same kind of thing: proposals. Jacquard separates proposing from deciding:
@@ -21,7 +62,7 @@ Producers (people, language models, programs, sensors) differ enormously in cost
 - `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the anchoring CLI (`jqanchor.py`), the sealed-export CLI (`jqseal.py`), the golden-vector generator, the shadow-trial runner.
 - `tests/` — unit tests plus the acceptance suite (a replay of a real GPU job-queue record through the kernel).
 - `conformance/` — the second-language conformance suite: a TypeScript implementation in two parts — the original fold implementation written from the spec alone, and (slice 19) a full kernel port in `ts/kernel.ts` written from the Python reference — its gap report with the slice 19 closure notes, and the fixtures it folds (see `conformance/README.md`).
-- `rust/` — the third implementation (Phase 8, slice 20): a Rust port of the kernel contract mirroring the TS layout, with its own conformance checker (the same 13 checks, zero SKIPs), a three-kernel cross-drill, and publish-shaped crate metadata under the qualified name `jacquard-kernel` (the crates.io name `jacquard` is taken; see `rust/README.md`).
+- `rust/` — the third implementation (Phase 8, slice 20): a Rust port of the kernel contract mirroring the TS layout, with its own conformance checker (the same checks — 14 since the Phase 9 registry section joined — zero SKIPs), a three-kernel cross-drill, and publish-shaped crate metadata under the qualified name `jacquard-kernel` (the crates.io name `jacquard` is taken; see `rust/README.md`).
 - `docs/BUILDERS-LOG.md` — how this was built: decisions, reasons, dead ends, in the order they happened.
 - `docs/PROGRAMME.md` — the programme record: what Jacquard is, how it got here, the rulings, and the verified build state (mirrored verbatim from the programme workspace, which remains its working home).
 - `docs/USE-CASE-VOID-SCAN.md` — the market survey behind the build order: 25 products graded against six capability voids no incumbent holds together (mirrored verbatim from the programme workspace).
