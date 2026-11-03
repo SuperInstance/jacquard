@@ -72,11 +72,13 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from jacquard import Log, Sequencer, install_lifecycles, make_envelope  # noqa: E402
+from consumption import price_one  # noqa: E402
 from jacquard.canonical import hash_of  # noqa: E402
 from jacquard.records import outputs_and_uses  # noqa: E402
 from jacquard.senses import publish_senses  # noqa: E402
 
 POLICY_ID = "gpu-bridge-policy/1"
+GATE_POLICY_ID = "gpu-consumption-policy/2"
 GOVERNED_LANE = "jacquard"
 JOB_CLASS = "gpu-bench"
 BRIDGE_PRODUCER = "gpu-bridge"
@@ -139,6 +141,32 @@ def _gpuq_cmd_of(requests):
     return None
 
 
+def _dispatch_request(requests):
+    """The dispatch request carrying a gpuq payload, or
+    None when the proposal is not a gpu job."""
+    for request in requests or []:
+        if request.get("verb") != "dispatch":
+            continue
+        args = request.get("args") or []
+        if args and isinstance(args[0], dict) \
+                and isinstance(args[0].get("gpuq"), dict):
+            return request
+    return None
+
+
+def gate_config(seq):
+    """The consumption gate configured by this log's policy
+    record, or None. The gate is data in the log (stated
+    before the class goes live, like every bound in this
+    bridge), never a constant of this module: a log without
+    a gate in its record is not consumption-gated."""
+    for entry in seq.log.entries:
+        if entry["kind"] == "sense" \
+                and entry["body"].get("name") == "gpu-policy-record":
+            return entry["body"]["value"].get("consumption_gate")
+    return None
+
+
 def install_bridge_policy(seq):
     """Wire the bridge policy into a sequencer through the
     kernel's rule hook (the learner's seam). The hook never
@@ -159,11 +187,44 @@ def install_bridge_policy(seq):
         if rule == "hold":
             return (POLICY_ID, "queue")
         return None
-    seq.rule_decider = decide_by_bridge
+
+    def decide_by_gate(producer, cls, effects, policy_outcome,
+                       policy_reasons, requests=None):
+        gate = gate_config(seq)
+        if not gate or cls != gate.get("job_class"):
+            return decide_by_bridge(producer, cls, effects,
+                                    policy_outcome,
+                                    policy_reasons, requests)
+        if "producer-suspended" in (policy_reasons or []):
+            return None
+        request = _dispatch_request(requests)
+        if request is None:
+            return None
+        cmd = request["args"][0]["gpuq"].get("cmd")
+        rule, _reason = classify(producer, cmd)
+        if rule == "deny":
+            return (POLICY_ID, "deny")
+        if rule == "hold":
+            return (POLICY_ID, "queue")
+        outputs = request.get("outputs") or []
+        pricing = price_one(seq.log.entries, cls, producer,
+                            outputs[0] if outputs else None,
+                            threshold_bp=gate.get(
+                                "threshold_bp", 5000),
+                            budget=gate.get(
+                                "exemption_budget", 3),
+                            own_uses=request.get("uses") or [])
+        hold = pricing["would_hold_refined"] \
+            if gate.get("exempt_self_consuming") \
+            else pricing["would_hold"]
+        if hold:
+            return (GATE_POLICY_ID, "queue")
+        return None
+    seq.rule_decider = decide_by_gate
     return seq
 
 
-def policy_record(log_label, window):
+def policy_record(log_label, window, consumption_gate=None):
     """The bounded-start statement, published into the kernel
     log at genesis (before the first live dispatch)."""
     return {
@@ -189,6 +250,7 @@ def policy_record(log_label, window):
                           "the window's last job is a declared "
                           "sentinel that stays queued in gpuq",
         "window": window,
+        "consumption_gate": consumption_gate,
     }
 
 
@@ -259,7 +321,8 @@ class GpuQueueBridge:
                         self._journal[record["action_id"]] = record
 
     # ------------------------------------------------ genesis
-    def ensure_kernel(self, log_label, window):
+    def ensure_kernel(self, log_label, window,
+                      consumption_gate=None):
         """On a fresh log: install the lifecycles and publish
         the policy record BEFORE any proposal. On an existing
         governed log: verify the record is present. Returns the
@@ -276,26 +339,50 @@ class GpuQueueBridge:
                 % len(self.seq.log.entries))
         install_lifecycles(self.seq)
         return self.seq.submit_sense(
-            "gpu-policy-record", policy_record(log_label, window),
+            "gpu-policy-record",
+            policy_record(log_label, window, consumption_gate),
             BRIDGE_PRODUCER)
 
     # ------------------------------------------------ submit
     def submit_job(self, producer, name, cmd, output=None,
-                   uses=None, idem=None):
+                   uses=None, idem=None, job_class=None):
         """One governed submission: proposal -> kernel decision.
         The dispatch payload carries the gpuq job; the declared
         output artifact rides on the request so the kernel's
         output/use projection (and the downstream-use sense)
         sees it. Returns the kernel verdict plus the bridge
         classification that explains it."""
+        if job_class is None:
+            job_class = JOB_CLASS
         rule, reason = classify(producer, cmd)
+        gate = gate_config(self.seq)
+        gated = bool(gate) and gate.get("job_class") == job_class
+        pricing = None
+        if gated:
+            # priced on the log as it stands BEFORE this
+            # submission's entries land (strictly causal,
+            # the shadow scorer's arithmetic)
+            pricing = price_one(
+                list(self.seq.log.entries), job_class, producer,
+                output,
+                threshold_bp=gate.get("threshold_bp", 5000),
+                budget=gate.get("exemption_budget", 3),
+                own_uses=list(uses or []))
         payload = {"cmd": ["gpuq-add", GOVERNED_LANE, name],
                    "gpuq": {"lane": GOVERNED_LANE, "name": name,
                             "cmd": cmd}}
         request = {"verb": "dispatch", "args": [payload]}
         if output:
             request["outputs"] = [output]
-        body = {"class": JOB_CLASS, "requests": [request],
+        if uses:
+            # declared uses ride on the request as well as the
+            # proposal body: the rule hook sees requests only,
+            # and the consumption gate's refinement (exempt
+            # self-consuming submissions) prices on them. The
+            # body-level list remains the canonical record the
+            # projections read.
+            request["uses"] = list(uses)
+        body = {"class": job_class, "requests": [request],
                 "uses": list(uses or [])}
         if idem is None:
             idem = "gpu-%s" % hash_of({
@@ -305,13 +392,63 @@ class GpuQueueBridge:
             producer, "proposal", body, ["dispatch"], idem))
         result = dict(verdict)
         result["classification"] = {"rule": rule, "reason": reason}
-        if verdict.get("outcome") in ("deny", "queue") \
-                and verdict.get("proposal_id"):
-            self.seq.submit_sense("gpu-policy", {
+        if gated:
+            result["pricing"] = pricing
+        if verdict.get("proposal_id") and (
+                verdict.get("outcome") in ("deny", "queue")
+                or gated):
+            entry_rule, entry_reason, entry_policy = \
+                rule, reason, POLICY_ID
+            if gated and verdict.get("outcome") == "queue":
+                decided_by = None
+                for entry in self.seq.log.entries:
+                    if entry["kind"] == "decision" and \
+                            entry["body"].get("proposal_id") == \
+                            verdict["proposal_id"]:
+                        decided_by = entry["body"].get(
+                            "decided_by")
+                if decided_by == GATE_POLICY_ID:
+                    entry_rule = "consumption-hold"
+                    entry_reason = (
+                        "consumption policy v2: producer "
+                        "trailing completed-consumption ratio "
+                        "%s bp < threshold %s bp, exemption "
+                        "budget exhausted (%s completed "
+                        "outputs); output has no declared "
+                        "consumer" % (
+                            pricing["ratio_bp"],
+                            pricing["threshold_bp"],
+                            pricing["completed_outputs"]))
+                    entry_policy = GATE_POLICY_ID
+            elif gated and verdict.get("outcome") == "allow":
+                if pricing["budget_exempt"]:
+                    entry_rule = "consumption-exempt"
+                    entry_reason = (
+                        "consumption policy v2: exemption "
+                        "budget claim (%s of %s completed "
+                        "outputs); claim recorded in the "
+                        "pricing record" % (
+                            pricing["completed_outputs"],
+                            pricing["budget"]))
+                else:
+                    entry_rule = "consumption-pass"
+                    entry_reason = (
+                        "consumption policy v2: priced, no "
+                        "hold (ratio %s bp, threshold %s bp, "
+                        "declared consumer: %s)" % (
+                            pricing["ratio_bp"],
+                            pricing["threshold_bp"],
+                            pricing["has_declared_consumer"]))
+                entry_policy = GATE_POLICY_ID
+            sense_value = {
                 "proposal_id": verdict["proposal_id"],
                 "producer": producer, "name": name,
-                "rule": rule, "reason": reason,
-                "policy_id": POLICY_ID}, BRIDGE_PRODUCER)
+                "rule": entry_rule, "reason": entry_reason,
+                "policy_id": entry_policy}
+            if gated:
+                sense_value["pricing"] = pricing
+            self.seq.submit_sense("gpu-policy", sense_value,
+                                  BRIDGE_PRODUCER)
         return result
 
     # ------------------------------------------------ dispatch

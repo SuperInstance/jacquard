@@ -10,6 +10,13 @@ gpuq over its existing SSH door, per invocation.
         --window '{"target_jobs": 7, "opens": "...", "closes": "..."}'
     python3 tools/jqgpu.py --log LOG submit --producer P \
         --name NAME --cmd CMD [--output ARTIFACT] [--uses A,B]
+        [--class CLASS]
+
+    init accepts --consumption-gate JSON (Phase 10, slice 28):
+    {"job_class": ..., "threshold_bp": ..., "exemption_budget":
+    ..., "exempt_self_consuming": ...} configures the v2
+    consumption gate for one job class, as data in the log's
+    policy record. Without it, no class is consumption-gated.
     python3 tools/jqgpu.py --log LOG dispatch
     python3 tools/jqgpu.py --log LOG poll
     python3 tools/jqgpu.py --log LOG senses
@@ -48,6 +55,9 @@ def main():
     init = sub.add_parser("init")
     init.add_argument("--window", required=True,
                       help="JSON window statement for the policy record")
+    init.add_argument("--consumption-gate", default=None,
+                      help="JSON consumption-gate configuration "
+                           "for the policy record (slice 28)")
     submit = sub.add_parser("submit")
     submit.add_argument("--producer", required=True)
     submit.add_argument("--name", required=True)
@@ -55,6 +65,9 @@ def main():
     submit.add_argument("--output", default=None)
     submit.add_argument("--uses", default=None,
                         help="comma-separated artifact ids this job uses")
+    submit.add_argument("--class", default=None, dest="job_class",
+                        help="job class (default: the governed "
+                             "gpu-bench class)")
     sub.add_parser("dispatch")
     sub.add_parser("poll")
     sub.add_parser("senses")
@@ -65,7 +78,10 @@ def main():
     label = args.log_label or args.log
 
     if args.command == "init":
-        entry = bridge.ensure_kernel(label, json.loads(args.window))
+        gate = json.loads(args.consumption_gate) \
+            if args.consumption_gate else None
+        entry = bridge.ensure_kernel(label, json.loads(args.window),
+                                     consumption_gate=gate)
         print(json.dumps(
             {"policy_record": "already present" if entry is None
              else "published",
@@ -79,7 +95,8 @@ def main():
             if args.uses else []
         verdict = bridge.submit_job(args.producer, args.name,
                                     args.cmd, output=args.output,
-                                    uses=uses)
+                                    uses=uses,
+                                    job_class=args.job_class)
         print(json.dumps(verdict, indent=1))
         return 0
     if args.command == "dispatch":

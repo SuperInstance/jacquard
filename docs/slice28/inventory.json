@@ -1,0 +1,109 @@
+{
+ "gpuq": {
+  "classes": {
+   "foundry-loop": {
+    "jobs": 1637,
+    "statuses": {
+     "done": 1637
+    },
+    "finished": 1637,
+    "median_s": 40.1,
+    "max_s": 180.3,
+    "total_gpu_min": 1096.7,
+    "jobs_ge_threshold": 0
+   },
+   "jacquard": {
+    "jobs": 12,
+    "statuses": {
+     "done": 10,
+     "failed": 1,
+     "queued": 1
+    },
+    "finished": 10,
+    "median_s": 20.1,
+    "max_s": 20.1,
+    "total_gpu_min": 3.4,
+    "jobs_ge_threshold": 0
+   }
+  },
+  "feeder_enabled": false
+ },
+ "image_studio": {
+  "images_by_model": [
+   {
+    "model": "flux-schnell",
+    "kind": "generate",
+    "n": 1
+   },
+   {
+    "model": "sdxl",
+    "kind": "generate",
+    "n": 18
+   },
+   {
+    "model": "sdxl-hyper",
+    "kind": "burst",
+    "n": 5
+   },
+   {
+    "model": "sdxl-hyper",
+    "kind": "generate",
+    "n": 8
+   },
+   {
+    "model": "sdxl-lcm",
+    "kind": "generate",
+    "n": 11
+   },
+   {
+    "model": "sdxl-lightning",
+    "kind": "burst",
+    "n": 3
+   },
+   {
+    "model": "sdxl-lightning",
+    "kind": "generate",
+    "n": 4
+   },
+   {
+    "model": "sdxl-lightning8",
+    "kind": "generate",
+    "n": 4
+   },
+   {
+    "model": "sdxl-turbo",
+    "kind": "generate",
+    "n": 1
+   },
+   {
+    "model": "upscaler",
+    "kind": "upscale",
+    "n": 1
+   },
+   {
+    "model": "zimage-turbo",
+    "kind": "burst",
+    "n": 4
+   }
+  ],
+  "jobs": [
+   {
+    "status": "done",
+    "n": 47
+   },
+   {
+    "status": "error",
+    "n": 2
+   }
+  ],
+  "duration_record": "none in the gallery db; the portal's own build record (TOOLS.md, 2026-10-23) measured SDXL base at 13.7 s cold / 11.8 s warm for 1024x1024; every model present is a distilled or turbo variant of the same order"
+ },
+ "foundry": {
+  "portal_builds": 28,
+  "portal_build_max_total_s": 265.3,
+  "portal_build_max_gpu_build_s": 0.16,
+  "registry_assets": 16667,
+  "registry_assets_ever_used": 39,
+  "registry_use_ratio_bp": 23
+ }
+}

@@ -3596,3 +3596,55 @@ marker residual in the findings and in SPEC §17. Tests:
 for completed/declared/failed consumption, budget claims,
 declared-consumer condition, plus the frozen-log re-score
 asserting the bench-7 delta exactly.
+
+## Slice 28 — the expensive class: honesty gate (2026-11-03)
+
+Inventory first (docs/slice28/inventory.py run read-only
+on the Thor; raw output docs/slice28/inventory.json; full
+report docs/slice28-inventory-and-gate.md). The gpu-queue
+is the Thor's only dispatch path for submitted GPU jobs,
+so its history is the population: 1,647 finished jobs,
+median 40.1 s (foundry-loop) / 20.1 s (jacquard), max
+180.3 s, ZERO jobs >= 300 s. Image studio: 49 jobs, all
+distilled models, seconds each. Foundry portal: 28 builds
+ever, longest wall 265.3 s of which 0.16 s is GPU. **No
+class runs >= ~5 GPU-minutes with real submissions behind
+it. The brief's honesty gate fires: no live window, and
+none manufactured.**
+
+Shadow, at class level and labelled as such (the feeder
+never declared per-job outputs/uses into a Jacquard log,
+so a causal per-submission replay is not reconstructable):
+foundry registry 16,667 assets, 39 ever used = 23 bp
+against the 5000 bp threshold; under v2, ~1,636 of 1,637
+feeder jobs would have held, ~1,096 GPU-minutes (~18.3
+GPU-hours) priced. The number validates ruling 6 (feeder
+OFF, confirmed in the inventory) rather than prescribing
+1,636 reviews: at 23 bp the right act is the class-level
+standing decision Casey already made. The policy's
+theatre is a mixed class at the margin; none runs long
+jobs on this box today.
+
+Machinery delivered ready: the v2 gate in the bridge,
+configured as data in the log's policy record
+(`consumption_gate`: job_class, threshold_bp,
+exemption_budget, exempt_self_consuming), decided through
+the kernel's rule hook as `gpu-consumption-policy/2`,
+priced by the same adapters/consumption.py as the shadow,
+accounted per item in gpu-policy sense entries (rules
+consumption-exempt / consumption-pass / consumption-hold,
+each carrying its pricing record and budget claims).
+jqgpu: init --consumption-gate, submit --class. Battery:
+tests/test_consumption_gate.py, 5 passed; pre-existing
+bridge + consumption batteries unbroken (19 total).
+Activation recipe and the exchange-rate test a future
+window must pass are stated in the report.
+
+Defect found in passing, fixed here: the rule hook sees
+requests only, and declared uses rode only on the proposal
+body — the refinement was unpriceable live. submit_job now
+carries declared uses on the dispatch request too
+(body-level list remains canonical); non-consuming
+proposals byte-identical to the windows 1+2 form. The
+refinement gate test failed before this fix and passes
+after — the failure is recorded here rather than smoothed.

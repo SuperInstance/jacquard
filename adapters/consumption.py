@@ -152,7 +152,7 @@ def ratio_bp(submissions, outputs_of, uses_of, completions,
 
 def price_one(entries, job_class, producer, output,
               threshold_bp=BP_THRESHOLD,
-              budget=EXEMPTION_BUDGET):
+              budget=EXEMPTION_BUDGET, own_uses=()):
     """Price a single about-to-be-decided submission of
     `job_class` against the log as it stands (the bridge
     gate's form of the same arithmetic as price_stream).
@@ -188,6 +188,7 @@ def price_one(entries, job_class, producer, output,
         "has_declared_consumer": has_consumer,
         "threshold_bp": threshold_bp,
         "would_hold": would_hold,
+        "would_hold_refined": would_hold and not own_uses,
     }
 
 
