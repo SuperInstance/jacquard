@@ -15,13 +15,24 @@ see `docs/PUBLISHING.md`). Until then, install from git:
 ```
 git clone https://github.com/SuperInstance/jacquard
 cd jacquard
-python3 -m pytest -q        # the suite is green; this is
-                            # also your install check
 ```
 
-You need Python 3.11+ and git. Nothing else: the kernel is
-standard-library only. (Node is needed only for the optional
-TypeScript conformance suite; Rust only for that port.)
+The tools themselves need **Python 3.11+ and git, nothing
+else** — the kernel is standard-library only, and every
+`tools/jq*.py` command runs on a bare interpreter. The test
+suite additionally needs `pytest`:
+
+```
+python3 -m pytest -q        # install check, if pytest is present
+```
+
+The suite is green on the reference platforms (Linux x86_64
+and WSL2). One executor test depends on bubblewrap holding
+on your kernel: on Jetson/tegra kernels it does not, and
+that single test fails there — a property of the device,
+recorded in `docs/DEVICES.md`, not a broken install. (Node
+is needed only for the optional TypeScript conformance
+suite; Rust only for that port.)
 
 ## Your first governed action (about a minute)
 
@@ -79,16 +90,43 @@ run at once; writes, shell commands and network actions
 queue for your batched decision; an approval authorises
 exactly one execution of exactly the action you saw.
 
-1. Install the adapter for your workspace — follow
-   `adapters/zcode/README.md` (the plugin surface; on
-   current ZCode builds the plugin is the route that runs).
-2. Start your agent in the workspace. Its log lives at
-   `<workspace>/.jacquard/kernel.jsonl`.
-3. When the agent pauses on a queued action, decide the
-   batch from the repo:
-   `python3 tools/jq.py --log <workspace>/.jacquard/kernel.jsonl queue`
+**Workspace** means the directory the agent runs in (its
+cwd). Its log lives at `<workspace>/.jacquard/kernel.jsonl`.
+The fleet pattern is a dedicated work directory beside the
+clone, so the governed record and the code stay separate.
+
+1. Install the adapter — follow `adapters/zcode/README.md`
+   (the plugin surface; on current ZCode builds the plugin
+   is the route that runs). Know the scope before you run
+   it: the plugin install is **machine-global, not
+   per-workspace** — it creates a marketplace directory
+   under your home and enables the plugin in
+   `~/.zcode/cli/setting.json`, so it affects every zcode
+   session on the box. The install script's optional
+   marketplace-dir argument keeps the marketplace inside a
+   directory of your choosing. Verified builds:
+   zcode-app-cli 3.16.2-38 (Jetson Orin) and 3.16.3-40
+   (ProArt WSL2). A `Duplicate plugin hooks file ignored`
+   warning during install is known and harmless — the
+   plugin still enables and its hooks fire.
+2. Start your agent in the workspace, with
+   `JACQUARD_LOG=<workspace>/.jacquard/kernel.jsonl` and
+   `JACQUARD_PRODUCER=<a name for this seat>` in its
+   environment. Headless works — the fleet runs it this
+   way — with one recipe that matters: **put the retry
+   rule in the agent's prompt.** A queued action is not a
+   rejection; the agent must retry the identical action
+   until it is allowed, and say so in its tasking, e.g.
+   *"If an action is QUEUED, wait briefly and retry the
+   exact same action — an operator is deciding it in a
+   batch. Never work around a queued action."*
+3. Operate the queue while the agent works:
+   `python3 tools/jq.py --log <workspace>/.jacquard/kernel.jsonl queue`,
    then `decide approve|deny <id> --hash <binding>` per
-   item. The agent retries the identical action; the
+   item. **Decide promptly**: a headless seat retries
+   within seconds, so work in short polling passes (every
+   few seconds) rather than one late batch — an approval
+   only takes effect when the seat retries after it. The
    approval is consumed once, and the outcome is recorded.
 
 Per-device notes for this profile (WSL workstation, Jetson
@@ -103,7 +141,12 @@ outcomes journal back into the same log.
 
 The fleet's instance is the Thor's gpu-queue, driven by
 `tools/jqgpu.py` over a per-dispatch bridge (no resident
-agent on the box). Against the existing governed log:
+agent on the box). Work against a **copy** of the governed
+log — the log plus its sibling journal
+(`<log>.gpu-journal.jsonl`; jqgpu expects both side by
+side). Copy them from wherever the deployment keeps them,
+and sha256 the log before and after you copy it back, so
+the record you return is the record you took.
 
 ```
 python3 tools/jqgpu.py --log <gpu-log> counts
@@ -111,11 +154,38 @@ python3 tools/jqgpu.py --log <gpu-log> counts
 #    completed / failed, re-derived from the log
 python3 tools/jqgpu.py --log <gpu-log> submit \
     --producer <you> --name <job-name> --cmd <command> \
-    --output <artifact-path>
+    --output gpu-artifact:<job-name>
 #    a new job proposal: the kernel decides it; an allowed
 #    job is then dispatched with `jqgpu dispatch` and its
 #    outcome journalled by `jqgpu poll`
 ```
+
+A literal bench job, the fleet's standard shape:
+
+```
+python3 tools/jqgpu.py --log <gpu-log> submit \
+  --producer jacquard-build --name bench-1 \
+  --cmd 'mkdir -p ~/jacquard-gpu-live && ~/ml/.venv/bin/python -c "import torch,json; x=torch.randn(1024,1024,device='"'"'cuda'"'"'); y=x@x; torch.cuda.synchronize(); json.dump({'"'"'job'"'"':'"'"'bench-1'"'"','"'"'sum'"'"':float(y.sum())}, open('"'"'/home/caseydigennaro/jacquard-gpu-live/bench-1.json'"'"','"'"'w'"'"'))"' \
+  --output gpu-artifact:bench-1
+```
+
+Note the two halves of `--output` vs `--cmd`: the output is
+an **artifact id** (`gpu-artifact:<name>`); the actual file
+path lives inside the command, on the GPU box.
+
+**The successor rule** (the queue's own law, and the one
+thing that strands newcomers): a finite job in gpuq runs
+only when another job is queued **behind** it. The fleet
+keeps a declared sentinel job standing last in the queue
+for exactly this reason. When you dispatch a job, dispatch
+a sentinel behind it (the slice-22/25 reports show the
+shape), or your job waits — `jqgpu poll` will simply keep
+reporting it queued, and the queue's own status file shows
+the `no_successor_holds` reason. Re-running `dispatch` is
+safe: it re-lists already-dispatched jobs as it reconciles
+(`adopted` tells you whether it took over an existing gpuq
+job), and outcomes are established by `poll` + the journal,
+not by the dispatch listing.
 
 To run your own: `jqgpu init` a log for your queue, state
 the governed job class in its policy record before the
@@ -131,16 +201,42 @@ bookings: contention and authority are kernel senses, ties
 hold for an operator instead of silently winning, and the
 schedule itself stays a plain git-backed board.
 
+The board is a **git clone** (the fleet's is
+`agent-inbox`) containing a `schedule/` directory of
+per-box files, and applied bookings are **git commits
+pushed to its origin**. `--inbox` must therefore be a real
+clone with an `origin` remote — jqbook now checks this up
+front and refuses a plain copy before anything is decided,
+rather than failing mid-booking.
+
 ```
 # one-time: import the board's live rows as facts
 python3 tools/jqbook.py --log <log> --inbox <board-clone> init
 # each booking is then a proposal the kernel decides first
 python3 tools/jqbook.py --log <log> --inbox <board-clone> propose \
-    --box orin --seat zcode --from "2026-11-03 19:45" \
-    --planned 2h --what "what the time is for"
-python3 tools/jqbook.py --log <log> queue     # held items
-python3 tools/jqbook.py --log <log> --inbox <board-clone> release --id <booking>
+    --lane <your-lane> --box orin --seat zcode \
+    --from "2026-11-03 19:45" --planned 2h \
+    --what "what the time is for"
+python3 tools/jqbook.py --log <log> queue          # held items
+python3 tools/jqbook.py --log <log> --inbox <board-clone> release --id <booking-id>
+python3 tools/jqbook.py --log <log> --inbox <board-clone> complete --id <booking-id>
+python3 tools/jqbook.py --log <log> counts
 ```
+
+Authority, in one breath: `--lane` names who is booking
+(your own lane by default); a lane's **effective rank** is
+the lower of the rank it asserts (`--rank`) and the
+**ceiling** it has been granted (`--grant` records a grant
+for the proposing lane). A lane with no grant books at
+effective rank 0 — fine for an uncontended seat, and it
+loses any contest. Against a live booking of higher
+effective rank you are preempted or held; at **equal**
+rank the challenger **holds** for an operator (the interim
+tie disposition) — `queue` shows it, `release --id` is the
+operator letting it proceed anyway, `complete --id` closes
+a booking whose work is done (marking its board row DONE
+if this deployment applied it, or recording the close
+kernel-side only for a row another lane owns).
 
 The deployment record is `docs/slice30-device-matrix.md`.
 

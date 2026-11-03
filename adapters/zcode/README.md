@@ -89,11 +89,27 @@ the path cannot be relative), and installs + enables
 `jacquard-zcode@jacquard-local` through ZCode's own plugin CLI.
 No ZCode configuration or permission setting is edited by hand.
 
+**Scope, plainly: the plugin install is machine-global, not
+per-workspace.** The marketplace lives under your home and the
+enablement lands in `~/.zcode/cli/setting.json`, so every zcode
+session on the box loads the adapter (each workspace still gets
+its own kernel log, via `JACQUARD_LOG` / the workspace cwd).
+The script takes an optional argument — the marketplace
+directory — if you want it kept inside a particular tree:
+`adapters/zcode/install_plugin.sh <dir>`. A `Duplicate plugin
+hooks file ignored: hooks/hooks.json` warning during install
+is known and harmless: the plugin enables and its hooks fire.
+Verified builds: zcode-app-cli 3.16.3-40 (ProArt WSL2) and
+3.16.2-38 (Jetson Orin), both with zcode-runtime 0.17.0.
+
 The documented surface — a workspace config snippet — is
 `config.example.json` in this directory: copy it to a workspace's
 `.zcode/config.json`, replace the hook path with your checkout's
 absolute path, and grant the workspace hook trust ZCode requires
-(`zcode hooks trust review --workspace <ws> --json`, then
+(the `zcode hooks trust` CLI is a **hidden subcommand** — it
+does not appear in the `zcode --help` command list; it exists
+on both verified builds: `zcode hooks trust review --workspace
+<ws> --json`, then
 `zcode hooks trust grant --workspace <ws> --all-current
 --bundle-digest <digest from review>`; any later edit to the
 config re-pends trust, by digest). Where configuration-file
@@ -117,19 +133,29 @@ ZCode build enables workspace hooks, the config snippet becomes
 the lighter install and nothing else changes: both surfaces
 invoke the same `zcode_hook.py`.
 
-### Known limit: headless `-p` mode after an approval
+### Headless `-p` mode: works, with the retry recipe
 
-Verified 2026-11-02 (builders log, slice 12 close): the full
-queue → approve → retry arc works in the interactive (plugin)
-surface — the demo session's approved Write and Bash really
-executed. In headless `zcode -p` mode the kernel side also
-works (the retry is allowed and the consumption is recorded),
-but the host then produced no PostToolUse event and no
-observable execution effect, and the agent reported itself
-still blocked. The anomaly is on the host side of the hook
-boundary; the adapter's verdicts are correct in both modes.
-Supervised seats should run interactively until ZCode's
-headless hook lifecycle matches its interactive one.
+What slice 12 recorded (2026-11-02): in headless `zcode -p`
+mode the kernel side worked (the retry was allowed and the
+consumption recorded), but the host then produced no
+PostToolUse event and no observable execution effect, and the
+agent reported itself still blocked. That observation stands
+as the record of that run — in it, approvals landed after the
+seat had stopped retrying.
+
+What the later deployments observed (Phase 11, slices 30-31,
+on both verified builds): headless sessions completed the
+full arc repeatedly — queued Bash/Write calls executed on
+identical retry after hash-bound approval, PostToolUse fired,
+consumptions recorded — **when the approvals landed while the
+seat was still in its retry window**. The operative recipe,
+also in `docs/QUICKSTART.md`: put the retry rule in the
+agent's prompt (a queued action is not a rejection; retry the
+exact action), and operate the queue in short polling passes
+so decisions land within the window. Interactive seats remain
+the lower-variance surface; headless is proven, not
+guaranteed — the host's hook lifecycle is the variable, and
+the adapter's verdicts were correct in every observed mode.
 
 ## Remove
 
