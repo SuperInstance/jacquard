@@ -2157,3 +2157,50 @@ GUIDED, not blind — the fixture path and provenance disclose
 the forgery, so it tests procedure and mechanism, not
 verifier blindness. The rank-tie interim disposition is
 untouched by this slice.
+
+### Slice 19 — implementation, part 1: the port and the checker (2026-11-02)
+
+`conformance/ts/kernel.ts` landed: the port, mirroring the
+Python modules named in the design entry. Points of method
+worth recording while they are fresh:
+
+- The TS fold's decision case was aligned to the reference
+  fold during the port (queued-only literal; the
+  releases/rejects/expires chain is an elif chain, and a queued
+  body does not also close an item). The pre-slice-19 reading
+  (accepting `"queue"` as well, closing on any of the three
+  fields regardless of outcome) was a GAPS-#7-era guess the
+  §2.1 amendment had already superseded in prose; the replay
+  and full-log fixtures contain no body that discriminates the
+  two readings, so checks e–g pass under both — the alignment
+  is to the reference behaviour, recorded here rather than
+  silently absorbed.
+- Ed25519 needed no new dependency and no workaround: Node's
+  built-in `crypto` verifies Ed25519 natively once the raw
+  32-byte key is wrapped in the fixed RFC 8410 SPKI prefix
+  (and a seed in the PKCS#8 prefix to derive the test pubkey).
+  The obstacle the design entry braced for did not exist.
+- Python semantics reproduced deliberately, not approximately:
+  floor division/modulo, `True == 1` equality, empty-container
+  falsiness, `repr` formatting inside refusal details (those
+  strings land in decision-entry `reasons`, so they are part of
+  the byte record, not cosmetics), and a POSIX `shlex` for the
+  §12.1 command skeleton.
+- §12.1 comparison is a committed fixture, not a claim:
+  `conformance/ts/gen_signature_expectations.py` computes the
+  Python learner's signature for every request-carrying
+  decision in both proof-run corpora (8 in proof-run, 27 in
+  proof-run-2) and `check.ts` recomputes each one in TS,
+  comparing item-for-item and by canonical hash.
+
+Checker state after part 1: **13 PASS, 0 SKIP, 0 FAIL** —
+a–g as before, `vectors.definitions`, `vectors.state`,
+`vectors.senses`, `vectors.anchor` as real checks with the
+same strictness as the Python vector tests (stored forms
+compared whole; sense readings compared whole, method strings
+included; the anchor signature checked both ways and the
+§15.5 procedure run over the vector chain), plus the §12.1
+signature comparison (h) and the stock-kernel half of the
+slice 17 token-form battery (i). No spec bug was found in
+part 1: every divergence encountered was a TS-side reading
+corrected against the reference, not a contract defect.

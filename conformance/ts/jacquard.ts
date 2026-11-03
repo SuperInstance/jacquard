@@ -2,15 +2,19 @@
 //
 // Written from spec/SPEC.md (version 0.2) ONLY; the version
 // constants below were aligned to spec 0.3 in Phase 4, to 0.4
-// in Phase 6, and to 0.5 in Phase 7 slice 18 (the fold scope
-// is unchanged; spec section 15 anchoring is verifier work,
-// declared SKIP in check.ts — see GAPS.md #18). No reference-implementation
-// source was consulted. Scope, per the slice brief: canonical serialisation
+// in Phase 6, and to 0.5 in Phase 7 slice 18. No reference-implementation
+// source was consulted for THIS file. Scope, per the slice brief: canonical serialisation
 // + SHA-256 hashing (spec §1), envelope validation + envelope id (§3),
 // log entry construction + hash-chain verification (§2), and the log fold
 // producing the folded state and state hash (§2, with the fold effects
-// stated in §§5, 7, 10, 11, 12, 14). Dictionary evaluation and sequencer
-// execution are out of scope.
+// stated in §§5, 7, 10, 11, 12, 14).
+//
+// Slice 19 (Phase 7) adds ./kernel.ts: a deliberate PORT of the
+// Python reference (dictionary/evaluator, sequencer + wait pump,
+// senses, section 12.1 signatures, section 15 anchor verifier)
+// built from the Python source — the opposite method from this
+// file's spec-only construction, recorded in GAPS.md's slice 19
+// closure notes so the two are never misremembered as one.
 //
 // Node builtins only. Erasable TypeScript syntax only (no enums/namespaces),
 // so Node v24 runs this file with native type stripping.
@@ -320,22 +324,20 @@ export function applyEntry(state: FoldedState, entry: StoredEntry): void {
       break;
 
     case "decision": {
-      // §2 / §7: a decision whose outcome was queued puts the proposal in
-      // the decision queue, keyed by proposal id, storing the full body of
-      // the decision entry that queued it. The literal outcome string is
-      // not pinned down (§2 says "queued", §7's gate returns "queue"), so
-      // both are accepted (GAPS.md #7; no check covers a queued outcome).
-      if (
-        (body.outcome === "queued" || body.outcome === "queue") &&
-        typeof body.proposal_id === "string"
-      ) {
+      // §2.1 / §7 (as amended after GAPS.md #7, and aligned to the
+      // reference fold in slice 19): the stored literal for a
+      // queueing decision is "queued"; the fold is an if/elif chain
+      // — a queued body enters the queue under its proposal_id
+      // (value = the full body), and only a non-queued body
+      // carrying releases / rejects / expires removes that id.
+      if (body.outcome === "queued" && typeof body.proposal_id === "string") {
         state.decision_queue[body.proposal_id] = body as Json;
-      }
-      // §7 / §10.4: releases / rejects / expires each carry the proposal id
-      // of the queue item they close, exactly like `releases` does.
-      for (const field of ["releases", "rejects", "expires"]) {
-        const target = body[field];
-        if (typeof target === "string") delete state.decision_queue[target];
+      } else if (typeof body.releases === "string") {
+        delete state.decision_queue[body.releases];
+      } else if (typeof body.rejects === "string") {
+        delete state.decision_queue[body.rejects];
+      } else if (typeof body.expires === "string") {
+        delete state.decision_queue[body.expires];
       }
       break;
     }
