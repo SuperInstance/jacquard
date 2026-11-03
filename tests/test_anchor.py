@@ -158,6 +158,14 @@ def test_truncation_below_anchor_fails(tmp_path, key_path, small_log):
     assert result["outcome"] == "failed"
     assert result["failure"]["stage"] == "prefix"
     assert result["failure"]["checkpoint_seq"] == 0
+    # The reported lengths stay arithmetically consistent even
+    # on failure: tail == log_length - anchored_length (the
+    # failure happened at the first checkpoint, so nothing is
+    # counted anchored).
+    assert result["anchored_length"] == 0
+    assert result["unanchored_tail"] == 4
+    assert result["log_length"] - result["anchored_length"] \
+        == result["unanchored_tail"]
 
 
 def test_anchor_refuses_backwards_and_broken(tmp_path, key_path,

@@ -368,6 +368,8 @@ def verify_entries(entries, envelopes, pubkey_hex, schedule=None):
         body = envelope["body"]
         result["checkpoints_checked"] += 1
         if body["log_length"] > len(entries):
+            result["unanchored_tail"] = len(entries) \
+                - result["anchored_length"]
             result["outcome"] = "failed"
             result["failure"] = {
                 "stage": "prefix",
@@ -381,6 +383,8 @@ def verify_entries(entries, envelopes, pubkey_hex, schedule=None):
             return result
         actual = head_at(entries, body["log_length"])
         if actual != body["head_hash"]:
+            result["unanchored_tail"] = len(entries) \
+                - result["anchored_length"]
             result["outcome"] = "failed"
             result["failure"] = {
                 "stage": "prefix",
