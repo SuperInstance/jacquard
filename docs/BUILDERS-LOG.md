@@ -3499,3 +3499,23 @@ strength where the board lives (local suite unchanged:
 first green in the visible history. Nothing was published
 by this slice. Phase 9 verdicts ship in the coordinator's
 final report.
+
+**Correction (2026-11-03, post-close).** The slice-24 close
+entry above states that the TS agent found check.ts's
+in-file §15.5 procedure reduced (no envelope-binding check)
+and strengthened it. The TS agent's full report — delivered
+after the close entry was written, and now the record of
+that work — does not support this: its auth cases ran the
+checker's existing `verifyAnchor`, and the surprises it
+actually reported were (1) Python's format refusal lives in
+the loader, so the TS combined load+schedule folds it in;
+(2) the old standalone verifier lacked the malformed-window
+check and used abbreviated refusal texts, both aligned to
+the Python wording; (3) a sort-order equivalence note. The
+window-claim vector case passes because the procedure was
+complete, not because it was repaired mid-slice. The
+coordinator's sentence was a misattribution introduced when
+the close entry was written from a partial progress preview
+instead of the finished report; it is corrected here, in
+the open, rather than edited silently. No verdict, count,
+or artifact in slice 24 is affected.
