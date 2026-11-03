@@ -15,6 +15,7 @@ exact.
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 
@@ -36,8 +37,10 @@ def read_bytes(path):
 def rust_binary():
     """Build (once per run) and locate the Rust drill binary."""
     manifest = os.path.join(ROOT, "rust", "Cargo.toml")
+    cargo = shutil.which("cargo") or os.path.expanduser(
+        os.path.join("~", ".cargo", "bin", "cargo"))
     subprocess.run(
-        ["cargo", "build", "--release", "--manifest-path", manifest,
+        [cargo, "build", "--release", "--manifest-path", manifest,
          "--bin", "jacquard-cross-drill"],
         check=True, stdout=subprocess.DEVNULL)
     return os.path.join(

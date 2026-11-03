@@ -1,11 +1,11 @@
 cross-language drill (slice 19; three kernels since slice 20) — fixture.json driven through all three sequencers
 ops in stream: 38
 log entries: 52
-python log sha256: 0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261
-ts     log sha256: 0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261
-rust   log sha256: 0cde737cc8235d7b621ef454fc7738d6907d6ad1d7484f0068d376c87b4d6261
+python log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
+ts     log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
+rust   log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
 logs byte-identical (all three): True
-python verdicts sha256: 021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333
-ts     verdicts sha256: 021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333
-rust   verdicts sha256: 021bce65f811d8c78a45ebbe8ec42964cf03b0080f4213946ade5491de668333
+python verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
+ts     verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
+rust   verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
 verdicts byte-identical (all three): True
