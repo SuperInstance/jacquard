@@ -3455,3 +3455,47 @@ and a dry run can never publish:
   (granular token). Nothing is published by this slice:
   the workflows are dry-run-dispatched and the publish steps
   verified skipped.
+
+**Slice 26 close (2026-11-03).** The three workflows are
+live on main and dry-run-verified. Dry runs (all
+workflow_dispatch, ref v1.0.1, dry_run=true, publish steps
+skipped): PyPI run 41566534845 SUCCESS (sdist + wheel built
+from the tag, twine check passed); npm run 41566539469
+SUCCESS (conformance checker green on the tagged tree,
+tarball packed); crates run 41566723926 SUCCESS (cargo
+package from the tag, guard asserted). The first crates
+attempt (41566574984) failed on the coordinator's own
+artifact path (target/ vs rust/target/) — fixed, re-ran,
+and the failed run stays in the record. Artifact inspection
+against the local 1.0.1 builds: wheel and sdist file
+inventories IDENTICAL (28 / 67 files), METADATA
+jacquard-kernel 1.0.1; npm tarball exactly the 6 expected
+files; crate jacquard-kernel-1.0.1.crate (17 files). One
+workflow-authoring fact worth keeping: the `secrets` context
+is NOT valid in step `if:` conditions (GitHub 422s the whole
+dispatch) — the crates workflow detects the bootstrap
+token's presence in a gated step and branches on its output.
+
+docs/PUBLISHING.md carries the owner steps in order with
+the exact strings: step 0 anchor re-wrap (both key files
+named, verify-by-pubkey before deleting the interim file),
+PyPI pending publisher (five fields), crates.io bootstrap
+token -> CARGO_REGISTRY_TOKEN -> dispatch -> Trusted
+Publisher registration -> revoke + delete, npm granular
+token -> NPM_TOKEN -> dispatch, and the shelf listing.
+
+**Found on the way, and fixed in this slice:** GitHub CI
+has been red since the Phase 8 era — ci.yml installed only
+pytest while the suite has needed cryptography since slice
+18, and every local verification environment had it
+preinstalled, so no local green ever exercised the CI
+definition. Fixed (install line), which exposed the next
+layer: the probe-A real-corpus fixture ERRORed where the
+sibling agent-inbox checkout is absent instead of skipping
+(the suite's own pattern elsewhere). Fixture now skips with
+a reason when the corpus is absent and runs at full
+strength where the board lives (local suite unchanged:
+318 passed + 7 skipped). CI run 41567006216: SUCCESS — the
+first green in the visible history. Nothing was published
+by this slice. Phase 9 verdicts ship in the coordinator's
+final report.
