@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.5
+# Jacquard specification — version 0.6
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -37,13 +37,13 @@ The log is an append-only sequence of entries. State is a fold of
 the log; the log is never rewritten.
 
 Entry: `{"seq": int, "prev": hex64, "kind": str, "body": object,
-"spec": "jacquard/0.5"}`. The entry hash is the hash of the entry.
+"spec": "jacquard/0.6"}`. The entry hash is the hash of the entry.
 `prev` is the previous entry hash; the genesis entry has
 `prev` = 64 zero characters. `seq` starts at 0 and increments by 1.
 
 Entry kinds: `proposal`, `decision`, `definition`, `execution`,
 `sense`, `checkpoint`, `machine`, `transition`, `budget`, `price`,
-`rule`, `import`. The entry hash is the hash (section 1) of the
+`rule`, `import`, `seal`. The entry hash is the hash (section 1) of the
 entry object WITHOUT the hash field itself: exactly
 `{"seq", "prev", "kind", "body", "spec"}`. The golden vectors
 record entries as `{"seq", "kind", "body", "hash"}`; `prev` and
@@ -135,6 +135,11 @@ optional may be absent; a fold uses only the fields named here.
 - `import`: `{"producer", "bundle_hash", "format",
   "exported_from"}`; NO fold effect. Imported configuration is
   applied by a separate `execution` entry (section 14).
+- `seal`: `{"producer", "seals"}`; NO fold effect. A seal
+  commits, in the log itself, to the redaction of designated
+  fields in a later export (section 16). The folded state and
+  the state hash are exactly as if the entry were absent; the
+  entry's force is entirely in export verification.
 
 ## 3. Envelopes and verdicts
 
@@ -143,7 +148,7 @@ Producers submit envelopes:
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
 the original verdict and appends nothing. `spec_seal` is the hash
-of the raw UTF-8 bytes of the string `jacquard-spec/0.5` (not of its canonical JSON form). The envelope id used in the log
+of the raw UTF-8 bytes of the string `jacquard-spec/0.6` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
 Envelope kinds: `proposal` (body: `{"requests": [request]}`,
@@ -1095,11 +1100,14 @@ verifier must refuse it:
   checkpoint anchors — a prefix length.
 - `head_hash`: hex64, the hash of the entry at `log_length - 1`,
   or 64 zero characters when `log_length` is 0.
-- `spec`: the string `jacquard/0.5` — the version of *this
-  section* under which the checkpoint was issued. The anchored
-  log's entries may carry any earlier spec version; the
-  checkpoint's `spec` is the anchoring protocol's version, not an
-  entry's.
+- `spec`: the version of *this section* under which the
+  checkpoint was issued — `jacquard/0.5` for checkpoints issued
+  under spec 0.5, `jacquard/0.6` from spec 0.6 on. The anchor
+  format (`jacquard/anchor/1`) did not change in 0.6, so a
+  verifier conforming to this section must accept either value
+  and must refuse any other. The anchored log's entries may
+  carry any earlier spec version; the checkpoint's `spec` is
+  the anchoring protocol's version, not an entry's.
 - `prev_checkpoint`: hex64 or null — the section-1 hash of the
   previous checkpoint *body* for the same `log_id`; null if and
   only if `checkpoint_seq` is 0. The checkpoint sequence is
@@ -1145,52 +1153,109 @@ that log, however it was obtained.
 ### 15.3 The signing key
 
 One Ed25519 keypair per operator (a deployment may use one per
-log; the reference tooling uses one per operator).
+log; the reference tooling uses one per operator). Key
+management is a product surface, not a bare file: the private
+key is passphrase-protected at rest, rotation is a recorded
+event in the witness transport with continuity of verification,
+and the compromise story below is the one the tooling actually
+implements.
 
-- *Generation.* The operator generates the keypair once, with the
+- *Generation.* The operator generates the keypair with the
   anchor tool's `keygen` verb. The reference implementation uses
   the `cryptography` package — the anchoring tooling's only
   non-standard-library dependency, confined to that tooling; the
   kernel remains zero-dependency and imports none of it.
-- *Where the private key lives.* At
+- *Where the private key lives, and how it is protected.* At
   `~/.jacquard/anchor-key.ed25519` (a PEM-encoded PKCS#8 private
-  key, file mode 0600), outside every repository. The tool refuses
-  to overwrite an existing key, refuses a key path inside a
-  version-controlled tree, and never prints, logs or transmits
-  the private key. The key file is unencrypted at rest: its
-  protection is the filesystem mode and its location outside any
-  repo; an operator who needs encryption at rest applies it
-  outside the tool. The public key is not secret: it is published
-  in the anchor transport (section 15.4) and carried in every
-  checkpoint envelope.
+  key, file mode 0600), outside every repository. The tool
+  refuses to overwrite an existing key and refuses a key path
+  inside a version-controlled tree. From spec 0.6 the key is
+  **encrypted at rest** (PKCS#8 with the cryptography package's
+  best-available encryption, currently scrypt + AES-256-CBC):
+  `keygen` requires a passphrase and refuses to write an
+  unencrypted key. The passphrase is supplied at run time only —
+  from the `JACQUARD_ANCHOR_PASSPHRASE` environment variable, or
+  by an interactive prompt on the terminal when no variable is
+  set. It is never taken from a command-line argument (argv is
+  world-readable on a multi-user machine), never printed, never
+  logged, and never committed. Every verb that signs (`anchor`,
+  `rotate`) unlocks the key per run; nothing caches it. A key
+  file written before 0.6 is unencrypted PEM: the tool still
+  loads it (a deployment mid-migration must be able to anchor),
+  but `keygen` and `rotate` never produce one, and rotating —
+  the migration path — replaces it with an encrypted successor.
+  The public key is not secret: it is published in the anchor
+  transport (section 15.4) and carried in every checkpoint
+  envelope.
 - *What the signature does and does not rest on.* A verifier
   trusts a public key pinned out-of-band (obtained from the
-  operator, or from the anchor repository's README through a
-  channel the verifier already trusts). The `pubkey` field in an
-  envelope is a convenience for matching, never self-trust: a
-  verifier must refuse a checkpoint whose envelope key is not the
-  pinned key.
-- *Compromise.* Whoever holds the private key can issue
-  checkpoints for any prefix of any log — including checkpoints
-  that appear to anchor a forged history. Compromise does not let
-  an attacker rewrite checkpoints *already published* to a public
-  transport without detection by anyone who mirrored that
-  transport (section 15.4); it poisons checkpoints issued after
-  the compromise. There is no trusted clock in a checkpoint (the
-  body carries no wall-clock field — deliberately, for the reason
-  stated in section 15.4), so "issued before the compromise"
-  cannot be proven from the document alone; it rests on the
-  transport's publication record.
-- *Rotation.* Rotation is a new keypair plus a rotation note in
-  the anchor transport naming the old key revoked, the new key,
-  and the `checkpoint_seq` from which the new key signs (per
-  `log_id`). Checkpoints before that sequence verify under the
-  old key; checkpoints from it on verify under the new key, and a
-  verifier must refuse an old-key checkpoint at or after the
-  rotation sequence. The reference tooling takes the pinned key
-  (and, after a rotation, both keys with the boundary) as
-  explicit verifier inputs; it does not silently follow a key
-  change.
+  operator, or from the anchor repository's key registry through
+  a channel the verifier already trusts). The `pubkey` field in
+  an envelope is a convenience for matching, never self-trust:
+  a verifier must refuse a checkpoint whose envelope key is not
+  the scheduled key for its sequence (below).
+- *The key registry.* The anchor transport carries a registry
+  file, `keys.json` at the transport root, of the form
+  `{"format": "jacquard/anchor-keys/1", "keys": [...]}`. Each
+  entry is `{"pubkey": hex64, "status": "active" | "retired",
+  "signs_from": {<log_id>: first checkpoint_seq},
+  "signs_until": {<log_id>: last checkpoint_seq}}`; the two
+  maps may omit a `log_id`, meaning unbounded on that side.
+  Entries are ordered by first use. The registry is how a
+  verifier learns the *schedule*: for a presented log, the key
+  scheduled for a checkpoint is the entry whose window for that
+  `log_id` covers its `checkpoint_seq`. Windows for one `log_id`
+  must partition its checkpoint sequence — every sequence is
+  covered by exactly one key — or the registry is malformed and
+  a verifier must refuse it. The registry is data in a public,
+  append-only transport: its own git history witnesses when
+  each key was published, and a registry that contradicts the
+  checkpoints actually published (a window claiming a key signed
+  a sequence its envelopes do not carry) fails verification of
+  those checkpoints, because the envelope key must equal the
+  scheduled key. `pubkey.txt` is retained for compatibility: it
+  names the *current* active key, nothing more.
+- *Rotation.* Rotation is: generate a successor keypair
+  (encrypted, as above); publish the successor's public key in
+  the registry with `signs_from` set, for each `log_id` being
+  rotated, to the next unpublished `checkpoint_seq`, and set
+  the predecessor's `signs_until` for that `log_id` to the last
+  sequence it signed; publish a rotation note in the transport
+  README recording the same boundary in prose; then sign the
+  next checkpoint — at or after the boundary — with the
+  successor. The checkpoint body's `prev_checkpoint` chain is
+  key-agnostic: it links the last old-key checkpoint to the
+  first new-key checkpoint, so the history's continuity is
+  itself hash-chained across the rotation. Checkpoints before
+  the boundary verify under the old key, checkpoints from the
+  boundary under the new, and a verifier must refuse an old-key
+  checkpoint at or after it (and a new-key checkpoint before
+  it). The retired private key is kept, encrypted, outside any
+  repository, only as long as re-anchoring under it could ever
+  be required — which, once the boundary is published, is
+  never: a deployment should destroy it, and says in the
+  rotation note whether it did. The reference tooling takes the
+  pinned key(s) as explicit verifier inputs — `--pubkey`, or
+  `--rotation-seq` + `--rotated-pubkey`, or the registry via
+  `--keys` — and never silently follows a key change.
+- *Compromise.* Whoever holds the private key *and* its
+  passphrase can issue checkpoints for any prefix of any log —
+  including checkpoints that appear to anchor a forged history.
+  Encryption at rest is what the passphrase buys: a copied key
+  file alone is not the key. Compromise does not let an attacker
+  rewrite checkpoints *already published* to a public transport
+  without detection by anyone who mirrored that transport
+  (section 15.4); it poisons checkpoints issued after the
+  compromise. The response to a suspected compromise is a
+  rotation (above) plus a compromise note in the transport
+  naming the first `checkpoint_seq` (per `log_id`) from which
+  the old key's checkpoints must no longer be trusted; verifiers
+  treat that note, read through a trusted channel, as a
+  registry amendment. There is no trusted clock in a checkpoint
+  (the body carries no wall-clock field — deliberately, for the
+  reason stated in section 15.4), so "issued before the
+  compromise" cannot be proven from the document alone; it
+  rests on the transport's publication record.
 
 ### 15.4 Cadence and transport
 
@@ -1236,8 +1301,10 @@ detectable in exactly the way a silent log rewrite is not.
 ### 15.5 Verification
 
 Inputs: a presented log; a checkpoint history (a set of
-checkpoint documents, from any conforming transport); a pinned
-public key (plus a rotation boundary, if one applies). No private
+checkpoint documents, from any conforming transport); the pinned
+key schedule for the log — a single public key, a key plus a
+rotation boundary, or the key registry of section 15.3 read from
+the transport. No private
 key, no kernel state, and no trust in the log's holder are
 required. The procedure, in order:
 
@@ -1247,10 +1314,11 @@ required. The procedure, in order:
    require the sequence to be 0, 1, 2, … with no gaps, each
    body's `prev_checkpoint` recomputing to the previous body's
    hash (null at 0), each body's keys exactly the eight of
-   section 15.1 with `format` and `spec` as stated, each
-   envelope's `pubkey` equal to the pinned key (respecting a
-   stated rotation boundary), and each signature verifying over
-   the body's canonical bytes. Any failure is FAILED, naming the
+   section 15.1 with `format` as stated and `spec` either
+   `jacquard/0.5` or `jacquard/0.6` (section 15.1), each
+   envelope's `pubkey` equal to the key the schedule assigns to
+   its `checkpoint_seq` (section 15.3), and each signature
+   verifying over the body's canonical bytes. Any failure is FAILED, naming the
    offending `checkpoint_seq`.
 2. *Genesis check.* If the presented log is non-empty, its first
    entry's hash must equal the history's `log_id` (it does by the
@@ -1312,3 +1380,235 @@ defence there, as section 15.4 states. A checkpoint for a log
 that is never presented proves only that its head was claimed by
 the key holder; the verification of section 15.5 is what turns a
 claim into evidence.
+
+## 16. Sealed exports
+
+Anchoring (section 15) makes a log verifiable without trusting
+its holder. It says nothing about *disclosure*: a log that can
+be verified can also be read, and some fields in a real log —
+who released a queued item, whose name a proposal carries —
+should not travel with every copy. This section defines
+*sealing*: designated fields are redacted in an **export** such
+that the export still verifies. Sealing is export tooling,
+outside the kernel, like anchoring: the kernel never seals, and
+the log format changes only by the addition of the `seal` entry
+kind (section 2), which has no fold effect.
+
+The load-bearing rule: **redaction is a view, not a rewrite.**
+The anchored log itself is never altered by sealing. A seal is
+committed *in the log* before any export relies on it, so the
+decision to redact — which fields, under which class — is
+itself part of the anchored record, not an edit performed on
+the way out.
+
+### 16.1 Seal entries
+
+A `seal` entry's body is `{"producer": str, "seals": [seal]}`,
+where each seal is an object with exactly these keys:
+
+- `entry_seq`: integer — the entry whose field is sealed. It
+  must be strictly less than the seal entry's own `seq` (a seal
+  names history, never the present or the future), and the
+  named entry's kind must not be `seal` (seals do not seal
+  seals).
+- `field`: a dotted path resolving inside the named entry's
+  *body* (for example `released_by`, or `requests.command`).
+  Structural fields (`seq`, `prev`, `hash`, `spec`, `kind`) are
+  not sealable: paths resolve in the body only. Each path
+  element names an object key, or a non-negative integer index
+  into an array.
+- `class`: a short string naming the *class* of the sealed
+  value (for example `operator-identity`, `personal-name`,
+  `credential`). The class is disclosed by design — an export
+  names what classes of field were sealed, without revealing
+  values — and it is therefore metadata: a coarse class over a
+  population of one can identify. Deployments choose classes
+  coarse enough for their population, and section 16.4 states
+  the limit plainly.
+- `mode`: `hash` or `keyed` (below).
+- `commitment`: hex64, binding the sealed value as follows.
+  Let `preimage` be the object `{"domain": "jacquard/seal/1",
+  "entry_seq": <entry_seq>, "field": <field>, "value": <the
+  original value>}`. In `hash` mode the commitment is the
+  section-1 hash of `preimage`. In `keyed` mode the commitment
+  is the hex HMAC-SHA-256, under a *redaction key* held by the
+  operator outside any repository, of the canonical bytes of
+  `preimage`. The modes differ in who can check a commitment
+  against a candidate original (section 16.3) and in what the
+  commitment hides (section 16.4); they are identical in
+  structure everywhere else.
+
+A seal is a claim by its producer, committed at its entry's
+position in the chain: the entry hash of the seal entry — and
+therefore, once anchored, the checkpoint head — binds the exact
+set of (entry, field, class, mode, commitment) tuples. A seal
+computed over a *different* value than the field actually holds
+is a lie the log's holder told in advance; it is detectable by
+anyone who later holds both the original log and (for `keyed`
+mode) the redaction key, and section 16.4 is explicit that
+export verification alone does not detect it.
+
+### 16.2 The export document
+
+A redacted export is a single JSON document (the canonical
+bytes of the object, plus a newline, in file form):
+
+- `format`: the string `jacquard/redacted-export/1`.
+- `log_id`: hex64, the source log's identity (section 15.2).
+- `source_length`: the length of the log the export was made
+  from, seal entries included.
+- `exported_length`: the number of entries the export carries.
+  An export carries a **prefix** of its source — entries
+  `0 .. exported_length - 1`, contiguous, in order — never a
+  selection. Prefix-only is what makes omission checkable:
+  dropping a seal entry (or any entry) breaks the sequence,
+  the `prev` chain, and the head comparison of section 16.3.
+- `seal_set_hash`: the section-1 hash of the list of *applied*
+  seals — every seal in the carried seal entries whose
+  `entry_seq` is below `exported_length` — each represented as
+  `{"entry_seq", "field", "class", "mode", "commitment"}`,
+  sorted by (`entry_seq`, `field`). A verifier recomputes it;
+  an export whose seals were quietly edited fails here before
+  any entry is examined.
+- `entries`: the carried entries. Each entry is the original
+  entry object (`seq`, `prev`, `kind`, `body`, `spec`, `hash`)
+  with exactly one change: at each sealed position, the value
+  is replaced by the *marker* object `{"sealed": <commitment
+  hex64>, "class": <class>}`. The entry's `hash` field is the
+  **original** entry hash, retained verbatim — it is the hash
+  of the unredacted entry, and a redacted body cannot recompute
+  it. Nothing else differs: unsealed fields, unsealed entries,
+  order, and hashes are the original's.
+
+An export with no seals applied is the identity view; the
+format still holds and verification reduces to section 15.5
+over the carried prefix.
+
+### 16.3 Export verification
+
+Inputs: an export document; a checkpoint history and key
+schedule as in section 15.5; optionally the redaction key (for
+`keyed` commitments). No trust in the export's presenter is
+required. The procedure, in order:
+
+1. *Header.* `format` as stated; `log_id` equals the genesis
+   entry's retained hash (all zeros if the export is empty);
+   `exported_length` equals the number of carried entries and
+   does not exceed `source_length`; `seal_set_hash` recomputes
+   from the seal entries carried in the export (a seal naming
+   an entry at or beyond `exported_length` is not applied and
+   does not enter the set). Any failure is FAILED (header).
+2. *Linkage.* Carried entries are in `seq` order `0, 1, 2, …`
+   and each entry's `prev` equals the previous entry's retained
+   `hash` (genesis `prev` is all zeros). Any failure is FAILED
+   (linkage).
+3. *Unsealed entries recompute.* For every carried entry with
+   no sealed position: the section-2 hash of
+   `{seq, prev, kind, body, spec}` must equal the retained
+   `hash`. Seal entries are unsealed by construction (section
+   16.1) and are checked here like any other entry. Any failure
+   is FAILED, naming the entry's `seq`.
+4. *Sealed entries are consistent.* For every carried entry
+   with sealed positions: each position must carry a marker,
+   the marker's commitment and class must exactly match an
+   applied seal for that (`entry_seq`, `field`), and every
+   applied seal must be used by exactly one marker — a sealed
+   field presented in clear, an unsealed field replaced by a
+   marker, and a marker with no committed seal are each FAILED,
+   naming the entry and field. The retained hash of a sealed
+   entry is *not* recomputed; it is authenticated transitively:
+   the next entry's `prev` names it, every later unsealed entry
+   recomputes over a chain that passes through it, and step 5
+   compares the resulting heads against signed checkpoints.
+   Precisely: the binding comes from linkage + anchoring; this
+   step is a consistency check between the view and the seals
+   the log committed, not a proof by itself.
+5. *Anchor comparison.* Run the checkpoint-history
+   authentication of section 15.5 step 1 unchanged, then the
+   prefix comparison of step 4 using the retained hashes:
+   for each checkpoint with `log_length` at or below
+   `exported_length`, the retained hash at that length must
+   equal the checkpoint's `head_hash`; the first mismatch is
+   FAILED, naming that checkpoint as first divergent.
+   Checkpoints beyond `exported_length` are out of scope for a
+   prefix export and are reported as `checkpoints_beyond`, not
+   treated as truncation (the export declares its prefix; a
+   presented *log* that stops short of an anchored length is
+   truncation, section 15.5 — an export that declares a shorter
+   prefix is a view of one).
+6. *Commitment checking (optional, stated in the result).* A
+   verifier holding the original log checks each applied seal's
+   commitment against the true field value: directly in `hash`
+   mode, with the redaction key in `keyed` mode. A verifier
+   without the original checks consistency only (steps 1–5).
+   The result states which was done: `commitments_checked` is
+   `full` (an original was supplied and every commitment
+   recomputed), `keyed` (the redaction key was supplied and the
+   original — keyed commitments cannot be checked without
+   both), or `consistency` (neither).
+7. *Outcome.* Exactly one of: `verified` (every checkpoint at
+   or below `exported_length` passed and the greatest anchored
+   length equals `exported_length`), `verified_to_anchor`
+   (checkpoints passed; the result reports `anchored_length`
+   and `unanchored_tail` = `exported_length -
+   anchored_length` as distinct numbers), `unanchored` (no
+   checkpoint applies to this `log_id`), or `failed` (with the
+   stage and the first divergent checkpoint or entry named) —
+   the same vocabulary as section 15.5, never a bare boolean.
+   The result also reports `seals_applied` (count),
+   `seals_anchored` (true iff every applied seal's seal entry
+   lies within the anchored prefix — a seal in the unanchored
+   tail is a commitment only the log's holder vouches for
+   until the next checkpoint covers it), and
+   `commitments_checked` as above.
+
+Tamper evidence, stated exactly: flipping a marker's commitment
+fails step 4 (no committed seal matches); editing the matching
+seal fails step 3 (the seal entry no longer recomputes) or step
+1 (the seal-set hash); changing a retained hash fails step 2 or
+step 5; changing any unsealed field fails step 3. Rebuilding a
+fully consistent forgery requires a chain whose head at an
+anchored length equals the signed checkpoint's — a preimage
+attack on SHA-256 — or the anchor key.
+
+### 16.4 Honest limits
+
+Sealing proves that a redacted view is a faithful redaction —
+under committed seals — of an anchored log. It does not prove
+more, and this section states the rest.
+
+- **A commitment is a binding, not an encryption.** In `hash`
+  mode, anyone holding the export can test candidate values
+  against a commitment; for low-entropy values (a role string,
+  a name from a small population) the value is recoverable by
+  enumeration and the seal hides nothing — it only stops the
+  value propagating in clear and proves consistency. `keyed`
+  mode removes the enumeration attack for parties without the
+  redaction key, at the price that those parties get
+  consistency, not correctness (step 6). Where a value must
+  stay secret from the export's audience outright, the honest
+  options are a coarser export (do not carry that entry range)
+  or no export; sealing is not a confidentiality primitive.
+- **The class is disclosed.** An export names the classes of
+  field sealed, as section 16.1 states; over a small population
+  a class can identify. That is a stated tradeoff of making the
+  redaction itself auditable, not an oversight.
+- **Seals in the tail are unanchored.** Until a checkpoint
+  covers the seal entry, `seals_anchored` is false and the seal
+  set rests on the log holder's word, exactly like the tail it
+  sits in (section 15.4). An audience that needs anchored seals
+  waits for the next anchoring run; the verification result
+  says which case it is in, numerically.
+- **The operator chose the seals.** Sealing is the operator's
+  redaction decision, committed and therefore auditable, but
+  nothing forces an operator to seal a field an audience
+  believes was sealed. The seal set is visible in the log; a
+  dispute about what *should* have been sealed is a governance
+  question the record informs, not one the mechanism settles.
+- **The public demonstration seals public values.** The
+  reference live run seals fields of the published proof-run
+  log, whose values are already public; it demonstrates the
+  mechanics and the verification, and claims no confidentiality
+  for those values. The confidentiality-relevant case — a
+  private log, a shared export — is the design's target, and
+  its limits are the ones above.

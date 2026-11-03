@@ -2329,3 +2329,109 @@ from fresh clones of both public repos, on the Oracle:
   `~/.jacquard/anchor-key.ed25519` on the Oracle and nowhere
   else (the single diff match for its filename is prose
   stating where it lives, as the spec requires).
+
+### Slice 21 — design entry (2026-11-02): beachhead 2 remainder
+
+Phase 8 slice 21, three pieces: key management as a product
+surface, PII/redaction as a sealing view, and a compliance
+mapping. This entry is the design, written before the code, as
+the brief requires (§15.3 is rewritten in the same commit, so
+the spec states the design before the implementation exists).
+Starting state: main@458851d, spec 0.5, Python 285 passed +
+7 skipped, TS 13/0/0; the live anchors setup is one unencrypted
+operator key, checkpoints seq 0/1 over proof-run-2/kernel at
+lengths 250/507 under pubkey 1aa240ac…b3072be5.
+
+**Version: spec 0.5 → 0.6.** Piece 2 changes the format (a new
+entry kind, a new export document), so the bump is earned, not
+ceremonial. The anchor format does NOT change: the checkpoint
+body keeps exactly its eight keys — no key id is added to the
+signed body (the strongest continuity property available, and
+the brief's conditional TS-verifier obligation is met the other
+way: verification semantics DO change, via the key schedule, so
+the TS verifier is updated anyway). Checkpoints issued under
+0.5 remain valid: §15.1 now states a verifier accepts `spec`
+`jacquard/0.5` or `jacquard/0.6` in a checkpoint body. New log
+entries carry `jacquard/0.6`; the golden vectors regenerate.
+The cross-drill fixtures are committed evidence of the 0.5
+drill and are NOT regenerated — they record what ran under
+0.5; the drill itself is re-run as a suite check, not re-filed
+as evidence. (If the drill disagrees under 0.6 that is a spec
+bug by the standing rule; watch for it at the test pass.)
+
+**Piece 1 — keys.** §15.3 rewritten to the built design:
+(a) keys are PKCS#8-encrypted at rest (cryptography's
+best-available encryption); the passphrase arrives via the
+`JACQUARD_ANCHOR_PASSPHRASE` environment variable or a tty
+prompt — never argv, never logged; signing verbs unlock per
+run. `keygen`/`rotate` refuse to write an unencrypted key; a
+pre-0.6 unencrypted key still loads (migration must be able to
+anchor) but is exactly what rotation replaces. (b) Rotation
+continuity without touching the signed body: the witness repo
+gains `keys.json`, a registry whose per-`log_id` `signs_from` /
+`signs_until` windows partition each log's checkpoint sequence;
+the envelope `pubkey` must equal the scheduled key, so the
+registry cannot rewrite history — it can only describe it, and
+the `prev_checkpoint` hash chain (key-agnostic) links across
+the boundary. The verifier learns the schedule from `--pubkey`,
+from `--rotation-seq` + `--rotated-pubkey` (kept), or from the
+registry via `--keys` (new). (c) The rotation is executed on
+the REAL setup: successor key generated under an interim
+passphrase held only in a mode-0600 file outside any repo
+(coordinator batches the owner's re-wrap), checkpoint seq 2 at
+length 507 signed by the successor, both keys + windows in the
+witness repo, README rotation note, `pubkey.txt` advanced to
+the successor. Cold verification from fresh clones of both
+public repos closes the piece.
+
+**Piece 2 — sealing (§16, new).** Design reviewed before
+implementation by a hosted model panel of one (DeepInfra
+DeepSeek-V4.1-Flash, one hostile-review pass over the format;
+material use logged here per the brief). Four of its attacks
+changed the design: (1) "no selective omission" was circular
+for cherry-picked exports → exports are PREFIX-ONLY, so an
+omitted seal entry breaks seq/prev/head like any omission;
+(2) the seal set is committed twice — in the log and as
+`seal_set_hash` in the export header, recomputed by the
+verifier; (3) unanchored-tail seals are a real weakness →
+verification reports `seals_anchored` explicitly, and the live
+run additionally produces a demonstration checkpoint covering
+the seal entry so the fully-anchored case is exercised, not
+just described; (4) the soundness claim is stated precisely —
+binding comes from linkage + anchor heads, the marker check is
+consistency, sealed entries authenticate transitively. Two
+critique points were answered rather than adopted: class stays
+in the marker because the brief REQUIRES the export to name
+sealed classes (the metadata tradeoff is stated in §16.4, not
+hidden); and commitments come in two modes — `hash`
+(publicly checkable, hides nothing at low entropy — §16.4 says
+so in those words) and `keyed` (HMAC under an operator-held
+redaction key; unkeyed verifiers get consistency, keyed
+verifiers with the original get correctness). A seal names
+history only (target seq < seal seq), never a `seal` entry,
+and field paths resolve inside the target's body only, so
+structural fields are unsealable by construction. The fold
+ignores `seal` entries exactly as it ignores `import` entries;
+the state hash is untouched.
+
+Live-run shape (acceptance): the frozen proof log cannot grow
+seals (it is frozen), so the run builds a working log = the 507
+proof entries + one appended seal entry sealing the
+operator-identity fields the log actually carries
+(`released_by` ×26, `rejected_by` ×1 — `decided_by` in this log
+names rules, not people, and is not sealed). The redacted
+export verifies against the public anchors
+(`verified_to_anchor`, anchored 507, tail 1 — the tail IS the
+seal entry, stated not spun) and fully (`verified`, tail 0)
+against the demonstration checkpoint at 508. The unredacted
+working log and the frozen original both still verify. A
+tampered sealed field fails, in tests and in the run record.
+
+**Piece 3 — compliance mapping.** `docs/compliance-mapping.md`:
+the BUILT mechanisms mapped to SOC 2 CC6/CC7 and ISO 27001
+A.8/A.12 control shapes, labelled as a mapping, not a
+certification, with auditor-visible gaps named (key custody as
+operated — one operator, one machine, no HSM; no SIEM; no
+retention policy; no access review process). Written last,
+against what pieces 1–2 actually shipped.
+
