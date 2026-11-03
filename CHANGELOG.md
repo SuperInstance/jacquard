@@ -3,6 +3,34 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 1.2.2 — 2026-11-03
+
+Outside-test release (Phase 13): fixes for what working
+agents, mid-task on unrelated work, found — the runs and
+their grading are `docs/slice36-outside-test.md`; the
+fixes and the re-test are `docs/slice37-outside-test-fixes.md`.
+
+- **`jq submit`** — the operator CLI gains the generic
+  submission verb it was missing: a proposal JSON file
+  (or stdin) in, the kernel's verdict as JSON out, so the
+  batched-approvals flow can be driven end-to-end for a
+  user's own items. Submitting an already-decided
+  envelope replays the recorded verdict and changes
+  nothing (cross-process idempotency at the CLI layer;
+  the behaviour and its kernel context are specified in
+  the slice 37 report). Seven new tests
+  (`tests/test_jq_submit.py`); suite 347 passed,
+  7 skipped.
+- **Docs:** `docs/QUICKSTART.md` gains "Submit your own
+  proposal"; the README's drill gains the submission
+  block; the solo starter shows the real submission and
+  states the queueing model plainly (protected effects
+  queue; no exemption class exists; routine classes earn
+  auto-decision as standing rules); the README's Known
+  limitations and both affected starters state the fit
+  boundary the outside test measured — small,
+  single-process work does not need a governance kernel.
+
 ## 1.2.1 — 2026-11-03
 
 Documentation release. No code changes; the suite state is

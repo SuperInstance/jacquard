@@ -4052,3 +4052,41 @@ harness; consideration, fit judgement, adoption cost and
 verdicts are. Slice 37 takes the three actionable
 findings: the submit verb, the auto-allow demonstration,
 and fit-signalling honesty in the front-door docs.
+
+**Slice 37 — fixes and re-test (2026-11-03).** Findings
+classified in docs/slice37-outside-test-fixes.md. Shipped:
+(1) `jq submit` — the generic submission verb Run 4 found
+missing (+7 tests; suite 347 + 7). Building it exposed a
+kernel behaviour now on the record: the verdict cache is
+per-process, so cross-process duplicates of an identical
+envelope were re-decided (an allowed duplicate silently
+re-executed; a queued duplicate appended a decision and
+then crashed on machine-instance creation). The verb
+carries cross-process idempotency itself (recorded-verdict
+replay, `"duplicate": true`, log untouched — all three
+shapes pinned by tests); the kernel-level resubmission
+semantics are recorded as a design question for a future
+spec pass, not settled here. (2) Docs: the solo starter
+shows the real submission and states the queueing model
+(protected effects queue; no exemption class; routine
+classes earn auto-decision as standing rules); QUICKSTART
+gains "Submit your own proposal"; the README drill gains
+the submission block; the fit boundary both strong-fit
+agents measured is now stated in the README's limitations
+and both starters' Limits. The documented flow was run
+verbatim by the coordinator before the docs were
+committed (submit on a fresh log → queue → hash-bound
+approve → replay closed). (3) Re-test on the affected
+profile: primary PASS, exact a second time; the agent
+never visited the changed surfaces (it evaluated from
+background context — the harness limit the slice 36
+report names), so the surface re-test is recorded as
+INCONCLUSIVE, the narrowed rejection rationale (registry
+absence + honest scale) is the run's real signal, and no
+further agent was spawned to chase adoption. Registry
+publication remains the owner's batched step. Shipped as
+v1.2.2; addendum: docs/release-readiness-1.2.2.md.
+Phase 13 closes: four mid-work primaries passed, Jacquard
+adopted zero times and rejected with reasons that were
+verified where checkable — the outside has now been heard
+twice, and both times it priced the tool honestly.
