@@ -3306,3 +3306,15 @@ registry-grammar item from its not-built list,
 release-readiness addendum appended. Slice 24 ships as tag
 **v1.0.1**; cold-clone verification from the tag follows in
 the next entry.
+
+**Cold-clone verification from the tag (2026-11-03).**
+Fresh clone at v1.0.1 (c7f5a1c): Python suite 318 passed +
+7 skipped; TS checker 14 PASS; Rust checker 14 PASS (full
+cold build). Real-log registry verification from the tagged
+tree against a fresh anchors clone: gpu 91/91, proof 507/507
+(Python). Package shapes at 1.0.1: sdist + wheel
+(jacquard_kernel-1.0.1) build clean; npm pack 6 files /
+41.9 kB; cargo package compiles jacquard-kernel v1.0.1.
+Slice 24 verdict: PASS — the v1.0.0 known defect is fixed,
+proven on the real logs in all three implementations, and
+retired from both READMEs as a documented event.
