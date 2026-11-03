@@ -18,7 +18,8 @@
 # Nothing in this slice publishes anything.
 [package]
 name = "jacquard-kernel"
-version = "0.6.0"
+version = "1.0.0"
+license = "MIT"
 edition = "2021"
 rust-version = "1.74"
 description = "A supervised runtime kernel: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only hash-chained log. Rust port of the Jacquard kernel contract (spec 0.6)."

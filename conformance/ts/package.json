@@ -1,0 +1,25 @@
+{
+  "name": "jacquard-kernel",
+  "version": "1.0.0",
+  "description": "TypeScript implementation of the Jacquard kernel contract (spec 0.6): conformance port, checker, and anchor verifier.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperInstance/jacquard"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./jacquard.ts",
+    "./kernel": "./kernel.ts"
+  },
+  "scripts": {
+    "check": "node check.ts"
+  },
+  "files": [
+    "jacquard.ts",
+    "kernel.ts",
+    "check.ts",
+    "verify-anchor.ts",
+    "GAPS.md"
+  ]
+}

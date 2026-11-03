@@ -3,10 +3,14 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "jacquard"
-version = "0.6.0"
+name = "jacquard-kernel"
+version = "1.0.0"
 description = "A supervised runtime: untrusted producers propose, a small auditable kernel decides, every decision replays from an append-only log."
 requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[project.urls]
+Repository = "https://github.com/SuperInstance/jacquard"
 
 [tool.setuptools.packages.find]
 where = ["src"]
