@@ -1,0 +1,55 @@
+{
+ "student": "lfm2-1.2b",
+ "grade": "G1",
+ "grader": "slice45 R2 grader (p16-profile-grade)",
+ "base_heldout": 51.67,
+ "post_step_heldout": 83.33,
+ "delta_vs_base": 31.66,
+ "dose_percent_stored_basis": 0.00105,
+ "retention_at_step": {},
+ "retention_curve_full": {
+  "null": {
+   "G1": 51.67,
+   "G2": 30.0,
+   "G3": 31.67,
+   "G4": 12.5,
+   "G5": 81.0,
+   "G6": 0.0
+  },
+  "G1": {
+   "G1": 83.33
+  },
+  "G2": {
+   "G1": 70.0,
+   "G2": 71.67
+  },
+  "G3": {
+   "G1": 70.0,
+   "G2": 71.67,
+   "G3": 55.83
+  },
+  "G4": {
+   "G1": 70.0,
+   "G2": 71.67,
+   "G3": 55.83,
+   "G4": 9.17
+  },
+  "G5": {
+   "G1": 70.0,
+   "G2": 71.67,
+   "G3": 55.83,
+   "G4": 9.17,
+   "G5": 80.0
+  },
+  "G6": {
+   "G1": 70.0,
+   "G2": 71.67,
+   "G3": 55.83,
+   "G4": 9.17,
+   "G5": 80.0,
+   "G6": 0.0
+  }
+ },
+ "verdict": "YIELD",
+ "source_sequence_file": "grade-lfm2-sequence.json"
+}

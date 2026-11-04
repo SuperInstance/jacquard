@@ -1,0 +1,66 @@
+{
+ "student": "qwen3-0.6b",
+ "grade": "G3",
+ "grader": "slice45 R2 grader (p16-profile-grade)",
+ "base_heldout": 40.83,
+ "post_step_heldout": 40.0,
+ "delta_vs_base": -0.83,
+ "dose_percent_stored_basis": 0.00381,
+ "retention_at_step": {
+  "G1": {
+   "before": 40.0,
+   "after": 39.17,
+   "delta": -0.83
+  },
+  "G2": {
+   "before": 45.83,
+   "after": 36.67,
+   "delta": -9.16
+  }
+ },
+ "retention_curve_full": {
+  "null": {
+   "G1": 17.5,
+   "G2": 3.33,
+   "G3": 40.83,
+   "G4": 0.0,
+   "G5": 18.0,
+   "G6": 50.0
+  },
+  "G1": {
+   "G1": 47.5
+  },
+  "G2": {
+   "G1": 40.0,
+   "G2": 45.83
+  },
+  "G3": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0
+  },
+  "G4": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0
+  },
+  "G5": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0,
+   "G5": 22.0
+  },
+  "G6": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0,
+   "G5": 22.0,
+   "G6": 50.0
+  }
+ },
+ "verdict": "NO YIELD (held-out delta -0.83 < +3; also retention breach: G2 held-out 45.83 -> 36.67, -9.16)",
+ "source_sequence_file": "grade-qwen-sequence.json"
+}

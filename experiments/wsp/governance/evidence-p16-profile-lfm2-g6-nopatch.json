@@ -1,0 +1,4 @@
+{
+ "sha256": "e8f5ad4427fd75787b40addb0770a81d0cb9a9b510b7ddd2c36910f2c58744a6",
+ "summary": "NO PATCH declared by patcher for lfm2-1.2b G6 (NO YIELD, no patch to ratify). Probe reason from PATCHING-RECORD.md / patches/lfm2-1.2b/G6/NO-PATCH.md (record sha256 bound as this evidence hash): Two-layer: separation ||mu_c - mu|| = 0.76 vs ||mu|| = 98.4 (sim ceiling 0.742 only at scale >= 1), and the chain's Yes attractor beats ALLOW by +8.0 logits on 120/120 items (correct label row beats Yes on 0% at usable scales). Out-shouting an earlier patch through a 0.76-norm direction is not a family-1 patch. Grader chain pass-through held-out for this grade is in PROFILE-RESULTS.md."
+}

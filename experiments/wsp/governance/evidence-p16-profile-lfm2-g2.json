@@ -1,0 +1,4 @@
+{
+ "sha256": "e31d63a1b2340b040e4502acba093d46629268cdfe81b516fdaae50186a9e2a5",
+ "summary": "Grader scoring (Thor, harness sequence mode, results/grade-lfm2-1.2b-G2.json): LFM2-1.2B G2 held-out base 30.00 -> post-step 71.67 (+41.67), dose 0.00070%; retention at step: G1 held-out 83.33 -> 70.00 (-13.33), outside the +-2 band. Verdict NO YIELD (retention breach on G1)."
+}

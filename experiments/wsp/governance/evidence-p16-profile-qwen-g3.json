@@ -1,0 +1,4 @@
+{
+ "sha256": "72c542c1e8090c76c7a7b87ce0df280f1cdfcae82605a3fcfb801e96e5782189",
+ "summary": "Grader scoring (Thor, harness sequence mode, results/grade-qwen3-0.6b-G3.json): Qwen3-0.6B G3 held-out base 40.83 -> post-step 40.00 (-0.83), below the +3 yield bar, dose 0.00381%; retention at step: G1 40.00 -> 39.17 (-0.83, within band), G2 45.83 -> 36.67 (-9.16, breach). Verdict NO YIELD on both grounds independently."
+}

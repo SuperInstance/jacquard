@@ -1,0 +1,994 @@
+{
+ "n": 120,
+ "correct": 21,
+ "accuracy": 17.5,
+ "per_category": {
+  "copy_token": {
+   "n": 20,
+   "correct": 20,
+   "accuracy": 100.0
+  },
+  "last_word": {
+   "n": 5,
+   "correct": 0,
+   "accuracy": 0.0
+  },
+  "seq_next": {
+   "n": 25,
+   "correct": 0,
+   "accuracy": 0.0
+  },
+  "small_add": {
+   "n": 27,
+   "correct": 1,
+   "accuracy": 3.7
+  },
+  "yes_no_compare": {
+   "n": 43,
+   "correct": 0,
+   "accuracy": 0.0
+  }
+ },
+ "items": [
+  {
+   "id": "g1-held-001",
+   "category": "copy_token",
+   "gold": "kindle",
+   "raw_output": "kindle",
+   "normalised_output": "kindle",
+   "correct": true
+  },
+  {
+   "id": "g1-held-002",
+   "category": "seq_next",
+   "gold": "snow",
+   "raw_output": "rain",
+   "normalised_output": "rain",
+   "correct": false
+  },
+  {
+   "id": "g1-held-003",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 22 is greater than 16.",
+   "normalised_output": "yes 22 is greater than 16",
+   "correct": false
+  },
+  {
+   "id": "g1-held-004",
+   "category": "last_word",
+   "gold": "stove",
+   "raw_output": "sang",
+   "normalised_output": "sang",
+   "correct": false
+  },
+  {
+   "id": "g1-held-005",
+   "category": "copy_token",
+   "gold": "dapple",
+   "raw_output": "dapple",
+   "normalised_output": "dapple",
+   "correct": true
+  },
+  {
+   "id": "g1-held-006",
+   "category": "small_add",
+   "gold": "14",
+   "raw_output": "2 + 12 = 14",
+   "normalised_output": "2 + 12 = 14",
+   "correct": false
+  },
+  {
+   "id": "g1-held-007",
+   "category": "seq_next",
+   "gold": "36",
+   "raw_output": "The sequence is: **16, 21, 26, 31, ...**\n\nLet's look at the differences between consecutive terms:\n\n",
+   "normalised_output": "the sequence is: **16 21 26 31 ...** let's look at the differences between consecutive terms:",
+   "correct": false
+  },
+  {
+   "id": "g1-held-008",
+   "category": "last_word",
+   "gold": "hall",
+   "raw_output": "voice",
+   "normalised_output": "voice",
+   "correct": false
+  },
+  {
+   "id": "g1-held-009",
+   "category": "copy_token",
+   "gold": "fjord",
+   "raw_output": "fjord",
+   "normalised_output": "fjord",
+   "correct": true
+  },
+  {
+   "id": "g1-held-010",
+   "category": "small_add",
+   "gold": "36",
+   "raw_output": "19 + 17 = 36",
+   "normalised_output": "19 + 17 = 36",
+   "correct": false
+  },
+  {
+   "id": "g1-held-011",
+   "category": "seq_next",
+   "gold": "27",
+   "raw_output": "The sequence is: **19, 21, 23, 25, ...**\n\nIt appears to be an **odd-numbered sequence",
+   "normalised_output": "the sequence is: **19 21 23 25 ...** it appears to be an **odd-numbered sequence",
+   "correct": false
+  },
+  {
+   "id": "g1-held-012",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 77 is not greater than 90. 77 is less than 90.",
+   "normalised_output": "no 77 is not greater than 90. 77 is less than 90",
+   "correct": false
+  },
+  {
+   "id": "g1-held-013",
+   "category": "last_word",
+   "gold": "spring",
+   "raw_output": "seeds",
+   "normalised_output": "seeds",
+   "correct": false
+  },
+  {
+   "id": "g1-held-014",
+   "category": "copy_token",
+   "gold": "pastel",
+   "raw_output": "pastel",
+   "normalised_output": "pastel",
+   "correct": true
+  },
+  {
+   "id": "g1-held-015",
+   "category": "small_add",
+   "gold": "22",
+   "raw_output": "18 + 4 = 22.",
+   "normalised_output": "18 + 4 = 22",
+   "correct": false
+  },
+  {
+   "id": "g1-held-016",
+   "category": "seq_next",
+   "gold": "sugar",
+   "raw_output": "salt",
+   "normalised_output": "salt",
+   "correct": false
+  },
+  {
+   "id": "g1-held-017",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 98 is greater than 94.",
+   "normalised_output": "yes 98 is greater than 94",
+   "correct": false
+  },
+  {
+   "id": "g1-held-018",
+   "category": "last_word",
+   "gold": "desk",
+   "raw_output": "map",
+   "normalised_output": "map",
+   "correct": false
+  },
+  {
+   "id": "g1-held-019",
+   "category": "copy_token",
+   "gold": "glacier",
+   "raw_output": "glacier",
+   "normalised_output": "glacier",
+   "correct": true
+  },
+  {
+   "id": "g1-held-020",
+   "category": "seq_next",
+   "gold": "17",
+   "raw_output": "The sequence is: **5, 8, 11, 14, ...**\n\nEach term increases by **3**:\n\n- 5 +",
+   "normalised_output": "the sequence is: **5 8 11 14 ...** each term increases by **3**: - 5 +",
+   "correct": false
+  },
+  {
+   "id": "g1-held-021",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 30 is greater than 94.",
+   "normalised_output": "yes 30 is greater than 94",
+   "correct": false
+  },
+  {
+   "id": "g1-held-022",
+   "category": "last_word",
+   "gold": "bay",
+   "raw_output": "light",
+   "normalised_output": "light",
+   "correct": false
+  },
+  {
+   "id": "g1-held-023",
+   "category": "copy_token",
+   "gold": "yonder",
+   "raw_output": "yonder",
+   "normalised_output": "yonder",
+   "correct": true
+  },
+  {
+   "id": "g1-held-024",
+   "category": "small_add",
+   "gold": "8",
+   "raw_output": "4 + 4 = 8",
+   "normalised_output": "4 + 4 = 8",
+   "correct": false
+  },
+  {
+   "id": "g1-held-025",
+   "category": "seq_next",
+   "gold": "23",
+   "raw_output": "The sequence is: **3, 8, 13, 18, ...**\n\nEach term increases by **5**:\n\n- 3 +",
+   "normalised_output": "the sequence is: **3 8 13 18 ...** each term increases by **5**: - 3 +",
+   "correct": false
+  },
+  {
+   "id": "g1-held-026",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 53 is **not** less than 34. 53 is greater.",
+   "normalised_output": "no 53 is **not** less than 34. 53 is greater",
+   "correct": false
+  },
+  {
+   "id": "g1-held-027",
+   "category": "copy_token",
+   "gold": "quarry",
+   "raw_output": "quarry",
+   "normalised_output": "quarry",
+   "correct": true
+  },
+  {
+   "id": "g1-held-028",
+   "category": "small_add",
+   "gold": "18",
+   "raw_output": "13 + 5 = 18",
+   "normalised_output": "13 + 5 = 18",
+   "correct": false
+  },
+  {
+   "id": "g1-held-029",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 65 is greater than 10.",
+   "normalised_output": "yes 65 is greater than 10",
+   "correct": false
+  },
+  {
+   "id": "g1-held-030",
+   "category": "copy_token",
+   "gold": "zenith",
+   "raw_output": "zenith",
+   "normalised_output": "zenith",
+   "correct": true
+  },
+  {
+   "id": "g1-held-031",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 52 is **not** less than 37. 52 is greater.",
+   "normalised_output": "no 52 is **not** less than 37. 52 is greater",
+   "correct": false
+  },
+  {
+   "id": "g1-held-032",
+   "category": "copy_token",
+   "gold": "jasmine",
+   "raw_output": "jasmine",
+   "normalised_output": "jasmine",
+   "correct": true
+  },
+  {
+   "id": "g1-held-033",
+   "category": "small_add",
+   "gold": "32",
+   "raw_output": "14 + 18 = 32",
+   "normalised_output": "14 + 18 = 32",
+   "correct": false
+  },
+  {
+   "id": "g1-held-034",
+   "category": "seq_next",
+   "gold": "19",
+   "raw_output": "The sequence is: **7, 10, 13, 16, ...**\n\nEach term increases by **3**:\n\n- 7",
+   "normalised_output": "the sequence is: **7 10 13 16 ...** each term increases by **3**: - 7",
+   "correct": false
+  },
+  {
+   "id": "g1-held-035",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 24 is less than 28.",
+   "normalised_output": "yes 24 is less than 28",
+   "correct": false
+  },
+  {
+   "id": "g1-held-036",
+   "category": "copy_token",
+   "gold": "cricket",
+   "raw_output": "cricket",
+   "normalised_output": "cricket",
+   "correct": true
+  },
+  {
+   "id": "g1-held-037",
+   "category": "small_add",
+   "gold": "15",
+   "raw_output": "15",
+   "normalised_output": "15",
+   "correct": true
+  },
+  {
+   "id": "g1-held-038",
+   "category": "seq_next",
+   "gold": "13",
+   "raw_output": "The sequence is: **1, 4, 7, 10, ...**\n\nEach term increases by 3:  \n1 + 3 =",
+   "normalised_output": "the sequence is: **1 4 7 10 ...** each term increases by 3: 1 + 3 =",
+   "correct": false
+  },
+  {
+   "id": "g1-held-039",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 64 is greater than 95.",
+   "normalised_output": "yes 64 is greater than 95",
+   "correct": false
+  },
+  {
+   "id": "g1-held-040",
+   "category": "copy_token",
+   "gold": "riddle",
+   "raw_output": "riddle",
+   "normalised_output": "riddle",
+   "correct": true
+  },
+  {
+   "id": "g1-held-041",
+   "category": "small_add",
+   "gold": "16",
+   "raw_output": "10 + 6 = 16",
+   "normalised_output": "10 + 6 = 16",
+   "correct": false
+  },
+  {
+   "id": "g1-held-042",
+   "category": "seq_next",
+   "gold": "30",
+   "raw_output": "The sequence is: **22, 24, 26, 28, ...**\n\nIt appears to be increasing by **2** each",
+   "normalised_output": "the sequence is: **22 24 26 28 ...** it appears to be increasing by **2** each",
+   "correct": false
+  },
+  {
+   "id": "g1-held-043",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 77 is **not** less than 47. 77 is greater.",
+   "normalised_output": "no 77 is **not** less than 47. 77 is greater",
+   "correct": false
+  },
+  {
+   "id": "g1-held-044",
+   "category": "copy_token",
+   "gold": "bramble",
+   "raw_output": "bramble",
+   "normalised_output": "bramble",
+   "correct": true
+  },
+  {
+   "id": "g1-held-045",
+   "category": "small_add",
+   "gold": "27",
+   "raw_output": "16 + 11 = 27.",
+   "normalised_output": "16 + 11 = 27",
+   "correct": false
+  },
+  {
+   "id": "g1-held-046",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 96 is **not** less than 36. 96 is greater than 36.",
+   "normalised_output": "no 96 is **not** less than 36. 96 is greater than 36",
+   "correct": false
+  },
+  {
+   "id": "g1-held-047",
+   "category": "copy_token",
+   "gold": "hemlock",
+   "raw_output": "hemlock",
+   "normalised_output": "hemlock",
+   "correct": true
+  },
+  {
+   "id": "g1-held-048",
+   "category": "small_add",
+   "gold": "18",
+   "raw_output": "15 + 3 = 18",
+   "normalised_output": "15 + 3 = 18",
+   "correct": false
+  },
+  {
+   "id": "g1-held-049",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 96 is greater than 16.",
+   "normalised_output": "yes 96 is greater than 16",
+   "correct": false
+  },
+  {
+   "id": "g1-held-050",
+   "category": "copy_token",
+   "gold": "tapestry",
+   "raw_output": "tapestry",
+   "normalised_output": "tapestry",
+   "correct": true
+  },
+  {
+   "id": "g1-held-051",
+   "category": "small_add",
+   "gold": "27",
+   "raw_output": "17 + 10 = 27",
+   "normalised_output": "17 + 10 = 27",
+   "correct": false
+  },
+  {
+   "id": "g1-held-052",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 99 is **not** less than 39. 99 is greater than 39.",
+   "normalised_output": "no 99 is **not** less than 39. 99 is greater than 39",
+   "correct": false
+  },
+  {
+   "id": "g1-held-053",
+   "category": "copy_token",
+   "gold": "summit",
+   "raw_output": "summit",
+   "normalised_output": "summit",
+   "correct": true
+  },
+  {
+   "id": "g1-held-054",
+   "category": "small_add",
+   "gold": "16",
+   "raw_output": "11 + 5 = 16",
+   "normalised_output": "11 + 5 = 16",
+   "correct": false
+  },
+  {
+   "id": "g1-held-055",
+   "category": "seq_next",
+   "gold": "39",
+   "raw_output": "The sequence is: **19, 24, 29, 34, ...**\n\nThe difference between consecutive terms is:\n\n- $2",
+   "normalised_output": "the sequence is: **19 24 29 34 ...** the difference between consecutive terms is: - $2",
+   "correct": false
+  },
+  {
+   "id": "g1-held-056",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 6 is greater than 58.",
+   "normalised_output": "yes 6 is greater than 58",
+   "correct": false
+  },
+  {
+   "id": "g1-held-057",
+   "category": "copy_token",
+   "gold": "umber",
+   "raw_output": "umber",
+   "normalised_output": "umber",
+   "correct": true
+  },
+  {
+   "id": "g1-held-058",
+   "category": "seq_next",
+   "gold": "sand",
+   "raw_output": "rock",
+   "normalised_output": "rock",
+   "correct": false
+  },
+  {
+   "id": "g1-held-059",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 78 is less than 88.",
+   "normalised_output": "yes 78 is less than 88",
+   "correct": false
+  },
+  {
+   "id": "g1-held-060",
+   "category": "copy_token",
+   "gold": "violet",
+   "raw_output": "violet",
+   "normalised_output": "violet",
+   "correct": true
+  },
+  {
+   "id": "g1-held-061",
+   "category": "small_add",
+   "gold": "24",
+   "raw_output": "7 + 17 = 24",
+   "normalised_output": "7 + 17 = 24",
+   "correct": false
+  },
+  {
+   "id": "g1-held-062",
+   "category": "seq_next",
+   "gold": "19",
+   "raw_output": "The sequence is: **11, 13, 15, 17, ...**\n\nIt appears to be an **odd-numbered sequence",
+   "normalised_output": "the sequence is: **11 13 15 17 ...** it appears to be an **odd-numbered sequence",
+   "correct": false
+  },
+  {
+   "id": "g1-held-063",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 16 is greater than 70.",
+   "normalised_output": "yes 16 is greater than 70",
+   "correct": false
+  },
+  {
+   "id": "g1-held-064",
+   "category": "copy_token",
+   "gold": "isthmus",
+   "raw_output": "isthmus",
+   "normalised_output": "isthmus",
+   "correct": true
+  },
+  {
+   "id": "g1-held-065",
+   "category": "small_add",
+   "gold": "31",
+   "raw_output": "14 + 17 = 31",
+   "normalised_output": "14 + 17 = 31",
+   "correct": false
+  },
+  {
+   "id": "g1-held-066",
+   "category": "copy_token",
+   "gold": "wander",
+   "raw_output": "wander",
+   "normalised_output": "wander",
+   "correct": true
+  },
+  {
+   "id": "g1-held-067",
+   "category": "seq_next",
+   "gold": "17",
+   "raw_output": "The sequence is: **9, 11, 13, 15, ...**\n\nIt appears to be an **even number sequence** increasing",
+   "normalised_output": "the sequence is: **9 11 13 15 ...** it appears to be an **even number sequence** increasing",
+   "correct": false
+  },
+  {
+   "id": "g1-held-068",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 99 is greater than 93.",
+   "normalised_output": "yes 99 is greater than 93",
+   "correct": false
+  },
+  {
+   "id": "g1-held-069",
+   "category": "copy_token",
+   "gold": "lattice",
+   "raw_output": "lattice",
+   "normalised_output": "lattice",
+   "correct": true
+  },
+  {
+   "id": "g1-held-070",
+   "category": "small_add",
+   "gold": "11",
+   "raw_output": "7 + 4 = 11",
+   "normalised_output": "7 + 4 = 11",
+   "correct": false
+  },
+  {
+   "id": "g1-held-071",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 17 is not greater than 31. 17 is less than 31.",
+   "normalised_output": "no 17 is not greater than 31. 17 is less than 31",
+   "correct": false
+  },
+  {
+   "id": "g1-held-072",
+   "category": "small_add",
+   "gold": "7",
+   "raw_output": "5 + 2 = 7",
+   "normalised_output": "5 + 2 = 7",
+   "correct": false
+  },
+  {
+   "id": "g1-held-073",
+   "category": "seq_next",
+   "gold": "12",
+   "raw_output": "The sequence is: **4, 6, 8, 10, ...**\n\nIt is an arithmetic sequence with a common difference of **2**",
+   "normalised_output": "the sequence is: **4 6 8 10 ...** it is an arithmetic sequence with a common difference of **2**",
+   "correct": false
+  },
+  {
+   "id": "g1-held-074",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 24 is greater than 92.",
+   "normalised_output": "yes 24 is greater than 92",
+   "correct": false
+  },
+  {
+   "id": "g1-held-075",
+   "category": "small_add",
+   "gold": "28",
+   "raw_output": "15 + 13 = 28",
+   "normalised_output": "15 + 13 = 28",
+   "correct": false
+  },
+  {
+   "id": "g1-held-076",
+   "category": "seq_next",
+   "gold": "fox",
+   "raw_output": "wolf",
+   "normalised_output": "wolf",
+   "correct": false
+  },
+  {
+   "id": "g1-held-077",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 17 is greater than 7.",
+   "normalised_output": "yes 17 is greater than 7",
+   "correct": false
+  },
+  {
+   "id": "g1-held-078",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 25 is greater than 95.",
+   "normalised_output": "yes 25 is greater than 95",
+   "correct": false
+  },
+  {
+   "id": "g1-held-079",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 38 is **not** less than 9. 38 is greater than 9.",
+   "normalised_output": "no 38 is **not** less than 9. 38 is greater than 9",
+   "correct": false
+  },
+  {
+   "id": "g1-held-080",
+   "category": "small_add",
+   "gold": "19",
+   "raw_output": "9 + 10 = 19",
+   "normalised_output": "9 + 10 = 19",
+   "correct": false
+  },
+  {
+   "id": "g1-held-081",
+   "category": "seq_next",
+   "gold": "37",
+   "raw_output": "The sequence is: **29, 31, 33, 35, ...**\n\nIt appears to be an **even number sequence**",
+   "normalised_output": "the sequence is: **29 31 33 35 ...** it appears to be an **even number sequence**",
+   "correct": false
+  },
+  {
+   "id": "g1-held-082",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 42 is **not** greater than 75. 42 is less than 75.",
+   "normalised_output": "no 42 is **not** greater than 75. 42 is less than 75",
+   "correct": false
+  },
+  {
+   "id": "g1-held-083",
+   "category": "small_add",
+   "gold": "16",
+   "raw_output": "12 + 4 = 16",
+   "normalised_output": "12 + 4 = 16",
+   "correct": false
+  },
+  {
+   "id": "g1-held-084",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 30 is greater than 28.",
+   "normalised_output": "yes 30 is greater than 28",
+   "correct": false
+  },
+  {
+   "id": "g1-held-085",
+   "category": "seq_next",
+   "gold": "30",
+   "raw_output": "The sequence is: **10, 15, 20, 25, ...**\n\nIt increases by **5** each time.  \n",
+   "normalised_output": "the sequence is: **10 15 20 25 ...** it increases by **5** each time",
+   "correct": false
+  },
+  {
+   "id": "g1-held-086",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 48 is **not** greater than 60. 48 is less than 60.",
+   "normalised_output": "no 48 is **not** greater than 60. 48 is less than 60",
+   "correct": false
+  },
+  {
+   "id": "g1-held-087",
+   "category": "small_add",
+   "gold": "17",
+   "raw_output": "11 + 6 = 17",
+   "normalised_output": "11 + 6 = 17",
+   "correct": false
+  },
+  {
+   "id": "g1-held-088",
+   "category": "seq_next",
+   "gold": "22",
+   "raw_output": "The sequence is: **14, 16, 18, 20, ...**\n\nIt appears to be increasing by **2** each",
+   "normalised_output": "the sequence is: **14 16 18 20 ...** it appears to be increasing by **2** each",
+   "correct": false
+  },
+  {
+   "id": "g1-held-089",
+   "category": "seq_next",
+   "gold": "21",
+   "raw_output": "The sequence is: **13, 15, 17, 19, ...**\n\nIt appears to be an **odd-numbered sequence",
+   "normalised_output": "the sequence is: **13 15 17 19 ...** it appears to be an **odd-numbered sequence",
+   "correct": false
+  },
+  {
+   "id": "g1-held-090",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 72 is greater than 44.",
+   "normalised_output": "yes 72 is greater than 44",
+   "correct": false
+  },
+  {
+   "id": "g1-held-091",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 65 is **not** less than 39. 65 is greater.",
+   "normalised_output": "no 65 is **not** less than 39. 65 is greater",
+   "correct": false
+  },
+  {
+   "id": "g1-held-092",
+   "category": "small_add",
+   "gold": "14",
+   "raw_output": "11 + 3 = 14",
+   "normalised_output": "11 + 3 = 14",
+   "correct": false
+  },
+  {
+   "id": "g1-held-093",
+   "category": "seq_next",
+   "gold": "47",
+   "raw_output": "The sequence is: **27, 32, 37, 42, ...**\n\nLet's look at the differences between consecutive terms:\n\n",
+   "normalised_output": "the sequence is: **27 32 37 42 ...** let's look at the differences between consecutive terms:",
+   "correct": false
+  },
+  {
+   "id": "g1-held-094",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 95 is greater than 69.",
+   "normalised_output": "yes 95 is greater than 69",
+   "correct": false
+  },
+  {
+   "id": "g1-held-095",
+   "category": "seq_next",
+   "gold": "50",
+   "raw_output": "The sequence is: **30, 35, 40, 45, ...**\n\nThe difference between consecutive terms is:\n\n- $3",
+   "normalised_output": "the sequence is: **30 35 40 45 ...** the difference between consecutive terms is: - $3",
+   "correct": false
+  },
+  {
+   "id": "g1-held-096",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 83 is greater than 15.",
+   "normalised_output": "yes 83 is greater than 15",
+   "correct": false
+  },
+  {
+   "id": "g1-held-097",
+   "category": "small_add",
+   "gold": "20",
+   "raw_output": "8 + 12 = 20",
+   "normalised_output": "8 + 12 = 20",
+   "correct": false
+  },
+  {
+   "id": "g1-held-098",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 26 is less than 48.",
+   "normalised_output": "yes 26 is less than 48",
+   "correct": false
+  },
+  {
+   "id": "g1-held-099",
+   "category": "small_add",
+   "gold": "14",
+   "raw_output": "7 + 7 = 14",
+   "normalised_output": "7 + 7 = 14",
+   "correct": false
+  },
+  {
+   "id": "g1-held-100",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 88 is **not** less than 4. 88 is much larger.",
+   "normalised_output": "no 88 is **not** less than 4. 88 is much larger",
+   "correct": false
+  },
+  {
+   "id": "g1-held-101",
+   "category": "small_add",
+   "gold": "30",
+   "raw_output": "13 + 17 = 30",
+   "normalised_output": "13 + 17 = 30",
+   "correct": false
+  },
+  {
+   "id": "g1-held-102",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 89 is greater than 70.",
+   "normalised_output": "yes 89 is greater than 70",
+   "correct": false
+  },
+  {
+   "id": "g1-held-103",
+   "category": "seq_next",
+   "gold": "24",
+   "raw_output": "The sequence is: **4, 9, 14, 19, ...**\n\nTo find the next number, observe the pattern:\n\n- ",
+   "normalised_output": "the sequence is: **4 9 14 19 ...** to find the next number observe the pattern: -",
+   "correct": false
+  },
+  {
+   "id": "g1-held-104",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 26 is less than 61.",
+   "normalised_output": "yes 26 is less than 61",
+   "correct": false
+  },
+  {
+   "id": "g1-held-105",
+   "category": "small_add",
+   "gold": "34",
+   "raw_output": "16 + 18 = 34.",
+   "normalised_output": "16 + 18 = 34",
+   "correct": false
+  },
+  {
+   "id": "g1-held-106",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 53 is less than 10.",
+   "normalised_output": "yes 53 is less than 10",
+   "correct": false
+  },
+  {
+   "id": "g1-held-107",
+   "category": "small_add",
+   "gold": "27",
+   "raw_output": "18 + 9 = 27.",
+   "normalised_output": "18 + 9 = 27",
+   "correct": false
+  },
+  {
+   "id": "g1-held-108",
+   "category": "seq_next",
+   "gold": "13",
+   "raw_output": "The sequence is: **5, 7, 9, 11, ...**\n\nIt appears to be an **odd-numbered sequence** increasing by",
+   "normalised_output": "the sequence is: **5 7 9 11 ...** it appears to be an **odd-numbered sequence** increasing by",
+   "correct": false
+  },
+  {
+   "id": "g1-held-109",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 73 is less than 79.",
+   "normalised_output": "yes 73 is less than 79",
+   "correct": false
+  },
+  {
+   "id": "g1-held-110",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 58 is greater than 17.",
+   "normalised_output": "yes 58 is greater than 17",
+   "correct": false
+  },
+  {
+   "id": "g1-held-111",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 97 is **not** less than 68. 97 is greater.",
+   "normalised_output": "no 97 is **not** less than 68. 97 is greater",
+   "correct": false
+  },
+  {
+   "id": "g1-held-112",
+   "category": "seq_next",
+   "gold": "35",
+   "raw_output": "The sequence is: **27, 29, 31, 33, ...**\n\nIt appears to be an **odd-numbered sequence",
+   "normalised_output": "the sequence is: **27 29 31 33 ...** it appears to be an **odd-numbered sequence",
+   "correct": false
+  },
+  {
+   "id": "g1-held-113",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "Yes, 39 is less than 29.",
+   "normalised_output": "yes 39 is less than 29",
+   "correct": false
+  },
+  {
+   "id": "g1-held-114",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 79 is **not** less than 21. 79 is greater than 21.",
+   "normalised_output": "no 79 is **not** less than 21. 79 is greater than 21",
+   "correct": false
+  },
+  {
+   "id": "g1-held-115",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 2 is less than 49.",
+   "normalised_output": "yes 2 is less than 49",
+   "correct": false
+  },
+  {
+   "id": "g1-held-116",
+   "category": "small_add",
+   "gold": "22",
+   "raw_output": "19 + 3 = 22.",
+   "normalised_output": "19 + 3 = 22",
+   "correct": false
+  },
+  {
+   "id": "g1-held-117",
+   "category": "seq_next",
+   "gold": "24",
+   "raw_output": "The sequence is: **12, 15, 18, 21, ...**\n\nEach number increases by **3**:\n\n- ",
+   "normalised_output": "the sequence is: **12 15 18 21 ...** each number increases by **3**: -",
+   "correct": false
+  },
+  {
+   "id": "g1-held-118",
+   "category": "yes_no_compare",
+   "gold": "no",
+   "raw_output": "No, 51 is not greater than 57. 51 is less than 57.",
+   "normalised_output": "no 51 is not greater than 57. 51 is less than 57",
+   "correct": false
+  },
+  {
+   "id": "g1-held-119",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 37 is less than 44.",
+   "normalised_output": "yes 37 is less than 44",
+   "correct": false
+  },
+  {
+   "id": "g1-held-120",
+   "category": "yes_no_compare",
+   "gold": "yes",
+   "raw_output": "Yes, 31 is greater than 25.",
+   "normalised_output": "yes 31 is greater than 25",
+   "correct": false
+  }
+ ]
+}

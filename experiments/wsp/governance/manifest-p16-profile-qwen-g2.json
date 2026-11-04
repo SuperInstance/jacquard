@@ -1,0 +1,6 @@
+{
+ "patch_id": "p16-profile-qwen3-0.6b-g2",
+ "patch_sha256": "a5f049b41b150a67f7c399e671db97810b19b858805a9ae02832e74734d1fb75",
+ "target": "thor:~/wsp-exp16/profile/patches/qwen3-0.6b/G2/",
+ "summary": "RATIFICATION (grader, slice 45 R2): Qwen3-0.6B G2 family-1 patch, dose 0.00109% stored basis; grader held-out 3.33 -> 45.83 (+42.50) but retention breach on G1 (47.50 -> 40.00, -7.50, outside +-2): NO YIELD per CRITERIA R2"
+}

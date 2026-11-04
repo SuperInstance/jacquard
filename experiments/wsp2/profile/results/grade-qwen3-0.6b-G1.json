@@ -1,0 +1,55 @@
+{
+ "student": "qwen3-0.6b",
+ "grade": "G1",
+ "grader": "slice45 R2 grader (p16-profile-grade)",
+ "base_heldout": 17.5,
+ "post_step_heldout": 47.5,
+ "delta_vs_base": 30.0,
+ "dose_percent_stored_basis": 0.00817,
+ "retention_at_step": {},
+ "retention_curve_full": {
+  "null": {
+   "G1": 17.5,
+   "G2": 3.33,
+   "G3": 40.83,
+   "G4": 0.0,
+   "G5": 18.0,
+   "G6": 50.0
+  },
+  "G1": {
+   "G1": 47.5
+  },
+  "G2": {
+   "G1": 40.0,
+   "G2": 45.83
+  },
+  "G3": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0
+  },
+  "G4": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0
+  },
+  "G5": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0,
+   "G5": 22.0
+  },
+  "G6": {
+   "G1": 39.17,
+   "G2": 36.67,
+   "G3": 40.0,
+   "G4": 0.0,
+   "G5": 22.0,
+   "G6": 50.0
+  }
+ },
+ "verdict": "YIELD",
+ "source_sequence_file": "grade-qwen-sequence.json"
+}

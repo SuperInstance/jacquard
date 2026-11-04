@@ -4887,3 +4887,44 @@ calls 0. Worker wall time 07:44-08:00 UTC 2026-11-04.
 Declared FINAL for coordinator held-out scoring against the
 round-2 bar; full record in experiments/wsp2/r4/round2/
 R4-ROUND2.md.
+## Slice 45 (Phase 16, R2) — grading: the patchability boundary map (2026-11-03)
+
+Grader (not the battery builder, not the patcher) scored the
+shipped chained patches on held-out, Thor, harness sequence mode,
+branch `p16-profile-grade`. Full record:
+`experiments/wsp2/profile/PROFILE-RESULTS.md`.
+
+Sanity first: Qwen G1 held-out on the pristine base re-scored
+17.50% (21/120), exact match to the committed base JSON; the
+sequence stage-0 rows then reproduced both committed base JSONs
+on all 12 cells, and both final base-mode runs reproduced the
+last retention rows on all 12 cells.
+
+Verdicts under CRITERIA R2, applied mechanically (delta vs
+pristine base held-out; retention = step change in prior grades'
+held-out, ±2 band): **YIELD at G1 only, for both models** (Qwen
+17.50 → 47.50, +30.00, dose 0.00817%; LFM2 51.67 → 83.33,
++31.66, dose 0.00105%). Both G2 patches gain hugely on their own
+grade (Qwen +42.50, LFM2 +41.67) and both are **NO YIELD on
+retention alone** (Qwen G1 −7.50 at the G2 step; LFM2 G1
+−13.33). Qwen G3 is NO YIELD twice over (own delta −0.83; G2
+retention −9.16 at its step). All seven NO-PATCH cells are NO
+YIELD with the patchers' probe reasons cited — including two
+pass-through traps the map names explicitly: Qwen G5 held-out
+rose +4.00 and LFM2 G3 held-out rose +24.16 with no patch at
+those grades; side-effects earn no yield. The boundary sits
+after G1 for both models, for different mixes of reasons below
+it (G3 splits the pair: shipped-but-non-transferring vs
+never-shipped-but-chain-lifted).
+
+Governance ratification (labelled as such, not prospective
+gating): 5 proposals + 5 decisions (approve the two G1 yields;
+deny Qwen G2, Qwen G3, LFM2 G2) + 12 evidence entries (5 scoring
+extractions hashed, 7 no-patch entries binding the
+PATCHING-RECORD hash) = 22 governed submissions; log at 398
+entries, queue empty. Also recorded in the results: the
+patcher's declared Qwen G1 four-build deviation against the
+two-candidate bound (noted, not re-judged), and a minor Thor
+/tmp module-shadowing defect that bit a helper script and no
+score. Thor compute 5m00s for all four runs; grader wall-clock
+≈ 0.8 h.
