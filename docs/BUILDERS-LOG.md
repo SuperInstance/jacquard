@@ -4592,3 +4592,70 @@ reproduce from the preserved sim2.py, though its
 qualitative claim does (D2); one transient probe-run
 failure, rerun clean twice (D3); two inherited battery
 quirks noted, not altered (D4/D5).
+
+
+## Phase 16 slice 46 part R4 — the second soft joint: inventory, battery, baselines (2026-11-04)
+
+Battery-builder seat (no patching in this slice). The joint,
+per CRITERIA amendment A1, is elephant's PanicDial
+(SuperInstance/elephant @44e7363, `elephant/dials/panic.py`):
+substring lexicon hits (ALARM/URGENCY, distinct per message),
+trailing-30 s density and alarm-gated ripple combined
+0.40/0.25/0.20/0.15 into [0 calm .. 1 trampling]. The real
+dial imports and runs standalone from a sparse elephant
+checkout on the Thor — no replication, no shim; the runner's
+hand-worked selftest passes 3/3 against the imported class.
+Full anatomy, the battery item form (messages + relative
+timestamps + reaction heat + stub-reply counts), and seven
+defects (D1–D7) are recorded in
+`experiments/wsp2/r4/R4-INVENTORY.md`, quantified over the
+shipped battery by `defect_scan.py`: 62 of 1,721 messages
+carry substring-only lexicon matches ("now" inside "know"
+x14, "crash" inside "crashed" x11, ...); 32 hits are lost to
+distinct-per-message flattening; at battery room sizes
+(42–122 words) two distinct alarm hits saturate the alarm
+term.
+
+Battery (`experiments/wsp2/r4/`, rules written and committed
+BEFORE generation, f65cae5): 300 construction-labelled room
+transcripts — diagnostic 120 (harbour pool), validation 60
+(community-hall pool), held-out 120 (hostel/depot/campsite
+pool, GOVERNED: never shown to patchers) — balanced
+40/40/40 and 20/20/20 across calm/alarmed/stampede, ~42%
+boundary-flagged (drill notices, fiction, negations,
+polysemy, trivia bursts, surprise urgency, slow-burn
+technical emergencies, single loud voices, technical
+cascades). Gold = a pre-stated function of construction
+parameters only (genuine? corroborators>=3 or room-wide
+action -> stampede). Independent verifier: **27/27 PASS**,
+golds recomputed from parameters, cross-split token Jaccard
+max 0.400. Two construction defects were caught by that
+verifier before any baseline ran and fixed at the rule level
+with regeneration (slow_burn corroborator count 2->1;
+detail-line mechanism against item-text duplication) — both
+recorded in R4-BATTERY.md.
+
+Baselines (coordinator-standard, per-class always; per-item
+outputs in `experiments/wsp2/r4/results/`):
+- Incumbent PanicDial under pre-stated equal-thirds:
+  diagnostic 23.3% (calm 55 / alarmed 15 / stampede 0),
+  held-out 15.0% (37.5 / 7.5 / 0), validation 25.0%.
+  It never predicts stampede in any split — no gold-stampede
+  item reaches the 2/3 band (max 0.623/0.635) — while one
+  loud uncorroborated voice reads 0.50–0.67 and a room-wide
+  technical evacuation reads 0.13–0.19 (calm).
+- Fresh Qwen3-0.6B student, fixed prompt, zero-shot:
+  diagnostic 30.0% (calm 0 / alarmed 90 / stampede 0),
+  held-out 32.5% (0 / 97.5 / 0), validation 36.7%.
+  Single-attractor failure ("alarmed" for 119/120 held-out
+  items): two classes missing, not mis-weighted.
+
+Better incumbent on held-out = the student (32.5%); the
+pre-stated bar for a later patch round is held-out >= 42.5%
+with no class traded away. Marginal cost: teacher calls 0;
+worker wall time and coordinator figures belong to the
+coordinator's ledger (worker start 07:19 UTC, baselines
+complete 07:36 UTC, both on 2026-11-04). Oracle root disk was
+100% full (26 MB free) at start, so this clone lives in the
+Oracle's /tmp (tmpfs, 7.6 GB free) as /tmp/jacquard-p16-r4;
+the branch is the deliverable.

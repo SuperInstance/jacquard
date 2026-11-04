@@ -1,0 +1,584 @@
+{
+  "model": "elephant PanicDial @44e7363 (real import)",
+  "thresholds": "equal-thirds, pre-stated, untuned",
+  "splits": {
+    "validation": {
+      "n": 60,
+      "accuracy": 0.25,
+      "per_class": {
+        "alarmed": {
+          "correct": 5,
+          "n": 20,
+          "accuracy": 0.25
+        },
+        "calm": {
+          "correct": 10,
+          "n": 20,
+          "accuracy": 0.5
+        },
+        "stampede": {
+          "correct": 0,
+          "n": 20,
+          "accuracy": 0.0
+        }
+      },
+      "confusion": {
+        "alarmed": {
+          "alarmed": 5,
+          "calm": 15
+        },
+        "calm": {
+          "alarmed": 10,
+          "calm": 10
+        },
+        "stampede": {
+          "alarmed": 4,
+          "calm": 16
+        }
+      },
+      "items": [
+        {
+          "id": "r4val-001",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.129025,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-002",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.41,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-003",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.376987,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-004",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.308065,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-005",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-006",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.03065,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-007",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-008",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-009",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-010",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.246154,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-011",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.242424,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-012",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-013",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.086601,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-014",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-015",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.45,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-016",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-017",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.611949,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-018",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-019",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-020",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.52,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4val-021",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.46,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4val-022",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.131781,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-023",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.082119,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-024",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.2,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-025",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.058569,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-026",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-027",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.085734,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-028",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-029",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-030",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.55,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4val-031",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-032",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-033",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.082819,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-034",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.353968,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-035",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.42,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-036",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.315319,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-037",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.057361,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-038",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.329685,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-039",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-040",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.078298,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-041",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.606473,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-042",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.15,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-043",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.52,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4val-044",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.376112,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-045",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.41,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-046",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.55,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4val-047",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-048",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-049",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.12884,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-050",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.02821,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-051",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.292424,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4val-052",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.189213,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-053",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.45,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4val-054",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-055",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.316741,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-056",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-057",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-058",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.082582,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-059",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4val-060",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.131449,
+          "predicted": "calm",
+          "correct": false
+        }
+      ],
+      "boundary_accuracy": 0.3076923076923077
+    }
+  }
+}

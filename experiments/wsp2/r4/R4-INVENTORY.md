@@ -182,10 +182,36 @@ D5. **Ripple is gated on alarm substrings and is content-blind.**
 
 D6. **`alarm_norm` saturates at battery scale** (see above):
     the normaliser `word_count/40` was presumably written for
-    longer rooms; at 3–12 messages the alarm term is effectively
-    binary (0 or 0.40), which by itself crosses the calm/alarmed
-    third. The dial cannot express "one alarm word, mentioned"
-    below "alarmed" in a short room.
+    longer rooms. Measured on this battery (defect_scan):
+    room word counts run 42–122 (median 75), so the
+    denominator runs 1.05–3.05 (median 1.875) and **two
+    distinct alarm hits already saturate the alarm term** in a
+    median room. The dial cannot express "one or two alarm
+    words, merely mentioned" at low weight in a short room.
+
+Measured defect totals over the shipped battery
+(`defect_scan.py`, lexicons imported from the real panic.py;
+300 items, 1,721 messages):
+- D1 substring traps: **62 messages** carry at least one
+  lexicon entry that matches only as a substring inside a
+  larger word (no word-boundary match). By entry: URGENCY
+  "now" 14 (e.g. inside "know"), ALARM "crash" 11 (inside
+  "crashed"), ALARM "flood" 9 (inside "flooded"), ALARM "run"
+  8 (inside "running"), URGENCY "fast" 7, ALARM "fire" 6
+  (inside "fire"-compounds/inflections), ALARM "panic" 4
+  (inside "panics"), ALARM "abandon" 2, ALARM "capsize" 1.
+- D3 flattening: **32 hits are lost** to distinct-per-message
+  counting (an entry occurring >= 2 times in one message
+  counts once): ALARM "fire" loses 12, "crash" 8, "run" 4,
+  "flood" 3, URGENCY "now" 3, ALARM "alarm" 2.
+- Stampede-band reachability (measured, baseline run): with
+  these weights a room needs essentially saturated alarm AND
+  urgency terms to cross 2/3; on this battery **no
+  gold-stampede item in either main split reaches 2/3** (max
+  0.623 / 0.635), while `single_loud_voice` items — one
+  uncorroborated author — read 0.50–0.67 on ripple/urgency
+  saturation alone, and `technical_cascade` items (room-wide
+  genuine action, technical vocabulary) read 0.13–0.19.
 
 D7. (Minor, dial.py) `DialBank.__init__` annotates
     `Optional[Iterable[Dial]]` but dial.py never imports

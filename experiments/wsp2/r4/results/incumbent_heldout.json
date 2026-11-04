@@ -1,0 +1,1125 @@
+{
+  "model": "elephant PanicDial @44e7363 (real import)",
+  "thresholds": "equal-thirds, pre-stated, untuned",
+  "splits": {
+    "heldout": {
+      "n": 120,
+      "accuracy": 0.15,
+      "per_class": {
+        "alarmed": {
+          "correct": 3,
+          "n": 40,
+          "accuracy": 0.075
+        },
+        "calm": {
+          "correct": 15,
+          "n": 40,
+          "accuracy": 0.375
+        },
+        "stampede": {
+          "correct": 0,
+          "n": 40,
+          "accuracy": 0.0
+        }
+      },
+      "confusion": {
+        "alarmed": {
+          "alarmed": 3,
+          "calm": 34,
+          "stampede": 3
+        },
+        "calm": {
+          "alarmed": 25,
+          "calm": 15
+        },
+        "stampede": {
+          "alarmed": 6,
+          "calm": 34
+        }
+      },
+      "items": [
+        {
+          "id": "r4held-001",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.031232,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-002",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-003",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-004",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-005",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-006",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-007",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.03705,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-008",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.028748,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-009",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.512998,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-010",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.182641,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-011",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-012",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.316803,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-013",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-014",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-015",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-016",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.028612,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-017",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-018",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.67,
+          "predicted": "stampede",
+          "correct": false
+        },
+        {
+          "id": "r4held-019",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-020",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.42,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-021",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-022",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.310179,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-023",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-024",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.5,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-025",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.41,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-026",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-027",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.342771,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-028",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-029",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.634707,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-030",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.428813,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-031",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-032",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.309714,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-033",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-034",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.1,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-035",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.17884,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-036",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-037",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-038",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.131018,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-039",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-040",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.67,
+          "predicted": "stampede",
+          "correct": false
+        },
+        {
+          "id": "r4held-041",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.181232,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-042",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.258065,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-043",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.225352,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-044",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-045",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.42,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-046",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.180806,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-047",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.1,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-048",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.320469,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-049",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-050",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.46,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-051",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.182119,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-052",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.03167,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-053",
+          "gold": "calm",
+          "subtype": "polysemy_calm",
+          "boundary": true,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-054",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.448584,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-055",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.627606,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-056",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.505903,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-057",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-058",
+          "gold": "stampede",
+          "subtype": "escalating_cascade",
+          "boundary": true,
+          "reading": 0.324981,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-059",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.131893,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-060",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-061",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.179119,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-062",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.235294,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-063",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-064",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.505903,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-065",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.17821,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-066",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-067",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-068",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-069",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.183059,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-070",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.396154,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-071",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.235294,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-072",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.035316,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-073",
+          "gold": "calm",
+          "subtype": "everyday_chat",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-074",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-075",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.179213,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-076",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.318422,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-077",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.05,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-078",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.32035,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-079",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.425425,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-080",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-081",
+          "gold": "alarmed",
+          "subtype": "uncertain_signal",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-082",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-083",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.41,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-084",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.45,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-085",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.505465,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-086",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-087",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-088",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.46,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-089",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.181124,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-090",
+          "gold": "calm",
+          "subtype": "drill_notice",
+          "boundary": true,
+          "reading": 0.231884,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-091",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.4,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-092",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.5,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-093",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.319478,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-094",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.228571,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-095",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.182641,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-096",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.253968,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-097",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.340476,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-098",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-099",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.322506,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-100",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-101",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-102",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.182349,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-103",
+          "gold": "calm",
+          "subtype": "surprise_urgency",
+          "boundary": true,
+          "reading": 0.392424,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-104",
+          "gold": "alarmed",
+          "subtype": "first_report",
+          "boundary": false,
+          "reading": 0.228571,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-105",
+          "gold": "calm",
+          "subtype": "fiction_discussion",
+          "boundary": true,
+          "reading": 0.45,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-106",
+          "gold": "alarmed",
+          "subtype": "minor_incident",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-107",
+          "gold": "calm",
+          "subtype": "work_routine",
+          "boundary": false,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": true
+        },
+        {
+          "id": "r4held-108",
+          "gold": "stampede",
+          "subtype": "technical_cascade",
+          "boundary": true,
+          "reading": 0.13638,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-109",
+          "gold": "stampede",
+          "subtype": "impact_event",
+          "boundary": false,
+          "reading": 0.0327,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-110",
+          "gold": "calm",
+          "subtype": "negated_alarm",
+          "boundary": true,
+          "reading": 0.42,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-111",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-112",
+          "gold": "stampede",
+          "subtype": "fast_water",
+          "boundary": false,
+          "reading": 0.181949,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-113",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-114",
+          "gold": "stampede",
+          "subtype": "evacuation_underway",
+          "boundary": false,
+          "reading": 0.319222,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-115",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.67,
+          "predicted": "stampede",
+          "correct": false
+        },
+        {
+          "id": "r4held-116",
+          "gold": "alarmed",
+          "subtype": "single_loud_voice",
+          "boundary": true,
+          "reading": 0.5,
+          "predicted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-117",
+          "gold": "calm",
+          "subtype": "trivia_burst",
+          "boundary": true,
+          "reading": 0.444411,
+          "predicted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-118",
+          "gold": "alarmed",
+          "subtype": "weather_warning",
+          "boundary": false,
+          "reading": 0.1,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-119",
+          "gold": "alarmed",
+          "subtype": "slow_burn_technical",
+          "boundary": true,
+          "reading": 0.0,
+          "predicted": "calm",
+          "correct": false
+        },
+        {
+          "id": "r4held-120",
+          "gold": "stampede",
+          "subtype": "confirmed_spread",
+          "boundary": false,
+          "reading": 0.18134,
+          "predicted": "calm",
+          "correct": false
+        }
+      ],
+      "boundary_accuracy": 0.14
+    }
+  }
+}
