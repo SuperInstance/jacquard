@@ -4592,3 +4592,48 @@ reproduce from the preserved sim2.py, though its
 qualitative claim does (D2); one transient probe-run
 failure, rerun clean twice (D3); two inherited battery
 quirks noted, not altered (D4/D5).
+
+## Phase 16 slice 46 (R3) — authored neuron surgery, dates task
+
+Family 2 (probe-identified MLP neuron edits, <= 0.1% of
+parameters, PATCH-PROTOCOL shape) was tested against the
+dates procedure task (Phase 15 family 1: diagnostic +8.3,
+held-out +0). Base on the T2 diagnostic (n=60; the brief's
+"80" is the T1 size) is 25.0%: weeks_days 11/12, and the
+four procedural categories at 2/12, 1/12, 1/12, 0/12 —
+cross-month attractors, no mod-7 reduction, a systematic
+next-month misread of "days left in the month", inclusive
+month counting. Activation probing (gate/up hooks,
+act = silu(gate)*up, all 86,016 MLP neurons, last prompt
+token and mean-pooled positions, diagnostic split only)
+found real discrimination beyond a 300-permutation
+max-AUC null: wrong-vs-correct best AUC 0.9615 (null max
+0.910), failing-categories-vs-weeks_days AUC 1.000 (null
+max 0.937). Eleven interventions on exactly those neurons
+(down_proj column scalings, 0.0015-0.0267% of parameters,
+suppress/boost/category/weekday groups, two probe
+positions) moved NO failing category in any trial;
+days_between was 2/12 in all thirteen scorings, the
+largest dose scored worst (20.0%), and the best
+configuration's +1 item sat inside weeks_days and did
+not follow its critical set under the E4-style ablation
+(full 16/60; minus critical 15/60; minus non-critical
+15/60; group-alone scores exactly base). Verdict:
+NO PATCH DECLARED — the probe finds detectors, not
+levers; discrimination without causal leverage is not
+support for a patch, and no edits were manufactured
+from noise. The best-effort candidate (60 edits,
+61,440 scalars, 0.00817%) is built and placed on the
+Thor (~/wsp-exp16/r3/patched-final/) for optional
+coordinator held-out scoring against the pre-stated
+R3 criterion, with this worker's prediction recorded
+in advance: not reached — procedure remains unreached,
+now bounded from two authored sides. Record:
+experiments/wsp2/r3/R3-PATCH.md. Process defects
+reported there, plainly: the first probe analysis used
+unaveraged ranks on tie-heavy activations and was
+discarded and re-run tie-correct, deterministically,
+twice, before any edit was authored from it; the
+Oracle's disk was at 100% on arrival and the clone was
+made by local clone plus delta fetch, text artefacts
+only.

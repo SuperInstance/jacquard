@@ -1,0 +1,518 @@
+{
+  "model": "/home/caseydigennaro/wsp-exp16/r3/trial-model",
+  "splits": {
+    "t2_diagnostic": {
+      "n": 60,
+      "accuracy": 0.23333333333333334,
+      "per_category": {
+        "add_days_count": {
+          "correct": 1,
+          "n": 12,
+          "accuracy": 0.08333333333333333
+        },
+        "days_between": {
+          "correct": 2,
+          "n": 12,
+          "accuracy": 0.16666666666666666
+        },
+        "month_span": {
+          "correct": 0,
+          "n": 12,
+          "accuracy": 0.0
+        },
+        "weekday_offset": {
+          "correct": 1,
+          "n": 12,
+          "accuracy": 0.08333333333333333
+        },
+        "weeks_days": {
+          "correct": 10,
+          "n": 12,
+          "accuracy": 0.8333333333333334
+        }
+      },
+      "items": [
+        {
+          "id": "t2diag-001",
+          "category": "days_between",
+          "gold": 9,
+          "raw_output": "The number of days from 22 August 2025 to 31 August 2025 is **10**.",
+          "extracted": 10.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-002",
+          "category": "days_between",
+          "gold": 39,
+          "raw_output": "To find the number of days between **12 August 2025** and **20 September 2025**, we can calculate the number of days between these two dates.\n\n### Step 1: Calculate the number of days from 12 August to 19 August (inclusive)\n\n- August 12 to August 19:  \n  19 - 12 = 7 days\n\n### Step 2: Add the days",
+          "extracted": 2.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-003",
+          "category": "days_between",
+          "gold": 39,
+          "raw_output": "The number of days from 4 March 2025 to 12 April 2025 is **124**.",
+          "extracted": 124.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-004",
+          "category": "days_between",
+          "gold": 50,
+          "raw_output": "To find the number of days between **24 January 2025** and **15 March 2025**, we can calculate the number of days between these two dates.\n\n### Step 1: Calculate days from 24 January to 15 March\n\n- January has 31 days.\n- February has 28 days (since 2025 is not a leap year).\n- March has 31 days.\n\nSo,",
+          "extracted": 31.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-005",
+          "category": "days_between",
+          "gold": 28,
+          "raw_output": "The number of days from 28 August 2025 to 25 September 2025 is **126**.",
+          "extracted": 126.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-006",
+          "category": "days_between",
+          "gold": 28,
+          "raw_output": "To find the number of days between **27 September 2025** and **25 October 2025**, we can use a date calculator or break it down into months:\n\n- From **27 September 2025** to **25 October 2025**:\n  - September has 30 days.\n  - October has 31 days.\n  - So, 30 + 31 = **",
+          "extracted": 31.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-007",
+          "category": "days_between",
+          "gold": 24,
+          "raw_output": "The number of days from 9 April 2025 to 3 May 2025 is **128**.",
+          "extracted": 128.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-008",
+          "category": "days_between",
+          "gold": 26,
+          "raw_output": "Rosa is on a trip from **1 October 2025** to **27 October 2025**.  \n\nTo find the number of days between these two dates, we can count the days:\n\n- From 1 October to 27 October is **26 days** (since 27 - 1 = 26).\n\n**Answer: 26**",
+          "extracted": 26.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-009",
+          "category": "days_between",
+          "gold": 5,
+          "raw_output": "The number of days from 21 February 2025 to 26 February 2025 is **5**.",
+          "extracted": 5.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-010",
+          "category": "days_between",
+          "gold": 40,
+          "raw_output": "To find the number of days between **8 March 2025** and **17 April 2025**, we can use a date calculator or break it down into months:\n\n- March has 31 days.\n- April has 30 days.\n\nSo, the total number of days is:\n\n$$\n31 \\text{ (March)} + 30 \\text{ (April)} = 61 \\text{ days}\n$$\n\n",
+          "extracted": 61.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-011",
+          "category": "days_between",
+          "gold": 50,
+          "raw_output": "The number of days from 1 August 2025 to 20 September 2025 is **128**.",
+          "extracted": 128.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-012",
+          "category": "days_between",
+          "gold": 52,
+          "raw_output": "To find the number of days between **7 February 2025** and **31 March 2025**, we can calculate the number of days from February 7 to March 31, 2025.\n\n### Step-by-step:\n\n- **February 7 to February 28**:  \n  There are 21 days in February (28 - 7 + 1 = 22, but since we start on ",
+          "extracted": 22.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-013",
+          "category": "weekday_offset",
+          "gold": 1,
+          "raw_output": "We are given that **2 May 2025 is a Friday**. We need to find out what weekday it is **3 days later**.\n\n- 2 May 2025 is a **Friday**.\n- Adding 3 days:  \n  - Friday + 1 day = Saturday  \n  - Saturday + 1 day = Sunday  \n  - Sunday + 1 day = Monday  \n\nSo, **3 days later is a Monday**.\n\n**",
+          "extracted": 3.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-014",
+          "category": "weekday_offset",
+          "gold": 5,
+          "raw_output": "We are given that **23 July 2025 is a Wednesday**. We need to find out what weekday it is **30 days later**.\n\n### Step 1: Find the number of days between 23 July 2025 and 30 July 2025.\n\n- From 23 July to 30 July = **7 days**\n- So, 7 days later = **1 more day** (since",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-015",
+          "category": "weekday_offset",
+          "gold": 1,
+          "raw_output": "We are given that **20 June 2025 is a Friday**. We need to find out what weekday it is **10 days later**.\n\n- 1 day later: Saturday (6)\n- 2 days later: Sunday (7)\n- 3 days later: Monday (1)\n- 4 days later: Tuesday (2)\n- 5 days later: Wednesday (3)\n- 6 days later: Thursday (4)\n- ",
+          "extracted": 4.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-016",
+          "category": "weekday_offset",
+          "gold": 3,
+          "raw_output": "We are given that **19 April 2025 is a Saturday**. We need to find the weekday 4 days later.\n\n- 19 April 2025 is a **Saturday**.\n- Adding 4 days:  \n  - 19 + 4 = 23  \n  - 23 corresponds to **Monday** (since Monday = 1).\n\n### Final Answer: **1**",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-017",
+          "category": "weekday_offset",
+          "gold": 1,
+          "raw_output": "We are given that **7 August 2025 is a Thursday**. We need to find the weekday 4 days later.\n\n- 1 day later: **Friday (5)**  \n- 2 days later: **Saturday (6)**  \n- 3 days later: **Sunday (7)**  \n- 4 days later: **Monday (1)**\n\n**Answer: 1**",
+          "extracted": 1.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-018",
+          "category": "weekday_offset",
+          "gold": 3,
+          "raw_output": "We are given that **16 July 2025 is a Wednesday**, and we need to find the weekday 28 days later.\n\n### Step 1: Find the number of days from 16 July 2025 to 28 days later.\n\n- 28 days later = 28 days from 16 July 2025.\n\n### Step 2: Use modulo 7 to find the weekday.\n\n- Since the",
+          "extracted": 7.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-019",
+          "category": "weekday_offset",
+          "gold": 2,
+          "raw_output": "We are given that **14 October 2025 is a Tuesday**. We need to find the weekday 21 days later.\n\n### Step 1: Find the number of days from 14 October 2025 to 21 days later.\n\n- 21 days later = 21 days from 14 October 2025.\n\n### Step 2: Use the mapping:\n\n- Monday = 1  \n- Tuesday",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-020",
+          "category": "weekday_offset",
+          "gold": 1,
+          "raw_output": "We are given that **2 October 2025 is a Thursday**. We need to find the weekday 39 days later.\n\n### Step 1: Find the number of days from October 2, 2025, to October 2, 2025 + 39 days.\n\nSince 39 days is a **whole number**, we can directly add 39 days to October 2, 2025.\n\n",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-021",
+          "category": "weekday_offset",
+          "gold": 2,
+          "raw_output": "We are given that **11 April 2025 is a Friday**. We need to find out what weekday it is **11 days later**.\n\n### Step 1: Use the mapping:\n- Monday = 1  \n- Tuesday = 2  \n- Wednesday = 3  \n- Thursday = 4  \n- Friday = 5  \n- Saturday = 6  \n- Sunday = 7  \n\n### Step 2: Add 11 days to",
+          "extracted": 11.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-022",
+          "category": "weekday_offset",
+          "gold": 4,
+          "raw_output": "We are given that **17 December 2025 is a Wednesday**. We need to find the weekday 15 days later.\n\n### Step 1: Find the day of the week 15 days before Wednesday.\n\nSince 15 days is a **multiple of 7**, we can use the fact that:\n\n- 1 week = 7 days  \n- 15 days = 2 weeks and 1 day\n\nSo:\n\n- 1",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-023",
+          "category": "weekday_offset",
+          "gold": 6,
+          "raw_output": "We are given that **15 April 2025 is a Tuesday**, and we need to find the weekday 39 days later. Let's break it down:\n\n### Step 1: Find the number of days from 15 April 2025 to 39 days later.\n\n- 39 days later = 39 days from 15 April 2025.\n\n### Step 2: Count the days in a week",
+          "extracted": 2.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-024",
+          "category": "weekday_offset",
+          "gold": 2,
+          "raw_output": "We are given that **27 August 2025 is a Wednesday**. We need to find the weekday 6 days later.\n\n- 27 August 2025 is a **Wednesday**.\n- Adding 6 days to Wednesday:  \n  - Thursday (1)  \n  - Friday (2)  \n  - Saturday (3)  \n  - Sunday (4)  \n  - Monday (5)  \n  - Tuesday (6)  \n",
+          "extracted": 6.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-025",
+          "category": "add_days_count",
+          "gold": 4,
+          "raw_output": "Starting on **6 February 2025**, moving forward **60 days**:\n\n- February 6, 2025  \n- March 6, 2025  \n- April 6, 2025  \n- May 6, 2025  \n- June 6, 2025  \n\nThe date you reach falls in **June**.\n\n**Answer: 6**",
+          "extracted": 6.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-026",
+          "category": "add_days_count",
+          "gold": 13,
+          "raw_output": "The month after 17 June 2025 is **July**. There are 31 days in July. \n\nSo, the number of days left in July, not counting June itself, is **31**. \n\nAnswer: **31**",
+          "extracted": 31.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-027",
+          "category": "add_days_count",
+          "gold": 3,
+          "raw_output": "Starting on **24 February 2025**, moving forward **5 days**:\n\n- 24 February → 25 February  \n- 25 February → 26 February  \n- 26 February → 27 February  \n- 27 February → 28 February  \n\nSo, the date you reach is **28 February 2025**.\n\nThe month number is **February** (since February = 2).\n\n**",
+          "extracted": 2.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-028",
+          "category": "add_days_count",
+          "gold": 12,
+          "raw_output": "The month after 16 February 2025 is **March 2025**.  \n\nThere are **31 days** in March.  \n\nSo, the number of days left in the month after 16 February 2025 is **31**.  \n\nAnswer: **31**",
+          "extracted": 31.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-029",
+          "category": "add_days_count",
+          "gold": 5,
+          "raw_output": "Starting on **25 March 2025**, moving forward **62 days**:\n\n- March 25 → April 25  \n- April 25 → May 25  \n- May 25 → June 25  \n- June 25 → July 25  \n- July 25 → August 25  \n- August 25 → September 25  \n- September 25 → October 25",
+          "extracted": 25.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-030",
+          "category": "add_days_count",
+          "gold": 25,
+          "raw_output": "The month after 5 September 2025 is **October**. October has 31 days. \n\nSo, the number of days left in October, not counting the day itself, is **30**. \n\nAnswer: **30**",
+          "extracted": 30.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-031",
+          "category": "add_days_count",
+          "gold": 2,
+          "raw_output": "Starting on **27 January 2025**, moving forward **32 days**:\n\n- January 27 → February 1  \n- February 1 → February 2  \n- ...  \n- February 27 → March 1  \n\nSo, the date you reach falls in **February**.\n\n**Answer: 2**",
+          "extracted": 2.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-032",
+          "category": "add_days_count",
+          "gold": 25,
+          "raw_output": "The month after May 6, 2025, is **June**. June has **30 days**. \n\nSo, the number of days left in June, not counting May 6, is **29**. \n\nAnswer: **29**",
+          "extracted": 29.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-033",
+          "category": "add_days_count",
+          "gold": 5,
+          "raw_output": "Starting on **17 April 2025**, moving forward **32 days**:\n\n- April 17 + 32 days = **April 29**  \n- April 29 is in **April**.\n\n**Answer:** 4",
+          "extracted": 4.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-034",
+          "category": "add_days_count",
+          "gold": 24,
+          "raw_output": "The month after November 6, 2025, is December. There are 31 days in December. \n\nSo, the number of days left in December, not counting the day itself, is **30**. \n\nAnswer: 30",
+          "extracted": 30.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-035",
+          "category": "add_days_count",
+          "gold": 8,
+          "raw_output": "Starting on **30 May 2025**, moving forward **87 days**:\n\n- May 30, 2025  \n- May 31, 2025  \n- June 1, 2025  \n\nSo, the date you reach falls in **June**.\n\n**Answer: 6**",
+          "extracted": 6.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-036",
+          "category": "add_days_count",
+          "gold": 8,
+          "raw_output": "The month after 22 June 2025 is **July**. There are 31 days in July. \n\nSo, the number of days left in the month after 22 June 2025 is **31**. \n\nAnswer: **31**",
+          "extracted": 31.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-037",
+          "category": "weeks_days",
+          "gold": 9,
+          "raw_output": "To find how many whole weeks are in 63 days:\n\n- 63 ÷ 7 = 9  \n- So, there are **9 whole weeks**.\n\nAnswer: **9**",
+          "extracted": 9.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-038",
+          "category": "weeks_days",
+          "gold": 4,
+          "raw_output": "46 divided by 7 is 6 with a remainder of 4.  \nSo, the number of leftover days is **4**.",
+          "extracted": 4.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-039",
+          "category": "weeks_days",
+          "gold": 4,
+          "raw_output": "To find how many whole weeks are in 34 days, divide 34 by 7:\n\n$$\n\\frac{34}{7} \\approx 4.857\n$$\n\nSince we are only interested in **whole weeks**, the answer is:\n\n$$\n\\boxed{4}\n$$",
+          "extracted": 4.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-040",
+          "category": "weeks_days",
+          "gold": 6,
+          "raw_output": "To find the number of leftover days after splitting 34 days into whole weeks and leftover days:\n\n- A whole week has **7 days**.\n- Divide 34 by 7:  \n  $$\n  34 \\div 7 = 4 \\text{ weeks and } 6 \\text{ days (since } 4 \\times 7 = 28 \\text{ days, and } 34 - 28 = 6",
+          "extracted": 6.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-041",
+          "category": "weeks_days",
+          "gold": 16,
+          "raw_output": "To find how many whole weeks are in 112 days:\n\n- 112 ÷ 7 = 16 weeks.\n\nSo, the number of whole weeks is **16**.",
+          "extracted": 16.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-042",
+          "category": "weeks_days",
+          "gold": 1,
+          "raw_output": "To find the number of leftover days after splitting 36 days into whole weeks and leftover days:\n\n- A whole week has **7 days**.\n- Divide 36 by 7:  \n  $$\n  36 \\div 7 = 5 \\text{ weeks and } 3 \\text{ leftover days}\n  $$\n\nSo, the number of leftover days is **3**.  \n\n**Answer: 3**",
+          "extracted": 3.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-043",
+          "category": "weeks_days",
+          "gold": 13,
+          "raw_output": "To find how many whole weeks are in 97 days:\n\n- 97 divided by 7 equals **14**.\n\nSo, the number of whole weeks is **14**.",
+          "extracted": 14.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-044",
+          "category": "weeks_days",
+          "gold": 6,
+          "raw_output": "41 divided by 7 is 5 with a remainder of 6.  \n\nSo, the number of leftover days is **6**.",
+          "extracted": 6.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-045",
+          "category": "weeks_days",
+          "gold": 2,
+          "raw_output": "To find how many whole weeks are in 14 days, divide 14 by 7:\n\n$$\n\\frac{14}{7} = 2\n$$\n\nSo, the number of whole weeks is **2**.",
+          "extracted": 2.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-046",
+          "category": "weeks_days",
+          "gold": 6,
+          "raw_output": "To find the number of leftover days after splitting 104 days into whole weeks and leftover days:\n\n- A week has 7 days.\n- Divide 104 by 7:  \n  $$\n  104 \\div 7 = 14 \\text{ weeks and } 6 \\text{ days}\n  $$\n\nSo, the number of leftover days is **6**.  \n\n**Answer: 6**",
+          "extracted": 6.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-047",
+          "category": "weeks_days",
+          "gold": 15,
+          "raw_output": "To find how many whole weeks are in 105 days:\n\n- 1 week = 7 days  \n- 105 ÷ 7 = 15\n\nSo, the number of whole weeks is **15**.  \n\nAnswer: **15**",
+          "extracted": 15.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-048",
+          "category": "weeks_days",
+          "gold": 4,
+          "raw_output": "18 days can be split into **2 full weeks** (14 days) and **4 leftover days**.  \n\nSo, the number of leftover days is **4**.",
+          "extracted": 4.0,
+          "correct": true
+        },
+        {
+          "id": "t2diag-049",
+          "category": "month_span",
+          "gold": 2,
+          "raw_output": "To find how many whole months are from **7 June 2025 to 22 August 2025**, we need to count the number of months that include **7 June** and **22 August**.\n\n- **7 June 2025** is in **June**.\n- **22 August 2025** is in **August**.\n\nSo, the months are:\n\n- **June**\n- **July**\n-",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-050",
+          "category": "month_span",
+          "gold": 3,
+          "raw_output": "To find how many whole months are from **10 February 2025 to 14 May 2025**, we need to count the number of months that include the 10th of February and the 14th of May.\n\n- February 2025 includes the 10th of February.\n- May 2025 includes the 14th of May.\n\nSo, the number of whole months is:\n\n**",
+          "extracted": 14.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-051",
+          "category": "month_span",
+          "gold": 8,
+          "raw_output": "To find how many whole months are from **9 March 2025 to 12 November 2025**, we need to count the number of months that include the 9th of March and the 12th of November.\n\n- March 9 to November 12 includes the following months:\n  - March\n  - April\n  - May\n  - June\n  - July\n  - August\n  - September\n  -",
+          "extracted": 12.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-052",
+          "category": "month_span",
+          "gold": 7,
+          "raw_output": "To find how many whole months are from **14 January 2025** to **6 September 2025**, we need to count the number of months that include the 14th of January and the 6th of September.\n\n- January 14 to January 14: 1 month\n- February 14 to February 14: 1 month\n- March 14 to March 14: 1",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-053",
+          "category": "month_span",
+          "gold": 1,
+          "raw_output": "From 22 March 2025 to 22 April 2025, there are **2 whole months**.\n\nAnswer: 2",
+          "extracted": 2.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-054",
+          "category": "month_span",
+          "gold": 3,
+          "raw_output": "To find the number of whole months from **1 July 2025 to 24 October 2025**, we need to count the number of months that include the **1st of July** and **24th of October**.\n\n- **July 1 to July 31**: 1 month  \n- **August 1 to August 31**: 1 month  \n- **September 1 to September 30**: 1",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-055",
+          "category": "month_span",
+          "gold": 8,
+          "raw_output": "To find the number of whole months from **25 March 2025** to **2 December 2025**, we need to count the number of months that include the 25th of March and the 2nd of December.\n\n- March 2025: 25 March is the 1st month of 2025.\n- December 2025: 2 December is the 1st month of",
+          "extracted": 1.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-056",
+          "category": "month_span",
+          "gold": 1,
+          "raw_output": "To find the number of whole months from **25 May 2025** to **9 July 2025**, we need to count the number of months that include the 25th of May and the 9th of July.\n\n- **25 May 2025** is in **May**.\n- **9 July 2025** is in **July**.\n\nSo, the months are:\n\n- May\n-",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-057",
+          "category": "month_span",
+          "gold": 4,
+          "raw_output": "To find how many whole months are from **15 March 2025 to 19 July 2025**, we need to count the number of months that include the 15th of March and the 19th of July.\n\n- March 15, 2025: March\n- April 15, 2025: April\n- May 15, 2025: May\n",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-058",
+          "category": "month_span",
+          "gold": 1,
+          "raw_output": "To find the number of whole months from **9 October 2025** to **8 December 2025**, we need to count the number of months that include the 9th of October and the 8th of December.\n\n- **9 October 2025** is in **October**.\n- **8 December 2025** is in **December**.\n\nSo, the months are: **October, November, December**",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-059",
+          "category": "month_span",
+          "gold": 2,
+          "raw_output": "To find the number of whole months from **18 September 2025** to **14 December 2025**, we need to count the number of months that include the 18th of September and the 14th of December.\n\n- **18 September 2025** is in **September**.\n- **14 December 2025** is in **December**.\n\nSo, the months are: **",
+          "extracted": 2025.0,
+          "correct": false
+        },
+        {
+          "id": "t2diag-060",
+          "category": "month_span",
+          "gold": 5,
+          "raw_output": "To find how many whole months are from **25 June 2025 to 28 November 2025**, we need to count the number of months that include the 25th of June and the 28th of November.\n\n- June: 25th is included.\n- July: 25th is not included.\n- August: 25th is not included.\n- September: 25th is not included",
+          "extracted": 25.0,
+          "correct": false
+        }
+      ]
+    }
+  }
+}

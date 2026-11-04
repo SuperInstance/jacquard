@@ -1,0 +1,774 @@
+{
+ "n_neurons": 86016,
+ "auc_method": "average-rank Mann-Whitney, float64",
+ "contrasts": {
+  "C1_wrong_vs_correct": {
+   "n_pos": 45,
+   "n_neg": 15,
+   "best_act_auc": 0.9615,
+   "top_act": [
+    {
+     "layer": 26,
+     "neuron": 2128,
+     "auc": 0.9615,
+     "cohen_d": 2.312
+    },
+    {
+     "layer": 12,
+     "neuron": 787,
+     "auc": 0.9615,
+     "cohen_d": 3.069
+    },
+    {
+     "layer": 20,
+     "neuron": 1902,
+     "auc": 0.0415,
+     "cohen_d": -2.735
+    },
+    {
+     "layer": 12,
+     "neuron": 967,
+     "auc": 0.0415,
+     "cohen_d": -2.784
+    },
+    {
+     "layer": 22,
+     "neuron": 1903,
+     "auc": 0.957,
+     "cohen_d": 2.214
+    },
+    {
+     "layer": 16,
+     "neuron": 2754,
+     "auc": 0.043,
+     "cohen_d": -1.38
+    },
+    {
+     "layer": 15,
+     "neuron": 717,
+     "auc": 0.957,
+     "cohen_d": 3.019
+    },
+    {
+     "layer": 22,
+     "neuron": 2204,
+     "auc": 0.957,
+     "cohen_d": 2.519
+    },
+    {
+     "layer": 7,
+     "neuron": 221,
+     "auc": 0.043,
+     "cohen_d": -2.412
+    },
+    {
+     "layer": 13,
+     "neuron": 1685,
+     "auc": 0.0444,
+     "cohen_d": -2.558
+    },
+    {
+     "layer": 13,
+     "neuron": 2685,
+     "auc": 0.0474,
+     "cohen_d": -2.623
+    },
+    {
+     "layer": 14,
+     "neuron": 165,
+     "auc": 0.9526,
+     "cohen_d": 2.223
+    },
+    {
+     "layer": 5,
+     "neuron": 2953,
+     "auc": 0.0489,
+     "cohen_d": -2.683
+    },
+    {
+     "layer": 27,
+     "neuron": 957,
+     "auc": 0.0489,
+     "cohen_d": -2.64
+    },
+    {
+     "layer": 15,
+     "neuron": 2579,
+     "auc": 0.9511,
+     "cohen_d": 2.911
+    },
+    {
+     "layer": 7,
+     "neuron": 655,
+     "auc": 0.9496,
+     "cohen_d": 2.229
+    },
+    {
+     "layer": 14,
+     "neuron": 114,
+     "auc": 0.9496,
+     "cohen_d": 2.776
+    },
+    {
+     "layer": 3,
+     "neuron": 1532,
+     "auc": 0.9496,
+     "cohen_d": 1.746
+    },
+    {
+     "layer": 13,
+     "neuron": 728,
+     "auc": 0.9496,
+     "cohen_d": 2.472
+    },
+    {
+     "layer": 13,
+     "neuron": 1370,
+     "auc": 0.9481,
+     "cohen_d": 2.863
+    },
+    {
+     "layer": 16,
+     "neuron": 173,
+     "auc": 0.9481,
+     "cohen_d": 2.767
+    },
+    {
+     "layer": 15,
+     "neuron": 807,
+     "auc": 0.9481,
+     "cohen_d": 2.983
+    },
+    {
+     "layer": 7,
+     "neuron": 1878,
+     "auc": 0.0519,
+     "cohen_d": -2.684
+    },
+    {
+     "layer": 9,
+     "neuron": 2398,
+     "auc": 0.0519,
+     "cohen_d": -2.33
+    },
+    {
+     "layer": 15,
+     "neuron": 1373,
+     "auc": 0.0533,
+     "cohen_d": -2.465
+    },
+    {
+     "layer": 15,
+     "neuron": 2163,
+     "auc": 0.0533,
+     "cohen_d": -2.862
+    },
+    {
+     "layer": 8,
+     "neuron": 1328,
+     "auc": 0.9452,
+     "cohen_d": 2.611
+    },
+    {
+     "layer": 6,
+     "neuron": 1119,
+     "auc": 0.9452,
+     "cohen_d": 2.141
+    },
+    {
+     "layer": 15,
+     "neuron": 1941,
+     "auc": 0.9452,
+     "cohen_d": 2.476
+    },
+    {
+     "layer": 12,
+     "neuron": 1574,
+     "auc": 0.0548,
+     "cohen_d": -2.539
+    }
+   ],
+   "perm_max_auc_mean": 0.7989,
+   "perm_max_auc_p95": 0.8646,
+   "perm_max_auc_max": 0.9104,
+   "best_gate_auc": 0.9644,
+   "best_up_auc": 0.9659
+  },
+  "C2_failingcats_vs_weeksdays": {
+   "n_pos": 48,
+   "n_neg": 12,
+   "best_act_auc": 1.0,
+   "top_act": [
+    {
+     "layer": 13,
+     "neuron": 3071,
+     "auc": 1.0,
+     "cohen_d": 3.338
+    },
+    {
+     "layer": 4,
+     "neuron": 1379,
+     "auc": 0.0,
+     "cohen_d": -3.407
+    },
+    {
+     "layer": 4,
+     "neuron": 1381,
+     "auc": 1.0,
+     "cohen_d": 2.583
+    },
+    {
+     "layer": 16,
+     "neuron": 1330,
+     "auc": 1.0,
+     "cohen_d": 4.654
+    },
+    {
+     "layer": 4,
+     "neuron": 1385,
+     "auc": 0.0,
+     "cohen_d": -2.678
+    },
+    {
+     "layer": 16,
+     "neuron": 1320,
+     "auc": 1.0,
+     "cohen_d": 2.595
+    },
+    {
+     "layer": 4,
+     "neuron": 1389,
+     "auc": 0.0,
+     "cohen_d": -3.43
+    },
+    {
+     "layer": 16,
+     "neuron": 1294,
+     "auc": 1.0,
+     "cohen_d": 5.542
+    },
+    {
+     "layer": 16,
+     "neuron": 1290,
+     "auc": 1.0,
+     "cohen_d": 2.566
+    },
+    {
+     "layer": 16,
+     "neuron": 1287,
+     "auc": 1.0,
+     "cohen_d": 2.355
+    },
+    {
+     "layer": 4,
+     "neuron": 1396,
+     "auc": 0.0,
+     "cohen_d": -4.789
+    },
+    {
+     "layer": 4,
+     "neuron": 1405,
+     "auc": 1.0,
+     "cohen_d": 4.231
+    },
+    {
+     "layer": 16,
+     "neuron": 1246,
+     "auc": 0.0,
+     "cohen_d": -1.326
+    },
+    {
+     "layer": 4,
+     "neuron": 1409,
+     "auc": 1.0,
+     "cohen_d": 1.72
+    },
+    {
+     "layer": 4,
+     "neuron": 1411,
+     "auc": 0.0,
+     "cohen_d": -3.419
+    },
+    {
+     "layer": 4,
+     "neuron": 1412,
+     "auc": 1.0,
+     "cohen_d": 3.835
+    },
+    {
+     "layer": 16,
+     "neuron": 1238,
+     "auc": 1.0,
+     "cohen_d": 4.286
+    },
+    {
+     "layer": 4,
+     "neuron": 1415,
+     "auc": 0.0,
+     "cohen_d": -2.461
+    },
+    {
+     "layer": 4,
+     "neuron": 1416,
+     "auc": 1.0,
+     "cohen_d": 3.442
+    },
+    {
+     "layer": 16,
+     "neuron": 1236,
+     "auc": 1.0,
+     "cohen_d": 3.519
+    },
+    {
+     "layer": 4,
+     "neuron": 1421,
+     "auc": 0.0,
+     "cohen_d": -3.456
+    },
+    {
+     "layer": 16,
+     "neuron": 1218,
+     "auc": 1.0,
+     "cohen_d": 3.521
+    },
+    {
+     "layer": 16,
+     "neuron": 1211,
+     "auc": 1.0,
+     "cohen_d": 3.812
+    },
+    {
+     "layer": 16,
+     "neuron": 1199,
+     "auc": 1.0,
+     "cohen_d": 4.423
+    },
+    {
+     "layer": 4,
+     "neuron": 1437,
+     "auc": 0.0,
+     "cohen_d": -1.831
+    },
+    {
+     "layer": 16,
+     "neuron": 1193,
+     "auc": 1.0,
+     "cohen_d": 3.953
+    },
+    {
+     "layer": 4,
+     "neuron": 1375,
+     "auc": 0.0,
+     "cohen_d": -2.821
+    },
+    {
+     "layer": 16,
+     "neuron": 1184,
+     "auc": 0.0,
+     "cohen_d": -3.16
+    },
+    {
+     "layer": 4,
+     "neuron": 1372,
+     "auc": 1.0,
+     "cohen_d": 2.49
+    },
+    {
+     "layer": 16,
+     "neuron": 1358,
+     "auc": 1.0,
+     "cohen_d": 2.648
+    }
+   ],
+   "perm_max_auc_mean": 0.8219,
+   "perm_max_auc_p95": 0.8838,
+   "perm_max_auc_max": 0.9366,
+   "best_gate_auc": 1.0,
+   "best_up_auc": 1.0
+  },
+  "C3_monthspan_vs_weeksdays": {
+   "n_pos": 12,
+   "n_neg": 12,
+   "best_act_auc": 1.0,
+   "top_act": [
+    {
+     "layer": 0,
+     "neuron": 0,
+     "auc": 0.0,
+     "cohen_d": -5.893
+    },
+    {
+     "layer": 14,
+     "neuron": 2121,
+     "auc": 0.0,
+     "cohen_d": -2.612
+    },
+    {
+     "layer": 14,
+     "neuron": 2124,
+     "auc": 1.0,
+     "cohen_d": 10.7
+    },
+    {
+     "layer": 14,
+     "neuron": 2125,
+     "auc": 0.0,
+     "cohen_d": -10.066
+    },
+    {
+     "layer": 14,
+     "neuron": 2126,
+     "auc": 1.0,
+     "cohen_d": 8.483
+    },
+    {
+     "layer": 14,
+     "neuron": 2127,
+     "auc": 1.0,
+     "cohen_d": 10.408
+    },
+    {
+     "layer": 14,
+     "neuron": 2130,
+     "auc": 1.0,
+     "cohen_d": 8.396
+    },
+    {
+     "layer": 14,
+     "neuron": 2131,
+     "auc": 1.0,
+     "cohen_d": 3.326
+    },
+    {
+     "layer": 14,
+     "neuron": 2132,
+     "auc": 0.0,
+     "cohen_d": -2.881
+    },
+    {
+     "layer": 14,
+     "neuron": 2133,
+     "auc": 0.0,
+     "cohen_d": -3.756
+    },
+    {
+     "layer": 14,
+     "neuron": 2136,
+     "auc": 0.0,
+     "cohen_d": -13.904
+    },
+    {
+     "layer": 14,
+     "neuron": 2138,
+     "auc": 1.0,
+     "cohen_d": 4.458
+    },
+    {
+     "layer": 14,
+     "neuron": 2139,
+     "auc": 1.0,
+     "cohen_d": 7.588
+    },
+    {
+     "layer": 14,
+     "neuron": 2140,
+     "auc": 1.0,
+     "cohen_d": 8.928
+    },
+    {
+     "layer": 14,
+     "neuron": 2141,
+     "auc": 0.0,
+     "cohen_d": -5.89
+    },
+    {
+     "layer": 14,
+     "neuron": 2143,
+     "auc": 1.0,
+     "cohen_d": 3.219
+    },
+    {
+     "layer": 14,
+     "neuron": 2145,
+     "auc": 0.0,
+     "cohen_d": -4.126
+    },
+    {
+     "layer": 14,
+     "neuron": 2146,
+     "auc": 0.0,
+     "cohen_d": -5.347
+    },
+    {
+     "layer": 14,
+     "neuron": 2147,
+     "auc": 1.0,
+     "cohen_d": 6.925
+    },
+    {
+     "layer": 14,
+     "neuron": 2149,
+     "auc": 0.0,
+     "cohen_d": -5.161
+    },
+    {
+     "layer": 14,
+     "neuron": 2151,
+     "auc": 1.0,
+     "cohen_d": 2.852
+    },
+    {
+     "layer": 14,
+     "neuron": 2152,
+     "auc": 0.0,
+     "cohen_d": -2.809
+    },
+    {
+     "layer": 14,
+     "neuron": 2153,
+     "auc": 1.0,
+     "cohen_d": 3.703
+    },
+    {
+     "layer": 14,
+     "neuron": 2154,
+     "auc": 0.0,
+     "cohen_d": -4.203
+    },
+    {
+     "layer": 14,
+     "neuron": 2157,
+     "auc": 0.0,
+     "cohen_d": -2.806
+    },
+    {
+     "layer": 14,
+     "neuron": 2158,
+     "auc": 1.0,
+     "cohen_d": 5.387
+    },
+    {
+     "layer": 14,
+     "neuron": 2120,
+     "auc": 1.0,
+     "cohen_d": 3.581
+    },
+    {
+     "layer": 14,
+     "neuron": 2119,
+     "auc": 1.0,
+     "cohen_d": 4.28
+    },
+    {
+     "layer": 14,
+     "neuron": 2118,
+     "auc": 1.0,
+     "cohen_d": 3.91
+    },
+    {
+     "layer": 14,
+     "neuron": 2117,
+     "auc": 0.0,
+     "cohen_d": -5.404
+    }
+   ],
+   "perm_max_auc_mean": 0.9159,
+   "perm_max_auc_p95": 0.9726,
+   "perm_max_auc_max": 1.0,
+   "best_gate_auc": 1.0,
+   "best_up_auc": 1.0
+  },
+  "C4_daysleftB_vs_landingA": {
+   "n_pos": 6,
+   "n_neg": 6,
+   "best_act_auc": 1.0,
+   "top_act": [
+    {
+     "layer": 0,
+     "neuron": 0,
+     "auc": 1.0,
+     "cohen_d": 22.076
+    },
+    {
+     "layer": 15,
+     "neuron": 483,
+     "auc": 1.0,
+     "cohen_d": 4.308
+    },
+    {
+     "layer": 15,
+     "neuron": 484,
+     "auc": 1.0,
+     "cohen_d": 12.46
+    },
+    {
+     "layer": 15,
+     "neuron": 487,
+     "auc": 1.0,
+     "cohen_d": 3.288
+    },
+    {
+     "layer": 15,
+     "neuron": 488,
+     "auc": 0.0,
+     "cohen_d": -4.247
+    },
+    {
+     "layer": 15,
+     "neuron": 489,
+     "auc": 1.0,
+     "cohen_d": 14.018
+    },
+    {
+     "layer": 15,
+     "neuron": 492,
+     "auc": 1.0,
+     "cohen_d": 4.327
+    },
+    {
+     "layer": 15,
+     "neuron": 493,
+     "auc": 1.0,
+     "cohen_d": 3.953
+    },
+    {
+     "layer": 15,
+     "neuron": 494,
+     "auc": 0.0,
+     "cohen_d": -7.991
+    },
+    {
+     "layer": 15,
+     "neuron": 495,
+     "auc": 0.0,
+     "cohen_d": -5.795
+    },
+    {
+     "layer": 15,
+     "neuron": 497,
+     "auc": 1.0,
+     "cohen_d": 3.421
+    },
+    {
+     "layer": 15,
+     "neuron": 498,
+     "auc": 0.0,
+     "cohen_d": -14.461
+    },
+    {
+     "layer": 15,
+     "neuron": 499,
+     "auc": 0.0,
+     "cohen_d": -3.76
+    },
+    {
+     "layer": 15,
+     "neuron": 500,
+     "auc": 0.0,
+     "cohen_d": -5.273
+    },
+    {
+     "layer": 15,
+     "neuron": 502,
+     "auc": 0.0,
+     "cohen_d": -5.977
+    },
+    {
+     "layer": 15,
+     "neuron": 503,
+     "auc": 1.0,
+     "cohen_d": 3.39
+    },
+    {
+     "layer": 15,
+     "neuron": 504,
+     "auc": 0.0,
+     "cohen_d": -5.105
+    },
+    {
+     "layer": 15,
+     "neuron": 505,
+     "auc": 0.0,
+     "cohen_d": -7.689
+    },
+    {
+     "layer": 15,
+     "neuron": 506,
+     "auc": 1.0,
+     "cohen_d": 11.568
+    },
+    {
+     "layer": 15,
+     "neuron": 508,
+     "auc": 1.0,
+     "cohen_d": 15.385
+    },
+    {
+     "layer": 15,
+     "neuron": 512,
+     "auc": 0.0,
+     "cohen_d": -7.028
+    },
+    {
+     "layer": 15,
+     "neuron": 513,
+     "auc": 1.0,
+     "cohen_d": 5.108
+    },
+    {
+     "layer": 15,
+     "neuron": 514,
+     "auc": 0.0,
+     "cohen_d": -21.526
+    },
+    {
+     "layer": 15,
+     "neuron": 515,
+     "auc": 0.0,
+     "cohen_d": -5.392
+    },
+    {
+     "layer": 15,
+     "neuron": 516,
+     "auc": 1.0,
+     "cohen_d": 4.555
+    },
+    {
+     "layer": 15,
+     "neuron": 518,
+     "auc": 0.0,
+     "cohen_d": -8.806
+    },
+    {
+     "layer": 15,
+     "neuron": 519,
+     "auc": 0.0,
+     "cohen_d": -6.627
+    },
+    {
+     "layer": 15,
+     "neuron": 520,
+     "auc": 0.0,
+     "cohen_d": -5.591
+    },
+    {
+     "layer": 15,
+     "neuron": 482,
+     "auc": 0.0,
+     "cohen_d": -18.147
+    },
+    {
+     "layer": 15,
+     "neuron": 481,
+     "auc": 1.0,
+     "cohen_d": 4.173
+    }
+   ],
+   "perm_max_auc_mean": 1.0,
+   "perm_max_auc_p95": 1.0,
+   "perm_max_auc_max": 1.0,
+   "best_gate_auc": 1.0,
+   "best_up_auc": 1.0
+  }
+ }
+}
