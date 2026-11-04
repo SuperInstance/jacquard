@@ -1,0 +1,4 @@
+{
+ "sha256": "33e15c8f386dd02d687f44066492ee97bea79f424097c95f74b1e7f394c1b63f",
+ "summary": "Grader scoring (Thor, harness sequence mode, results/grade-lfm2-1.2b-G1.json): LFM2-1.2B G1 held-out base 51.67 -> post-step 83.33 (+31.66), dose 0.00105% <= 0.1%, no previously profiled grades (retention vacuous). Verdict YIELD."
+}

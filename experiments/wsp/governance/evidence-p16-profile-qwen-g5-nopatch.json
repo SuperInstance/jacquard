@@ -1,0 +1,4 @@
+{
+ "sha256": "e8f5ad4427fd75787b40addb0770a81d0cb9a9b510b7ddd2c36910f2c58744a6",
+ "summary": "NO PATCH declared by patcher for qwen3-0.6b G5 (NO YIELD, no patch to ratify). Probe reason from PATCHING-RECORD.md / patches/qwen3-0.6b/G5/NO-PATCH.md (record sha256 bound as this evidence hash): 74 of 82 diagnostic failures are bare wrong facts (capitals 0/31, country echoes, Yes attractor); the knowledge is absent. Element symbols (86.67% chained), a closed table the model has, need no patch. Grader chain pass-through held-out for this grade is in PROFILE-RESULTS.md."
+}

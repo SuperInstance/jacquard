@@ -1,0 +1,4 @@
+{
+ "sha256": "e8f5ad4427fd75787b40addb0770a81d0cb9a9b510b7ddd2c36910f2c58744a6",
+ "summary": "NO PATCH declared by patcher for lfm2-1.2b G5 (NO YIELD, no patch to ratify). Probe reason from PATCHING-RECORD.md / patches/lfm2-1.2b/G5/NO-PATCH.md (record sha256 bound as this evidence hash): 27 diagnostic failures are wrong facts, partial forms, and chain side-effects (five 'Yes' answers to numeric facts, EOS truncations); no grade-local readout failure exists, and a G5 patch would counter-edit earlier grades' rows. Grader chain pass-through held-out for this grade is in PROFILE-RESULTS.md."
+}

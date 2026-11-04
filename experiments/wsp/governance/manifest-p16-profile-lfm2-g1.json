@@ -1,0 +1,6 @@
+{
+ "patch_id": "p16-profile-lfm2-1.2b-g1",
+ "patch_sha256": "ddd7b7c362443fc2db8086266e8be2bab9d98f37c579425342087d0a50ffea3c",
+ "target": "thor:~/wsp-exp16/profile/patches/lfm2-1.2b/G1/",
+ "summary": "RATIFICATION (grader, slice 45 R2): LFM2-1.2B G1 family-1 patch, dose 0.00105% stored basis; grader held-out 51.67 -> 83.33 (+31.66) at dose <=0.1%, no prior grades to retain: YIELD per CRITERIA R2"
+}
