@@ -340,12 +340,19 @@ if (replay === null) {
 // refolded state hash must all equal the recorded state section.
 {
   const seq = new Sequencer();
+  // The generator's own envelopes, field for field (ids and
+  // declared effects): since spec 0.7 an acceptance entry
+  // records its envelope hash (SPEC 3.1), so the folded
+  // state commits to the submitting envelopes.
+  const genEnv: { [name: string]: [string, string[]] } = {
+    double: ["v-d1", []],
+    "dispatch-job": ["v-d2", ["dispatch"]],
+  };
   for (const item of vectors.definitions) {
+    const [idem, declared] = genEnv[item.definition.name as string];
     seq.submit(
       makeEnvelopeTs(
-        "operator", "definition", item.definition,
-        (item.definition.declared_effects as string[] | undefined) ?? [],
-        "sv-" + (item.definition.name as string),
+        "operator", "definition", item.definition, declared, idem,
       ),
     );
   }
@@ -358,7 +365,7 @@ if (replay === null) {
         ],
       },
       ["write"],
-      "sv-p1",
+      "v-p1",
     ),
   );
   const problems: string[] = [];

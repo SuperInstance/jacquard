@@ -1155,6 +1155,52 @@ export class Sequencer {
       () => this.tentative,
       (p, c) => this.recordLookup(p, c),
     );
+    // SPEC 3.1: the verdict cache is rebuilt from the log, so
+    // resubmission replays the recorded verdict in any
+    // process, not just the one that decided it.
+    this.verdicts = this.recordedVerdicts();
+  }
+
+  recordedVerdicts(): { [envHash: string]: Verdict } {
+    const recorded: { [envHash: string]: Verdict } = {};
+    for (const entry of this.log.entries) {
+      const body = entry.body;
+      if (entry.kind === "decision") {
+        const pid = body.proposal_id as string | undefined;
+        if (pid === undefined || has(recorded, pid)) continue;
+        if (has(body, "releases") || has(body, "rejects")
+            || has(body, "expires")) {
+          continue;
+        }
+        if (body.outcome === "refused") {
+          const reasons = (body.reasons as Json[] | undefined) ?? [];
+          recorded[pid] = {
+            status: "REFUSED", refusal: body.fault as string,
+            detail: (reasons[0] as string) ?? "", proposal_id: pid,
+          };
+        } else {
+          recorded[pid] = {
+            status: "decided",
+            outcome: body.outcome === "queued"
+              ? "queue" : body.outcome as string,
+            proposal_id: pid,
+            reasons: deepClone(body.reasons ?? []) as Json,
+          };
+        }
+      } else if (entry.kind === "definition" && has(body, "envelope")) {
+        const envHash = body.envelope as string;
+        if (has(recorded, envHash)) continue;
+        recorded[envHash] = {
+          status: "accepted", entry: entry.hash,
+          computed_effects:
+            (body.definition as JsonObject).computed_effects as Json,
+        };
+      }
+      // Machine entries are not scanned: this port refuses
+      // machine envelopes by scope (spec section 10), fresh
+      // or replayed alike.
+    }
+    return recorded;
   }
 
   refold(): void {
@@ -1229,11 +1275,13 @@ export class Sequencer {
     }
     const envHash = envelopeHash(envelope);
     if (has(this.verdicts, envHash)) {
-      return deepClone(this.verdicts[envHash]);
+      const replay = deepClone(this.verdicts[envHash]);
+      replay.duplicate = true;
+      return replay;
     }
     let verdict: Verdict;
     if (envelope.kind === "definition") {
-      verdict = this.submitDefinition(envelope);
+      verdict = this.submitDefinition(envelope, envHash);
     } else if (envelope.kind === "machine") {
       verdict = {
         status: "REFUSED", refusal: "SPEC",
@@ -1247,7 +1295,7 @@ export class Sequencer {
     return verdict;
   }
 
-  submitDefinition(envelope: JsonObject): Verdict {
+  submitDefinition(envelope: JsonObject, envHash: string): Verdict {
     let stored: StoredDefinition;
     try {
       stored = this.dictionary.define(envelope.body as JsonObject);
@@ -1259,6 +1307,7 @@ export class Sequencer {
     }
     const entry = this.log.append("definition", {
       producer: envelope.producer, definition: stored,
+      envelope: envHash,
     });
     this.refold();
     return {
@@ -1437,6 +1486,16 @@ export class Sequencer {
           this.dictionary.define((request.args as Json[])[0] as JsonObject);
         } catch (err) {
           if (err instanceof Refusal) {
+            // SPEC 3.1: define-check refusals record a fault
+            // decision, exactly like UNDERDECLARED, so the
+            // verdict replays from the log.
+            this.log.append("decision", {
+              producer, class: cls, proposal_id: envHash,
+              policy_version: POLICY_VERSION, outcome: "refused",
+              fault: err.name, reasons: [err.detail],
+              effects: sortStrings([...effects]),
+            });
+            this.refold();
             return {
               status: "REFUSED", refusal: err.name, detail: err.detail,
               proposal_id: envHash,

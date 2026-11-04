@@ -1406,6 +1406,96 @@ fn outcome_stored(outcome: &str) -> &'static str {
     }
 }
 
+/// SPEC 3.1: rebuild the verdict cache from the recorded
+/// entries -- the first SUBMISSION decision per proposal id
+/// (decision entries carrying releases / rejects / expires
+/// are operator decisions, not the submission's verdict),
+/// plus definition acceptances (0.7 entries carry the
+/// envelope hash). Machine entries are not scanned: this
+/// port refuses machine envelopes by scope (spec section
+/// 10), fresh or replayed alike.
+fn recorded_verdicts(entries: &[Value]) -> Vec<(String, Value)> {
+    let mut recorded: Vec<(String, Value)> = Vec::new();
+    for entry in entries {
+        let body = match entry.get("body") {
+            Some(b) => b,
+            None => continue,
+        };
+        match entry.get("kind").and_then(|v| v.as_str()) {
+            Some("decision") => {
+                let pid = match body.get("proposal_id").and_then(|v| v.as_str()) {
+                    Some(p) => p.to_string(),
+                    None => continue,
+                };
+                if recorded.iter().any(|(h, _)| *h == pid) {
+                    continue;
+                }
+                if body.has("releases") || body.has("rejects") || body.has("expires") {
+                    continue;
+                }
+                let reasons = body.get("reasons").cloned().unwrap_or_else(|| arr(vec![]));
+                if body.get("outcome") == Some(&s("refused")) {
+                    let detail = reasons
+                        .as_array()
+                        .and_then(|a| a.first())
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let fault = body
+                        .get("fault")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let mut v = verdict_refused(&fault, &detail);
+                    v.set("proposal_id", s(&pid));
+                    recorded.push((pid, v));
+                } else {
+                    let outcome = match body.get("outcome").and_then(|v| v.as_str()) {
+                        Some("queued") => "queue",
+                        Some(other) => other,
+                        None => "",
+                    };
+                    recorded.push((
+                        pid.clone(),
+                        obj(vec![
+                            ("status", s("decided")),
+                            ("outcome", s(outcome)),
+                            ("proposal_id", s(&pid)),
+                            ("reasons", reasons),
+                        ]),
+                    ));
+                }
+            }
+            Some("definition") => {
+                if let Some(env_hash) = body.get("envelope").and_then(|v| v.as_str()) {
+                    if recorded.iter().any(|(h, _)| h == env_hash) {
+                        continue;
+                    }
+                    let entry_hash = entry
+                        .get("hash")
+                        .cloned()
+                        .unwrap_or(Value::Null);
+                    let effects = body
+                        .get("definition")
+                        .and_then(|d| d.get("computed_effects"))
+                        .cloned()
+                        .unwrap_or(Value::Null);
+                    recorded.push((
+                        env_hash.to_string(),
+                        obj(vec![
+                            ("status", s("accepted")),
+                            ("entry", entry_hash),
+                            ("computed_effects", effects),
+                        ]),
+                    ));
+                }
+            }
+            _ => {}
+        }
+    }
+    recorded
+}
+
 fn verdict_refused(name: &str, detail: &str) -> Value {
     obj(vec![
         ("status", s("REFUSED")),
@@ -1433,11 +1523,15 @@ impl Sequencer {
     pub fn with_log(log: Log) -> Self {
         let state = fold(&log.entries);
         let dictionary = Dictionary::new(state.clone());
+        // SPEC 3.1: the verdict cache is rebuilt from the
+        // log, so resubmission replays the recorded verdict
+        // in any process, not just the one that decided it.
+        let verdicts = recorded_verdicts(&log.entries);
         Sequencer {
             log,
             standing: obj(vec![]),
             tentative: obj(vec![]),
-            verdicts: Vec::new(),
+            verdicts,
             pumping: false,
             rule_decider: None,
             state,
@@ -1555,11 +1649,13 @@ impl Sequencer {
         }
         let env_hash = envelope_hash(envelope);
         if let Some((_, verdict)) = self.verdicts.iter().find(|(h, _)| *h == env_hash) {
-            return verdict.clone();
+            let mut replay = verdict.clone();
+            replay.set("duplicate", Value::Bool(true));
+            return replay;
         }
         let kind = envelope.get("kind").and_then(|v| v.as_str()).unwrap_or("");
         let verdict = match kind {
-            "definition" => self.submit_definition(envelope),
+            "definition" => self.submit_definition(envelope, &env_hash),
             "machine" => verdict_refused(
                 "SPEC",
                 "machine envelopes are outside the Rust port's scope (spec section 10; the fold covers machine entries)",
@@ -1571,7 +1667,7 @@ impl Sequencer {
         verdict
     }
 
-    fn submit_definition(&mut self, envelope: &Value) -> Value {
+    fn submit_definition(&mut self, envelope: &Value, env_hash: &str) -> Value {
         let entries = self.log.entries.clone();
         let tentative = self.tentative.clone();
         let env = Env { entries: &entries, tentative: &tentative };
@@ -1589,6 +1685,7 @@ impl Sequencer {
                 obj(vec![
                     ("producer", envelope.get("producer").cloned().unwrap_or(Value::Null)),
                     ("definition", stored.clone()),
+                    ("envelope", s(env_hash)),
                 ]),
             )
             .expect("definition kind");
@@ -1904,6 +2001,32 @@ impl Sequencer {
                     .cloned()
                     .unwrap_or(Value::Null);
                 if let Err(err) = self.dictionary.define(&env, &target) {
+                    // SPEC 3.1: define-check refusals record a
+                    // fault decision, exactly like
+                    // UNDERDECLARED, so the verdict replays
+                    // from the log.
+                    self.log
+                        .append(
+                            "decision",
+                            obj(vec![
+                                ("producer", s(&producer)),
+                                ("class", s(&cls)),
+                                ("proposal_id", s(env_hash)),
+                                ("policy_version", s(POLICY_VERSION)),
+                                ("outcome", s("refused")),
+                                ("fault", s(&err.name)),
+                                ("reasons", arr(vec![s(&err.detail)])),
+                                (
+                                    "effects",
+                                    arr(sorted_set(&effects)
+                                        .into_iter()
+                                        .map(|x| s(&x))
+                                        .collect()),
+                                ),
+                            ]),
+                        )
+                        .expect("decision kind");
+                    self.refold();
                     let mut v = verdict_refused(&err.name, &err.detail);
                     v.set("proposal_id", s(env_hash));
                     return v;

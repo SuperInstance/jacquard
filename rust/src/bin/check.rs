@@ -404,28 +404,26 @@ fn main() {
     // --- vectors.state ---
     {
         let mut seq = Sequencer::new();
+        // The generator's own envelopes, field for field
+        // (ids and declared effects): since spec 0.7 an
+        // acceptance entry records its envelope hash (SPEC
+        // 3.1), so the folded state commits to the
+        // submitting envelopes.
         for item in &definitions {
             let defn = item.get("definition").cloned().unwrap_or(Value::Null);
-            let declared: Vec<String> = defn
-                .get("declared_effects")
-                .and_then(|v| v.as_array())
-                .map(|items| {
-                    items
-                        .iter()
-                        .filter_map(|e| e.as_str().map(|t| t.to_string()))
-                        .collect()
-                })
-                .unwrap_or_default();
-            let id = format!(
-                "sv-{}",
-                defn.get("name").and_then(|v| v.as_str()).unwrap_or("")
-            );
+            let (declared, id): (Vec<String>, &str) =
+                match defn.get("name").and_then(|v| v.as_str()) {
+                    Some("dispatch-job") => {
+                        (vec!["dispatch".to_string()], "v-d2")
+                    }
+                    _ => (vec![], "v-d1"),
+                };
             seq.submit(&make_envelope(
                 "operator",
                 "definition",
                 defn,
                 &declared,
-                &id,
+                id,
             ));
         }
         let proposal_body = obj(vec![(
@@ -441,7 +439,7 @@ fn main() {
             "proposal",
             proposal_body,
             &["write".to_string()],
-            "sv-p1",
+            "v-p1",
         ));
         let state_section = vectors.get("state").cloned().unwrap_or(Value::Null);
         let recorded_units = state_section.get("units").cloned().unwrap_or(Value::Null);
