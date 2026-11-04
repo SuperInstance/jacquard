@@ -1,0 +1,5 @@
+edits applied: 11 of 11 (W-L4N1379, W-L4N1385, W-L4N1389, W-L4N1396, W-L16N1246, W-L4N1411, W-L4N1415, W-L4N1421, W-L4N1437, W-L4N1375, W-L16N1184)
+scalars changed: 11264
+total parameters: 751632384
+fraction changed: 0.00150% (bound 0.1% = 751632 scalars) -> WITHIN BOUND
+wrote /home/caseydigennaro/wsp-exp16/r3/trial-model

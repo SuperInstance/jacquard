@@ -1,0 +1,1164 @@
+{
+ "patch": "jacquard-phase16-r3-final-besteffort",
+ "base_model": "Qwen/Qwen3-0.6B (bf16), pristine at ~/wsp-exp/models/Qwen3-0.6B",
+ "total_parameters": 751632384,
+ "rankings_file": "results/probe_top200_mean.json",
+ "provenance": {
+  "S": {
+   "contrast": "C1_wrong_vs_correct",
+   "side": "hi",
+   "scale": 0.0,
+   "neurons": [
+    {
+     "layer": 11,
+     "neuron": 1834,
+     "auc": 0.957
+    },
+    {
+     "layer": 16,
+     "neuron": 1298,
+     "auc": 0.9526
+    },
+    {
+     "layer": 27,
+     "neuron": 2318,
+     "auc": 0.9496
+    },
+    {
+     "layer": 26,
+     "neuron": 2278,
+     "auc": 0.9452
+    },
+    {
+     "layer": 14,
+     "neuron": 2212,
+     "auc": 0.9437
+    },
+    {
+     "layer": 0,
+     "neuron": 627,
+     "auc": 0.9437
+    },
+    {
+     "layer": 3,
+     "neuron": 2480,
+     "auc": 0.9422
+    },
+    {
+     "layer": 18,
+     "neuron": 385,
+     "auc": 0.9407
+    },
+    {
+     "layer": 12,
+     "neuron": 2068,
+     "auc": 0.9393
+    },
+    {
+     "layer": 1,
+     "neuron": 172,
+     "auc": 0.9393
+    },
+    {
+     "layer": 13,
+     "neuron": 745,
+     "auc": 0.9393
+    },
+    {
+     "layer": 24,
+     "neuron": 203,
+     "auc": 0.9378
+    },
+    {
+     "layer": 14,
+     "neuron": 935,
+     "auc": 0.9378
+    },
+    {
+     "layer": 26,
+     "neuron": 1135,
+     "auc": 0.9378
+    },
+    {
+     "layer": 18,
+     "neuron": 1697,
+     "auc": 0.9363
+    },
+    {
+     "layer": 2,
+     "neuron": 307,
+     "auc": 0.9348
+    },
+    {
+     "layer": 13,
+     "neuron": 1491,
+     "auc": 0.9348
+    },
+    {
+     "layer": 17,
+     "neuron": 915,
+     "auc": 0.9333
+    },
+    {
+     "layer": 5,
+     "neuron": 1253,
+     "auc": 0.9333
+    },
+    {
+     "layer": 15,
+     "neuron": 1319,
+     "auc": 0.9333
+    },
+    {
+     "layer": 15,
+     "neuron": 1065,
+     "auc": 0.9333
+    },
+    {
+     "layer": 7,
+     "neuron": 2801,
+     "auc": 0.9319
+    },
+    {
+     "layer": 25,
+     "neuron": 2662,
+     "auc": 0.9319
+    },
+    {
+     "layer": 20,
+     "neuron": 2255,
+     "auc": 0.9319
+    },
+    {
+     "layer": 12,
+     "neuron": 1734,
+     "auc": 0.9304
+    },
+    {
+     "layer": 9,
+     "neuron": 2726,
+     "auc": 0.9304
+    },
+    {
+     "layer": 11,
+     "neuron": 1396,
+     "auc": 0.9304
+    },
+    {
+     "layer": 23,
+     "neuron": 2921,
+     "auc": 0.9304
+    },
+    {
+     "layer": 19,
+     "neuron": 2528,
+     "auc": 0.9304
+    },
+    {
+     "layer": 14,
+     "neuron": 3023,
+     "auc": 0.9289
+    }
+   ]
+  },
+  "B": {
+   "contrast": "C1_wrong_vs_correct",
+   "side": "lo",
+   "scale": 3.0,
+   "neurons": [
+    {
+     "layer": 10,
+     "neuron": 512,
+     "auc": 0.0444
+    },
+    {
+     "layer": 12,
+     "neuron": 2357,
+     "auc": 0.0444
+    },
+    {
+     "layer": 15,
+     "neuron": 2482,
+     "auc": 0.0459
+    },
+    {
+     "layer": 23,
+     "neuron": 2100,
+     "auc": 0.0548
+    },
+    {
+     "layer": 18,
+     "neuron": 942,
+     "auc": 0.0578
+    },
+    {
+     "layer": 13,
+     "neuron": 1052,
+     "auc": 0.0578
+    },
+    {
+     "layer": 10,
+     "neuron": 1520,
+     "auc": 0.0607
+    },
+    {
+     "layer": 14,
+     "neuron": 1574,
+     "auc": 0.0622
+    },
+    {
+     "layer": 4,
+     "neuron": 1994,
+     "auc": 0.0637
+    },
+    {
+     "layer": 13,
+     "neuron": 2016,
+     "auc": 0.0637
+    },
+    {
+     "layer": 8,
+     "neuron": 113,
+     "auc": 0.0637
+    },
+    {
+     "layer": 12,
+     "neuron": 2532,
+     "auc": 0.0637
+    },
+    {
+     "layer": 13,
+     "neuron": 1317,
+     "auc": 0.0652
+    },
+    {
+     "layer": 12,
+     "neuron": 187,
+     "auc": 0.0652
+    },
+    {
+     "layer": 4,
+     "neuron": 1954,
+     "auc": 0.0652
+    },
+    {
+     "layer": 24,
+     "neuron": 835,
+     "auc": 0.0667
+    },
+    {
+     "layer": 24,
+     "neuron": 2126,
+     "auc": 0.0667
+    },
+    {
+     "layer": 7,
+     "neuron": 81,
+     "auc": 0.0667
+    },
+    {
+     "layer": 5,
+     "neuron": 1097,
+     "auc": 0.0681
+    },
+    {
+     "layer": 20,
+     "neuron": 2634,
+     "auc": 0.0681
+    },
+    {
+     "layer": 9,
+     "neuron": 2512,
+     "auc": 0.0681
+    },
+    {
+     "layer": 9,
+     "neuron": 1699,
+     "auc": 0.0681
+    },
+    {
+     "layer": 2,
+     "neuron": 726,
+     "auc": 0.0681
+    },
+    {
+     "layer": 18,
+     "neuron": 2285,
+     "auc": 0.0681
+    },
+    {
+     "layer": 16,
+     "neuron": 819,
+     "auc": 0.0696
+    },
+    {
+     "layer": 16,
+     "neuron": 2684,
+     "auc": 0.0696
+    },
+    {
+     "layer": 8,
+     "neuron": 2333,
+     "auc": 0.0696
+    },
+    {
+     "layer": 27,
+     "neuron": 2930,
+     "auc": 0.0711
+    },
+    {
+     "layer": 3,
+     "neuron": 2646,
+     "auc": 0.0711
+    },
+    {
+     "layer": 24,
+     "neuron": 2315,
+     "auc": 0.0711
+    }
+   ]
+  }
+ },
+ "edits": [
+  {
+   "id": "S-L11N1834",
+   "tensor": "model.layers.11.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1834
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L16N1298",
+   "tensor": "model.layers.16.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1298
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L27N2318",
+   "tensor": "model.layers.27.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2318
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L26N2278",
+   "tensor": "model.layers.26.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2278
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L14N2212",
+   "tensor": "model.layers.14.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2212
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L0N627",
+   "tensor": "model.layers.0.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     627
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L3N2480",
+   "tensor": "model.layers.3.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2480
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L18N385",
+   "tensor": "model.layers.18.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     385
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L12N2068",
+   "tensor": "model.layers.12.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2068
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L1N172",
+   "tensor": "model.layers.1.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     172
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L13N745",
+   "tensor": "model.layers.13.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     745
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L24N203",
+   "tensor": "model.layers.24.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     203
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L14N935",
+   "tensor": "model.layers.14.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     935
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L26N1135",
+   "tensor": "model.layers.26.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1135
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L18N1697",
+   "tensor": "model.layers.18.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1697
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L2N307",
+   "tensor": "model.layers.2.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     307
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L13N1491",
+   "tensor": "model.layers.13.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1491
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L17N915",
+   "tensor": "model.layers.17.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     915
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L5N1253",
+   "tensor": "model.layers.5.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1253
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L15N1319",
+   "tensor": "model.layers.15.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1319
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L15N1065",
+   "tensor": "model.layers.15.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1065
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L7N2801",
+   "tensor": "model.layers.7.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2801
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L25N2662",
+   "tensor": "model.layers.25.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2662
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L20N2255",
+   "tensor": "model.layers.20.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2255
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L12N1734",
+   "tensor": "model.layers.12.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1734
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L9N2726",
+   "tensor": "model.layers.9.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2726
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L11N1396",
+   "tensor": "model.layers.11.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1396
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L23N2921",
+   "tensor": "model.layers.23.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2921
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L19N2528",
+   "tensor": "model.layers.19.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2528
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "S-L14N3023",
+   "tensor": "model.layers.14.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     3023
+    ]
+   },
+   "op": "scale",
+   "value": 0.0,
+   "group": "S-C1_wrong_vs_correct-hi",
+   "critical": true
+  },
+  {
+   "id": "B-L10N512",
+   "tensor": "model.layers.10.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     512
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L12N2357",
+   "tensor": "model.layers.12.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2357
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L15N2482",
+   "tensor": "model.layers.15.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2482
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L23N2100",
+   "tensor": "model.layers.23.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2100
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L18N942",
+   "tensor": "model.layers.18.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     942
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L13N1052",
+   "tensor": "model.layers.13.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1052
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L10N1520",
+   "tensor": "model.layers.10.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1520
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L14N1574",
+   "tensor": "model.layers.14.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1574
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L4N1994",
+   "tensor": "model.layers.4.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1994
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L13N2016",
+   "tensor": "model.layers.13.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2016
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L8N113",
+   "tensor": "model.layers.8.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     113
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L12N2532",
+   "tensor": "model.layers.12.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2532
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L13N1317",
+   "tensor": "model.layers.13.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1317
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L12N187",
+   "tensor": "model.layers.12.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     187
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L4N1954",
+   "tensor": "model.layers.4.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1954
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L24N835",
+   "tensor": "model.layers.24.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     835
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L24N2126",
+   "tensor": "model.layers.24.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2126
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L7N81",
+   "tensor": "model.layers.7.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     81
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L5N1097",
+   "tensor": "model.layers.5.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1097
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L20N2634",
+   "tensor": "model.layers.20.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2634
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L9N2512",
+   "tensor": "model.layers.9.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2512
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L9N1699",
+   "tensor": "model.layers.9.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     1699
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L2N726",
+   "tensor": "model.layers.2.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     726
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L18N2285",
+   "tensor": "model.layers.18.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2285
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L16N819",
+   "tensor": "model.layers.16.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     819
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L16N2684",
+   "tensor": "model.layers.16.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2684
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L8N2333",
+   "tensor": "model.layers.8.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2333
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L27N2930",
+   "tensor": "model.layers.27.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2930
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L3N2646",
+   "tensor": "model.layers.3.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2646
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  },
+  {
+   "id": "B-L24N2315",
+   "tensor": "model.layers.24.mlp.down_proj.weight",
+   "selector": {
+    "kind": "cols",
+    "cols": [
+     2315
+    ]
+   },
+   "op": "scale",
+   "value": 3.0,
+   "group": "B-C1_wrong_vs_correct-lo",
+   "critical": false
+  }
+ ]
+}

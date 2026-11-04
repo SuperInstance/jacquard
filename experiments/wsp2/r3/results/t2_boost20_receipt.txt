@@ -1,0 +1,5 @@
+edits applied: 13 of 13 (B-L20N1902, B-L12N967, B-L16N2754, B-L7N221, B-L13N1685, B-L13N2685, B-L5N2953, B-L27N957, B-L7N1878, B-L9N2398, B-L15N1373, B-L15N2163, B-L12N1574)
+scalars changed: 13312
+total parameters: 751632384
+fraction changed: 0.00177% (bound 0.1% = 751632 scalars) -> WITHIN BOUND
+wrote /home/caseydigennaro/wsp-exp16/r3/trial-model

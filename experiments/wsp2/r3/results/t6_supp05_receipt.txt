@@ -1,0 +1,5 @@
+edits applied: 17 of 17 (S-L26N2128, S-L12N787, S-L22N1903, S-L15N717, S-L22N2204, S-L14N165, S-L15N2579, S-L7N655, S-L14N114, S-L3N1532, S-L13N728, S-L13N1370, S-L16N173, S-L15N807, S-L8N1328, S-L6N1119, S-L15N1941)
+scalars changed: 17408
+total parameters: 751632384
+fraction changed: 0.00232% (bound 0.1% = 751632 scalars) -> WITHIN BOUND
+wrote /home/caseydigennaro/wsp-exp16/r3/trial-model

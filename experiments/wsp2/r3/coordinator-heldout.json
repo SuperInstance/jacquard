@@ -1,0 +1,7 @@
+{"scorer": "coordinator (Phase 16), Phase 15 score.py unmodified, Thor, 2026-11-04",
+ "note": "The R3 author declared NO PATCH. This is the coordinator scoring of the author's undeclared best-effort candidate, run to close the criterion on its own terms; the author's recorded prediction was that the criterion would NOT be met.",
+ "base": {"t2_heldout_pct": 30.8, "t1_heldout_pct": 80.5, "t3_heldout_pct": 72.5, "sanity": "reproduces Phase 15 exactly"},
+ "candidate_undeclared": {"t2_heldout_pct": 28.3, "t1_heldout_pct": 84.0, "t3_heldout_pct": 70.8},
+ "criterion": "reach = T2 held-out >= base + 5 (35.8) at dose <= 0.1%, retention flat within +-2",
+ "verdict": "NOT REACHED: candidate T2 held-out 28.3 is BELOW base (-2.5). Retention showed no damage (T3 -1.7 within band; T1 +3.5, a gain). Prediction confirmed. Family 2 does not reach procedure; with family 1 (+0), procedure is bounded from two authored sides.",
+ "raw": "Thor ~/wsp-exp16/r3/results/coord_{base,cand}_{t2_heldout,heldout,t3_heldout}.json"}
