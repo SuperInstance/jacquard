@@ -1,0 +1,120 @@
+{"id": "g1-held-001", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"kindle\". Answer with just the word.", "answer": "kindle", "derivation": "copy(kindle)"}
+{"id": "g1-held-002", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What word comes next in this sequence: rain, snow, rain, snow, rain, ...? Answer with just the word.", "answer": "snow", "derivation": "abab(rain,snow)"}
+{"id": "g1-held-003", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 22 greater than 16? Answer yes or no.", "answer": "yes", "derivation": "gt(22,16)"}
+{"id": "g1-held-004", "grade": "G1", "split": "heldout", "category": "last_word", "prompt": "What is the last word of this sentence: \"The kettle sang on the stove.\" Answer with just the word.", "answer": "stove", "derivation": "lastword(stove)"}
+{"id": "g1-held-005", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"dapple\". Answer with just the word.", "answer": "dapple", "derivation": "copy(dapple)"}
+{"id": "g1-held-006", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 2 + 12? Answer with just the number.", "answer": "14", "derivation": "2 + 12"}
+{"id": "g1-held-007", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 16, 21, 26, 31, ...? Answer with just the number.", "answer": "36", "derivation": "seq(16,+5)"}
+{"id": "g1-held-008", "grade": "G1", "split": "heldout", "category": "last_word", "prompt": "What is the last word of this sentence: \"His voice echoed down the hall.\" Answer with just the word.", "answer": "hall", "derivation": "lastword(hall)"}
+{"id": "g1-held-009", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"fjord\". Answer with just the word.", "answer": "fjord", "derivation": "copy(fjord)"}
+{"id": "g1-held-010", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 19 + 17? Answer with just the number.", "answer": "36", "derivation": "19 + 17"}
+{"id": "g1-held-011", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 19, 21, 23, 25, ...? Answer with just the number.", "answer": "27", "derivation": "seq(19,+2)"}
+{"id": "g1-held-012", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 77 greater than 90? Answer yes or no.", "answer": "no", "derivation": "gt(77,90)"}
+{"id": "g1-held-013", "grade": "G1", "split": "heldout", "category": "last_word", "prompt": "What is the last word of this sentence: \"The children planted seeds in spring.\" Answer with just the word.", "answer": "spring", "derivation": "lastword(spring)"}
+{"id": "g1-held-014", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"pastel\". Answer with just the word.", "answer": "pastel", "derivation": "copy(pastel)"}
+{"id": "g1-held-015", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 18 + 4? Answer with just the number.", "answer": "22", "derivation": "18 + 4"}
+{"id": "g1-held-016", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What word comes next in this sequence: salt, sugar, salt, sugar, salt, ...? Answer with just the word.", "answer": "sugar", "derivation": "abab(salt,sugar)"}
+{"id": "g1-held-017", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 98 greater than 94? Answer yes or no.", "answer": "yes", "derivation": "gt(98,94)"}
+{"id": "g1-held-018", "grade": "G1", "split": "heldout", "category": "last_word", "prompt": "What is the last word of this sentence: \"An old map hung above the desk.\" Answer with just the word.", "answer": "desk", "derivation": "lastword(desk)"}
+{"id": "g1-held-019", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"glacier\". Answer with just the word.", "answer": "glacier", "derivation": "copy(glacier)"}
+{"id": "g1-held-020", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 5, 8, 11, 14, ...? Answer with just the number.", "answer": "17", "derivation": "seq(5,+3)"}
+{"id": "g1-held-021", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 30 greater than 94? Answer yes or no.", "answer": "no", "derivation": "gt(30,94)"}
+{"id": "g1-held-022", "grade": "G1", "split": "heldout", "category": "last_word", "prompt": "What is the last word of this sentence: \"The lighthouse flashed across the bay.\" Answer with just the word.", "answer": "bay", "derivation": "lastword(bay)"}
+{"id": "g1-held-023", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"yonder\". Answer with just the word.", "answer": "yonder", "derivation": "copy(yonder)"}
+{"id": "g1-held-024", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 4 + 4? Answer with just the number.", "answer": "8", "derivation": "4 + 4"}
+{"id": "g1-held-025", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 3, 8, 13, 18, ...? Answer with just the number.", "answer": "23", "derivation": "seq(3,+5)"}
+{"id": "g1-held-026", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 53 less than 34? Answer yes or no.", "answer": "no", "derivation": "lt(53,34)"}
+{"id": "g1-held-027", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"quarry\". Answer with just the word.", "answer": "quarry", "derivation": "copy(quarry)"}
+{"id": "g1-held-028", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 13 + 5? Answer with just the number.", "answer": "18", "derivation": "13 + 5"}
+{"id": "g1-held-029", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 65 greater than 10? Answer yes or no.", "answer": "yes", "derivation": "gt(65,10)"}
+{"id": "g1-held-030", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"zenith\". Answer with just the word.", "answer": "zenith", "derivation": "copy(zenith)"}
+{"id": "g1-held-031", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 52 less than 37? Answer yes or no.", "answer": "no", "derivation": "lt(52,37)"}
+{"id": "g1-held-032", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"jasmine\". Answer with just the word.", "answer": "jasmine", "derivation": "copy(jasmine)"}
+{"id": "g1-held-033", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 14 + 18? Answer with just the number.", "answer": "32", "derivation": "14 + 18"}
+{"id": "g1-held-034", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 7, 10, 13, 16, ...? Answer with just the number.", "answer": "19", "derivation": "seq(7,+3)"}
+{"id": "g1-held-035", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 24 less than 28? Answer yes or no.", "answer": "yes", "derivation": "lt(24,28)"}
+{"id": "g1-held-036", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"cricket\". Answer with just the word.", "answer": "cricket", "derivation": "copy(cricket)"}
+{"id": "g1-held-037", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 12 + 3? Answer with just the number.", "answer": "15", "derivation": "12 + 3"}
+{"id": "g1-held-038", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 1, 4, 7, 10, ...? Answer with just the number.", "answer": "13", "derivation": "seq(1,+3)"}
+{"id": "g1-held-039", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 64 greater than 95? Answer yes or no.", "answer": "no", "derivation": "gt(64,95)"}
+{"id": "g1-held-040", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"riddle\". Answer with just the word.", "answer": "riddle", "derivation": "copy(riddle)"}
+{"id": "g1-held-041", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 10 + 6? Answer with just the number.", "answer": "16", "derivation": "10 + 6"}
+{"id": "g1-held-042", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 22, 24, 26, 28, ...? Answer with just the number.", "answer": "30", "derivation": "seq(22,+2)"}
+{"id": "g1-held-043", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 77 less than 47? Answer yes or no.", "answer": "no", "derivation": "lt(77,47)"}
+{"id": "g1-held-044", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"bramble\". Answer with just the word.", "answer": "bramble", "derivation": "copy(bramble)"}
+{"id": "g1-held-045", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 16 + 11? Answer with just the number.", "answer": "27", "derivation": "16 + 11"}
+{"id": "g1-held-046", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 96 less than 36? Answer yes or no.", "answer": "no", "derivation": "lt(96,36)"}
+{"id": "g1-held-047", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"hemlock\". Answer with just the word.", "answer": "hemlock", "derivation": "copy(hemlock)"}
+{"id": "g1-held-048", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 15 + 3? Answer with just the number.", "answer": "18", "derivation": "15 + 3"}
+{"id": "g1-held-049", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 96 greater than 16? Answer yes or no.", "answer": "yes", "derivation": "gt(96,16)"}
+{"id": "g1-held-050", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"tapestry\". Answer with just the word.", "answer": "tapestry", "derivation": "copy(tapestry)"}
+{"id": "g1-held-051", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 17 + 10? Answer with just the number.", "answer": "27", "derivation": "17 + 10"}
+{"id": "g1-held-052", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 99 less than 39? Answer yes or no.", "answer": "no", "derivation": "lt(99,39)"}
+{"id": "g1-held-053", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"summit\". Answer with just the word.", "answer": "summit", "derivation": "copy(summit)"}
+{"id": "g1-held-054", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 11 + 5? Answer with just the number.", "answer": "16", "derivation": "11 + 5"}
+{"id": "g1-held-055", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 19, 24, 29, 34, ...? Answer with just the number.", "answer": "39", "derivation": "seq(19,+5)"}
+{"id": "g1-held-056", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 6 greater than 58? Answer yes or no.", "answer": "no", "derivation": "gt(6,58)"}
+{"id": "g1-held-057", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"umber\". Answer with just the word.", "answer": "umber", "derivation": "copy(umber)"}
+{"id": "g1-held-058", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What word comes next in this sequence: rock, sand, rock, sand, rock, ...? Answer with just the word.", "answer": "sand", "derivation": "abab(rock,sand)"}
+{"id": "g1-held-059", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 78 less than 88? Answer yes or no.", "answer": "yes", "derivation": "lt(78,88)"}
+{"id": "g1-held-060", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"violet\". Answer with just the word.", "answer": "violet", "derivation": "copy(violet)"}
+{"id": "g1-held-061", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 7 + 17? Answer with just the number.", "answer": "24", "derivation": "7 + 17"}
+{"id": "g1-held-062", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 11, 13, 15, 17, ...? Answer with just the number.", "answer": "19", "derivation": "seq(11,+2)"}
+{"id": "g1-held-063", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 16 greater than 70? Answer yes or no.", "answer": "no", "derivation": "gt(16,70)"}
+{"id": "g1-held-064", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"isthmus\". Answer with just the word.", "answer": "isthmus", "derivation": "copy(isthmus)"}
+{"id": "g1-held-065", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 14 + 17? Answer with just the number.", "answer": "31", "derivation": "14 + 17"}
+{"id": "g1-held-066", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"wander\". Answer with just the word.", "answer": "wander", "derivation": "copy(wander)"}
+{"id": "g1-held-067", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 9, 11, 13, 15, ...? Answer with just the number.", "answer": "17", "derivation": "seq(9,+2)"}
+{"id": "g1-held-068", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 99 greater than 93? Answer yes or no.", "answer": "yes", "derivation": "gt(99,93)"}
+{"id": "g1-held-069", "grade": "G1", "split": "heldout", "category": "copy_token", "prompt": "Copy this word exactly: \"lattice\". Answer with just the word.", "answer": "lattice", "derivation": "copy(lattice)"}
+{"id": "g1-held-070", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 7 + 4? Answer with just the number.", "answer": "11", "derivation": "7 + 4"}
+{"id": "g1-held-071", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 17 greater than 31? Answer yes or no.", "answer": "no", "derivation": "gt(17,31)"}
+{"id": "g1-held-072", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 5 + 2? Answer with just the number.", "answer": "7", "derivation": "5 + 2"}
+{"id": "g1-held-073", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 4, 6, 8, 10, ...? Answer with just the number.", "answer": "12", "derivation": "seq(4,+2)"}
+{"id": "g1-held-074", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 24 greater than 92? Answer yes or no.", "answer": "no", "derivation": "gt(24,92)"}
+{"id": "g1-held-075", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 15 + 13? Answer with just the number.", "answer": "28", "derivation": "15 + 13"}
+{"id": "g1-held-076", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What word comes next in this sequence: wolf, fox, wolf, fox, wolf, ...? Answer with just the word.", "answer": "fox", "derivation": "abab(wolf,fox)"}
+{"id": "g1-held-077", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 17 greater than 7? Answer yes or no.", "answer": "yes", "derivation": "gt(17,7)"}
+{"id": "g1-held-078", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 25 greater than 95? Answer yes or no.", "answer": "no", "derivation": "gt(25,95)"}
+{"id": "g1-held-079", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 38 less than 9? Answer yes or no.", "answer": "no", "derivation": "lt(38,9)"}
+{"id": "g1-held-080", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 9 + 10? Answer with just the number.", "answer": "19", "derivation": "9 + 10"}
+{"id": "g1-held-081", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 29, 31, 33, 35, ...? Answer with just the number.", "answer": "37", "derivation": "seq(29,+2)"}
+{"id": "g1-held-082", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 42 greater than 75? Answer yes or no.", "answer": "no", "derivation": "gt(42,75)"}
+{"id": "g1-held-083", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 12 + 4? Answer with just the number.", "answer": "16", "derivation": "12 + 4"}
+{"id": "g1-held-084", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 30 greater than 28? Answer yes or no.", "answer": "yes", "derivation": "gt(30,28)"}
+{"id": "g1-held-085", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 10, 15, 20, 25, ...? Answer with just the number.", "answer": "30", "derivation": "seq(10,+5)"}
+{"id": "g1-held-086", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 48 greater than 60? Answer yes or no.", "answer": "no", "derivation": "gt(48,60)"}
+{"id": "g1-held-087", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 11 + 6? Answer with just the number.", "answer": "17", "derivation": "11 + 6"}
+{"id": "g1-held-088", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 14, 16, 18, 20, ...? Answer with just the number.", "answer": "22", "derivation": "seq(14,+2)"}
+{"id": "g1-held-089", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 13, 15, 17, 19, ...? Answer with just the number.", "answer": "21", "derivation": "seq(13,+2)"}
+{"id": "g1-held-090", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 72 greater than 44? Answer yes or no.", "answer": "yes", "derivation": "gt(72,44)"}
+{"id": "g1-held-091", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 65 less than 39? Answer yes or no.", "answer": "no", "derivation": "lt(65,39)"}
+{"id": "g1-held-092", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 11 + 3? Answer with just the number.", "answer": "14", "derivation": "11 + 3"}
+{"id": "g1-held-093", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 27, 32, 37, 42, ...? Answer with just the number.", "answer": "47", "derivation": "seq(27,+5)"}
+{"id": "g1-held-094", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 95 greater than 69? Answer yes or no.", "answer": "yes", "derivation": "gt(95,69)"}
+{"id": "g1-held-095", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 30, 35, 40, 45, ...? Answer with just the number.", "answer": "50", "derivation": "seq(30,+5)"}
+{"id": "g1-held-096", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 83 greater than 15? Answer yes or no.", "answer": "yes", "derivation": "gt(83,15)"}
+{"id": "g1-held-097", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 8 + 12? Answer with just the number.", "answer": "20", "derivation": "8 + 12"}
+{"id": "g1-held-098", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 26 less than 48? Answer yes or no.", "answer": "yes", "derivation": "lt(26,48)"}
+{"id": "g1-held-099", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 7 + 7? Answer with just the number.", "answer": "14", "derivation": "7 + 7"}
+{"id": "g1-held-100", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 88 less than 4? Answer yes or no.", "answer": "no", "derivation": "lt(88,4)"}
+{"id": "g1-held-101", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 13 + 17? Answer with just the number.", "answer": "30", "derivation": "13 + 17"}
+{"id": "g1-held-102", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 89 greater than 70? Answer yes or no.", "answer": "yes", "derivation": "gt(89,70)"}
+{"id": "g1-held-103", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 4, 9, 14, 19, ...? Answer with just the number.", "answer": "24", "derivation": "seq(4,+5)"}
+{"id": "g1-held-104", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 26 less than 61? Answer yes or no.", "answer": "yes", "derivation": "lt(26,61)"}
+{"id": "g1-held-105", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 16 + 18? Answer with just the number.", "answer": "34", "derivation": "16 + 18"}
+{"id": "g1-held-106", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 53 less than 10? Answer yes or no.", "answer": "no", "derivation": "lt(53,10)"}
+{"id": "g1-held-107", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 18 + 9? Answer with just the number.", "answer": "27", "derivation": "18 + 9"}
+{"id": "g1-held-108", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 5, 7, 9, 11, ...? Answer with just the number.", "answer": "13", "derivation": "seq(5,+2)"}
+{"id": "g1-held-109", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 73 less than 79? Answer yes or no.", "answer": "yes", "derivation": "lt(73,79)"}
+{"id": "g1-held-110", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 58 greater than 17? Answer yes or no.", "answer": "yes", "derivation": "gt(58,17)"}
+{"id": "g1-held-111", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 97 less than 68? Answer yes or no.", "answer": "no", "derivation": "lt(97,68)"}
+{"id": "g1-held-112", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 27, 29, 31, 33, ...? Answer with just the number.", "answer": "35", "derivation": "seq(27,+2)"}
+{"id": "g1-held-113", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 39 less than 29? Answer yes or no.", "answer": "no", "derivation": "lt(39,29)"}
+{"id": "g1-held-114", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 79 less than 21? Answer yes or no.", "answer": "no", "derivation": "lt(79,21)"}
+{"id": "g1-held-115", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 2 less than 49? Answer yes or no.", "answer": "yes", "derivation": "lt(2,49)"}
+{"id": "g1-held-116", "grade": "G1", "split": "heldout", "category": "small_add", "prompt": "What is 19 + 3? Answer with just the number.", "answer": "22", "derivation": "19 + 3"}
+{"id": "g1-held-117", "grade": "G1", "split": "heldout", "category": "seq_next", "prompt": "What number comes next in this sequence: 12, 15, 18, 21, ...? Answer with just the number.", "answer": "24", "derivation": "seq(12,+3)"}
+{"id": "g1-held-118", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 51 greater than 57? Answer yes or no.", "answer": "no", "derivation": "gt(51,57)"}
+{"id": "g1-held-119", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 37 less than 44? Answer yes or no.", "answer": "yes", "derivation": "lt(37,44)"}
+{"id": "g1-held-120", "grade": "G1", "split": "heldout", "category": "yes_no_compare", "prompt": "Is 31 greater than 25? Answer yes or no.", "answer": "yes", "derivation": "gt(31,25)"}

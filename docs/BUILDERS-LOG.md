@@ -4743,3 +4743,66 @@ twice, before any edit was authored from it; the
 Oracle's disk was at 100% on arrival and the clone was
 made by local clone plus delta fetch, text artefacts
 only.
+Phase 16, slice 45 (R2 battery build) (2026-11-04) — the
+patchability profile instrument is built and verified in
+experiments/wsp2/profile/: six grades in boundary order
+(G1 format/completion, G2 framing, G3 readout, G4 procedure,
+G5 factor-knowledge, G6 unseparated relation), 1,740 items,
+diagnostic/validation/held-out splits disjoint by construction
+(partitioned pools, unique prompts and derivations, canonical
+operand-pair keys after the near-duplicate screen caught
+commutative swaps across splits at Jaccard 1.000). The
+independent verifier recomputes 1,461 golds from prompt text
+alone (dates via the real 2026 calendar, G6 via the stated
+policy rule) with zero mismatches; G6 is built as minimal
+ALLOW/HOLD flip pairs, exactly 50/50 in every split. The
+matcher is exact normalised-answer matching — a reply that
+merely contains the gold scores wrong — pinned by a 19-case
+selftest. The harness runs base profiles and grade-order
+sequences whose retention rows re-score previously profiled
+grades' HELD-OUT sets (task-held-out, per the Phase 15
+finding; no generic forgetting battery). Base baselines for
+both students are in profile/results/: Qwen3-0.6B (G1 17.5,
+G3 40.8, G4 0.0, G5 18.0 held-out) and LFM2-1.2B (G1 51.7,
+G5 81.0 held-out) are near-mirror profiles, and on G6 both
+are degenerate in opposite directions — Qwen constant-ALLOW
+(300/300, scores exactly 50.0), LFM2 constant-HOLD first
+token (300/300) buried in reasoning prose (scores 0.0 under
+the strict matcher). Builder's defects, all fixed and
+recorded in SLICE45-BUILD.md: a right-padding batching bug
+that silently emptied outputs in the harness's first run
+(caught against Phase 15's known base behaviour), the
+commutative near-duplicates, G6 pair-id collisions across
+splits, and audit-sample text errors. LFM2 exists on the
+Thor only as a Q8_0 GGUF; it loads via transformers'
+gguf_file route with dequantisation and a reference
+causal-conv fallback — no substitute was used. The battery
+now waits on the independent reviewer's audit required by
+CRITERIA.md R2 before any patching.
+
+Phase 16, slice 45 fix round (2026-11-04) — the independent
+review returned PASS-WITH-FIXES (REVIEW.md on p16-r2-review);
+fixes applied on p16-r2. R2-F1: the matcher now accent-folds
+both sides (NFKD) — G5 re-run for both students, new G5
+sections spliced into the committed baselines: Qwen unchanged
+everywhere (16.0/13.3/18.0), LFM2 diagnostic 77.0 -> 80.0 and
+validation 70.0 -> 73.3 on exactly the five accented replies
+the reviewer named (Malé, Bogotá, Asunción, Brasília,
+Reykjavík), held-out unchanged at 81.0. Article-type
+discredits were deliberately left standing (whole-reply
+discipline). R2-F4: full-scale sequence smokes for BOTH
+students committed under profile/results/; final retention
+rows equal base held-out on every grade. R2-F2/R2-F3/R2-F5:
+wording corrected — G6 pair purity (expired_booking twins
+rewrite 2-4 fields), fact pool is 270 authored (88 capitals,
+64 element facts) with 260 used and 10 unused, and the G6
+bimodal-offset limit now stated in the README. One reviewer
+sub-claim did not survive byte-level adjudication: the
+"caterpillars" misspelling exists in neither the generator
+nor item g5-diag-035 — every occurrence is byte-identical
+to /usr/share/dict/words (the builder's original D3 claim
+of having fixed it was equally false; the fix was a no-op
+replace and its check searched for its own typo string).
+The corrected D3 in SLICE45-BUILD.md tells the whole story;
+no battery content changed in the fix round and the
+verifier still PASSes.
