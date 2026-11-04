@@ -13,6 +13,7 @@ Python stdlib only. Fully deterministic: fixed seeds, no wall clock,
 no environment dependence. Run:  python3 gen_batteries.py
 """
 import json
+import math
 import random
 from pathlib import Path
 
@@ -40,13 +41,52 @@ OBJECTS_B = ["bolts", "ribbons", "stamps", "peaches", "notebooks",
              "tokens", "beads", "coins"]
 SHOPS_B = ["harbour kiosk", "night market", "village bakery"]
 
-PCTS = [5, 10, 15, 20, 25, 50, 75]
+# F3: widened percent set.
+PCTS = [2, 4, 5, 8, 10, 12, 15, 20, 25, 30, 40, 50, 60, 75, 80, 90]
 
 
-def pct_base(rng, pct, hi=20):
-    """A base such that pct% of base is an integer."""
-    step = {5: 20, 10: 10, 15: 20, 20: 5, 25: 4, 50: 2, 75: 4}[pct]
-    return step * rng.randint(1, hi)
+def pct_base(rng, pct, max_base=400):
+    """A base (<= max_base) such that pct% of base is an integer.
+
+    The minimal step is 100/gcd(100, pct): base must be a multiple
+    of that step for base * pct / 100 to be integral.
+    """
+    step = 100 // math.gcd(100, pct)
+    return step * rng.randint(1, max_base // step)
+
+
+# ---- bare-form quota (F2c) ----
+# For the five categories that have a bare symbolic form, calls
+# alternate bare / non-bare deterministically, so every split lands
+# at ~50% bare within those categories and ~31% bare overall
+# (125 of 200 items are in bare-capable categories; word_2step,
+# unit_price and compare have no bare form in this accounting).
+_call_counts = {}
+
+
+def _is_bare(key):
+    i = _call_counts.get(key, 0)
+    _call_counts[key] = i + 1
+    return i % 2 == 0
+
+
+# ---- set-A markers (N3) ----
+# Template frame fragments that occur in set-A templates (exact
+# substrings of the a_* prompts). Emitted, together with all pool-A
+# strings, to batteries/setA_markers.json by main(); the verifier
+# asserts none of them appears in any heldout prompt.
+SET_A_FRAGMENTS = [
+    "Compute:", "What is", "Multiply", "Divide", "% of",
+    "more and then gave away", "stocked", "in the morning",
+    "received a delivery of", "packs of", "in each pack",
+    "rows of chairs", "chairs in each row", "shares",
+    "equally among", "ride the bus", "of them ride",
+    "pages every day", "How many pages are left", "sells",
+    "on Monday and", "on Tuesday", "cost of one",
+    "does each one cost", "Which is larger",
+    "which is the greater one", "Of the numbers",
+    "How many students",
+]
 
 
 def unit_price_numbers(rng):
@@ -61,7 +101,7 @@ def unit_price_numbers(rng):
 
 def a_addsub_chain(rng):
     name = rng.choice(NAMES_A); obj = rng.choice(OBJECTS_A)
-    v = rng.randrange(3)
+    v = 0 if _is_bare("a_addsub") else rng.randint(1, 2)
     if v == 0:
         a = rng.randint(100, 9999); b = rng.randint(10, 999)
         c = rng.randint(1, a + b - 1)
@@ -85,7 +125,7 @@ def a_addsub_chain(rng):
 
 def a_mul_2x1(rng):
     a = rng.randint(12, 99); m = rng.randint(2, 9)
-    if rng.randrange(2) == 0:
+    if _is_bare("a_mul_2x1"):
         p = f"What is {a} * {m}? {END}"
     else:
         name = rng.choice(NAMES_A); obj = rng.choice(OBJECTS_A)
@@ -97,7 +137,7 @@ def a_mul_2x1(rng):
 
 def a_mul_2x2(rng):
     a = rng.randint(12, 99); b = rng.randint(12, 99)
-    v = rng.randrange(3)
+    v = rng.randrange(2) if _is_bare("a_mul_2x2") else 2
     if v == 0:
         p = f"Multiply {a} by {b}. {END}"
     elif v == 1:
@@ -111,7 +151,7 @@ def a_mul_2x2(rng):
 
 def a_div_exact(rng):
     d = rng.randint(2, 12); q = rng.randint(3, 99); n = d * q
-    v = rng.randrange(3)
+    v = rng.randrange(2) if _is_bare("a_div") else 2
     if v == 0:
         p = f"Divide {n} by {d}. {END}"
     elif v == 1:
@@ -125,11 +165,11 @@ def a_div_exact(rng):
 
 def a_pct_of(rng):
     pct = rng.choice(PCTS)
-    if rng.randrange(2) == 0:
+    if _is_bare("a_pct"):
         base = pct_base(rng, pct)
         p = f"What is {pct}% of {base}? {END}"
     else:
-        base = pct_base(rng, pct, hi=8)
+        base = pct_base(rng, pct, max_base=200)
         p = (f"A class has {base} students and {pct}% of them ride the bus. "
              f"How many students ride the bus? {END}")
     d = f"{base} * {pct} / 100"
@@ -141,7 +181,8 @@ def a_word_2step(rng):
     v = rng.randrange(3)
     if v == 0:
         a = rng.randint(2, 9); price = rng.randint(2, 20)
-        note = 50 if a * price < 50 else 100
+        cost = a * price
+        note = next(nt for nt in (50, 100, 200) if cost <= nt)
         p = (f"{name} buys {a} {obj} at {price} dollars each and pays with "
              f"a {note} dollar bill. How much change does {name} get? {END}")
         d = f"{note} - {a} * {price}"
@@ -197,7 +238,12 @@ GEN_A = {"addsub_chain": a_addsub_chain, "mul_2x1": a_mul_2x1,
 
 def b_addsub_chain(rng):
     name = rng.choice(NAMES_B); obj = rng.choice(OBJECTS_B)
-    if rng.randrange(2) == 0:
+    if _is_bare("b_addsub"):
+        a = rng.randint(100, 9999); b = rng.randint(10, 999)
+        c = rng.randint(1, a + b - 1)
+        p = f"Calculate: {a} + {b} - {c}. {END}"
+        d = f"{a} + {b} - {c}"
+    elif rng.randrange(2) == 0:
         a = rng.randint(100, 9999); b = rng.randint(10, 999)
         c = rng.randint(1, a + b - 1)
         p = (f"Beginning from {a}, increase by {b}, then decrease by {c}. "
@@ -215,7 +261,7 @@ def b_addsub_chain(rng):
 
 def b_mul_2x1(rng):
     a = rng.randint(12, 99); m = rng.randint(2, 9)
-    if rng.randrange(2) == 0:
+    if _is_bare("b_mul_2x1"):
         p = f"Work out {m} lots of {a}. {END}"
         d = f"{m} * {a}"
     else:
@@ -228,7 +274,9 @@ def b_mul_2x1(rng):
 
 def b_mul_2x2(rng):
     a = rng.randint(12, 99); b = rng.randint(12, 99)
-    if rng.randrange(2) == 0:
+    if _is_bare("b_mul_2x2"):
+        p = f"{a} * {b} equals what? {END}"
+    elif rng.randrange(2) == 0:
         p = (f"A seating grid has {a} rows and {b} seats per row. "
              f"Give the total number of seats. {END}")
     else:
@@ -240,7 +288,9 @@ def b_mul_2x2(rng):
 
 def b_div_exact(rng):
     d = rng.randint(2, 12); q = rng.randint(3, 99); n = d * q
-    if rng.randrange(2) == 0:
+    if _is_bare("b_div"):
+        p = f"{n} / {d} equals what? {END}"
+    elif rng.randrange(2) == 0:
         p = (f"{n} litres of water are poured equally into {d} bottles. "
              f"Each bottle receives how many litres? {END}")
     else:
@@ -250,12 +300,15 @@ def b_div_exact(rng):
 
 def b_pct_of(rng):
     pct = rng.choice(PCTS)
-    if rng.randrange(2) == 0:
+    if _is_bare("b_pct"):
+        base = pct_base(rng, pct)
+        p = f"{pct} percent of {base} equals what? {END}"
+    elif rng.randrange(2) == 0:
         base = pct_base(rng, pct)
         p = (f"A coat priced at {base} dollars is reduced by {pct} "
              f"percent. The reduction is how many dollars? {END}")
     else:
-        base = pct_base(rng, pct, hi=10)
+        base = pct_base(rng, pct, max_base=400)
         p = (f"Out of {base} voters surveyed, {pct} percent preferred "
              f"tea. That share of the voters is how many people? {END}")
     d = f"{base} * {pct} / 100"
@@ -263,20 +316,33 @@ def b_pct_of(rng):
 
 
 def b_word_2step(rng):
+    # F2b: mirror set A's three subtypes (change, reading-remainder,
+    # buy-twice total) in similar proportions, with set-B surfaces.
     name = rng.choice(NAMES_B); obj = rng.choice(OBJECTS_B)
-    if rng.randrange(2) == 0:
-        per = rng.randint(4, 24); crates = rng.randint(2, 9)
-        sold = rng.randint(1, per * crates - 1)
-        p = (f"A crate holds {per} {obj}. {name} fills {crates} crates, "
-             f"then sells {sold} {obj}. How many {obj} remain? {END}")
-        d = f"{crates} * {per} - {sold}"
+    v = rng.randrange(3)
+    if v == 0:
+        a = rng.randint(2, 9); price = rng.randint(2, 20)
+        cost = a * price
+        note = next(nt for nt in (50, 100, 200) if cost <= nt)
+        p = (f"{name} hands over a {note} dollar note for {a} {obj} "
+             f"costing {price} dollars apiece. The change due is how "
+             f"many dollars? {END}")
+        d = f"{note} - {a} * {price}"
+    elif v == 1:
+        per = rng.randint(3, 30); days = rng.randint(2, 14)
+        total = per * days + rng.randint(5, 200)
+        p = (f"{name} works through a {total}-page novel at {per} "
+             f"pages daily. Once {days} days have passed, the pages "
+             f"still unread number how many? {END}")
+        d = f"{total} - {per} * {days}"
     else:
-        per = rng.randint(3, 25); weeks = rng.randint(2, 12)
-        spent = rng.randint(1, per * weeks - 1)
-        p = (f"{name} saves {per} dollars a week for {weeks} weeks, then "
-             f"spends {spent} dollars on a gift. The savings left over "
-             f"come to how many dollars? {END}")
-        d = f"{weeks} * {per} - {spent}"
+        shop = rng.choice(SHOPS_B); price = rng.randint(2, 25)
+        a = rng.randint(1, 9); b = rng.randint(1, 9)
+        p = (f"At the {shop}, {obj} are priced at {price} dollars "
+             f"apiece. {name} picks up {a} on Friday and {b} on "
+             f"Saturday. Altogether {name} pays how many dollars? "
+             f"{END}")
+        d = f"({a} + {b}) * {price}"
     return p, eval(d), d
 
 
@@ -295,16 +361,17 @@ def b_unit_price(rng):
 
 
 def b_compare(rng):
-    if rng.randrange(2) == 0:
-        xs = rng.sample(range(10, 9999), 3)
-        p = (f"Look at {xs[0]}, {xs[1]} and {xs[2]}. The largest of the "
-             f"three is which? {END}")
-        return p, max(xs), f"max({xs[0]}, {xs[1]}, {xs[2]})"
+    # F2a: mirror set A exactly in operation mix -- max-of-two only
+    # (no min, no max-of-three), in set-B phrasings.
     x = rng.randint(10, 9999); y = rng.randint(10, 9999)
     while y == x:
         y = rng.randint(10, 9999)
-    p = f"Between {x} and {y}, pick the smaller value. {END}"
-    return p, min(x, y), f"min({x}, {y})"
+    if rng.randrange(2) == 0:
+        p = f"Between {x} and {y}, pick the larger value. {END}"
+    else:
+        p = (f"Given {x} and {y}, state the maximum of the pair. "
+             f"{END}")
+    return p, max(x, y), f"max({x}, {y})"
 
 
 GEN_B = {"addsub_chain": b_addsub_chain, "mul_2x1": b_mul_2x1,
@@ -314,8 +381,12 @@ GEN_B = {"addsub_chain": b_addsub_chain, "mul_2x1": b_mul_2x1,
 
 # ================= arithmetic split builder =================
 
-def build_arith_split(split, prefix, seed, per_cat, gens, seen_prompts):
-    """per_cat items per category; prompt strings globally unique."""
+def build_arith_split(split, prefix, seed, per_cat, gens, seen_prompts,
+                      seen_derivations=None):
+    """per_cat items per category; prompt strings AND derivation
+    strings globally unique across all arithmetic splits (F3)."""
+    if seen_derivations is None:
+        seen_derivations = set()
     rng = random.Random(seed)
     items = []
     n = 0
@@ -327,9 +398,10 @@ def build_arith_split(split, prefix, seed, per_cat, gens, seen_prompts):
             if attempts > 10000:
                 raise RuntimeError(f"cannot fill {split}/{cat}")
             prompt, answer, deriv = gens[cat](rng)
-            if prompt in seen_prompts:
+            if prompt in seen_prompts or deriv in seen_derivations:
                 continue
             seen_prompts.add(prompt)
+            seen_derivations.add(deriv)
             n += 1
             items.append({"id": f"{prefix}-{n:03d}", "split": split,
                           "category": cat, "prompt": prompt,
@@ -389,6 +461,7 @@ INSTR_END_WORDS = [
     ("well", "a day of hard work"), ("far", "a journey on foot"),
     ("early", "waking up on holiday"), ("back", "returning from a trip"),
     ("free", "a bird in the sky"), ("bright", "the morning sun"),
+    ("away", "a kite in the wind"),
 ]
 
 INSTR_BULLET_TOPICS = [
@@ -506,9 +579,8 @@ ELEMENTS = [
     ("What is the chemical symbol for lead?", "Pb", []),
     ("What is the chemical symbol for copper?", "Cu", []),
     ("What is the chemical symbol for zinc?", "Zn", []),
-    ("What is the chemical symbol for aluminium?", "Al",
-     ["aluminum"]),
-    ("What is the chemical symbol for sulphur?", "S", ["sulfur"]),
+    ("What is the chemical symbol for aluminium?", "Al", []),
+    ("What is the chemical symbol for sulphur?", "S", []),
     ("What is the chemical symbol for chlorine?", "Cl", []),
     ("What is the chemical symbol for magnesium?", "Mg", []),
     ("What is the chemical symbol for silicon?", "Si", []),
@@ -525,7 +597,7 @@ SOLAR = [
     ("Which planet is closest to the Sun?", "Mercury", []),
     ("Which is the largest planet in our solar system?", "Jupiter", []),
     ("Which planet has prominent rings around it?", "Saturn", []),
-    ("How many moons does Earth have?", "1", ["one"]),
+    ("How many moons does Earth have?", "1", []),
     ("Which planet do we live on?", "Earth", []),
     ("What is the name of the star at the centre of our solar system?",
      "the Sun", ["Sun"]),
@@ -562,7 +634,6 @@ CONVERSIONS = [
      ["1000 m", "1,000"]),
     ("How many millilitres are there in one litre?", "1000",
      ["1000 ml", "1,000"]),
-    ("How many sides does a hexagon have?", "6", ["six"]),
     ("How many degrees are there in a right angle?", "90",
      ["90 degrees"]),
     ("How many degrees are there in a full circle?", "360",
@@ -590,6 +661,7 @@ MISC = [
     ("How many wings does a butterfly have?", "4", ["four"]),
     ("What is the capital city of the United Kingdom?", "London", []),
     ("Which animal is known as man's best friend?", "dog", ["a dog"]),
+    ("How many sides does a hexagon have?", "6", ["six"]),
 ]
 
 FACT_TABLES = [("capitals", CAPITALS), ("elements", ELEMENTS),
@@ -831,19 +903,31 @@ def write_jsonl(path, items):
 
 
 def main():
-    assert [len(t) for _, t in FACT_TABLES] == [30, 25, 15, 15, 15]
+    assert [len(t) for _, t in FACT_TABLES] == [30, 25, 15, 14, 16]
     seen = set()
+    seen_derivations = set()
     diag = build_arith_split("diagnostic", "diag", SEED_DIAGNOSTIC,
-                             10, GEN_A, seen)
+                             10, GEN_A, seen, seen_derivations)
     val = build_arith_split("validation", "val", SEED_VALIDATION,
-                            25, GEN_A, seen)
+                            25, GEN_A, seen, seen_derivations)
     held = build_arith_split("heldout", "held", SEED_HELDOUT,
-                             25, GEN_B, seen)
+                             25, GEN_B, seen, seen_derivations)
     instr = build_forget_instr(SEED_INSTR)
     fact = build_forget_fact(SEED_FACT)
     prose = build_forget_prose()
     assert len(diag) == 80 and len(val) == 200 and len(held) == 200
     assert len(instr) == 100 and len(fact) == 100 and len(prose) == 24
+    # N3: emit the full set-A marker list for the verifier.
+    markers = {
+        "pool_a": {"names": NAMES_A, "objects": OBJECTS_A,
+                   "shops": SHOPS_A},
+        "template_frames_a": SET_A_FRAGMENTS,
+        "markers": (NAMES_A + OBJECTS_A + SHOPS_A
+                    + SET_A_FRAGMENTS),
+    }
+    (HERE / "batteries" / "setA_markers.json").write_text(
+        json.dumps(markers, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8")
     write_jsonl(HERE / "batteries" / "diagnostic.jsonl", diag)
     write_jsonl(HERE / "batteries" / "validation.jsonl", val)
     write_jsonl(HERE / "private" / "heldout.jsonl", held)

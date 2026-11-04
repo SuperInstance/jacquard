@@ -10,7 +10,9 @@ NAME in {diagnostic, validation, heldout, forget_instr, forget_fact,
 forget_prose, all}. Battery files are resolved relative to this
 script's own location (batteries/ and private/ subdirectories).
 
-Greedy decoding only; no sampling anywhere; fully deterministic.
+Greedy decoding only; no sampling anywhere. Greedy decoding is
+not a guarantee of bitwise reproducibility: batch composition
+and hardware may move plus-or-minus an item between runs.
 The extraction / checker / NLL helpers below are pure stdlib
 functions (importable without torch) and are exercised by
 --selftest, which needs no model and no GPU.
@@ -41,7 +43,7 @@ MONEY_TOL = 0.011
 
 # ================= pure helpers (no torch) =================
 
-_NUMBER_RE = re.compile(r"-?\d[\d,]*(?:\.\d+)?")
+_NUMBER_RE = re.compile(r"-?(?:\d[\d,]*(?:\.\d+)?|\.\d+)")
 
 
 def extract_last_number(text):
@@ -49,6 +51,12 @@ def extract_last_number(text):
 
     Commas inside numbers are removed; surrounding $, % or words are
     ignored because the pattern matches the numeric core itself.
+    Leading-dot decimals are accepted: ".75" (and "$.75") extract
+    as 0.75. Known remaining edges (documented in BATTERIES.md,
+    rule deliberately unchanged): fractions like "1/2" extract
+    the last component number, ranges extract their last endpoint,
+    and any trailing incidental number in the reply wins under the
+    LAST-number rule.
     """
     matches = _NUMBER_RE.findall(text or "")
     if not matches:
@@ -72,12 +80,33 @@ def normalise_fact(text):
 
 
 def fact_match(output, answer, aliases):
-    """Normalised containment of the answer or any alias in output."""
-    out = normalise_fact(output)
+    """Token-boundary matching of the answer or any alias (F1).
+
+    Both sides are normalised (lowercase, punctuation stripped).
+    A candidate matches iff it appears as a complete token, or as
+    a complete multi-token phrase (consecutive tokens), in the
+    normalised reply. Substring matches never count: "paris"
+    inside "comparison" is not a match, "12" is not "1", "fe" is
+    not "c". Candidates shorter than 3 characters (e.g. element
+    symbols "C", "H", "Na", counts "1", "8") therefore match ONLY
+    as whole tokens -- the token rule is kept strict for them.
+    """
+    out_tokens = normalise_fact(output).split()
+    if not out_tokens:
+        return False
     for cand in [answer] + list(aliases or []):
         nc = normalise_fact(str(cand))
-        if nc and nc in out:
-            return True
+        if not nc:
+            continue
+        ctoks = nc.split()
+        if len(ctoks) == 1:
+            if ctoks[0] in out_tokens:
+                return True
+        else:
+            n = len(ctoks)
+            for i in range(len(out_tokens) - n + 1):
+                if out_tokens[i:i + n] == ctoks:
+                    return True
     return False
 
 
@@ -174,6 +203,10 @@ def run_selftest():
         "1,000,000"), 1000000.0)
     case("extract trailing prose", extract_last_number(
         "The answer is 3111 exactly."), 3111.0)
+    case("extract leading dot", extract_last_number(".75"), 0.75)
+    case("extract dollar leading dot", extract_last_number(
+        "$.75"), 0.75)
+    case("extract plain decimal", extract_last_number("0.75"), 0.75)
 
     # --- arithmetic comparison ---
     case("arith int exact", arith_correct(3111.0, 3111), True)
@@ -240,6 +273,22 @@ def run_selftest():
         "Oslo is the capital.", "Paris", []), False)
     case("fact punctuation", fact_match(
         "It is Paris, France.", "Paris", []), True)
+    # --- F1 adversarial: these must FAIL matching ---
+    case("fact adversarial carbon/Fe", fact_match(
+        "The chemical symbol for carbon is Fe", "C", []), False)
+    case("fact adversarial know/H", fact_match(
+        "I do not know", "H", []), False)
+    case("fact adversarial moons/1", fact_match(
+        "Earth has 12 moons", "1", []), False)
+    case("fact adversarial comparison/Paris", fact_match(
+        "No comparison is possible", "Paris", []), False)
+    case("fact adversarial substring token", fact_match(
+        "The cat sat there", "C", []), False)
+    # --- F1 positive controls for short candidates ---
+    case("fact short symbol ok", fact_match(
+        "The symbol is C.", "C", []), True)
+    case("fact short count ok", fact_match(
+        "Earth has 1 moon", "1", []), True)
 
     # --- run_check dispatch ---
     case("dispatch bullets3", run_check(
@@ -278,9 +327,38 @@ def chat_text(tokenizer, prompt):
         return tokenizer.apply_chat_template(
             msgs, tokenize=False, add_generation_prompt=True,
             enable_thinking=False)
-    except TypeError:
-        return tokenizer.apply_chat_template(
-            msgs, tokenize=False, add_generation_prompt=True)
+    except TypeError as e:
+        # N5: an instrument must fail loudly, never silently change
+        # the prompt by dropping the thinking flag.
+        raise TypeError(
+            "tokenizer.apply_chat_template rejected "
+            "enable_thinking=False; refusing to fall back to a "
+            f"different prompt form: {e}") from e
+
+
+def collect_eos_ids(model_dir, tok):
+    """Union of eos ids from the model dir's generation_config.json
+    (if present) and the tokenizer's eos (N5)."""
+    ids = set()
+
+    def _add(v):
+        if v is None:
+            return
+        if isinstance(v, (list, tuple)):
+            for x in v:
+                _add(x)
+        else:
+            ids.add(int(v))
+
+    _add(getattr(tok, "eos_token_id", None))
+    gc_path = Path(model_dir) / "generation_config.json"
+    if gc_path.exists():
+        try:
+            gc = json.loads(gc_path.read_text(encoding="utf-8"))
+            _add(gc.get("eos_token_id"))
+        except Exception:  # noqa: BLE001
+            pass
+    return sorted(ids)
 
 
 def load_model(model_dir):
@@ -295,29 +373,38 @@ def load_model(model_dir):
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
     tok.padding_side = "left"
-    return tok, model, device
+    eos_ids = collect_eos_ids(model_dir, tok)
+    return tok, model, device, eos_ids
 
 
-def generate_batch(tok, model, device, prompts, max_new):
+def generate_batch(tok, model, device, prompts, max_new,
+                   eos_ids=None):
     import torch
     texts = [chat_text(tok, p) for p in prompts]
     enc = tok(texts, return_tensors="pt", padding=True).to(device)
+    # N5: pass eos_token_id explicitly -- the union collected from
+    # generation_config.json and the tokenizer (single int if one
+    # id, list if several).
+    eos_arg = None
+    if eos_ids:
+        eos_arg = eos_ids[0] if len(eos_ids) == 1 else list(eos_ids)
     with torch.no_grad():
         out = model.generate(
             **enc, max_new_tokens=max_new, do_sample=False,
-            num_beams=1, pad_token_id=tok.pad_token_id)
+            num_beams=1, pad_token_id=tok.pad_token_id,
+            eos_token_id=eos_arg)
     gen = out[:, enc["input_ids"].shape[1]:]
     return [tok.decode(row, skip_special_tokens=True) for row in gen]
 
 
-def score_generation_split(tok, model, device, split):
+def score_generation_split(tok, model, device, split, eos_ids=None):
     items = load_items(split)
     outputs = []
     for i in range(0, len(items), BATCH_SIZE):
         batch = items[i:i + BATCH_SIZE]
         outputs.extend(generate_batch(
             tok, model, device, [b["prompt"] for b in batch],
-            MAX_NEW_TOKENS[split]))
+            MAX_NEW_TOKENS[split], eos_ids=eos_ids))
     records, per_cat = [], {}
     for it, raw in zip(items, outputs):
         if split in ARITH_SPLITS:
@@ -426,7 +513,7 @@ def main(argv=None):
         return 0
 
     splits = list(SPLIT_FILES) if args.split == "all" else [args.split]
-    tok, model, device = load_model(args.model)
+    tok, model, device, eos_ids = load_model(args.model)
     result = {"model": args.model, "splits": {}}
     for split in splits:
         if split == "forget_prose":
@@ -434,7 +521,8 @@ def main(argv=None):
             print(f"{split}: mean_nll={res['mean_nll']:.4f} "
                   f"(n={res['n']})")
         else:
-            res = score_generation_split(tok, model, device, split)
+            res = score_generation_split(tok, model, device, split,
+                                         eos_ids=eos_ids)
             print(f"{split}: accuracy={res['accuracy']:.4f} "
                   f"(n={res['n']})")
         result["splits"][split] = res

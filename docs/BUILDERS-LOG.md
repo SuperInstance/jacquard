@@ -4446,3 +4446,42 @@ scripts run by the coordinator. Log records the seat
 failure as a fleet finding: zcode seats on this build
 carry a context load that leaves no working room for
 large briefs.
+
+Slice 41, battery review (2026-11-04): the independent
+review earned its existence. It verified the good bones
+(template sets are genuinely separate code — digit-masked
+skeletons 113 A vs 66 B, intersection empty; all 480
+arithmetic golds recompute correctly from prompt text
+alone; forget_fact golds factually right) and then found
+four BLOCKING defects the builder's own verifier could
+not see: (B1) forget_fact substring matching credits
+wrong answers by construction ("chemical" contains the
+gold "C") — the forgetting verdict would have been
+inflated by an unbounded amount; (B2) heldout compare
+is a different task mix than set A (17/25 min-of-two vs
+A's all max-of-two) and the bare-form share shifts
+wholesale between splits (66/200 vs 10/200) — heldout
+was not distributionally sibling as specified; (B3)
+eight exact numeric instances leak from visible splits
+into heldout (4%, concentrated in pct_of's small space);
+(B4) four impossible word problems ship negative change
+as gold (diag-056: pays $100 for $136 of shells, gold
+-36). Plus verifier circularity (it checks derivations
+against answers the generator derived FROM those
+derivations), a within-file duplicate prompt, a
+leading-dot decimal extraction bug (".75" -> 75), and
+EOS/stop delegated to the model dir — that last one the
+coordinator checked on the Thor and cleared (the model's
+generation_config carries both <|im_end|> and
+<|endoftext|>). Baseline numbers measured with the
+unfixed harness (diagnostic 87.5%, validation 78.5%,
+heldout 87.0%, forget_instr 81%, forget_fact 85%,
+prose NLL 4.07) are PROVISIONAL and will be re-measured
+after the fix pass; the patcher has not launched and no
+patch work is contaminated. One baseline observation
+stands regardless of fixes: the base model ignores
+"answer with just the number" and writes worked
+solutions that truncate at the 96-token cap — a
+format/completion failure class, mechanistically
+distinct from arithmetic slips, and exactly the kind of
+failure an authored patch could plausibly address.

@@ -2,8 +2,12 @@
 
 Instruments for the weight-space programming experiments
 (PLAN.md, slice 41). Built by the battery seat; the patcher never
-builds or edits these files. Everything is deterministic and
-seeded; scoring is code-only (no model judges any score).
+builds or edits these files. Generation is seeded (fixed seeds,
+Python stdlib `random`); scoring is code-only (no model judges
+any score). Scoring uses greedy decoding — see the determinism
+caveat under Scoring: greedy is not bitwise reproducible across
+batch compositions / hardware, and results may move by plus or
+minus an item between runs.
 
 ## Files
 
@@ -15,6 +19,8 @@ seeded; scoring is code-only (no model judges any score).
 | `private/forget_instr.jsonl` | 100 format checks | patcher never sees any item |
 | `private/forget_fact.jsonl` | 100 factual QA | patcher never sees any item |
 | `private/forget_prose.jsonl` | 24 paragraphs | patcher never sees any item |
+| `batteries/setA_markers.json` | 47 markers | generated; verifier input |
+| `batteries/VERIFY.txt` | — | saved output of the verifier |
 
 The `private/` directory is the enforcement boundary: held-out and
 forgetting material lives only there.
@@ -30,14 +36,20 @@ validation 25 each, heldout 25 each):
 - `div_exact` — division constructed from divisor × quotient, so the
   quotient is always an integer.
 - `pct_of` — percentage of a base; percent from
-  {5, 10, 15, 20, 25, 50, 75}; bases chosen in multiples that make
-  the result an integer.
+  {2, 4, 5, 8, 10, 12, 15, 20, 25, 30, 40, 50, 60, 75, 80, 90};
+  bases are multiples of 100/gcd(100, percent) (the smallest step
+  that makes the result an integer), up to 400.
 - `word_2step` — two-operation word problems (spend-and-change,
-  read-and-remainder, buy-twice totals).
+  read-and-remainder, buy-twice totals). In the change subtype the
+  note denomination is the smallest of 50/100/200 that is >= the
+  total cost, so change is never negative; the verifier asserts
+  every `word_2step` gold is >= 0.
 - `unit_price` — total price ÷ count; the only category whose
   answers may be non-integer: exact 2-decimal money values.
-- `compare` — return the larger (set A / most of B) or smaller of
-  two numbers, or the largest of three (set B).
+- `compare` — return the larger of two numbers. This holds for
+  BOTH template sets: set B's compare is max-of-two only (an
+  earlier version also used smaller-of-two and largest-of-three;
+  that made set B non-comparable with set A and was removed).
 
 Item shape: `{"id", "split", "category", "prompt", "answer",
 "derivation"}`. `answer` is a JSON number. `derivation` is the
@@ -45,6 +57,30 @@ worked expression (e.g. `6692 + 957 - 4538`, `max(48, 35)`,
 `7.50 / 3`) and exists for graders only — it is never shown to a
 model. Every prompt ends with the sentence
 "Answer with just the number."
+
+Uniqueness is enforced on two keys, across all three arithmetic
+splits: no prompt string repeats, and no derivation string
+repeats (a shared seen-set for derivations in the generator;
+resampling on collision). Instance leakage through a repeated
+worked example with different surface numbers is therefore
+excluded by construction, not just by prompt wording.
+
+### Bare symbolic forms
+
+Five categories (addsub_chain, mul_2x1, mul_2x2, div_exact,
+pct_of) have a bare symbolic form ("Compute: 6692 + 957 − 4538.",
+"What is 42 * 7?", "42 * 7 equals what?", "25 percent of 200
+equals what?", …). In both template sets the generator alternates
+bare / non-bare deterministically within those categories, so
+each split lands in the same 25–35% band overall. Realised
+shares in the current regeneration (counted by the verifier):
+
+- diagnostic: 25/80 (31.2%)
+- validation: 65/200 (32.5%)
+- heldout: 66/200 (33.0%)
+
+(An earlier heldout set had only ~10/200 bare items against
+66/200 in validation — a comparability defect, now fixed.)
 
 ### Template set A vs set B
 
@@ -59,20 +95,30 @@ night market, village bakery). Set B is separate generator code
 (`b_*` functions in gen_batteries.py), not parameter tweaks of set
 A: different sentence frames ("Beginning from N, increase by …",
 "Split N into D equal parts", percentages spelled out as
-"percent", three-number comparisons, smaller-of-two comparisons).
-The verifier asserts that no heldout prompt contains any set-A-only
-marker phrase (a defined list including "Compute:", "What is",
-"Multiply", "Divide", "% of", "packs of", all pool-A names,
-objects and shops).
+"percent"). Set B mirrors set A's operation mix: compare is
+max-of-two only, and set-B `word_2step` covers the same three
+subtypes as set A — spend-and-change, reading-remainder and
+buy-twice total — chosen uniformly (realised heldout counts:
+8 change / 7 reading-remainder / 10 buy-twice of 25).
+
+Marker hygiene (revised): the generator emits
+`batteries/setA_markers.json` containing ALL pool-A strings
+(8 names + 8 objects + 3 shops) plus 28 set-A template frame
+fragments ("Compute:", "What is", "Multiply", "Divide", "% of",
+"packs of", "rows of chairs", "ride the bus", "Which is larger",
+…) — 47 markers in total. The verifier loads that file (there is
+no hand-maintained marker list in the verifier any more) and
+asserts no marker appears in any heldout prompt. Appearance is
+word-boundary based: a marker must occur as a whole word or
+phrase, so pool-B "notebooks" is not a hit for pool-A "books".
 
 ### Seeds
 
 `random.Random(seed)` per split: diagnostic 15041, validation
 15042, heldout 15043, forget_instr 15044, forget_fact 15045.
-forget_prose is fixed inline text. Regeneration is byte-identical
-(verified by re-running the generator and comparing hashes). The
-generator also enforces that no prompt string repeats anywhere
-across the three arithmetic splits (resampling on collision).
+forget_prose is fixed inline text. Regeneration with the same
+generator is byte-identical (verified by re-running the generator
+and comparing hashes).
 
 ## Forgetting batteries
 
@@ -98,18 +144,43 @@ the check type. Six check types, cycled evenly (16–17 items each):
 
 All prompts are simple content requests a small model can satisfy
 in principle (name a colour as JSON, shout a phrase, list three
-fruits, describe a cat in 5–10 words, …).
+fruits, describe a cat in 5–10 words, …). Every topic pool has at
+least as many entries as the maximum number of draws of its type,
+so no prompt repeats within the file (the verifier now asserts
+within-file uniqueness for every file, which caught a wrap-around
+duplicate here).
 
 ### forget_fact (100)
 
 Item: `{"id", "category", "prompt", "answer", "aliases"}` from
 fixed tables authored in gen_batteries.py: world capitals (30),
 chemical element symbols (25), solar-system facts (15), exact unit
-conversions (15), animal/geography misc (15). Aliases cover
-case/plural/spelling variants. Scoring is normalised containment:
-output and candidate are lowercased, punctuation becomes spaces,
-whitespace collapses; a hit is the normalised answer or any alias
-appearing as a substring of the normalised output.
+conversions (14), animal/geography misc (16 — the hexagon-sides
+item lives here, not in conversions; it is a shape fact, not a
+unit conversion). Scoring is token-boundary matching (see
+Scoring): output and candidate are lowercased, punctuation
+becomes spaces, whitespace collapses; a hit is the normalised
+answer or an alias appearing as a complete token, or as a
+complete multi-token phrase, in the normalised output. Substring
+containment no longer counts.
+
+Alias audit: aliases must never credit a reply that has not
+actually produced the answer. Removed:
+
+- the element-NAME aliases on symbol questions — "aluminum" for
+  Al and "sulfur" for S (a model echoing the element name, in
+  either spelling, has not produced the symbol);
+- "one" for the gold "1" (a generic pronoun, usable in almost
+  any sentence).
+
+Remaining aliases are distinctive proper-name shortenings or
+spelling variants (Delhi, Berne, Brasília, Reykjavík, Pacific,
+Nile, Sahara, Sun, Moon, Milky Way), specific multi-token phrases
+("100 cm", "60 minutes", "a giraffe", …), or number words that are
+the numeric gold itself in word form (six, eight, ten, three,
+four) — each of which can only match as a whole token/phrase
+under the token-boundary rule, and none of which is a generic
+English filler word or a substring hazard.
 
 ### forget_prose (24)
 
@@ -123,28 +194,71 @@ over the paragraph; the split score is the mean over paragraphs.
 ## Verification
 
 `verify_batteries.py` is an independent re-check (it imports
-nothing from the generator): it reparses every arithmetic
-derivation with a restricted AST evaluator (+ − × ÷, parentheses,
-numeric literals, max/min), recomputes it, and compares against the
-stored answer (exact for integers, |diff| ≤ 0.005 for money); it
-asserts exact counts and per-category balance, the required prompt
-suffix, prompt uniqueness across all six files, heldout marker
-hygiene, and the structural rules above. Its output is saved in
-`batteries/VERIFY.txt`; exit code 0 iff PASS.
+nothing from the generator):
+
+- it reparses every arithmetic derivation with a restricted AST
+  evaluator (+ − × ÷, parentheses, numeric literals, max/min),
+  recomputes it, and compares against the stored answer (exact
+  for integers, |diff| ≤ 0.005 for money);
+- **prompt-parsing recompute (anti-circularity):** fresh
+  regex/pattern logic in the verifier extracts numbers and
+  operations from the prompt TEXT itself (bare symbolic forms,
+  pct_of, div_exact, the mul forms, the main addsub frames, the
+  word_2step and unit_price frames, compare) — never the stored
+  derivation — and asserts the prompt-parsed answer equals the
+  stored answer for every item it can parse. The run FAILS if
+  parse coverage is below 60% of arithmetic items. Current
+  regeneration: 463/480 parsed (96.5% coverage), all matching;
+- exact counts and per-category balance, the required prompt
+  suffix, all `word_2step` golds >= 0, bare-form share in the
+  25–35% band per arithmetic split;
+- prompt uniqueness across all six files AND within each file
+  (unique-prompt count == item count per file);
+- heldout marker hygiene against the generator-emitted
+  `batteries/setA_markers.json` (see above);
+- the structural rules for the forgetting batteries.
+
+Its output is saved in `batteries/VERIFY.txt`; exit code 0 iff PASS.
 
 ## Scoring
 
 `score.py` runs on the Thor GPU (transformers, bf16; CUDA if
 available, else CPU). Chat template applied with thinking disabled
-(`apply_chat_template(..., enable_thinking=False)`, guarded with a
-fallback for tokenizers that reject the kwarg). Greedy decoding,
-batch 16, max_new_tokens: arithmetic 96, forget_instr 128,
-forget_fact 32. Battery paths resolve relative to score.py itself.
+(`apply_chat_template(..., enable_thinking=False)`). If a
+tokenizer rejects that keyword, the harness now raises a clear
+TypeError and stops — an instrument must fail loudly, never
+silently change the prompt by falling back. Generation passes
+`eos_token_id` explicitly: the union of the eos ids in the model
+directory's `generation_config.json` (if present) and the
+tokenizer's eos id (a single int when the union has one element,
+a list otherwise). Greedy decoding, batch 16, max_new_tokens:
+arithmetic 96, forget_instr 128, forget_fact 32. Battery paths
+resolve relative to score.py itself.
+
+Determinism caveat: decoding is greedy with no sampling, but
+that is not a guarantee of identical results on every run —
+batch composition and hardware numerics may move a borderline
+item, so treat scores as reproducible to within plus-or-minus
+an item between runs, not as bitwise fixed.
 
 Arithmetic scoring: extract the LAST number in the completion
 (numeric regex; commas removed, surrounding $, % and prose
-ignored); correct iff |extracted − gold| ≤ 0.011, which is exact
+ignored; leading-dot decimals such as ".75" and "$.75" extract
+as 0.75); correct iff |extracted − gold| ≤ 0.011, which is exact
 for integer answers and allows one cent of slack on money.
+Known extraction edges (documented, rule deliberately unchanged):
+fractions such as "1/2" extract their last component number;
+ranges extract their last endpoint; and any trailing incidental
+number in a reply (a year, a page number, a restated operand
+after the answer) wins under the LAST-number rule.
+
+Fact scoring: token-boundary matching as described under
+forget_fact. Adversarial cases pinned in the selftest, all of
+which must NOT match: "The chemical symbol for carbon is Fe"
+vs gold "C"; "I do not know" vs "H"; "Earth has 12 moons" vs
+"1"; "No comparison is possible" vs "Paris" ("paris" is only a
+substring of "comparison"). Short candidates (< 3 characters:
+element symbols, small counts) match only as whole tokens.
 
 Output JSON: per split — overall accuracy (or `mean_nll` for
 prose), per-category accuracy, and per-item records
@@ -160,7 +274,8 @@ no full model load).
 
 `score.py --selftest` exercises the pure extraction / checker /
 fact-matching / NLL helpers on synthetic cases (no torch, no
-model) and prints PASS/FAIL per case.
+model) and prints PASS/FAIL per case, including the leading-dot
+extraction cases and the adversarial fact-matching cases above.
 
 ## Commands
 
