@@ -99,3 +99,42 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   the serving incumbent is the UNPATCHED judge. The patched
   copy exists only in ~/wsp-exp17/w3p/judge-patched/.
   Promotion = Caseys decision (adoption packet).
+
+## 2026-11-04 — W1 shadow: battery numbers meet real traffic
+
+- Corpus: ALL 156 distinct agent-inbox messages in the full
+  git history (300 target unmet — only 156 exist; criteria
+  fallback invoked, stated everywhere). 91/156 scorable per
+  specialist (<=8,192-token prompt cap, never truncated);
+  median item 7,048 chars — long documents, not messages.
+- Live agreement specialist-vs-incumbent: mc 72.5%, panic
+  78.0% (n=91). Both incumbents collapse in the wild: mc
+  incumbent says code 153/156 (lexicon saturation on long
+  documents); panic incumbent says calm 156/156 (max reading
+  0.2354; stampede structurally impossible in the
+  single-message adaptation of a room dial).
+- BLIND GRADING (separate role, n=66) — mc dial: specialist
+  agreement with grader 27.3% vs battery 84.2%; incumbent
+  30.3%. Model class DEAD for the specialist in the wild
+  (0/26 gold; predicted once in 156). Mixed recall 3/20
+  (battery 75%). SURVIVES-CONTACT: FAIL. RE-COACHING
+  TRIGGER: FIRED (-56.9 pts).
+- Panic dial grading: specialist 59.1% vs incumbent 63.6%
+  (always-calm baseline). Bar agreement half passes; the
+  specialist is the only alarmed vision in the system
+  (recall 7/24, precision 64%) and pays 10 calm items for
+  it. Stampede: no gold in sample (recall undefined);
+  specialist precision 0/3. Trigger NOT fired. Grader note
+  kept: this fleets traffic logs compounding failures in a
+  routine tone — tone-reading dials under-read it by design.
+- Re-coaching round for the mc dial opened under governance:
+  diagnostic = 25 live eligible non-sample items, being
+  labelled blind by a fresh teacher role; the graded 66 stay
+  sealed as round 2s held-out. Battery held-out re-scored
+  after the round as the retention check.
+- Environment defects logged: R4 scorer SIGTERM-killed 3x
+  as a long Thor run (cause unknown; completed via 16
+  micro-chunks, harness unmodified); Oracle disk full
+  (worker clones in /tmp); grader push credential-blocked
+  (labels delivered in-report, committed by coordinator,
+  byte-identical to grader commit 6439a9e).
