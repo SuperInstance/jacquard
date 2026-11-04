@@ -1,0 +1,100 @@
+{"id": "ffact-001", "category": "capitals", "prompt": "What is the capital of France?", "answer": "Paris", "aliases": []}
+{"id": "ffact-002", "category": "capitals", "prompt": "What is the capital of Argentina?", "answer": "Buenos Aires", "aliases": []}
+{"id": "ffact-003", "category": "capitals", "prompt": "What is the capital of Brazil?", "answer": "Brasilia", "aliases": ["Brasília"]}
+{"id": "ffact-004", "category": "capitals", "prompt": "What is the capital of Iceland?", "answer": "Reykjavik", "aliases": ["Reykjavík"]}
+{"id": "ffact-005", "category": "capitals", "prompt": "What is the capital of Poland?", "answer": "Warsaw", "aliases": []}
+{"id": "ffact-006", "category": "capitals", "prompt": "What is the capital of Norway?", "answer": "Oslo", "aliases": []}
+{"id": "ffact-007", "category": "capitals", "prompt": "What is the capital of Chile?", "answer": "Santiago", "aliases": []}
+{"id": "ffact-008", "category": "capitals", "prompt": "What is the capital of Finland?", "answer": "Helsinki", "aliases": []}
+{"id": "ffact-009", "category": "capitals", "prompt": "What is the capital of Portugal?", "answer": "Lisbon", "aliases": []}
+{"id": "ffact-010", "category": "capitals", "prompt": "What is the capital of New Zealand?", "answer": "Wellington", "aliases": []}
+{"id": "ffact-011", "category": "capitals", "prompt": "What is the capital of Austria?", "answer": "Vienna", "aliases": []}
+{"id": "ffact-012", "category": "capitals", "prompt": "What is the capital of Canada?", "answer": "Ottawa", "aliases": []}
+{"id": "ffact-013", "category": "capitals", "prompt": "What is the capital of Greece?", "answer": "Athens", "aliases": []}
+{"id": "ffact-014", "category": "capitals", "prompt": "What is the capital of South Korea?", "answer": "Seoul", "aliases": []}
+{"id": "ffact-015", "category": "capitals", "prompt": "What is the capital of Spain?", "answer": "Madrid", "aliases": []}
+{"id": "ffact-016", "category": "capitals", "prompt": "What is the capital of Ireland?", "answer": "Dublin", "aliases": []}
+{"id": "ffact-017", "category": "capitals", "prompt": "What is the capital of Mexico?", "answer": "Mexico City", "aliases": []}
+{"id": "ffact-018", "category": "capitals", "prompt": "What is the capital of Australia?", "answer": "Canberra", "aliases": []}
+{"id": "ffact-019", "category": "capitals", "prompt": "What is the capital of Peru?", "answer": "Lima", "aliases": []}
+{"id": "ffact-020", "category": "capitals", "prompt": "What is the capital of Italy?", "answer": "Rome", "aliases": []}
+{"id": "ffact-021", "category": "capitals", "prompt": "What is the capital of Kenya?", "answer": "Nairobi", "aliases": []}
+{"id": "ffact-022", "category": "capitals", "prompt": "What is the capital of Japan?", "answer": "Tokyo", "aliases": []}
+{"id": "ffact-023", "category": "capitals", "prompt": "What is the capital of Sweden?", "answer": "Stockholm", "aliases": []}
+{"id": "ffact-024", "category": "capitals", "prompt": "What is the capital of Germany?", "answer": "Berlin", "aliases": []}
+{"id": "ffact-025", "category": "capitals", "prompt": "What is the capital of Turkey?", "answer": "Ankara", "aliases": []}
+{"id": "ffact-026", "category": "capitals", "prompt": "What is the capital of the Netherlands?", "answer": "Amsterdam", "aliases": []}
+{"id": "ffact-027", "category": "capitals", "prompt": "What is the capital of Egypt?", "answer": "Cairo", "aliases": []}
+{"id": "ffact-028", "category": "capitals", "prompt": "What is the capital of Switzerland?", "answer": "Bern", "aliases": ["Berne"]}
+{"id": "ffact-029", "category": "capitals", "prompt": "What is the capital of India?", "answer": "New Delhi", "aliases": ["Delhi"]}
+{"id": "ffact-030", "category": "capitals", "prompt": "What is the capital of Denmark?", "answer": "Copenhagen", "aliases": []}
+{"id": "ffact-031", "category": "elements", "prompt": "What is the chemical symbol for oxygen?", "answer": "O", "aliases": []}
+{"id": "ffact-032", "category": "elements", "prompt": "What is the chemical symbol for chlorine?", "answer": "Cl", "aliases": []}
+{"id": "ffact-033", "category": "elements", "prompt": "What is the chemical symbol for potassium?", "answer": "K", "aliases": []}
+{"id": "ffact-034", "category": "elements", "prompt": "What is the chemical symbol for sulphur?", "answer": "S", "aliases": []}
+{"id": "ffact-035", "category": "elements", "prompt": "What is the chemical symbol for neon?", "answer": "Ne", "aliases": []}
+{"id": "ffact-036", "category": "elements", "prompt": "What is the chemical symbol for silver?", "answer": "Ag", "aliases": []}
+{"id": "ffact-037", "category": "elements", "prompt": "What is the chemical symbol for phosphorus?", "answer": "P", "aliases": []}
+{"id": "ffact-038", "category": "elements", "prompt": "What is the chemical symbol for gold?", "answer": "Au", "aliases": []}
+{"id": "ffact-039", "category": "elements", "prompt": "What is the chemical symbol for tin?", "answer": "Sn", "aliases": []}
+{"id": "ffact-040", "category": "elements", "prompt": "What is the chemical symbol for hydrogen?", "answer": "H", "aliases": []}
+{"id": "ffact-041", "category": "elements", "prompt": "What is the chemical symbol for zinc?", "answer": "Zn", "aliases": []}
+{"id": "ffact-042", "category": "elements", "prompt": "What is the chemical symbol for sodium?", "answer": "Na", "aliases": []}
+{"id": "ffact-043", "category": "elements", "prompt": "What is the chemical symbol for helium?", "answer": "He", "aliases": []}
+{"id": "ffact-044", "category": "elements", "prompt": "What is the chemical symbol for iron?", "answer": "Fe", "aliases": []}
+{"id": "ffact-045", "category": "elements", "prompt": "What is the chemical symbol for lead?", "answer": "Pb", "aliases": []}
+{"id": "ffact-046", "category": "elements", "prompt": "What is the chemical symbol for calcium?", "answer": "Ca", "aliases": []}
+{"id": "ffact-047", "category": "elements", "prompt": "What is the chemical symbol for silicon?", "answer": "Si", "aliases": []}
+{"id": "ffact-048", "category": "elements", "prompt": "What is the chemical symbol for copper?", "answer": "Cu", "aliases": []}
+{"id": "ffact-049", "category": "elements", "prompt": "What is the chemical symbol for nitrogen?", "answer": "N", "aliases": []}
+{"id": "ffact-050", "category": "elements", "prompt": "What is the chemical symbol for magnesium?", "answer": "Mg", "aliases": []}
+{"id": "ffact-051", "category": "elements", "prompt": "What is the chemical symbol for aluminium?", "answer": "Al", "aliases": []}
+{"id": "ffact-052", "category": "elements", "prompt": "What is the chemical symbol for mercury?", "answer": "Hg", "aliases": []}
+{"id": "ffact-053", "category": "elements", "prompt": "What is the chemical symbol for carbon?", "answer": "C", "aliases": []}
+{"id": "ffact-054", "category": "elements", "prompt": "What is the chemical symbol for lithium?", "answer": "Li", "aliases": []}
+{"id": "ffact-055", "category": "elements", "prompt": "What is the chemical symbol for boron?", "answer": "B", "aliases": []}
+{"id": "ffact-056", "category": "solar_system", "prompt": "What is the name of the star at the centre of our solar system?", "answer": "the Sun", "aliases": ["Sun"]}
+{"id": "ffact-057", "category": "solar_system", "prompt": "How many moons does Earth have?", "answer": "1", "aliases": []}
+{"id": "ffact-058", "category": "solar_system", "prompt": "Which moon of Jupiter is covered in ice and may hide an ocean?", "answer": "Europa", "aliases": []}
+{"id": "ffact-059", "category": "solar_system", "prompt": "Which planet is known as the Red Planet?", "answer": "Mars", "aliases": []}
+{"id": "ffact-060", "category": "solar_system", "prompt": "What is the name of the galaxy that contains our solar system?", "answer": "the Milky Way", "aliases": ["Milky Way"]}
+{"id": "ffact-061", "category": "solar_system", "prompt": "Which planet is farthest from the Sun?", "answer": "Neptune", "aliases": []}
+{"id": "ffact-062", "category": "solar_system", "prompt": "What is Earth's only natural satellite called?", "answer": "the Moon", "aliases": ["Moon"]}
+{"id": "ffact-063", "category": "solar_system", "prompt": "Which planet has prominent rings around it?", "answer": "Saturn", "aliases": []}
+{"id": "ffact-064", "category": "solar_system", "prompt": "Which planet spins on its side, tilted almost 98 degrees?", "answer": "Uranus", "aliases": []}
+{"id": "ffact-065", "category": "solar_system", "prompt": "Which planet is closest to the Sun?", "answer": "Mercury", "aliases": []}
+{"id": "ffact-066", "category": "solar_system", "prompt": "Which is the largest planet in our solar system?", "answer": "Jupiter", "aliases": []}
+{"id": "ffact-067", "category": "solar_system", "prompt": "Which planet is known as the Morning Star?", "answer": "Venus", "aliases": []}
+{"id": "ffact-068", "category": "solar_system", "prompt": "Which planet do we live on?", "answer": "Earth", "aliases": []}
+{"id": "ffact-069", "category": "solar_system", "prompt": "Which dwarf planet was once counted as the ninth planet?", "answer": "Pluto", "aliases": []}
+{"id": "ffact-070", "category": "solar_system", "prompt": "Which planet has the longest day, longer than its year?", "answer": "Venus", "aliases": []}
+{"id": "ffact-071", "category": "conversions", "prompt": "How many millilitres are there in one litre?", "answer": "1000", "aliases": ["1000 ml", "1,000"]}
+{"id": "ffact-072", "category": "conversions", "prompt": "How many centimetres are there in one metre?", "answer": "100", "aliases": ["100 cm"]}
+{"id": "ffact-073", "category": "conversions", "prompt": "How many years are there in a decade?", "answer": "10", "aliases": ["ten"]}
+{"id": "ffact-074", "category": "conversions", "prompt": "How many seconds are there in one minute?", "answer": "60", "aliases": ["60 seconds"]}
+{"id": "ffact-075", "category": "conversions", "prompt": "How many degrees are there in a full circle?", "answer": "360", "aliases": ["360 degrees"]}
+{"id": "ffact-076", "category": "conversions", "prompt": "How many minutes are there in one hour?", "answer": "60", "aliases": ["60 minutes"]}
+{"id": "ffact-077", "category": "conversions", "prompt": "How many cents are there in one dollar?", "answer": "100", "aliases": ["100 cents"]}
+{"id": "ffact-078", "category": "conversions", "prompt": "How many days are there in one week?", "answer": "7", "aliases": ["7 days"]}
+{"id": "ffact-079", "category": "conversions", "prompt": "How many degrees are there in a right angle?", "answer": "90", "aliases": ["90 degrees"]}
+{"id": "ffact-080", "category": "conversions", "prompt": "How many months are there in one year?", "answer": "12", "aliases": ["12 months"]}
+{"id": "ffact-081", "category": "conversions", "prompt": "How many metres are there in one kilometre?", "answer": "1000", "aliases": ["1000 m", "1,000"]}
+{"id": "ffact-082", "category": "conversions", "prompt": "How many grams are there in one kilogram?", "answer": "1000", "aliases": ["1000 g", "1,000"]}
+{"id": "ffact-083", "category": "conversions", "prompt": "How many millimetres are there in one centimetre?", "answer": "10", "aliases": ["10 mm"]}
+{"id": "ffact-084", "category": "conversions", "prompt": "How many hours are there in one day?", "answer": "24", "aliases": ["24 hours"]}
+{"id": "ffact-085", "category": "misc", "prompt": "What is the largest hot desert in the world?", "answer": "the Sahara", "aliases": ["Sahara"]}
+{"id": "ffact-086", "category": "misc", "prompt": "What is the longest river in the world?", "answer": "the Nile", "aliases": ["Nile"]}
+{"id": "ffact-087", "category": "misc", "prompt": "What is the largest ocean on Earth?", "answer": "Pacific Ocean", "aliases": ["Pacific"]}
+{"id": "ffact-088", "category": "misc", "prompt": "What is the capital city of the United Kingdom?", "answer": "London", "aliases": []}
+{"id": "ffact-089", "category": "misc", "prompt": "What do bees produce?", "answer": "honey", "aliases": []}
+{"id": "ffact-090", "category": "misc", "prompt": "How many sides does a hexagon have?", "answer": "6", "aliases": ["six"]}
+{"id": "ffact-091", "category": "misc", "prompt": "How many wings does a butterfly have?", "answer": "4", "aliases": ["four"]}
+{"id": "ffact-092", "category": "misc", "prompt": "Which animal is known as man's best friend?", "answer": "dog", "aliases": ["a dog"]}
+{"id": "ffact-093", "category": "misc", "prompt": "How many hearts does an octopus have?", "answer": "3", "aliases": ["three"]}
+{"id": "ffact-094", "category": "misc", "prompt": "Which continent is the Sahara Desert on?", "answer": "Africa", "aliases": []}
+{"id": "ffact-095", "category": "misc", "prompt": "What is the fastest land animal?", "answer": "cheetah", "aliases": ["a cheetah"]}
+{"id": "ffact-096", "category": "misc", "prompt": "What is the largest mammal in the world?", "answer": "blue whale", "aliases": ["a blue whale"]}
+{"id": "ffact-097", "category": "misc", "prompt": "How many legs does a spider have?", "answer": "8", "aliases": ["eight"]}
+{"id": "ffact-098", "category": "misc", "prompt": "What is the tallest land animal?", "answer": "giraffe", "aliases": ["a giraffe"]}
+{"id": "ffact-099", "category": "misc", "prompt": "What is the main language spoken in Brazil?", "answer": "Portuguese", "aliases": []}
+{"id": "ffact-100", "category": "misc", "prompt": "Which bird is a symbol of peace?", "answer": "dove", "aliases": ["a dove"]}

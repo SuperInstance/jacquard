@@ -1,0 +1,43 @@
+PASS: jsonl-validity — 112 diagnostic + 54 heldout items parse
+PASS: disjoint-splits — no id or source-pointer overlap; ids unique per split
+PASS: gold-labels — all golds and correct_outcomes in {ALLOW,HOLD,DENY}
+PASS: source-pointers — every item carries file + locator
+PASS: time-split — all diagnostic < boundary <= all heldout
+PASS: correctness-consistency — false=>corrected outcome differs; true=>equals gold; null=>no correct_outcome
+PASS: leakage-hard — no verdict-phrase pattern in any context
+leakage-soft (borderline, reported not failed): 33 items with outcome-lexicon tokens
+  soft: e8-board-shadow-025 [diagnostic] tokens=queued
+  soft: e8-jev-001 [diagnostic] tokens=queue
+  soft: e8-jev-002 [diagnostic] tokens=queue
+  soft: e8-jev-004 [diagnostic] tokens=denied
+  soft: e8-jev-005 [diagnostic] tokens=refused
+  soft: e8-jev-006 [diagnostic] tokens=queue
+  soft: e8-jev-007 [diagnostic] tokens=queue
+  soft: e8-jev-008 [diagnostic] tokens=queue
+  soft: e8-jev-009 [diagnostic] tokens=queue
+  soft: e8-jev-010 [diagnostic] tokens=queue
+  soft: e8-jev-011 [diagnostic] tokens=queue
+  soft: e8-board-shadow-054 [diagnostic] tokens=queue
+  soft: e8-board-shadow-057 [heldout] tokens=queue
+  soft: e8-board-shadow-058 [heldout] tokens=queue
+  soft: e8-board-shadow-059 [heldout] tokens=queue
+  soft: e8-gpu-windows-001 [heldout] tokens=queue
+  soft: e8-gpu-windows-002 [heldout] tokens=queue
+  soft: e8-gpu-windows-003 [heldout] tokens=queue
+  soft: e8-gpu-windows-004 [heldout] tokens=queue
+  soft: e8-gpu-windows-005 [heldout] tokens=held,queue
+  soft: e8-gpu-windows-006 [heldout] tokens=queue
+  soft: e8-gpu-windows-007 [heldout] tokens=queue
+  soft: e8-gpu-windows-008 [heldout] tokens=queue
+  soft: e8-gpu-windows-009 [heldout] tokens=queue
+  soft: e8-gpu-windows-010 [heldout] tokens=queue
+  soft: e8-gpu-windows-011 [heldout] tokens=queue
+  soft: e8-gpu-windows-012 [heldout] tokens=queue
+  soft: e8-gpu-windows-013 [heldout] tokens=queue
+  soft: e8-gpu-windows-014 [heldout] tokens=queue
+  soft: e8-gpu-windows-015 [heldout] tokens=queue
+  soft: e8-gpu-windows-016 [heldout] tokens=queue
+  soft: e8-gpu-windows-017 [heldout] tokens=queue
+  soft: e8-board-shadow-067 [heldout] tokens=queue
+leakage-soft note: 'queue' hits are dominated by the resource name job-queue/gpu job-queue and queue-state descriptions; 'denied' hits in jev items are stated policy rules from the source text. Each listed item is a borderline case for the coordinator to judge.
+VERIFY PASS (7/7 checks passed)

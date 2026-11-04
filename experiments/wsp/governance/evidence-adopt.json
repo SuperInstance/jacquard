@@ -1,0 +1,1 @@
+{"sha256": "14ea88d0ed6f9988d75121f371abf69280758c4758580ac35659800b111e1c21", "summary": "Adoption: serving/student weights sha256 = 14ea88d0 (the sealed patch v1 output); adoption rests on evidence e1 (verdicts + ablation), shadow (validation 0.915 in serving area), canary (heldout 0.850 on the serving artefact)"}

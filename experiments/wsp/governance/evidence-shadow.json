@@ -1,0 +1,1 @@
+{"sha256": "e10b924feaca8b6df9c813f911d92e892e328994a9abc460841facf706806c2c", "summary": "Shadow stage: patched copy placed beside serving (serving/student-shadow), fresh validation run = 0.915 (reproduces E1); serving/student itself untouched (still base f47f7117)"}

@@ -1,0 +1,139 @@
+{
+ "variant": "full",
+ "base": "/home/caseydigennaro/wsp-exp/e8/work/student-base",
+ "token_ids": {
+  " HOLD": 17542,
+  " DENY": 66186
+ },
+ "rows_edited_per_tensor": 2,
+ "tensors_edited": [
+  "model.embed_tokens.weight",
+  "lm_head.weight"
+ ],
+ "logical_scalars_changed_max": 4096,
+ "physical_scalars_differing_after_bf16": 4088,
+ "budget_scalars_0.1pct": 751632,
+ "total_scalars": 751632384,
+ "components_used": [
+  {
+   "component": "u_hold_on_HOLD",
+   "row_token_id": 17542,
+   "coefficient": 0.5,
+   "critical": true
+  },
+  {
+   "component": "u_rule_on_HOLD",
+   "row_token_id": 17542,
+   "coefficient": -0.45,
+   "critical": false
+  },
+  {
+   "component": "u_read_on_HOLD",
+   "row_token_id": 17542,
+   "coefficient": -0.3,
+   "critical": false
+  },
+  {
+   "component": "mh_on_DENY",
+   "row_token_id": 66186,
+   "coefficient": 0.15,
+   "critical": true
+  },
+  {
+   "component": "u_deny_on_DENY",
+   "row_token_id": 66186,
+   "coefficient": 0.5,
+   "critical": true
+  }
+ ],
+ "components_dropped": [],
+ "delta_norms": {
+  "HOLD": 0.991384744644165,
+  "DENY": 0.4162551760673523
+ },
+ "row_scales": {
+  "HOLD": 1.08,
+  "DENY": 0.85
+ },
+ "direction_provenance": {
+  "mh": {
+   "definition": "mean hidden over all diagnostic items",
+   "n": 112
+  },
+  "u_hold": {
+   "definition": "mean hidden gold-HOLD minus global mean",
+   "n": 37,
+   "ids": [
+    "e8-jev-001",
+    "e8-jev-003",
+    "e8-proof-run-002",
+    "e8-proof-run-003",
+    "e8-proof-run-004",
+    "e8-proof-run-005",
+    "e8-proof-run-006",
+    "e8-proof-run-007",
+    "e8-proof-run-008",
+    "e8-proof-run-009",
+    "e8-proof-run-2-002",
+    "e8-proof-run-2-003",
+    "e8-proof-run-2-004",
+    "e8-proof-run-2-005",
+    "e8-proof-run-2-006",
+    "e8-proof-run-2-007",
+    "e8-proof-run-2-008",
+    "e8-proof-run-2-009",
+    "e8-proof-run-2-010",
+    "e8-proof-run-2-011",
+    "e8-proof-run-2-012",
+    "e8-proof-run-2-013",
+    "e8-proof-run-2-014",
+    "e8-proof-run-2-015",
+    "e8-proof-run-2-016",
+    "e8-proof-run-2-017",
+    "e8-proof-run-2-018",
+    "e8-proof-run-2-019",
+    "e8-proof-run-2-020",
+    "e8-proof-run-2-021",
+    "e8-proof-run-2-022",
+    "e8-proof-run-2-023",
+    "e8-proof-run-2-024",
+    "e8-proof-run-2-025",
+    "e8-proof-run-2-026",
+    "e8-proof-run-2-027",
+    "e8-proof-run-2-029"
+   ]
+  },
+  "u_deny": {
+   "definition": "mean hidden gold-DENY minus global mean",
+   "n": 3,
+   "ids": [
+    "e8-jev-002",
+    "e8-jev-004",
+    "e8-jev-005"
+   ]
+  },
+  "u_rule": {
+   "definition": "mean hidden standing-rule-yes ALLOW minus mean hidden no-rule proof gold-HOLD",
+   "n_yes": 7,
+   "n_no_hold": 35,
+   "yes_ids": [
+    "e8-proof-run-2-030",
+    "e8-proof-run-2-031",
+    "e8-proof-run-2-032",
+    "e8-proof-run-2-033",
+    "e8-proof-run-2-034",
+    "e8-proof-run-2-035",
+    "e8-proof-run-2-036"
+   ]
+  },
+  "u_read": {
+   "definition": "mean hidden agent-read ALLOW minus mean hidden no-rule proof gold-HOLD",
+   "n": 3,
+   "ids": [
+    "e8-proof-run-001",
+    "e8-proof-run-2-001",
+    "e8-proof-run-2-028"
+   ]
+  }
+ }
+}

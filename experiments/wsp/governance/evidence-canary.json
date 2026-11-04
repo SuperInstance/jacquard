@@ -1,0 +1,1 @@
+{"sha256": "f6c1621ff9dd845edb733728e8ed9189efcadfb3750c23af2dc774cf1423d273", "summary": "Canary stage: serving/student replaced by patched model (weights sha256 14ea88d0 = patched-final); fresh heldout run on the serving artefact = 0.850 (reproduces E1)"}

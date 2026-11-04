@@ -1,0 +1,1 @@
+{"sha256": "cd80875090641f4c2cc3c8aa108d84e25e622262a0466fabc203976dc16cdc6d", "summary": "E1+E4 verdict bundle (baseline2 + patched validation/heldout scores + ablation): validation 83.5->91.5, heldout 80.5->85.0, forgetting unmoved; ablation minus-critical=base, minus-random=full"}

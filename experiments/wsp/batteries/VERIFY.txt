@@ -1,0 +1,19 @@
+=== battery verification ===
+  diagnostic: count 80 OK
+  validation: count 200 OK
+  heldout: count 200 OK
+  forget_instr: count 100 OK
+  forget_fact: count 100 OK
+  forget_prose: count 24 OK
+  diagnostic: bare-form 25/80 (31.2%)
+  validation: bare-form 65/200 (32.5%)
+  heldout: bare-form 66/200 (33.0%)
+  prompt-parse: 463/480 arithmetic items parsed (96.5% coverage)
+  diagnostic: within-file prompt uniqueness OK
+  validation: within-file prompt uniqueness OK
+  heldout: within-file prompt uniqueness OK
+  forget_instr: within-file prompt uniqueness OK
+  forget_fact: within-file prompt uniqueness OK
+  forget_prose: within-file prompt uniqueness OK
+  setA markers: 47 markers loaded
+PASS: counts, derivations, category balance, prompt uniqueness (within-file and cross-file), prompt-parse recompute, bare-form share, word_2step non-negativity, heldout marker hygiene, and structural checks all OK

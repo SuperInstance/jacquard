@@ -1,0 +1,88 @@
+{
+  "scale": 0.1,
+  "base": "~/wsp-exp/e7/work/student-base",
+  "directions": "directions.npz (mu, class means, D, mhat, bias_centered computed from diagnostic split ONLY, probe.npz hidden states)",
+  "formula": "Delta_c = scale*(2*D_c + bias_centered_c*m_hat) + gamma_c*m_hat, scale=0.10. gamma = 0.5*gamma_full + mixed_boost, where gamma_full=[-0.1589,0.2072,0.3195] cancels the measured mean first-token logit offset of the uncalibrated patch on diagnostic, and mixed_boost=+0.08 on the mixed row only (both chosen on diagnostic only; see EXPLANATION.md).",
+  "bias_centered": {
+    "code": 3.3861846923828125,
+    "mixed": 0.6946258544921875,
+    "model": -4.080780029296875
+  },
+  "edits": [
+    {
+      "id": "E1_code_dir",
+      "label": "code",
+      "token_id": 2038,
+      "component": "direction",
+      "critical": true,
+      "mechanism": "Delta += scale * 2 * (mu_code - mu_global) on row 2038 (' code') of BOTH model.embed_tokens.weight and lm_head.weight. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E2_code_bias",
+      "label": "code",
+      "token_id": 2038,
+      "component": "bias",
+      "critical": true,
+      "mechanism": "Delta += scale * bias_centered_code * m_hat (global mean direction) on row 2038 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat ~= ||mu|| (155.3 +/- 3.1) is near-constant. Centered across classes so the common component is zero."
+    },
+    {
+      "id": "E3_mixed_dir",
+      "label": "mixed",
+      "token_id": 9519,
+      "component": "direction",
+      "critical": true,
+      "mechanism": "Delta += scale * 2 * (mu_mixed - mu_global) on row 9519 (' mixed') of BOTH model.embed_tokens.weight and lm_head.weight. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E4_mixed_bias",
+      "label": "mixed",
+      "token_id": 9519,
+      "component": "bias",
+      "critical": true,
+      "mechanism": "Delta += scale * bias_centered_mixed * m_hat (global mean direction) on row 9519 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat ~= ||mu|| (155.3 +/- 3.1) is near-constant. Centered across classes so the common component is zero."
+    },
+    {
+      "id": "E5_model_dir",
+      "label": "model",
+      "token_id": 1614,
+      "component": "direction",
+      "critical": true,
+      "mechanism": "Delta += scale * 2 * (mu_model - mu_global) on row 1614 (' model') of BOTH model.embed_tokens.weight and lm_head.weight. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E6_model_bias",
+      "label": "model",
+      "token_id": 1614,
+      "component": "bias",
+      "critical": true,
+      "mechanism": "Delta += scale * bias_centered_model * m_hat (global mean direction) on row 1614 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat ~= ||mu|| (155.3 +/- 3.1) is near-constant. Centered across classes so the common component is zero."
+    },
+    {
+      "id": "E7_code_cal",
+      "label": "code",
+      "token_id": 2038,
+      "component": "calibration",
+      "critical": true,
+      "gamma": -0.07945,
+      "mechanism": "Delta += gamma_code * m_hat (gamma=-0.07945) on row of BOTH copies. Calibration: the uncalibrated centroid patch shifts every diagnostic prompt's final hidden state (the patched rows are also the INPUT embeddings of the label tokens in the instruction), producing a near-constant per-class logit offset (measured [+16.9,-22.1,-34.1] vs target at gamma=0, s=0.10). gamma_full cancels that offset in mean; the shipped gamma is 0.5*gamma_full + (mixed only) +0.08, selected by an in-memory line search on diagnostic only because the full correction overshoots through the same input-side coupling (t=1.0 -> all-model collapse)."
+    },
+    {
+      "id": "E8_mixed_cal",
+      "label": "mixed",
+      "token_id": 9519,
+      "component": "calibration",
+      "critical": true,
+      "gamma": 0.1836,
+      "mechanism": "Delta += gamma_mixed * m_hat (gamma=0.1836) on row of BOTH copies. Calibration: the uncalibrated centroid patch shifts every diagnostic prompt's final hidden state (the patched rows are also the INPUT embeddings of the label tokens in the instruction), producing a near-constant per-class logit offset (measured [+16.9,-22.1,-34.1] vs target at gamma=0, s=0.10). gamma_full cancels that offset in mean; the shipped gamma is 0.5*gamma_full + (mixed only) +0.08, selected by an in-memory line search on diagnostic only because the full correction overshoots through the same input-side coupling (t=1.0 -> all-model collapse)."
+    },
+    {
+      "id": "E9_model_cal",
+      "label": "model",
+      "token_id": 1614,
+      "component": "calibration",
+      "critical": true,
+      "gamma": 0.15975,
+      "mechanism": "Delta += gamma_model * m_hat (gamma=0.15975) on row of BOTH copies. Calibration: the uncalibrated centroid patch shifts every diagnostic prompt's final hidden state (the patched rows are also the INPUT embeddings of the label tokens in the instruction), producing a near-constant per-class logit offset (measured [+16.9,-22.1,-34.1] vs target at gamma=0, s=0.10). gamma_full cancels that offset in mean; the shipped gamma is 0.5*gamma_full + (mixed only) +0.08, selected by an in-memory line search on diagnostic only because the full correction overshoots through the same input-side coupling (t=1.0 -> all-model collapse)."
+    }
+  ]
+}

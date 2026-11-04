@@ -1,0 +1,2476 @@
+{
+  "thresholds": {
+    "code_max": -0.3333333333333333,
+    "model_min": 0.3333333333333333
+  },
+  "splits": {
+    "diagnostic": {
+      "n": 120,
+      "accuracy": 0.6166666666666667,
+      "per_class": {
+        "code": {
+          "correct": 28,
+          "n": 40,
+          "accuracy": 0.7
+        },
+        "mixed": {
+          "correct": 19,
+          "n": 40,
+          "accuracy": 0.475
+        },
+        "model": {
+          "correct": 27,
+          "n": 40,
+          "accuracy": 0.675
+        }
+      },
+      "confusion": {
+        "mixed": {
+          "model": 18,
+          "mixed": 19,
+          "code": 3
+        },
+        "code": {
+          "model": 1,
+          "mixed": 11,
+          "code": 28
+        },
+        "model": {
+          "model": 27,
+          "mixed": 7,
+          "code": 6
+        }
+      },
+      "boundary_accuracy": 0.42,
+      "nonboundary_accuracy": 0.7571428571428571,
+      "per_subtype": {
+        "chat_prose": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "code_long_comments": {
+          "correct": 7,
+          "n": 7,
+          "accuracy": 1.0
+        },
+        "commit_prose": {
+          "correct": 3,
+          "n": 5,
+          "accuracy": 0.6
+        },
+        "config_low_symbol": {
+          "correct": 0,
+          "n": 5,
+          "accuracy": 0.0
+        },
+        "design_note_code_dense": {
+          "correct": 0,
+          "n": 6,
+          "accuracy": 0.0
+        },
+        "diff": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "error_shaped_prose": {
+          "correct": 0,
+          "n": 6,
+          "accuracy": 0.0
+        },
+        "inline_code_quote": {
+          "correct": 6,
+          "n": 7,
+          "accuracy": 0.8571428571428571
+        },
+        "numbers_units_prose": {
+          "correct": 4,
+          "n": 5,
+          "accuracy": 0.8
+        },
+        "plain_function": {
+          "correct": 6,
+          "n": 6,
+          "accuracy": 1.0
+        },
+        "polysemy_prose": {
+          "correct": 1,
+          "n": 5,
+          "accuracy": 0.2
+        },
+        "prose_identifiers": {
+          "correct": 3,
+          "n": 5,
+          "accuracy": 0.6
+        },
+        "prose_plus_block": {
+          "correct": 5,
+          "n": 7,
+          "accuracy": 0.7142857142857143
+        },
+        "prose_plus_log": {
+          "correct": 0,
+          "n": 7,
+          "accuracy": 0.0
+        },
+        "reflective_status": {
+          "correct": 6,
+          "n": 6,
+          "accuracy": 1.0
+        },
+        "shell_log": {
+          "correct": 0,
+          "n": 5,
+          "accuracy": 0.0
+        },
+        "stack_trace": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "terse_code": {
+          "correct": 4,
+          "n": 4,
+          "accuracy": 1.0
+        },
+        "terse_prose": {
+          "correct": 3,
+          "n": 3,
+          "accuracy": 1.0
+        },
+        "warm_commit_dense": {
+          "correct": 1,
+          "n": 6,
+          "accuracy": 0.16666666666666666
+        },
+        "warm_narrative": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "wordy_query": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "e7diag-001",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-002",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": 0.5,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-003",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-004",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-005",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-006",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-007",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.4545,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-008",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-009",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-010",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-011",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-012",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-013",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-014",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-015",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-016",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-017",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-018",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-019",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-020",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-021",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-022",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-023",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-024",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-025",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-026",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-027",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-028",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-029",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-030",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-031",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-032",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-033",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-034",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-035",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-036",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-037",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-038",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-039",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-040",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-041",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4545,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-042",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-043",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-044",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-045",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.1111,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-046",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-047",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 0.1429,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-048",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-049",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-050",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-051",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-052",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-053",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-054",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-055",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-056",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -0.8571,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-057",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-058",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-059",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-060",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-061",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-062",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-063",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-064",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-065",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4545,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-066",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-067",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-068",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.5556,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-069",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-070",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-071",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-072",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-073",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -0.8571,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-074",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-075",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-076",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-077",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.4545,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-078",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-079",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-080",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-081",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-082",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-083",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-084",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-085",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-086",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-087",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.1111,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-088",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.6,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-089",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.1111,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-090",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-091",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7diag-092",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-093",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-094",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-095",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.1111,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-096",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-097",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-098",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": -0.1429,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-099",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-100",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": -0.25,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-101",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-102",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-103",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-104",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-105",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-106",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-107",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-108",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-109",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.6,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7diag-110",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-111",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-112",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-113",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-114",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-115",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-116",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7diag-117",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7diag-118",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7diag-119",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.2,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7diag-120",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        }
+      ]
+    },
+    "heldout": {
+      "n": 120,
+      "accuracy": 0.4666666666666667,
+      "per_class": {
+        "code": {
+          "correct": 25,
+          "n": 40,
+          "accuracy": 0.625
+        },
+        "mixed": {
+          "correct": 3,
+          "n": 40,
+          "accuracy": 0.075
+        },
+        "model": {
+          "correct": 28,
+          "n": 40,
+          "accuracy": 0.7
+        }
+      },
+      "confusion": {
+        "code": {
+          "code": 25,
+          "mixed": 11,
+          "model": 4
+        },
+        "mixed": {
+          "mixed": 3,
+          "code": 14,
+          "model": 23
+        },
+        "model": {
+          "model": 28,
+          "code": 9,
+          "mixed": 3
+        }
+      },
+      "boundary_accuracy": 0.4,
+      "nonboundary_accuracy": 0.5142857142857142,
+      "per_subtype": {
+        "chat_prose": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "code_long_comments": {
+          "correct": 0,
+          "n": 7,
+          "accuracy": 0.0
+        },
+        "commit_prose": {
+          "correct": 4,
+          "n": 5,
+          "accuracy": 0.8
+        },
+        "config_low_symbol": {
+          "correct": 2,
+          "n": 5,
+          "accuracy": 0.4
+        },
+        "design_note_code_dense": {
+          "correct": 0,
+          "n": 6,
+          "accuracy": 0.0
+        },
+        "diff": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "error_shaped_prose": {
+          "correct": 1,
+          "n": 6,
+          "accuracy": 0.16666666666666666
+        },
+        "inline_code_quote": {
+          "correct": 0,
+          "n": 7,
+          "accuracy": 0.0
+        },
+        "numbers_units_prose": {
+          "correct": 2,
+          "n": 5,
+          "accuracy": 0.4
+        },
+        "plain_function": {
+          "correct": 6,
+          "n": 6,
+          "accuracy": 1.0
+        },
+        "polysemy_prose": {
+          "correct": 3,
+          "n": 5,
+          "accuracy": 0.6
+        },
+        "prose_identifiers": {
+          "correct": 2,
+          "n": 5,
+          "accuracy": 0.4
+        },
+        "prose_plus_block": {
+          "correct": 0,
+          "n": 7,
+          "accuracy": 0.0
+        },
+        "prose_plus_log": {
+          "correct": 0,
+          "n": 7,
+          "accuracy": 0.0
+        },
+        "reflective_status": {
+          "correct": 6,
+          "n": 6,
+          "accuracy": 1.0
+        },
+        "shell_log": {
+          "correct": 0,
+          "n": 5,
+          "accuracy": 0.0
+        },
+        "stack_trace": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "terse_code": {
+          "correct": 2,
+          "n": 4,
+          "accuracy": 0.5
+        },
+        "terse_prose": {
+          "correct": 3,
+          "n": 3,
+          "accuracy": 1.0
+        },
+        "warm_commit_dense": {
+          "correct": 2,
+          "n": 6,
+          "accuracy": 0.3333333333333333
+        },
+        "warm_narrative": {
+          "correct": 5,
+          "n": 5,
+          "accuracy": 1.0
+        },
+        "wordy_query": {
+          "correct": 3,
+          "n": 5,
+          "accuracy": 0.6
+        }
+      },
+      "items": [
+        {
+          "id": "e7held-001",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-002",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7held-003",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-004",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.5385,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-005",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-006",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-007",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-008",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-009",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-010",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-011",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-012",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-013",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-014",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-015",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4286,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-016",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-017",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-018",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-019",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.6,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-020",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-021",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-022",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.1429,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-023",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-024",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-025",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-026",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-027",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-028",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-029",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-030",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-031",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-032",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-033",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-034",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-035",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-036",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-037",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-038",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 0.6,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-039",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-040",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.25,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7held-041",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-042",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-043",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-044",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-045",
+          "gold": "code",
+          "subtype": "diff",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-046",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 0.5,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-047",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-048",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-049",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.5385,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-050",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-051",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-052",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-053",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-054",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-055",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4545,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-056",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-057",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 0.5,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-058",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.1111,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-059",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-060",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-061",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.5385,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-062",
+          "gold": "model",
+          "subtype": "design_note_code_dense",
+          "boundary": true,
+          "dial_score": -0.7778,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-063",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4286,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-064",
+          "gold": "model",
+          "subtype": "polysemy_prose",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-065",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-066",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-067",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-068",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-069",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-070",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-071",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 0.5,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-072",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4545,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-073",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.5385,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-074",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": -0.5,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-075",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-076",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-077",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": 0.0,
+          "predicted": "mixed",
+          "correct": false
+        },
+        {
+          "id": "e7held-078",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-079",
+          "gold": "code",
+          "subtype": "shell_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-080",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-081",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": -0.5,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-082",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-083",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-084",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-085",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4286,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-086",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-087",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-088",
+          "gold": "mixed",
+          "subtype": "error_shaped_prose",
+          "boundary": true,
+          "dial_score": 0.6,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-089",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-090",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-091",
+          "gold": "code",
+          "subtype": "config_low_symbol",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-092",
+          "gold": "mixed",
+          "subtype": "prose_plus_block",
+          "boundary": false,
+          "dial_score": -0.5385,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-093",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-094",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-095",
+          "gold": "model",
+          "subtype": "terse_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-096",
+          "gold": "code",
+          "subtype": "wordy_query",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-097",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-098",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-099",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-100",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-101",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": -0.5,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-102",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 0.5,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-103",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4545,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-104",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-105",
+          "gold": "model",
+          "subtype": "numbers_units_prose",
+          "boundary": true,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-106",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.4286,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-107",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-108",
+          "gold": "model",
+          "subtype": "warm_narrative",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-109",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-110",
+          "gold": "code",
+          "subtype": "terse_code",
+          "boundary": true,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-111",
+          "gold": "mixed",
+          "subtype": "inline_code_quote",
+          "boundary": false,
+          "dial_score": 0.7143,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-112",
+          "gold": "mixed",
+          "subtype": "prose_plus_log",
+          "boundary": false,
+          "dial_score": 0.3333,
+          "predicted": "model",
+          "correct": false
+        },
+        {
+          "id": "e7held-113",
+          "gold": "code",
+          "subtype": "prose_identifiers",
+          "boundary": true,
+          "dial_score": -0.3333,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-114",
+          "gold": "code",
+          "subtype": "stack_trace",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-115",
+          "gold": "model",
+          "subtype": "reflective_status",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-116",
+          "gold": "code",
+          "subtype": "plain_function",
+          "boundary": false,
+          "dial_score": -1.0,
+          "predicted": "code",
+          "correct": true
+        },
+        {
+          "id": "e7held-117",
+          "gold": "mixed",
+          "subtype": "code_long_comments",
+          "boundary": false,
+          "dial_score": -0.4545,
+          "predicted": "code",
+          "correct": false
+        },
+        {
+          "id": "e7held-118",
+          "gold": "model",
+          "subtype": "chat_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        },
+        {
+          "id": "e7held-119",
+          "gold": "mixed",
+          "subtype": "warm_commit_dense",
+          "boundary": true,
+          "dial_score": 0.25,
+          "predicted": "mixed",
+          "correct": true
+        },
+        {
+          "id": "e7held-120",
+          "gold": "model",
+          "subtype": "commit_prose",
+          "boundary": false,
+          "dial_score": 1.0,
+          "predicted": "model",
+          "correct": true
+        }
+      ]
+    }
+  }
+}

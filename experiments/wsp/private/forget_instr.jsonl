@@ -1,0 +1,100 @@
+{"id": "finstr-001", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"name\" whose value is a made-up first name for a pet cat.", "check": {"type": "json_key", "key": "name"}}
+{"id": "finstr-002", "category": "all_caps", "prompt": "Write the phrase \"the water is cold\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-003", "category": "starts_with", "prompt": "Write one sentence about a long journey that starts with the word \"After\".", "check": {"type": "starts_with", "word": "After"}}
+{"id": "finstr-004", "category": "ends_with", "prompt": "Write one sentence about the morning sun that ends with the word \"bright\".", "check": {"type": "ends_with", "word": "bright"}}
+{"id": "finstr-005", "category": "bullets3", "prompt": "List three things in a garden, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-006", "category": "word_count_range", "prompt": "Describe a small boat in between 5 and 10 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 10}}
+{"id": "finstr-007", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"city\" whose value is a city you would like to visit.", "check": {"type": "json_key", "key": "city"}}
+{"id": "finstr-008", "category": "all_caps", "prompt": "Write the phrase \"the dog is happy\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-009", "category": "starts_with", "prompt": "Write one sentence about the winter season that starts with the word \"During\".", "check": {"type": "starts_with", "word": "During"}}
+{"id": "finstr-010", "category": "ends_with", "prompt": "Write one sentence about a river flowing that ends with the word \"slowly\".", "check": {"type": "ends_with", "word": "slowly"}}
+{"id": "finstr-011", "category": "bullets3", "prompt": "List three colours, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-012", "category": "word_count_range", "prompt": "Describe a tall tree in between 5 and 10 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 10}}
+{"id": "finstr-013", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"vehicle\" whose value is a vehicle with two wheels.", "check": {"type": "json_key", "key": "vehicle"}}
+{"id": "finstr-014", "category": "all_caps", "prompt": "Write the phrase \"the sky is blue\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-015", "category": "starts_with", "prompt": "Write one sentence about a clever fox that starts with the word \"Once\".", "check": {"type": "starts_with", "word": "Once"}}
+{"id": "finstr-016", "category": "ends_with", "prompt": "Write one sentence about returning from a trip that ends with the word \"back\".", "check": {"type": "ends_with", "word": "back"}}
+{"id": "finstr-017", "category": "bullets3", "prompt": "List three things found at the beach, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-018", "category": "word_count_range", "prompt": "Describe a busy train station in between 6 and 12 words.", "check": {"type": "word_count_range", "lo": 6, "hi": 12}}
+{"id": "finstr-019", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"food\" whose value is your favourite food.", "check": {"type": "json_key", "key": "food"}}
+{"id": "finstr-020", "category": "all_caps", "prompt": "Write the phrase \"thank you very much\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-021", "category": "starts_with", "prompt": "Write one sentence about breakfast time that starts with the word \"Before\".", "check": {"type": "starts_with", "word": "Before"}}
+{"id": "finstr-022", "category": "ends_with", "prompt": "Write one sentence about sitting in a library that ends with the word \"quietly\".", "check": {"type": "ends_with", "word": "quietly"}}
+{"id": "finstr-023", "category": "bullets3", "prompt": "List three things found in a kitchen, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-024", "category": "word_count_range", "prompt": "Describe a bicycle in between 5 and 9 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 9}}
+{"id": "finstr-025", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"drink\" whose value is a hot drink.", "check": {"type": "json_key", "key": "drink"}}
+{"id": "finstr-026", "category": "all_caps", "prompt": "Write the phrase \"this is a test\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-027", "category": "starts_with", "prompt": "Write one sentence about the weather that starts with the word \"Today\".", "check": {"type": "starts_with", "word": "Today"}}
+{"id": "finstr-028", "category": "ends_with", "prompt": "Write one sentence about a day of hard work that ends with the word \"well\".", "check": {"type": "ends_with", "word": "well"}}
+{"id": "finstr-029", "category": "bullets3", "prompt": "List three things you can drink, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-030", "category": "word_count_range", "prompt": "Describe a quiet library in between 5 and 10 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 10}}
+{"id": "finstr-031", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"weather\" whose value is a word describing today's weather.", "check": {"type": "json_key", "key": "weather"}}
+{"id": "finstr-032", "category": "all_caps", "prompt": "Write the phrase \"the cat sat\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-033", "category": "starts_with", "prompt": "Write one sentence about a good friend that starts with the word \"With\".", "check": {"type": "starts_with", "word": "With"}}
+{"id": "finstr-034", "category": "ends_with", "prompt": "Write one sentence about waking up on holiday that ends with the word \"early\".", "check": {"type": "ends_with", "word": "early"}}
+{"id": "finstr-035", "category": "bullets3", "prompt": "List three breakfast foods, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-036", "category": "word_count_range", "prompt": "Describe a red kite in between 5 and 8 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 8}}
+{"id": "finstr-037", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"sport\" whose value is a sport played with a ball.", "check": {"type": "json_key", "key": "sport"}}
+{"id": "finstr-038", "category": "all_caps", "prompt": "Write the phrase \"happy birthday to you\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-039", "category": "starts_with", "prompt": "Write one sentence about a small village that starts with the word \"In\".", "check": {"type": "starts_with", "word": "In"}}
+{"id": "finstr-040", "category": "ends_with", "prompt": "Write one sentence about visiting a favourite place that ends with the word \"again\".", "check": {"type": "ends_with", "word": "again"}}
+{"id": "finstr-041", "category": "bullets3", "prompt": "List three things that can fly, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-042", "category": "word_count_range", "prompt": "Describe snow in winter in between 4 and 8 words.", "check": {"type": "word_count_range", "lo": 4, "hi": 8}}
+{"id": "finstr-043", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"animal\" whose value is an animal that lives in the sea.", "check": {"type": "json_key", "key": "animal"}}
+{"id": "finstr-044", "category": "all_caps", "prompt": "Write the phrase \"good morning\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-045", "category": "starts_with", "prompt": "Write one sentence about the sea that starts with the word \"The\".", "check": {"type": "starts_with", "word": "The"}}
+{"id": "finstr-046", "category": "ends_with", "prompt": "Write one sentence about a friend arriving that ends with the word \"soon\".", "check": {"type": "ends_with", "word": "soon"}}
+{"id": "finstr-047", "category": "bullets3", "prompt": "List three items of clothing, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-048", "category": "word_count_range", "prompt": "Describe the moon in between 6 and 11 words.", "check": {"type": "word_count_range", "lo": 6, "hi": 11}}
+{"id": "finstr-049", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"color\" whose value is your favourite colour.", "check": {"type": "json_key", "key": "color"}}
+{"id": "finstr-050", "category": "all_caps", "prompt": "Write the phrase \"dinner is ready\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-051", "category": "starts_with", "prompt": "Write one sentence about a sandy beach that starts with the word \"Along\".", "check": {"type": "starts_with", "word": "Along"}}
+{"id": "finstr-052", "category": "ends_with", "prompt": "Write one sentence about your plans that ends with the word \"today\".", "check": {"type": "ends_with", "word": "today"}}
+{"id": "finstr-053", "category": "bullets3", "prompt": "List three musical instruments, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-054", "category": "word_count_range", "prompt": "Describe a summer evening in between 4 and 9 words.", "check": {"type": "word_count_range", "lo": 4, "hi": 9}}
+{"id": "finstr-055", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"fruit\" whose value is a fruit that is yellow.", "check": {"type": "json_key", "key": "fruit"}}
+{"id": "finstr-056", "category": "all_caps", "prompt": "Write the phrase \"please sit down\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-057", "category": "starts_with", "prompt": "Write one sentence about a quiet river that starts with the word \"Near\".", "check": {"type": "starts_with", "word": "Near"}}
+{"id": "finstr-058", "category": "ends_with", "prompt": "Write one sentence about the weekend that ends with the word \"tomorrow\".", "check": {"type": "ends_with", "word": "tomorrow"}}
+{"id": "finstr-059", "category": "bullets3", "prompt": "List three animals, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-060", "category": "word_count_range", "prompt": "Describe a cup of tea in between 4 and 9 words.", "check": {"type": "word_count_range", "lo": 4, "hi": 9}}
+{"id": "finstr-061", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"instrument\" whose value is a musical instrument.", "check": {"type": "json_key", "key": "instrument"}}
+{"id": "finstr-062", "category": "all_caps", "prompt": "Write the phrase \"open the door\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-063", "category": "starts_with", "prompt": "Write one sentence about a morning routine that starts with the word \"Every\".", "check": {"type": "starts_with", "word": "Every"}}
+{"id": "finstr-064", "category": "ends_with", "prompt": "Write one sentence about cooking a meal that ends with the word \"together\".", "check": {"type": "ends_with", "word": "together"}}
+{"id": "finstr-065", "category": "bullets3", "prompt": "List three things made of wood, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-066", "category": "word_count_range", "prompt": "Describe a slice of cake in between 5 and 10 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 10}}
+{"id": "finstr-067", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"country\" whose value is a country in Europe.", "check": {"type": "json_key", "key": "country"}}
+{"id": "finstr-068", "category": "all_caps", "prompt": "Write the phrase \"the train is late\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-069", "category": "starts_with", "prompt": "Write one sentence about a wide field that starts with the word \"Across\".", "check": {"type": "starts_with", "word": "Across"}}
+{"id": "finstr-070", "category": "ends_with", "prompt": "Write one sentence about a journey on foot that ends with the word \"far\".", "check": {"type": "ends_with", "word": "far"}}
+{"id": "finstr-071", "category": "bullets3", "prompt": "List three fruits, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-072", "category": "word_count_range", "prompt": "Describe a friendly dog in between 5 and 9 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 9}}
+{"id": "finstr-073", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"job\" whose value is a job that involves working outdoors.", "check": {"type": "json_key", "key": "job"}}
+{"id": "finstr-074", "category": "all_caps", "prompt": "Write the phrase \"see you later\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-075", "category": "starts_with", "prompt": "Write one sentence about a busy market that starts with the word \"The\".", "check": {"type": "starts_with", "word": "The"}}
+{"id": "finstr-076", "category": "ends_with", "prompt": "Write one sentence about a kite in the wind that ends with the word \"away\".", "check": {"type": "ends_with", "word": "away"}}
+{"id": "finstr-077", "category": "bullets3", "prompt": "List three kinds of transport, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-078", "category": "word_count_range", "prompt": "Describe your breakfast in between 4 and 8 words.", "check": {"type": "word_count_range", "lo": 4, "hi": 8}}
+{"id": "finstr-079", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"season\" whose value is your favourite season of the year.", "check": {"type": "json_key", "key": "season"}}
+{"id": "finstr-080", "category": "all_caps", "prompt": "Write the phrase \"i love pizza\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-081", "category": "starts_with", "prompt": "Write one sentence about a pet you know that starts with the word \"My\".", "check": {"type": "starts_with", "word": "My"}}
+{"id": "finstr-082", "category": "ends_with", "prompt": "Write one sentence about a bird in the sky that ends with the word \"free\".", "check": {"type": "ends_with", "word": "free"}}
+{"id": "finstr-083", "category": "bullets3", "prompt": "List three rooms in a house, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-084", "category": "word_count_range", "prompt": "Describe a mountain path in between 6 and 11 words.", "check": {"type": "word_count_range", "lo": 6, "hi": 11}}
+{"id": "finstr-085", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"hobby\" whose value is a hobby you can do indoors.", "check": {"type": "json_key", "key": "hobby"}}
+{"id": "finstr-086", "category": "all_caps", "prompt": "Write the phrase \"it is raining today\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-087", "category": "starts_with", "prompt": "Write one sentence about a rainy day that starts with the word \"When\".", "check": {"type": "starts_with", "word": "When"}}
+{"id": "finstr-088", "category": "ends_with", "prompt": "Write one sentence about the evening sky that ends with the word \"tonight\".", "check": {"type": "ends_with", "word": "tonight"}}
+{"id": "finstr-089", "category": "bullets3", "prompt": "List three vegetables, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-090", "category": "word_count_range", "prompt": "Describe a rainy day in between 6 and 12 words.", "check": {"type": "word_count_range", "lo": 6, "hi": 12}}
+{"id": "finstr-091", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"flower\" whose value is a kind of flower.", "check": {"type": "json_key", "key": "flower"}}
+{"id": "finstr-092", "category": "all_caps", "prompt": "Write the phrase \"we are going home\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-093", "category": "starts_with", "prompt": "Write one sentence about a tall tree that starts with the word \"Under\".", "check": {"type": "starts_with", "word": "Under"}}
+{"id": "finstr-094", "category": "ends_with", "prompt": "Write one sentence about playing games that ends with the word \"outside\".", "check": {"type": "ends_with", "word": "outside"}}
+{"id": "finstr-095", "category": "bullets3", "prompt": "List three things that are cold, one per line, with each line starting with \"- \".", "check": {"type": "bullets3"}}
+{"id": "finstr-096", "category": "word_count_range", "prompt": "Describe a cat in between 5 and 10 words.", "check": {"type": "word_count_range", "lo": 5, "hi": 10}}
+{"id": "finstr-097", "category": "json_key", "prompt": "Reply with a JSON object that has a key \"book\" whose value is a made-up title for an adventure book.", "check": {"type": "json_key", "key": "book"}}
+{"id": "finstr-098", "category": "all_caps", "prompt": "Write the phrase \"read the book\" in all capital letters.", "check": {"type": "all_caps"}}
+{"id": "finstr-099", "category": "starts_with", "prompt": "Write one sentence about an old house that starts with the word \"Behind\".", "check": {"type": "starts_with", "word": "Behind"}}
+{"id": "finstr-100", "category": "ends_with", "prompt": "Write one sentence about walking back that ends with the word \"home\".", "check": {"type": "ends_with", "word": "home"}}

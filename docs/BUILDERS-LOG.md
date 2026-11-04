@@ -4308,3 +4308,242 @@ verdicts remain readable from their own logs — a future
 spec pass could soften this, none is chartered). The
 rank-tie disposition remains interim, untouched, as
 chartered.
+**Phase 15 — weight-space programming, governed (opened
+2026-11-04, coordinator clone ~/jacquard-p15, branch
+phase15-wsp, base v1.2.2 @ccaf95f; Phase 14 in parallel in
+~/jacquard-p14 — this phase rebases over its tag at slice
+43).** Charter: BUILD-BRIEF-PHASE15.md. Casey's frame is
+the design lens: liquid evolution is the yin (adaptation
+from within — continuous, artefact-free, unauditable);
+authored weight patches are the yang (adaptation from
+without — discrete, sealed, reversible). Jacquard is the
+harness where they meet: flow proposes, the record
+disposes. The source claim enters at blog-post evidence
+grade (MIT CSAIL via The Register, 2026-11-03: 0.016% of
+Qwen3.5-0.8B's weights edited, MATH-500 up to 6x, IFEval
+~3x, no gradient descent) — everything here is built to be
+able to say no to it.
+Steering folded in: E6 (teacher-student patch loop on E2's
+governed rails; Casey 17:39) and E7/E8 as its application
+targets (17:40) — E7 a soft joint inside signal-chain's
+hard decision-tree spine; E8 a custom decision model
+behind the provider seam, trained on Jacquard's own
+decision record, scored on preference fidelity AND
+correctness separately. Seat-based labour pool (17:41):
+battery builder, patcher and reviewer are different seats
+on different boxes; the Thor's Pi seat is unverified in
+fleet records and gets verified on-box before use.
+Sequencing decision (coordinator): E6 loop mechanics are
+proven first on a self-built arithmetic narrow set
+(cleanest held-out control); E7/E8 follow as application
+rounds of the proven loop, since both need battery
+curation that should not gate the mechanics proof.
+Recorded in experiments/wsp/PLAN.md with E6 stop
+conditions stated in advance (6-round budget; plateau =
+<2pt held-out gap closure x2 rounds; divergence = seen
++5pt while held-out flat/worse x2 = overfitting, named
+and stopped; forgetting guard = any round dropping a
+forgetting battery >5pt vs base is rejected outright).
+Target model: Qwen3-0.6B, fetched as a COPY through the
+Thor download-governor (jobs wsp-qwen3-06b-*; weights
+sha256 f47f7117..., tokenizer sha256 aeb13307...; the
+five small non-LFS files ride ungated and are verified
+by load). Thor booked on the board (gpu bursts + light
+box), Oracle box booked; residents are never mutated —
+all patching happens on copies under ~/wsp-exp/work/.
+Held-out discipline is structural: batteries live in the
+coordinator clone (private/ for held-out + forgetting),
+the patcher seat works in ~/wsp-exp/patcher/ on the Thor
+with diagnostic data + validation aggregates only, and
+every verdict quantity is produced by the verified
+scoring scripts run by the coordinator — no model grades
+a number that enters a verdict.
+
+Phase 15 setup incidents and seat findings (2026-11-04):
+(1) Governor restart — the coordinator's first restart of
+the Thor download-governor walked into a stale-queue trap:
+several historical jobs' destination files had been moved
+to the cold shelf by prior lanes without retiring their
+governor lines, so the restart tried to re-download a
+16.8 GB file whose home was gone (curl rc 23). The
+coordinator killed the run (an orphaned backoff `sleep`
+briefly held the governor flock via an inherited fd —
+killed by PID), audited EVERY registered job's destination
+against disk, and retired the verifiably-absent set in the
+house pattern (dated comment + full backup
+governor.sh.bak-wsp-retire-20261104): diffusiongemma,
+flux1-dev, vllm-pull (image pruned), hunyuan3d-2 (empty
+target dir), nemotron-labs-diffusion-8b, edenlive-* (7) —
+~100 GB of phantom queue removed; no live job's line was
+touched. Restart then verified the surviving DONE jobs by
+hash and reached this phase's jobs; the Qwen3-0.6B fetch
+completed through the gate. Lesson recorded for the fleet:
+a governor restart is only as safe as the retirement
+hygiene of every lane before it.
+(2) Pi seat on the Thor — VERIFIED PRESENT: Pi coding
+agent 1.4.0 (@earendil-works/pi-coding-agent) at
+~/.pi/agent/bin/pi, with ~/.pi/agent/auth.json present and
+-pi (print) drive mode available. Two drive traps found:
+under the system Node 18 the bundle fails to load (needs
+the nvm Node 22/24 first in PATH — the fleet's known
+pattern), and the first full headless probe with the
+correct PATH ran past a 120 s timeout without returning
+(slow cold start or a hang; output was lost with the
+session). Pi is therefore rostered as UNPROVEN for timed
+work until a file-captured probe completes; the teacher
+role falls to the next roster line until then. Kimi seat
+present at ~/.kimi-code/bin/kimi (headless verified by
+the fleet 2026-10-24); ZCode on the Thor is the nvm build.
+Roster as staffed: battery builder = Oracle ZCode
+(3.16.3-40, /usr/bin/zcode); battery reviewer = Orin ZCode
+(3.16.2-38); patcher = Thor Kimi seat; teacher = Thor Pi
+if its probe lands, else a non-patching Claude session
+run by the coordinator.
+
+Phase 15 setup, continued (2026-11-04): (a) Coordinator
+near-miss, owned: the first copy of the student base was
+made while the weights download was in its final seconds
+(the governor STATUS timestamp lags job events; the file's
+own size was still growing) and captured a truncated
+prefix — caught immediately because the copy's sha256 did
+not match the gated original, diagnosed from mtimes
+(copy 17:57:08 < gate OK 17:57:28), and redone after the
+original verified stable at f47f7117... The gated original
+was never touched; the incident is recorded because the
+rollback proofs in slice 43 depend on hash discipline
+being real, not theatrical. (b) Pi seat, final verdict for
+this phase: present (1.4.0, auth file on box) but NOT
+drivable for timed work — probe 1 hung past 120 s under
+the correct nvm PATH, probe 2 (file-captured, 600 s
+budget) returned "Connection error." Pi takes no role in
+Phase 15; the teacher role goes to a coordinator-run
+Claude session that never patches, per PLAN.md's roster
+fallback. (c) The Oracle zcode -p headless launch of the
+battery seat produced no work and exited silently (log =
+seven "Built-in skipped" lines); the seat was relaunched
+as an interactive tmux seat (p15bat — GLM-5.3, yolo, max),
+which read the brief and began work normally. The -p
+build-drive failure on this box/version is consistent
+with the fleet's existing zcode record.
+
+Phase 15 staffing change (2026-11-04): the Oracle ZCode
+seat is NOT usable for this phase's building. Measured,
+not assumed: a fresh session reports ctx 98-100% full at
+start (in the repo dir AND in a bare directory — the seat's
+own bundled context saturates its window before any user
+content), and twice settled into multi-minute thinking
+turns (5m 41s the first) producing zero artefacts, even
+after an incremental one-file-at-a-time re-brief. The
+battery build therefore goes to a coordinator-spawned
+Claude session; the battery review to a second, separate
+Claude session (the Orin ZCode reviewer plan is dropped
+on the same evidence — same product family, and a review
+that cannot run is not a review). Role separation is
+preserved exactly: builder != reviewer != patcher (Thor
+Kimi seat) != teacher (a third non-patching session), and
+all verdict numbers still come from the verified scoring
+scripts run by the coordinator. Log records the seat
+failure as a fleet finding: zcode seats on this build
+carry a context load that leaves no working room for
+large briefs.
+
+Slice 41, battery review (2026-11-04): the independent
+review earned its existence. It verified the good bones
+(template sets are genuinely separate code — digit-masked
+skeletons 113 A vs 66 B, intersection empty; all 480
+arithmetic golds recompute correctly from prompt text
+alone; forget_fact golds factually right) and then found
+four BLOCKING defects the builder's own verifier could
+not see: (B1) forget_fact substring matching credits
+wrong answers by construction ("chemical" contains the
+gold "C") — the forgetting verdict would have been
+inflated by an unbounded amount; (B2) heldout compare
+is a different task mix than set A (17/25 min-of-two vs
+A's all max-of-two) and the bare-form share shifts
+wholesale between splits (66/200 vs 10/200) — heldout
+was not distributionally sibling as specified; (B3)
+eight exact numeric instances leak from visible splits
+into heldout (4%, concentrated in pct_of's small space);
+(B4) four impossible word problems ship negative change
+as gold (diag-056: pays $100 for $136 of shells, gold
+-36). Plus verifier circularity (it checks derivations
+against answers the generator derived FROM those
+derivations), a within-file duplicate prompt, a
+leading-dot decimal extraction bug (".75" -> 75), and
+EOS/stop delegated to the model dir — that last one the
+coordinator checked on the Thor and cleared (the model's
+generation_config carries both <|im_end|> and
+<|endoftext|>). Baseline numbers measured with the
+unfixed harness (diagnostic 87.5%, validation 78.5%,
+heldout 87.0%, forget_instr 81%, forget_fact 85%,
+prose NLL 4.07) are PROVISIONAL and will be re-measured
+after the fix pass; the patcher has not launched and no
+patch work is contaminated. One baseline observation
+stands regardless of fixes: the base model ignores
+"answer with just the number" and writes worked
+solutions that truncate at the 96-token cap — a
+format/completion failure class, mechanistically
+distinct from arithmetic slips, and exactly the kind of
+failure an authored patch could plausibly address.
+
+Slice 41 COMPLETE (2026-11-04) — E1 positive, E4 confirmed;
+full record in experiments/wsp/SLICE41-E1E4.md. Headlines:
+the patcher (a coordinator-run Claude session, after the
+Kimi quota refusal and the ZCode saturation) diagnosed
+that 9 of 17 diagnostic failures were format/completion,
+not arithmetic — worked solutions truncating at the
+96-token cap, correct comparisons buried by their own
+sentence frame. Its patch (22 logical edits, 43,028
+scalars = 0.0057% — a digit-row bias built from the
+model's own mean hidden direction, plus a ' than'-row
+scale to break the compare frame, plus 11 honestly
+labelled inert control edits) scored, coordinator-run:
+validation 83.5 -> 91.5, heldout 80.5 -> 85.0
+(14 gains / 5 losses, concentrated in addsub_chain
+48 -> 84 as the mechanism predicts), forgetting
+batteries unmoved (fact item-identical; prose NLL
++0.005). The E4 ablation, run independently from the
+artefacts, is exact: minus-critical returns every score
+to base; minus-random (equal count) leaves every score
+at full; the rebuilt full variant reproduces the
+patcher's model to the item. The explanation is causally
+correct at the level it claims. Modesty notes recorded
+in the slice record: heldout +4.5 is ~1.6 sigma — the
+claim rides on direction + mechanism + ablation, not on
+heldout alone; the patcher's predicted +8 overshot;
+nothing here is the source paper's 6x, and the record
+says why (their failure class was capability-shaped,
+this battery's was behaviour-shaped). The honesty gate
+is NOT triggered — slices 42-43 proceed as chartered.
+
+Phase 15 COMPLETE (2026-11-04) — slices 41-43 all landed;
+records in experiments/wsp/ (SLICE41-E1E4, SLICE42-E3,
+SLICE42-E5, SLICE43-E2, SLICE43-E6, SLICE43-E7,
+SLICE43-E8, SLICE43-FINDINGS). One paragraph for the log:
+authored logit-level patching is a behaviour-deployment
+instrument — it harvested every format/completion failure
+it was shown (E1 +4.5 held-out, ablation-exact; the E6
+loop closed 35.9% of the teacher gap in two adopted
+rounds and stopped on a falsification battery, its round
+3 denied in the log; E7's patched specialist beat the
+hand-built signal-chain joint 84.2% to 46.7% held-out),
+and it measured zero — with the trials to prove it — on
+procedure, on factor knowledge, and on a contention
+relation the base representation does not separate
+(E8: diagnostic triumph, held-out item-identical to base,
+the incumbent-wrong trio learned as ALLOW; adoption
+denied). The gradient pole amputated its own scaffold
+and corroded chained tasks; the fluid pole's collateral
+was global and unpredictable (fact recall 85 -> 9). The
+governance log carried 10 deployment proposals: 7
+approved, 3 denied, every decision from coordinator-
+scored evidence, including a bit-for-bit rollback. The
+phase's own process failures were recorded where they
+happened (governor stale-job audit, the truncated first
+copy, seat pool measured unusable — Pi crashed, Kimi at
+quota, ZCode context-saturated — so all roles were filled
+by coordinator-run sessions with the charter's separations
+preserved). Casey-facing residuals unchanged: adoption of
+any patched copy into a serving role remains his call;
+the adopted states in this record are experiment states
+on the bench, nothing was promoted to a fleet service.

@@ -1,0 +1,20 @@
+=== round battery verification ===
+  round1_diag: count 60 OK
+  round2_diag: count 60 OK
+  round3_diag: count 60 OK
+  round4_diag: count 60 OK
+  round5_diag: count 60 OK
+  round6_diag: count 60 OK
+  base diagnostic: 80 items loaded for uniqueness checks
+  base validation: 200 items loaded for uniqueness checks
+  base heldout: 200 items loaded for uniqueness checks
+  round1_diag: category balance addsub_chain=8, mul_2x1=8, mul_2x2=8, div_exact=8, pct_of=7, word_2step=7, unit_price=7, compare=7
+  round2_diag: category balance addsub_chain=7, mul_2x1=7, mul_2x2=7, div_exact=7, pct_of=8, word_2step=8, unit_price=8, compare=8
+  round3_diag: category balance addsub_chain=8, mul_2x1=8, mul_2x2=8, div_exact=8, pct_of=7, word_2step=7, unit_price=7, compare=7
+  round4_diag: category balance addsub_chain=7, mul_2x1=7, mul_2x2=7, div_exact=7, pct_of=8, word_2step=8, unit_price=8, compare=8
+  round5_diag: category balance addsub_chain=8, mul_2x1=8, mul_2x2=8, div_exact=8, pct_of=7, word_2step=7, unit_price=7, compare=7
+  round6_diag: category balance addsub_chain=7, mul_2x1=7, mul_2x2=7, div_exact=7, pct_of=8, word_2step=8, unit_price=8, compare=8
+  prompt uniqueness (within-file, across rounds, and against diagnostic/validation/heldout): OK
+  derivation uniqueness (within-file, across rounds, and against diagnostic/validation/heldout): OK
+  prompt-parse: 360/360 round items parsed (100.0% coverage)
+PASS: counts (60 x 6), category balance (7-8 per category per round), derivation recompute, prompt uniqueness and derivation uniqueness (within-file, across all round files, and against diagnostic/validation/heldout), prompt-parse recompute, and word_2step non-negativity all OK
