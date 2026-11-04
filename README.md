@@ -202,7 +202,7 @@ Jacquard runs in production on the following platforms. The full per-device reco
 | Jetson Orin Nano Super (aarch64) | Coding-agent seat supervision (ZCode adapter) | In production, with the tegra platform limitation below |
 | Laptop (single-user, no server) | Solo automations, batched approvals | Prepared — not yet deployed |
 
-Verification state: Python suite **340 passed, 7 skipped** on the reference platforms (Linux x86_64 and WSL2); TypeScript conformance **14 PASS, 0 SKIP, 0 FAIL**; Rust conformance **14 PASS, 0 SKIP, 0 FAIL**; the three implementations produce byte-identical logs and verdicts on the shared cross-drill, and identical shape signatures on the real corpora. Test counts are platform-dependent (see `docs/DEVICES.md`). The specification is version 0.6 (`spec/SPEC.md`).
+Verification state: Python suite **370 passed, 7 skipped** on the reference platforms (Linux x86_64 and WSL2); TypeScript conformance **14 PASS, 0 SKIP, 0 FAIL**; Rust conformance **14 PASS, 0 SKIP, 0 FAIL**; the three implementations produce byte-identical logs and verdicts on the shared cross-drill, and identical shape signatures on the real corpora. Test counts are platform-dependent (see `docs/DEVICES.md`). The specification is version 0.7 (`spec/SPEC.md`).
 
 ## Known limitations
 
@@ -224,7 +224,7 @@ Stated plainly, as they stand:
 
 ## Repository layout
 
-- `spec/` — the specification (SPEC.md, version 0.6) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
+- `spec/` — the specification (SPEC.md, version 0.7) and golden vectors. The spec is the contract; implementations in any language must match the vectors byte-for-byte.
 - `src/jacquard/` — the Python reference implementation of the kernel: the machine profile (`machines.py`), the seven lifecycle machine definitions (`lifecycles.py`), the WFQ scheduler (`scheduler.py`), senses (`senses.py`), the decision-model provider seam (`providers.py`), the learner (`learner.py`), state export bundles (`bundle.py`), and the booking application profile (`booking.py`). Also in the package, but outside the kernel: the anchoring tooling (`anchor.py`, spec section 15) — the package's only non-standard-library dependency (`cryptography`, for Ed25519) is confined to it, and `import jacquard` never pulls it in — and the sealed-export tooling (`sealing.py`, spec section 16, stdlib only). Beside the kernel sit the shared operator presentation (`present.py` — the queue/replay/status rendering both the CLI and the service use) and the network service (`service.py`).
 - `adapters/` — adapters outside the kernel: decision-model providers (the kernel imports no provider-specific code), the sandboxed executor, the consumption-policy gate, the gpu-queue and booking-board bridges, and the ZCode coding-agent adapter (`zcode_hook.py` plus the installable surfaces in `zcode/`), which puts a coding agent's tool calls under kernel decision (the coding-agent profile itself is `src/jacquard/coding_agent.py`).
 - `tools/` — operator and build tools: the operator CLI (`jq.py`), the service runner (`jqserve.py`), the anchoring CLI (`jqanchor.py`), the sealed-export CLI (`jqseal.py`), the queue notifier (`jqnotify.py`), the gpu-queue bridge (`jqgpu.py`), the booking-board CLI (`jqbook.py`), the golden-vector generator, the shadow-trial runner.

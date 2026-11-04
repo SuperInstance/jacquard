@@ -4236,3 +4236,75 @@ counted from the log: 21 hook invocations, 7 proposals,
 6 hash-bound approvals, 3 consumed executions, 2 PostToolUse
 confirmations, queue empty at the end. Full record:
 docs/slice39-mcode-live-fire.md.
+### Phase 14 close (2026-11-04) — tagged v1.3.0
+
+All three slices landed; the phase's question — settle
+what was left open — is answered on all three fronts.
+
+**Slice 39 (MCode) closed with the build verdict.** The
+live-fire (docs/slice39-mcode-live-fire.md) found the
+surface holds on MCode 0.6.13 (Thor seat, booked): local
+MINIMAX-format plugin hooks fire and block in exec and
+TUI modes; config-file hooks never fired — the ZCode
+trap in new clothes, plus three of its own (silent
+manifest drops, no args in MINIMAX handlers, a plugin
+list that hides local packages). The adapter shipped to
+the ZCode contract (adapters/mcode_hook.py + the
+adapters/mcode/ plugin package; 11 tests) and governed a
+genuine task on the seat: counted from the log, 110
+entries, 7 proposals, 6 hash-bound approvals, 3 consumed
+executions, queue empty at the end. Two findings outlive
+the slice: the host FAILS OPEN (a crashed or timed-out
+hook lets the call proceed; the latency sidecar is the
+detection surface, and the limitation is stated in the
+README and DEVICES.md), and the Orin's 0.6.12 seat could
+not be live-fired — its MiniMax login had lapsed to
+anonymous before the slice began. Re-firing 0.6.12 after
+that seat is re-logged-in is a named residual, not a
+silent gap. A one-line by-product, recorded from on-box
+evidence: Casey's Pi agent is present on the Thor
+(@earendil-works/pi-coding-agent 1.4.0); it was not used.
+
+**Slice 40 (clean harness) closed with a creditable
+negative.** The full record is docs/slice40-clean-harness
+.md: a Docker harness on the Oracle with no programme
+files, no fleet memory, a sanitised CLI configuration
+(the host seat's Jacquard plugin was caught and excluded
+pre-run, with an automated assertion), and public
+internet only. Both primary tasks passed independent
+verification (the second run's governor was re-run on the
+real fixtures: 35 tests, every invariant, the tamper
+probe). Jacquard was discovered zero times — via no
+surface, in neither run, on the strongest-fit shape with
+deliberate tool-shape searching. The leak inspection
+found zero occurrences of the name in either session
+record; the negatives are creditable, downgraded only
+by the caveat no harness can remove (the model's
+parametric knowledge). Phase 13's positioning boundary
+replicated cleanly. The measured blockers stand as
+Phase 13 priced them: registry absence and
+undiscoverability in search — publication is the
+operator's batched owner step.
+
+**Release.** CHANGELOG 1.3.0; package versions move to
+1.3.0 in all three trees (a reasoned departure from the
+1.2.x practice of leaving them at 1.1.0: this release
+changes the kernel and the spec). POLICY_VERSION is
+unchanged — it versions the policy, not the spec. Tag
+v1.3.0; the from-tag verification numbers are in
+docs/release-readiness-1.3.md.
+
+**Residuals after Phase 14** (the expected list, plus
+what the phase found): GAPS 1/2/5/15; the learner
+quarantine driver; the operator's owner items (registry
+publication — now an externally measured blocker twice
+over — and the anchor-passphrase re-wrap); the ProArt
+seat log's duplicate audit (box dark; moot for logs
+written under 0.7); the Orin MCode 0.6.12 live-fire
+(awaits that seat's re-login); kernel-level resubmission
+semantics for envelopes sealed under earlier spec
+versions (0.7 refuses them on the seal; their recorded
+verdicts remain readable from their own logs — a future
+spec pass could soften this, none is chartered). The
+rank-tie disposition remains interim, untouched, as
+chartered.

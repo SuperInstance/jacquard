@@ -3,6 +3,60 @@
 Derived from `docs/BUILDERS-LOG.md`, which remains the full
 record (decisions, reasons, dead ends).
 
+## 1.3.0 — 2026-11-04
+
+Settle-the-open-questions release (Phase 14): the
+resubmission semantics the spec always promised, the
+MCode adapter, and the clean-harness discovery test.
+Records: `docs/slice38-resubmission.md`,
+`docs/slice39-mcode-live-fire.md`,
+`docs/slice40-clean-harness.md`.
+
+- **Spec 0.7, section 3.1 — resubmission semantics.**
+  An envelope's id was always specified as an
+  idempotency key, but the kernels honoured it only
+  within one process: a fresh-process duplicate was
+  re-decided (an allowed duplicate silently re-executed;
+  a queued duplicate crashed). Section 3.1 settles the
+  contract: once a submission is recorded in the log,
+  resubmission returns the recorded verdict, marked
+  `"duplicate": true`, and never re-decides, never
+  re-executes, never appends. Implemented in all three
+  kernels (Python, TypeScript, Rust); the verdict cache
+  is rebuilt from the log at sequencer construction.
+  Later operator decisions do not change the recorded
+  verdict. `jq submit` now delegates to the kernel rule.
+  The cross-language drill gains a resubmission fixture
+  (26 ops across sequencer restarts → 11 entries, logs
+  and verdicts byte-identical in all three kernels).
+  A read-only audit of every live deployment's log found
+  no duplicate submission or execution had ever landed.
+- **MCode adapter** (`adapters/mcode_hook.py` plus the
+  MINIMAX plugin package in `adapters/mcode/`): the
+  second coding-agent adapter, built to the ZCode
+  contract after a live-fire pass over every MCode hook
+  surface. Deployed on a real seat (MCode 0.6.13); a
+  governed task is recorded from its kernel log in the
+  slice 39 report. One limitation is new and stated
+  plainly in the README and `docs/DEVICES.md`: MCode's
+  plugin-hook host **fails open** — a hook that crashes
+  or times out lets the tool call proceed unsupervised.
+- **Clean-harness discovery test.** Two Phase 13 task
+  profiles re-run in an isolated container with no
+  programme files, no fleet memory and public internet
+  only: both primary tasks passed independent
+  verification, and Jacquard was discovered zero times —
+  a creditable negative this time, with the harness's
+  cleanliness accounting (including the one caveat no
+  harness can remove, the model's parametric knowledge)
+  recorded in full in the slice 40 report.
+- Suite: **370 passed, 7 skipped**; TypeScript and Rust
+  conformance **14 PASS, 0 SKIP, 0 FAIL** each. Package
+  versions move to 1.3.0 (the kernel and the spec
+  changed; 1.2.x releases were CLI- and docs-only).
+  Nothing is published to any registry; see
+  `docs/PUBLISHING.md`.
+
 ## 1.2.2 — 2026-11-03
 
 Outside-test release (Phase 13): fixes for what working

@@ -1,6 +1,6 @@
 {
   "name": "jacquard-kernel",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "description": "TypeScript implementation of the Jacquard kernel contract (spec 0.6): conformance port, checker, and anchor verifier.",
   "license": "MIT",
   "repository": {
