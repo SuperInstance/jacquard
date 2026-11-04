@@ -65,3 +65,37 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   down; harness stands ready for the day governed bridge
   submissions reach 500. Cost ~30 worker-min, 0 teacher calls.
 - Evidence entered in the governance log (300 entries).
+
+## 2026-11-04 — W3 hygiene patch: shadow verdict PASS
+
+- Reachability probes (patcher, separate role): both failing
+  classes head-reachable ONLY via a pooled readout (grouped-CV
+  probe 94.93% vs incumbent ~23%); bias-only not reachable.
+  Per-class candidates A/B each fixed their target and
+  collapsed whitespace ALLOW recall to 0.0% / 3.1% — rejected
+  as transfers; combined candidate C delivered (771 scalars,
+  dense readout refit, L2-to-incumbent lambda=0.01).
+- Rollback proven before shadow: byte-exact restore
+  (.onnx 0fc8b8dc / .data 53da6a3e = pristine), 675/675
+  rescored rows identical. Shadow deployment proposed and
+  approved in the governance log (hash-bound, entry ~319).
+- Coordinator sealed scoring (480 items, patcher never saw
+  them): incumbent 49.79% operator / 42.24% correctness;
+  patched 84.58% / 78.45%. Upper 26.25 -> 77.50, reorder
+  21.25 -> 83.75 on unseen surfaces. HOLD recall 0/120 ->
+  108/120; DENY 4/36 -> 33/36; ALLOW 235/324 -> 265/324.
+  Shadow bar (CRITERIA W3): PASS, no class traded away.
+- Honesty rails kept visible: core scores are in-sample
+  (patcher trained on core); unseen-base estimate is the
+  grouped cross-fit (core 90.91 / upper 84.71 / reorder
+  84.71); sealed = unseen surfaces of seen bases. DENY
+  evidence is thin (36 sealed items, 12 training rows).
+- Retention accounting (core): 79/165 verdicts moved —
+  70 toward gold, 8 away (named; 7 are gpu-windows ALLOW->
+  DENY), 1 wrong-to-wrong.
+- Environment event: jev-rack service found ACTIVE at phase
+  end — started outside this phase (not by any Phase 17
+  worker; verified). Its judge data still hashes pristine:
+  the serving incumbent is the UNPATCHED judge. The patched
+  copy exists only in ~/wsp-exp17/w3p/judge-patched/.
+  Promotion = Caseys decision (adoption packet).
