@@ -4654,7 +4654,7 @@ Better incumbent on held-out = the student (32.5%); the
 pre-stated bar for a later patch round is held-out >= 42.5%
 with no class traded away. Marginal cost: teacher calls 0;
 worker wall time and coordinator figures belong to the
-coordinator's ledger (worker start 07:19 UTC, baselines
+coordinator's ledger (worker start 07:19 UTC, all work complete 07:31 UTC; baselines
 complete 07:36 UTC, both on 2026-11-04). Oracle root disk was
 100% full (26 MB free) at start, so this clone lives in the
 Oracle's /tmp (tmpfs, 7.6 GB free) as /tmp/jacquard-p16-r4;
