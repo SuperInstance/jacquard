@@ -4593,7 +4593,6 @@ qualitative claim does (D2); one transient probe-run
 failure, rerun clean twice (D3); two inherited battery
 quirks noted, not altered (D4/D5).
 
-<<<<<<< HEAD
 
 ## Phase 16 slice 46 part R4 — the second soft joint: inventory, battery, baselines (2026-11-04)
 
@@ -4700,7 +4699,6 @@ pristine base). Teacher calls 0. Worker wall time
 07:31-07:43 UTC 2026-11-04. Round 1 declared FINAL;
 coordinator scores held-out against the pre-stated bar
 (>= 42.5%, no class traded away). No round 2 attempted.
-=======
 ## Phase 16 slice 46 (R3) — authored neuron surgery, dates task
 
 Family 2 (probe-identified MLP neuron edits, <= 0.1% of
@@ -4745,4 +4743,3 @@ twice, before any edit was authored from it; the
 Oracle's disk was at 100% on arrival and the clone was
 made by local clone plus delta fetch, text artefacts
 only.
->>>>>>> origin/p16-r3
