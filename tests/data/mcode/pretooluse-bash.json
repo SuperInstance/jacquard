@@ -1,0 +1,15 @@
+{
+ "cwd": "/home/caseydigennaro/p14-s39/ws",
+ "hook_event_name": "PreToolUse",
+ "model": "MiniMax-M3.1-Flash",
+ "permission_mode": "bypassPermissions",
+ "session_id": "mvs_94eb843701aa44fb9c0fc84f3944033c",
+ "tool_input": {
+  "command": "cat fixture-reply.txt",
+  "description": "Print fixture-reply.txt contents"
+ },
+ "tool_name": "bash",
+ "tool_use_id": "call_148bda6004b14389b4f4e45f",
+ "transcript_path": "/tmp/minimax-plugin-hooks/transcripts/f31ae27fa49445041a32970fbb61cf68.compatible.jsonl",
+ "turn_id": "turn_mw1iybgx_mlo9js"
+}

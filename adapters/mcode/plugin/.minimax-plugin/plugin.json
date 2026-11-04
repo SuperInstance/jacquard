@@ -1,0 +1,17 @@
+{
+  "apps": [],
+  "author": "SuperInstance",
+  "category": "Code",
+  "description": "Jacquard supervision for MCode tool calls: every tool call is decided by the Jacquard kernel (allow / deny / batched queue) before it runs.",
+  "displayName": "Jacquard",
+  "exampleQueries": [],
+  "hooks": [
+    "hooks/hooks.json"
+  ],
+  "icon": "icon.png",
+  "mcpServers": [],
+  "name": "jacquard-mcode",
+  "schemaVersion": 1,
+  "skills": [],
+  "version": "0.1.0"
+}
