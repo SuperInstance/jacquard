@@ -4584,3 +4584,44 @@ gguf_file route with dequantisation and a reference
 causal-conv fallback — no substitute was used. The battery
 now waits on the independent reviewer's audit required by
 CRITERIA.md R2 before any patching.
+
+## Slice 45 (Phase 16, R2) — independent review of the profile instrument (2026-11-03)
+
+Reviewer (not the builder) audited the slice-45 battery suite and
+harness on branch `p16-r2` @ 9139178, per the CRITERIA.md R2 battery
+acceptance rule. Full record: `experiments/wsp2/profile/REVIEW.md`
+(branch `p16-r2-review`). **Verdict: PASS-WITH-FIXES — no blocking
+defects; patching may proceed.**
+
+Evidence, briefly: 529-item stratified sample recomputed from
+prompt text with fresh code (457 mechanical recomputations, 0
+mismatches), extended to the full G4 (300/300, real calendar) and
+full G6 (300/300, stated policy) batteries; all 260 G5 facts judged,
+no hard-wrong fact (convention-suspects named, none counted as
+errors). Canonical-content leakage screens beyond the builder's
+Jaccard: 0 cross-split operand/subject/skeleton equivalents
+carrying gold-determining content in any grade. Matcher: all 3,520
+committed per-item records rechecked with an independent
+reimplementation — 0 flag disagreements, 0 false credits; selftest
+19/19 on both boxes. Reproducibility on the Thor (copies only):
+G3/Qwen3-0.6B re-run reproduces 300/300 raw outputs byte-identical;
+LFM2 GGUF route verified (G6 0.0 reproduced, flags 24/24 on the
+spot sample); regeneration of all 18 battery files byte-identical.
+Sequence mode verified by code inspection plus a trimmed live
+replication: retention rows carry only profiled grades' held-out
+accuracies and reproduce base-mode held-out exactly.
+
+Non-blocking defects handed back to the builder (named in
+REVIEW.md): R2-F1 accent-folded G5 golds discredit correctly
+accented answers (8 in the LFM2 baseline, 2 in G5 held-out —
+material against the +3 yield bar; fix the matcher or the golds);
+R2-F2 G6 expired_booking twins rewrite up to 4 existing-booking
+fields, so the "exactly one relation component" claim is
+overstated (golds all correct); R2-F3 SLICE45's fact-pool counts
+are wrong (pool is 270 facts, 88 capitals / 64 element facts, 10
+facts unused) and D3's "caterpillars fixed" claim is false (the
+misspelling persists in g5-diag-035, gold unaffected); R2-F4 the
+full-scale sequence smoke test has no committed artefact; R2-F5
+G6's bimodal start offsets leave the overlap boundary untested,
+a wording limit for the boundary map. The reviewer authored no
+patches and edited no battery.
