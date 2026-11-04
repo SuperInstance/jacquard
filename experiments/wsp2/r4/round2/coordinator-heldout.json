@@ -1,0 +1,8 @@
+{"scorer": "coordinator (Phase 16), builder's score_student.py unmodified, Thor, 2026-11-04",
+ "model": "~/wsp-exp16/r4/round2/patched", "battery": "experiments/wsp2/r4/heldout.jsonl (n=120)",
+ "overall_pct": 49.2, "correct": 59, "n": 120,
+ "per_class_recall_pct": {"calm": 32.5, "alarmed": 70.0, "stampede": 45.0},
+ "round1_heldout_pct": 50.8, "round1_per_class_pct": {"calm": 27.5, "alarmed": 72.5, "stampede": 52.5},
+ "bar": "beat round 1 overall (50.8) AND no class below round1-5 (22.5/67.5/47.5)",
+ "verdict": "BAR NOT MET: 49.2 < 50.8; stampede 45.0 also below its 47.5 floor (calm improved 27.5->32.5, as designed). DENY round 2; round 1 stands as the joint. The shrinkage hypothesis (round 1 residual = diagnostic weather) is falsified in its strong form: both refinement directions (E7 amplify, R4 shrink) fail to add transfer over round 1.",
+ "raw": "Thor ~/wsp-exp16/r4/results/coordinator_r4_round2_heldout.json"}
