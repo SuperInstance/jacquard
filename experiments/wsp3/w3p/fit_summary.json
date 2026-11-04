@@ -1,0 +1,1904 @@
+{
+ "baseline": {
+  "label": "incumbent",
+  "core": {
+   "n": 165,
+   "agree_op": 0.5636363636363636,
+   "agree_correct": 0.42016806722689076,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 0.7815126050420168
+   }
+  },
+  "field_reorder": {
+   "n": 85,
+   "agree_op": 0.2235294117647059,
+   "agree_correct": 0.16393442622950818,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 0.2923076923076923
+   }
+  },
+  "label_paraphrase": {
+   "n": 85,
+   "agree_op": 0.6588235294117647,
+   "agree_correct": 0.5245901639344263,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 0.8615384615384616
+   }
+  },
+  "trunc_half": {
+   "n": 85,
+   "agree_op": 0.5647058823529412,
+   "agree_correct": 0.4098360655737705,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 0.7384615384615385
+   }
+  },
+  "upper": {
+   "n": 85,
+   "agree_op": 0.23529411764705882,
+   "agree_correct": 0.2786885245901639,
+   "per_class": {
+    "DENY": 0.5,
+    "HOLD": 0.0,
+    "ALLOW": 0.2923076923076923
+   }
+  },
+  "whitespace": {
+   "n": 85,
+   "agree_op": 0.7647058823529411,
+   "agree_correct": 0.6229508196721312,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 1.0
+   }
+  },
+  "wrapper": {
+   "n": 85,
+   "agree_op": 0.7411764705882353,
+   "agree_correct": 0.5901639344262295,
+   "per_class": {
+    "DENY": 0.0,
+    "HOLD": 0.0,
+    "ALLOW": 0.9692307692307692
+   }
+  },
+  "core_moved": {
+   "n": 0,
+   "toward_gold": 0,
+   "away_from_gold": 0,
+   "wrong_to_wrong": 0,
+   "items": []
+  }
+ },
+ "candidates": {
+  "A_upper": {
+   "lam": 0.01,
+   "eval": {
+    "label": "A_upper",
+    "core": {
+     "n": 165,
+     "agree_op": 0.9878787878787879,
+     "agree_correct": 0.9495798319327731,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 0.9736842105263158,
+      "ALLOW": 0.9915966386554622
+     }
+    },
+    "field_reorder": {
+     "n": 85,
+     "agree_op": 0.6235294117647059,
+     "agree_correct": 0.5409836065573771,
+     "per_class": {
+      "DENY": 0.5,
+      "HOLD": 0.05555555555555555,
+      "ALLOW": 0.7846153846153846
+     }
+    },
+    "label_paraphrase": {
+     "n": 85,
+     "agree_op": 1.0,
+     "agree_correct": 0.9508196721311475,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 1.0
+     }
+    },
+    "trunc_half": {
+     "n": 85,
+     "agree_op": 0.9176470588235294,
+     "agree_correct": 0.8524590163934426,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8923076923076924
+     }
+    },
+    "upper": {
+     "n": 85,
+     "agree_op": 0.9058823529411765,
+     "agree_correct": 0.8360655737704918,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8769230769230769
+     }
+    },
+    "whitespace": {
+     "n": 85,
+     "agree_op": 0.2235294117647059,
+     "agree_correct": 0.36065573770491804,
+     "per_class": {
+      "DENY": 0.5,
+      "HOLD": 1.0,
+      "ALLOW": 0.0
+     }
+    },
+    "wrapper": {
+     "n": 85,
+     "agree_op": 0.8705882352941177,
+     "agree_correct": 0.7868852459016393,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 0.6111111111111112,
+      "ALLOW": 0.9384615384615385
+     }
+    },
+    "core_moved": {
+     "n": 73,
+     "toward_gold": 71,
+     "away_from_gold": 1,
+     "wrong_to_wrong": 1,
+     "items": [
+      {
+       "id": "e8-board-shadow-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-004",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-010",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-012",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-013",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-014",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-016",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-018",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-019",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-022",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-024",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-025",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-001",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "HOLD",
+       "direction": "wrong_to_wrong"
+      },
+      {
+       "id": "e8-jev-002",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-005",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-035",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-042",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-043",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-044",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-005",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-007",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-003",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-005",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-007",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-010",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-011",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-012",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-013",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-014",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-015",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-016",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-017",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-018",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-019",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-020",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-021",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-022",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-023",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-024",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-025",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-026",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-027",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-029",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-030",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-031",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-035",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-036",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-003",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-007",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-011",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-012",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-013",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-slice30-booking-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      }
+     ]
+    }
+   }
+  },
+  "B_reorder": {
+   "lam": 0.01,
+   "eval": {
+    "label": "B_reorder",
+    "core": {
+     "n": 165,
+     "agree_op": 0.9939393939393939,
+     "agree_correct": 0.957983193277311,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 0.9736842105263158,
+      "ALLOW": 1.0
+     }
+    },
+    "field_reorder": {
+     "n": 85,
+     "agree_op": 0.8941176470588236,
+     "agree_correct": 0.819672131147541,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8615384615384616
+     }
+    },
+    "label_paraphrase": {
+     "n": 85,
+     "agree_op": 1.0,
+     "agree_correct": 0.9508196721311475,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 1.0
+     }
+    },
+    "trunc_half": {
+     "n": 85,
+     "agree_op": 0.9176470588235294,
+     "agree_correct": 0.8852459016393442,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8923076923076924
+     }
+    },
+    "upper": {
+     "n": 85,
+     "agree_op": 0.7411764705882353,
+     "agree_correct": 0.5901639344262295,
+     "per_class": {
+      "DENY": 0.0,
+      "HOLD": 0.0,
+      "ALLOW": 0.9692307692307692
+     }
+    },
+    "whitespace": {
+     "n": 85,
+     "agree_op": 0.24705882352941178,
+     "agree_correct": 0.39344262295081966,
+     "per_class": {
+      "DENY": 0.5,
+      "HOLD": 1.0,
+      "ALLOW": 0.03076923076923077
+     }
+    },
+    "wrapper": {
+     "n": 85,
+     "agree_op": 0.9529411764705882,
+     "agree_correct": 0.9016393442622951,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.9384615384615385
+     }
+    },
+    "core_moved": {
+     "n": 72,
+     "toward_gold": 71,
+     "away_from_gold": 0,
+     "wrong_to_wrong": 1,
+     "items": [
+      {
+       "id": "e8-board-shadow-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-004",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-010",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-012",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-013",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-014",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-016",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-018",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-019",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-022",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-024",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-025",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-001",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "HOLD",
+       "direction": "wrong_to_wrong"
+      },
+      {
+       "id": "e8-jev-002",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-005",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-035",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-042",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-043",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-044",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-005",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-007",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-003",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-005",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-007",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-010",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-011",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-012",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-013",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-014",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-015",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-016",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-017",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-018",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-019",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-020",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-021",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-022",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-023",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-024",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-025",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-026",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-027",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-029",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-030",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-031",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-035",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-003",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-007",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-011",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-012",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-013",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-slice30-booking-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      }
+     ]
+    }
+   }
+  },
+  "C_combined": {
+   "lam": 0.01,
+   "eval": {
+    "label": "C_combined",
+    "core": {
+     "n": 165,
+     "agree_op": 0.9393939393939394,
+     "agree_correct": 0.8907563025210085,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 0.9473684210526315,
+      "ALLOW": 0.9327731092436975
+     }
+    },
+    "field_reorder": {
+     "n": 85,
+     "agree_op": 0.8941176470588236,
+     "agree_correct": 0.819672131147541,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8615384615384616
+     }
+    },
+    "label_paraphrase": {
+     "n": 85,
+     "agree_op": 0.9529411764705882,
+     "agree_correct": 0.8852459016393442,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.9384615384615385
+     }
+    },
+    "trunc_half": {
+     "n": 85,
+     "agree_op": 0.9411764705882353,
+     "agree_correct": 0.8852459016393442,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.9230769230769231
+     }
+    },
+    "upper": {
+     "n": 85,
+     "agree_op": 0.8823529411764706,
+     "agree_correct": 0.8032786885245902,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 0.9444444444444444,
+      "ALLOW": 0.8615384615384616
+     }
+    },
+    "whitespace": {
+     "n": 85,
+     "agree_op": 0.8941176470588236,
+     "agree_correct": 0.819672131147541,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.8615384615384616
+     }
+    },
+    "wrapper": {
+     "n": 85,
+     "agree_op": 0.9529411764705882,
+     "agree_correct": 0.9016393442622951,
+     "per_class": {
+      "DENY": 1.0,
+      "HOLD": 1.0,
+      "ALLOW": 0.9384615384615385
+     }
+    },
+    "core_moved": {
+     "n": 79,
+     "toward_gold": 70,
+     "away_from_gold": 8,
+     "wrong_to_wrong": 1,
+     "items": [
+      {
+       "id": "e8-board-shadow-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-004",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-010",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-012",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-013",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-014",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-016",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-018",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-019",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-022",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-024",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-025",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-001",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "HOLD",
+       "direction": "wrong_to_wrong"
+      },
+      {
+       "id": "e8-jev-002",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-jev-005",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-035",
+       "from": "HOLD",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-042",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-043",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-board-shadow-044",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-003",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-005",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-007",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-002",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-003",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-004",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-005",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-006",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-007",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-008",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-009",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-010",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-011",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-012",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-013",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-014",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-015",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-016",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-017",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-018",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-019",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-020",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-021",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-022",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-023",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-024",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-025",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-026",
+       "from": "DENY",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-027",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-029",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "HOLD",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-030",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-031",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-032",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-033",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-034",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-035",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-proof-run-2-036",
+       "from": "ALLOW",
+       "to": "HOLD",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-001",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-002",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-003",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-004",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-006",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-007",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-009",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-010",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-012",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-013",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "DENY",
+       "direction": "toward_gold"
+      },
+      {
+       "id": "e8-gpu-windows-014",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-gpu-windows-015",
+       "from": "ALLOW",
+       "to": "DENY",
+       "gold": "ALLOW",
+       "direction": "away_from_gold"
+      },
+      {
+       "id": "e8-slice30-booking-003",
+       "from": "DENY",
+       "to": "ALLOW",
+       "gold": "ALLOW",
+       "direction": "toward_gold"
+      }
+     ]
+    }
+   }
+  }
+ }
+}
