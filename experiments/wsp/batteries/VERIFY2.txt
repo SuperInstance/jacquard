@@ -1,0 +1,15 @@
+=== battery verification (slice 42) ===
+  t2_diagnostic: count 60 OK
+  t2_heldout: count 120 OK
+  t3_diagnostic: count 60 OK
+  t3_heldout: count 120 OK
+  t2_diagnostic: within-file prompt uniqueness OK
+  t2_heldout: within-file prompt uniqueness OK
+  t3_diagnostic: within-file prompt uniqueness OK
+  t3_heldout: within-file prompt uniqueness OK
+  cross-file prompt uniqueness checked against all slice-41 files
+  cross-split derivation uniqueness checked against all slice-41 arithmetic files
+  setA markers: 47 loaded; setA2 markers: 31 loaded
+  prompt-parse t2: 180/180 items parsed (100.0% coverage)
+  prompt-parse t3: 180/180 items parsed (100.0% coverage)
+PASS: counts, category balance, derivations, answer shape, prompt uniqueness (within-file and cross-file vs slice 41), cross-split derivation dedup (vs slice 41), heldout marker hygiene (setA + setA2), weekday mapping/truthfulness, and prompt-parse recompute all OK

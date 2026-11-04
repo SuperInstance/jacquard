@@ -34,10 +34,18 @@ SPLIT_FILES = {
     "forget_instr": HERE / "private" / "forget_instr.jsonl",
     "forget_fact": HERE / "private" / "forget_fact.jsonl",
     "forget_prose": HERE / "private" / "forget_prose.jsonl",
+    "t2_diagnostic": HERE / "batteries" / "t2_diagnostic.jsonl",
+    "t2_heldout": HERE / "private" / "t2_heldout.jsonl",
+    "t3_diagnostic": HERE / "batteries" / "t3_diagnostic.jsonl",
+    "t3_heldout": HERE / "private" / "t3_heldout.jsonl",
 }
-ARITH_SPLITS = {"diagnostic", "validation", "heldout"}
+ARITH_SPLITS = {"diagnostic", "validation", "heldout",
+                "t2_diagnostic", "t2_heldout",
+                "t3_diagnostic", "t3_heldout"}
 MAX_NEW_TOKENS = {"diagnostic": 96, "validation": 96, "heldout": 96,
-                  "forget_instr": 128, "forget_fact": 32}
+                  "forget_instr": 128, "forget_fact": 32,
+                  "t2_diagnostic": 96, "t2_heldout": 96,
+                  "t3_diagnostic": 96, "t3_heldout": 96}
 BATCH_SIZE = 16
 MONEY_TOL = 0.011
 

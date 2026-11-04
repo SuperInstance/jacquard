@@ -25,8 +25,9 @@ class DiagDataset(Dataset):
         self.rows = []
         for it in items:
             msgs = [{"role": "user", "content": it["prompt"]}]
-            prompt_ids = tok.apply_chat_template(
+            _enc = tok.apply_chat_template(
                 msgs, add_generation_prompt=True, enable_thinking=False)
+            prompt_ids = _enc["input_ids"] if not isinstance(_enc, list) else _enc
             ans = str(it["answer"])
             if isinstance(it["answer"], float) and it["answer"] == int(it["answer"]):
                 ans = str(int(it["answer"]))
