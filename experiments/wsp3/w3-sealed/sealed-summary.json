@@ -1,0 +1,6 @@
+{
+ "INCUMBENT": {"all": [480, 0.4979, 0.4224], "kinds": {"field_reorder": [80, 0.2125, 0.2069], "label_paraphrase": [80, 0.6125, 0.4828], "trunc_half": [80, 0.575, 0.431], "upper": [80, 0.2625, 0.3103], "whitespace": [80, 0.675, 0.569], "wrapper": [80, 0.65, 0.5345]}, "recall": {"ALLOW": "235/324", "HOLD": "0/120", "DENY": "4/36"}},
+ "PATCHED": {"all": [480, 0.8458, 0.7845], "kinds": {"field_reorder": [80, 0.8375, 0.7759], "label_paraphrase": [80, 0.9375, 0.8966], "trunc_half": [80, 0.8125, 0.7414], "upper": [80, 0.775, 0.6897], "whitespace": [80, 0.8375, 0.7759], "wrapper": [80, 0.875, 0.8276]}, "recall": {"ALLOW": "265/324", "HOLD": "108/120", "DENY": "33/36"}},
+ "stability": 0.4167,
+ "scored_by": "coordinator, 2026-11-04, Thor ~/wsp-exp17/w3-sealed/ (run_judge.py, both copies, sealed file sha256 b8716661 verified before scoring)"
+}

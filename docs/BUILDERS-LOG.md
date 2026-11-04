@@ -4952,3 +4952,29 @@ grader clones, preserved as two valid chains rather than
 rewritten (RATIFICATION-NOTE.md). Housekeeping: phase15-wsp
 merged to main at the phase start (8d44929); kernel untouched
 throughout — no version bump, no tag.
+
+Phase 17 (in practice): the grown specialists met real
+traffic. W1: the model/code specialists battery 84.2%
+collapsed to 27.3% against a blind grader on the fleets
+actual agent traffic (156 long documents; the joint, coached
+on short messages, does not exist in that shape; its mixed
+boundary is reader-dependent). The pre-stated re-coaching
+trigger fired; round 2 reached 34.85% live at -12.5 battery
+retention and was DENIED. The panic specialist kept the only
+alarmed vision measured (7/24 at 64% precision) while losing
+raw agreement to its always-calm incumbent (59.1% vs 63.6%).
+W2: measured refusal — no fleet workflow carries >=500
+judgement-bearing labelled events (bridge record: 17); the
+battery and harness stand ready for the day one does. W3:
+the jev-semantic judges reputation (10/11) measured 56.36%
+on its full decision record with HOLD/DENY dead; a governed
+hygiene patch (771 head scalars, retention accounted) scored
+84.58%/78.45% dual on coordinator-held sealed items and
+passed its shadow bar; adoption is packaged for Casey, not
+performed. Governance: canonical log 279 -> 356 entries,
+criteria hash-bound before tests, 2 deployment proposals
+(1 approved, 1 denied). Kernel untouched — no version bump,
+no tag. Defects of record: Thor SIGTERM kills on long GPU
+runs (chunked scoring is the workaround), Oracle root disk
+100% full throughout, two worker deliveries relayed
+in-report after credential-blocked pushes.

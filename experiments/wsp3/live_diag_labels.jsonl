@@ -1,0 +1,25 @@
+{"id": "c0005", "mc_class": "model"}
+{"id": "c0010", "mc_class": "code", "note": "Ambiguous code/model: the purpose is model distillation (teacher dataset for an intuition model), but the message itself is a work order to fix pipeline code (candidates.py) and produce a data artefact, so code carries the centre of gravity."}
+{"id": "c0016", "mc_class": "code"}
+{"id": "c0018", "mc_class": "code"}
+{"id": "c0023", "mc_class": "code"}
+{"id": "c0025", "mc_class": "code"}
+{"id": "c0030", "mc_class": "code"}
+{"id": "c0031", "mc_class": "model"}
+{"id": "c0041", "mc_class": "code"}
+{"id": "c0045", "mc_class": "model"}
+{"id": "c0049", "mc_class": "model", "note": "Ambiguous model/code: it reports small code PoC experiments on a git substrate, but no code carries the meaning — the substance is prose research findings and theory about the substrate/agents, so model."}
+{"id": "c0051", "mc_class": "model", "note": "Ambiguous model/code: same cumulative prospector log as c0049 with more ticks; code microcosms are described, but prose findings/theory (incl. theory-of-mind game and JEPA/Jev lane) carry the meaning, so model."}
+{"id": "c0052", "mc_class": "model", "note": "Ambiguous model/code: longer cumulative prospector log; interleaves PoC build reports with prose research on embeddings/JEPA and judgment, with the prose reasoning dominant and no substantive code text, so model."}
+{"id": "c0054", "mc_class": "model", "note": "Ambiguous model/code: longest cumulative prospector log; adds judgment-log spec design in prose, but still a research log whose meaning is carried by prose theory/findings rather than code, so model."}
+{"id": "c0092", "mc_class": "model"}
+{"id": "c0098", "mc_class": "model"}
+{"id": "c0099", "mc_class": "code"}
+{"id": "c0102", "mc_class": "mixed", "note": "Ambiguous code/model, genuinely both: half is a build/training pipeline report (generate, grade, train v3, ONNX artefacts) and half is prose analysis of the resulting model per-family behaviour and murk/soft-point errors; neither side is incidental."}
+{"id": "c0105", "mc_class": "code", "note": "Ambiguous code/model: the file is a JSONL calibration/test artefact (judged code), but every line content is a model judgment scores/readings on claims rather than code text."}
+{"id": "c0106", "mc_class": "code"}
+{"id": "c0107", "mc_class": "code"}
+{"id": "c0109", "mc_class": "code"}
+{"id": "c0145", "mc_class": "code"}
+{"id": "c0146", "mc_class": "code"}
+{"id": "c0152", "mc_class": "code"}

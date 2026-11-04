@@ -1,0 +1,66 @@
+{"id": "c0001", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0002", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0003", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0004", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0006", "mc_class": "mixed", "panic_class": "alarmed", "note": "mc ambiguous code/mixed: tool shipped, but the TEV1-cannot-embed failure is half the substance"}
+{"id": "c0007", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/code: JSON artefact, but its substance is model judgment scores"}
+{"id": "c0008", "mc_class": "model", "panic_class": "alarmed"}
+{"id": "c0009", "mc_class": "mixed", "panic_class": "calm", "note": "panic ambiguous calm/alarmed: overall DONE delivery report that summarises sub-task model failures"}
+{"id": "c0011", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0012", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0013", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0014", "mc_class": "mixed", "panic_class": "alarmed", "note": "panic ambiguous calm/alarmed: DONE dataset, but a batched-call bug that blinded a run is a central finding"}
+{"id": "c0015", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0017", "mc_class": "mixed", "panic_class": "calm"}
+{"id": "c0019", "mc_class": "mixed", "panic_class": "calm", "note": "mc ambiguous code/mixed: router code fix verified through live model calls"}
+{"id": "c0020", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/mixed: training spec covers model design plus implementation deliverables"}
+{"id": "c0021", "mc_class": "mixed", "panic_class": "calm", "note": "mc ambiguous code/mixed: trainer/weights artefacts reported alongside model-behaviour eval"}
+{"id": "c0022", "mc_class": "mixed", "panic_class": "calm", "note": "mc ambiguous code/mixed: line-by-line code audit plus conceptual cognition audit; failures discussed are hypothetical, not live"}
+{"id": "c0024", "mc_class": "mixed", "panic_class": "calm"}
+{"id": "c0026", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0027", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0028", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0029", "mc_class": "code", "panic_class": "alarmed"}
+{"id": "c0032", "mc_class": "code", "panic_class": "alarmed"}
+{"id": "c0033", "mc_class": "code", "panic_class": "alarmed"}
+{"id": "c0034", "mc_class": "code", "panic_class": "alarmed"}
+{"id": "c0035", "mc_class": "code", "panic_class": "alarmed", "note": "panic ambiguous alarmed/stampede: wedged rebase plus Oracle not pulling, compounding across ticks, but the log tone stays routine"}
+{"id": "c0036", "mc_class": "mixed", "panic_class": "calm"}
+{"id": "c0037", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/code: raw TSV log whose rows are model judgment outputs"}
+{"id": "c0038", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0039", "mc_class": "code", "panic_class": "alarmed", "note": "panic ambiguous alarmed/stampede: wedged rebase plus both other workers absent all night, still logged as routine breaks"}
+{"id": "c0040", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0042", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/mixed: training result with code artefacts (ONNX/tokenizer) around model eval numbers"}
+{"id": "c0043", "mc_class": "code", "panic_class": "alarmed"}
+{"id": "c0044", "mc_class": "code", "panic_class": "alarmed", "note": "panic ambiguous calm/alarmed: final version frames the night shift complete, but the unresolved rebase warning remains in the body"}
+{"id": "c0046", "mc_class": "mixed", "panic_class": "calm"}
+{"id": "c0047", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0048", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0050", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0053", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0055", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0056", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0091", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0093", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/mixed: build a calibration set and run the student; evaluating model behaviour is the centre"}
+{"id": "c0097", "mc_class": "mixed", "panic_class": "alarmed"}
+{"id": "c0100", "mc_class": "code", "panic_class": "calm", "note": "mc ambiguous code/model: bare progress log of a grading run; the text itself carries no model content"}
+{"id": "c0103", "mc_class": "mixed", "panic_class": "alarmed", "note": "mc ambiguous code/mixed: training-run log mixing KL metrics with a script traceback; ONNX export failed, onnx module missing"}
+{"id": "c0108", "mc_class": "model", "panic_class": "alarmed"}
+{"id": "c0110", "mc_class": "model", "panic_class": "calm", "note": "mc ambiguous model/mixed: same calibration-set directive as c0093, addressed to oracle"}
+{"id": "c0111", "mc_class": "code", "panic_class": "calm", "note": "mc ambiguous: bare JSON list of pair IDs with no prose; classified as a data/code artefact"}
+{"id": "c0113", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0114", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0115", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0116", "mc_class": "model", "panic_class": "calm", "note": "panic ambiguous calm/alarmed: directive recites 018 folded result as context; no live problem in the message itself"}
+{"id": "c0117", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0118", "mc_class": "code", "panic_class": "calm", "note": "panic ambiguous calm/alarmed: standing protocol prompted by the HP lane death; the document itself is preventive/routine"}
+{"id": "c0125", "mc_class": "code", "panic_class": "calm"}
+{"id": "c0126", "mc_class": "model", "panic_class": "alarmed", "note": "panic ambiguous calm/alarmed: experiment completed, but the verdict is a negative capability finding - no verifiedness signal"}
+{"id": "c0128", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0141", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0147", "mc_class": "mixed", "panic_class": "alarmed", "note": "mc ambiguous mixed/code: prose verdict over code/data artefacts (false citation, false rerun claim, tolerance miss) and agent-authorship provenance"}
+{"id": "c0151", "mc_class": "code", "panic_class": "alarmed", "note": "panic ambiguous calm/alarmed: block lifted and tooling live, but three repos flagged NEEDS PUSH await a human decision"}
+{"id": "c0153", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0154", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0155", "mc_class": "model", "panic_class": "calm"}
+{"id": "c0156", "mc_class": "model", "panic_class": "calm"}

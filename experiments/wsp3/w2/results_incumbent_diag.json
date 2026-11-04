@@ -1,0 +1,6917 @@
+{
+ "scorer": "incumbent-parse-rule",
+ "splits": {
+  "diagnostic": {
+   "n": 1145,
+   "accuracy": 1.0,
+   "per_class": {
+    "fishing_boat": {
+     "correct": 287,
+     "n": 287,
+     "accuracy": 1.0
+    },
+    "harbor_house": {
+     "correct": 287,
+     "n": 287,
+     "accuracy": 1.0
+    },
+    "pier": {
+     "correct": 286,
+     "n": 286,
+     "accuracy": 1.0
+    },
+    "spruce": {
+     "correct": 285,
+     "n": 285,
+     "accuracy": 1.0
+    }
+   },
+   "confusion": {
+    "fishing_boat": {
+     "fishing_boat": 287
+    },
+    "harbor_house": {
+     "harbor_house": 287
+    },
+    "pier": {
+     "pier": 286
+    },
+    "spruce": {
+     "spruce": 285
+    }
+   },
+   "items": [
+    {
+     "id": "w2diag-0001",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0002",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0003",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0004",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0005",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0006",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0007",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0008",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0009",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0010",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0011",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0012",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0013",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0014",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0015",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0016",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0017",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0018",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0019",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0020",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0021",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0022",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0023",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0024",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0025",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0026",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0027",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0028",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0029",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0030",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0031",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0032",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0033",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0034",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0035",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0036",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0037",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0038",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0039",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0040",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0041",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0042",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0043",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0044",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0045",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0046",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0047",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0048",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0049",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0050",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0051",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0052",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0053",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0054",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0055",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0056",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0057",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0058",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0059",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0060",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0061",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0062",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0063",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0064",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0065",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0066",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0067",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0068",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0069",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0070",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0071",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0072",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0073",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0074",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0075",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0076",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0077",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0078",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0079",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0080",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0081",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0082",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0083",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0084",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0085",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0086",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0087",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0088",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0089",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0090",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0091",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0092",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0093",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0094",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0095",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0096",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0097",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0098",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0099",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0100",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0101",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0102",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0103",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0104",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0105",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0106",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0107",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0108",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0109",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0110",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0111",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0112",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0113",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0114",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0115",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0116",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0117",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0118",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0119",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0120",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0121",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0122",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0123",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0124",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0125",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0126",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0127",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0128",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0129",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0130",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0131",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0132",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0133",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0134",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0135",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0136",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0137",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0138",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0139",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0140",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0141",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0142",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0143",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0144",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0145",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0146",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0147",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0148",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0149",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0150",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0151",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0152",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0153",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0154",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0155",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0156",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0157",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0158",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0159",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0160",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0161",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0162",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0163",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0164",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0165",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0166",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0167",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0168",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0169",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0170",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0171",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0172",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0173",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0174",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0175",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0176",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0177",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0178",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0179",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0180",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0181",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0182",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0183",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0184",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0185",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0186",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0187",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0188",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0189",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0190",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0191",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0192",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0193",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0194",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0195",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0196",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0197",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0198",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0199",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0200",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0201",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0202",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0203",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0204",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0205",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0206",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0207",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0208",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0209",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0210",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0211",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0212",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0213",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0214",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0215",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0216",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0217",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0218",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0219",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0220",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0221",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0222",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0223",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0224",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0225",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0226",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0227",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0228",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0229",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0230",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0231",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0232",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0233",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0234",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0235",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0236",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0237",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0238",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0239",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0240",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0241",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0242",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0243",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0244",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0245",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0246",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0247",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0248",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0249",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0250",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0251",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0252",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0253",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0254",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0255",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0256",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0257",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0258",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0259",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0260",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0261",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0262",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0263",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0264",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0265",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0266",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0267",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0268",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0269",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0270",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0271",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0272",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0273",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0274",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0275",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0276",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0277",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0278",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0279",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0280",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0281",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0282",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0283",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0284",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0285",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0286",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0287",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0288",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0289",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0290",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0291",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0292",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0293",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0294",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0295",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0296",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0297",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0298",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0299",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0300",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0301",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0302",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0303",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0304",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0305",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0306",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0307",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0308",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0309",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0310",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0311",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0312",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0313",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0314",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0315",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0316",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0317",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0318",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0319",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0320",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0321",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0322",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0323",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0324",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0325",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0326",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0327",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0328",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0329",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0330",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0331",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0332",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0333",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0334",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0335",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0336",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0337",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0338",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0339",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0340",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0341",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0342",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0343",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0344",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0345",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0346",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0347",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0348",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0349",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0350",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0351",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0352",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0353",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0354",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0355",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0356",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0357",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0358",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0359",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0360",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0361",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0362",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0363",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0364",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0365",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0366",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0367",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0368",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0369",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0370",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0371",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0372",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0373",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0374",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0375",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0376",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0377",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0378",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0379",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0380",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0381",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0382",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0383",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0384",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0385",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0386",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0387",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0388",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0389",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0390",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0391",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0392",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0393",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0394",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0395",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0396",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0397",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0398",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0399",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0400",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0401",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0402",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0403",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0404",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0405",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0406",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0407",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0408",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0409",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0410",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0411",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0412",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0413",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0414",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0415",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0416",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0417",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0418",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0419",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0420",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0421",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0422",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0423",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0424",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0425",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0426",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0427",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0428",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0429",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0430",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0431",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0432",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0433",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0434",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0435",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0436",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0437",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0438",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0439",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0440",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0441",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0442",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0443",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0444",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0445",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0446",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0447",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0448",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0449",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0450",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0451",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0452",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0453",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0454",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0455",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0456",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0457",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0458",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0459",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0460",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0461",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0462",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0463",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0464",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0465",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0466",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0467",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0468",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0469",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0470",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0471",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0472",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0473",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0474",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0475",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0476",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0477",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0478",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0479",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0480",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0481",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0482",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0483",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0484",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0485",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0486",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0487",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0488",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0489",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0490",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0491",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0492",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0493",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0494",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0495",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0496",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0497",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0498",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0499",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0500",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0501",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0502",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0503",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0504",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0505",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0506",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0507",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0508",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0509",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0510",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0511",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0512",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0513",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0514",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0515",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0516",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0517",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0518",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0519",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0520",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0521",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0522",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0523",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0524",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0525",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0526",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0527",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0528",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0529",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0530",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0531",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0532",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0533",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0534",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0535",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0536",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0537",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0538",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0539",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0540",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0541",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0542",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0543",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0544",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0545",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0546",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0547",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0548",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0549",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0550",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0551",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0552",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0553",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0554",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0555",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0556",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0557",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0558",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0559",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0560",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0561",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0562",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0563",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0564",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0565",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0566",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0567",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0568",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0569",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0570",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0571",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0572",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0573",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0574",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0575",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0576",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0577",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0578",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0579",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0580",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0581",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0582",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0583",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0584",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0585",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0586",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0587",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0588",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0589",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0590",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0591",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0592",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0593",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0594",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0595",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0596",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0597",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0598",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0599",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0600",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0601",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0602",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0603",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0604",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0605",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0606",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0607",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0608",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0609",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0610",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0611",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0612",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0613",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0614",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0615",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0616",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0617",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0618",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0619",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0620",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0621",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0622",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0623",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0624",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0625",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0626",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0627",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0628",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0629",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0630",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0631",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0632",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0633",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0634",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0635",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0636",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0637",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0638",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0639",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0640",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0641",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0642",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0643",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0644",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0645",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0646",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0647",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0648",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0649",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0650",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0651",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0652",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0653",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0654",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0655",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0656",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0657",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0658",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0659",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0660",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0661",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0662",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0663",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0664",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0665",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0666",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0667",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0668",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0669",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0670",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0671",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0672",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0673",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0674",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0675",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0676",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0677",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0678",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0679",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0680",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0681",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0682",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0683",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0684",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0685",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0686",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0687",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0688",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0689",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0690",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0691",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0692",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0693",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0694",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0695",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0696",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0697",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0698",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0699",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0700",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0701",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0702",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0703",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0704",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0705",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0706",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0707",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0708",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0709",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0710",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0711",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0712",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0713",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0714",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0715",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0716",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0717",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0718",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0719",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0720",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0721",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0722",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0723",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0724",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0725",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0726",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0727",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0728",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0729",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0730",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0731",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0732",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0733",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0734",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0735",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0736",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0737",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0738",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0739",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0740",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0741",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0742",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0743",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0744",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0745",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0746",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0747",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0748",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0749",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0750",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0751",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0752",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0753",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0754",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0755",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0756",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0757",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0758",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0759",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0760",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0761",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0762",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0763",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0764",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0765",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0766",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0767",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0768",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0769",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0770",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0771",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0772",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0773",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0774",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0775",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0776",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0777",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0778",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0779",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0780",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0781",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0782",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0783",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0784",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0785",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0786",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0787",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0788",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0789",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0790",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0791",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0792",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0793",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0794",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0795",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0796",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0797",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0798",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0799",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0800",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0801",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0802",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0803",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0804",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0805",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0806",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0807",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0808",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0809",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0810",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0811",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0812",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0813",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0814",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0815",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0816",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0817",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0818",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0819",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0820",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0821",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0822",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0823",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0824",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0825",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0826",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0827",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0828",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0829",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0830",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0831",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0832",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0833",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0834",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0835",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0836",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0837",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0838",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0839",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0840",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0841",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0842",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0843",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0844",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0845",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0846",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0847",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0848",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0849",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0850",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0851",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0852",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0853",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0854",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0855",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0856",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0857",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0858",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0859",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0860",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0861",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0862",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0863",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0864",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0865",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0866",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0867",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0868",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0869",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0870",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0871",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0872",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0873",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0874",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0875",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0876",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0877",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0878",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0879",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0880",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0881",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0882",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0883",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0884",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0885",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0886",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0887",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0888",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0889",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0890",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0891",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0892",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0893",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0894",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0895",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0896",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0897",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0898",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0899",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0900",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0901",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0902",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0903",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0904",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0905",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0906",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0907",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0908",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0909",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0910",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0911",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0912",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0913",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0914",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0915",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0916",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0917",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0918",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0919",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0920",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0921",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0922",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0923",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0924",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0925",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0926",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0927",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0928",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0929",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0930",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0931",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0932",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0933",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0934",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0935",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0936",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0937",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0938",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0939",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0940",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0941",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0942",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0943",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0944",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0945",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0946",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0947",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0948",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0949",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0950",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0951",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0952",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0953",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0954",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0955",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0956",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0957",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0958",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0959",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0960",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0961",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0962",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0963",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0964",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0965",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0966",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0967",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0968",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0969",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0970",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0971",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0972",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0973",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0974",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0975",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0976",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0977",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0978",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0979",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0980",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0981",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0982",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0983",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0984",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0985",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0986",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0987",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0988",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0989",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0990",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0991",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0992",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0993",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0994",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0995",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0996",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0997",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0998",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-0999",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1000",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1001",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1002",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1003",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1004",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1005",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1006",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1007",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1008",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1009",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1010",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1011",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1012",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1013",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1014",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1015",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1016",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1017",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1018",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1019",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1020",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1021",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1022",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1023",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1024",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1025",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1026",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1027",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1028",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1029",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1030",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1031",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1032",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1033",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1034",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1035",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1036",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1037",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1038",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1039",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1040",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1041",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1042",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1043",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1044",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1045",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1046",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1047",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1048",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1049",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1050",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1051",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1052",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1053",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1054",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1055",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1056",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1057",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1058",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1059",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1060",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1061",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1062",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1063",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1064",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1065",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1066",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1067",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1068",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1069",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1070",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1071",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1072",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1073",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1074",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1075",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1076",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1077",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1078",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1079",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1080",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1081",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1082",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1083",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1084",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1085",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1086",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1087",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1088",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1089",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1090",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1091",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1092",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1093",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1094",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1095",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1096",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1097",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1098",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1099",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1100",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1101",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1102",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1103",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1104",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1105",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1106",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1107",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1108",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1109",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1110",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1111",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1112",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1113",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1114",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1115",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1116",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1117",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1118",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1119",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1120",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1121",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1122",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1123",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1124",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1125",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1126",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1127",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1128",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1129",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1130",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1131",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1132",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1133",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1134",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1135",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1136",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1137",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1138",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1139",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1140",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1141",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1142",
+     "gold": "spruce",
+     "extracted": "spruce",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1143",
+     "gold": "fishing_boat",
+     "extracted": "fishing_boat",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1144",
+     "gold": "harbor_house",
+     "extracted": "harbor_house",
+     "correct": true
+    },
+    {
+     "id": "w2diag-1145",
+     "gold": "pier",
+     "extracted": "pier",
+     "correct": true
+    }
+   ]
+  }
+ }
+}
