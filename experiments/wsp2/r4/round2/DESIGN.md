@@ -115,3 +115,67 @@ coupling grows with delta norm; if the re-derived
 calibration cannot hold the fixed point as cleanly as
 round 1s (residual <= ~1.3 logits), diagnostic will
 show it first and the fallback rule fires.
+
+## Amendment A (2026-11-04, recorded after the builds above,
+## before any official-scorer run on the amended design)
+
+The dir-coeff 0.30 design FAILED on the real model, and the
+predeclared fallback chain was run and also failed:
+
+  config (all by round 1s calibration procedure)   real argmax
+  dir 0.30, bias 0.10, gamma re-derived, fixed-    65.0
+    point iterated to convergence (residual
+    <= 1.3; DESIGNs two-step cap assumed round-1-
+    like convergence — measured contraction here
+    was geometric ~0.28x/step from a 14x larger
+    initial residual, so iteration continued to
+    the round-1 stopping rule; deviation recorded)
+  denoised-D s=0.15 (predeclared fallback)         69.2
+  dir 0.25, bias 0.10 (predeclared CV grid)        66.7
+  dir 0.15, bias 0.075 (dose reduction)            77.5 argmax
+    BUT official scorer 56.7 (stampede 27.5):
+    generation diverges from 3-row argmax — at
+    this dose the spaced label rows no longer
+    dominate the bare alarmed token in free
+    generation. Rejected by the floor rule.
+
+Measured mechanism for the amplification failure:
+per-item coupling offset std grows with delta norm
+(dir 0.30: delta norms 1.77-2.02, offset std
+7.4-10.6 logits; round 1: norms 1.18-1.35, std
+4.9-7.2). Fixed-H simulation cannot see this; it
+ranked dir 0.30 first. The real-model dose curve
+(argmax): dir 0.10: 70.8, 0.15: 77.5, 0.20: 81.7
+(round 1), 0.25: 66.7, 0.30: 65.0 — round 1 sits at
+the real optimum, and its remaining held-out gap is
+therefore NOT a dose problem.
+
+Amended design (the remaining robustness lever, named
+in the round-2 brief itself: regularising calibration
+toward the raw class-mean geometry): keep round 1s
+dose and geometry EXACTLY (dir 0.20, bias s=0.10,
+same directions.npz); change only gamma by shrinking
+its most diagnostic-fitted component — the fixed-point
+residual correction gamma_resid = [+0.0039, +0.0412,
++0.0068], worth +5.0 diagnostic argmax points in
+round 1s own record — by the standard shrinkage
+factor 0.5 toward the un-fitted calibration:
+  gamma = gamma_full + gamma_sim + 0.5 * gamma_resid
+        = [+0.00066, +0.17204, +0.05343].
+The alarmed residual alone is a +7.6-logit constant
+boost to the alarmed row fitted on diagnostic means;
+halving it is the direct counter to the held-out
+confusion pattern (calm->alarmed 27/40,
+stampede->alarmed 17/40). Shrinkage factor 0.5 is
+stated here BEFORE the amended patch is built or
+scored. Floor rule: official diagnostic scorer
+>= 70% and no class < 55%, else no-build (round 1
+stands). Round 1s record gives this gamma family
+argmax 76.7 (its phase-D t=0.5 step).
+
+Predicted held-out for the amended design (recorded
+before building): 53-62% overall vs round 1s 50.8;
+calm 35-50 (from 27.5), alarmed 68-78, stampede
+50-62. The bet is narrow and stated: half of round 1s
+residual-fitted alarmed boost was diagnostic weather,
+not climate.
