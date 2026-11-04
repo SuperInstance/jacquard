@@ -1,0 +1,1 @@
+{"patch_id": "rollback-to-base", "patch_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b", "target": "thor:~/wsp-exp/serving/student", "summary": "Rollback: restore serving/student to the pristine base weights (sha256 f47f7117) and verify bit-for-bit"}

@@ -38,11 +38,22 @@ SPLIT_FILES = {
     "t2_heldout": HERE / "private" / "t2_heldout.jsonl",
     "t3_diagnostic": HERE / "batteries" / "t3_diagnostic.jsonl",
     "t3_heldout": HERE / "private" / "t3_heldout.jsonl",
+    "round1_diag": HERE / "batteries" / "rounds" / "round1_diag.jsonl",
+    "round2_diag": HERE / "batteries" / "rounds" / "round2_diag.jsonl",
+    "round3_diag": HERE / "batteries" / "rounds" / "round3_diag.jsonl",
+    "round4_diag": HERE / "batteries" / "rounds" / "round4_diag.jsonl",
+    "round5_diag": HERE / "batteries" / "rounds" / "round5_diag.jsonl",
+    "round6_diag": HERE / "batteries" / "rounds" / "round6_diag.jsonl",
 }
 ARITH_SPLITS = {"diagnostic", "validation", "heldout",
                 "t2_diagnostic", "t2_heldout",
-                "t3_diagnostic", "t3_heldout"}
+                "t3_diagnostic", "t3_heldout",
+                "round1_diag", "round2_diag", "round3_diag",
+                "round4_diag", "round5_diag", "round6_diag"}
 MAX_NEW_TOKENS = {"diagnostic": 96, "validation": 96, "heldout": 96,
+                  "round1_diag": 96, "round2_diag": 96,
+                  "round3_diag": 96, "round4_diag": 96,
+                  "round5_diag": 96, "round6_diag": 96,
                   "forget_instr": 128, "forget_fact": 32,
                   "t2_diagnostic": 96, "t2_heldout": 96,
                   "t3_diagnostic": 96, "t3_heldout": 96}
