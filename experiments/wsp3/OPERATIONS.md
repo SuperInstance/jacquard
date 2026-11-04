@@ -413,3 +413,86 @@ gate fails, no swap is attempted (or the swap is rolled back
 byte-exact), and the outcome entry below CLOSES this attempt series
 with the accumulated three-attempt evidence. No v4 is designed; a
 future attempt would need the operators fresh direction.
+
+## 2026-11-04 — Candidate 1 remediation v3: GATE A(ii) FAILED on short ALLOW recall; NO SWAP; ATTEMPT SERIES CLOSED
+
+Corpus (as pre-stated): short-fit-v3 = 91 items (ALLOW 30 / HOLD 31 /
+DENY 30), 57 harvested from fleet records (agent-inbox git history,
+jacquard operations/governance texts, booking-board items, foundry
+portal turns) / 34 authored, marked per item; ALLOW spans everyday,
+maritime, domestic, clerical and creative flavour. Fresh sealed short
+set = 45 items (15/class) from disjoint Thor-side artefacts
+(image-studio prompts, radio-room dispatch phrasing, foundry mint/demo
+logs, governor records): 26 harvested / 19 authored, sealed ALLOW
+15/15 harvested; file sha256 fb7e4765... recorded in the gates entry
+before fitting. Incumbent on the fresh sealed short: agreement 0.3333,
+recalls DENY 1/15, HOLD 1/15, ALLOW 13/15 — ALLOW-saturated as ever.
+
+Selection: of the 21 pre-stated candidates (lambda x short-weight),
+20 were REJECTED on the diagnostic screen — the dominant failure was
+short-ALLOW collapse inside the fit itself (recall 0.00–0.47 at most
+grid points) — and never sealed-scored. The single survivor, lambda
+0.01 / short-weight 6 (target 0.8774), was carried to the gates:
+in-sample core 0.9394 (per-class 1.0 / 0.947 / 0.933), short-fit-v3
+0.8791 (DENY 1.0, HOLD 1.0, ALLOW 0.633 — the only grid point whose
+short ALLOW cleared the 0.60 screen). Patched pair: .onnx bb9de7c6...,
+.data 875d55f4.... Rollback proven before gating: restoring the 771
+pristine head scalars returns byte-identical pristine files.
+
+GATE B (offline smoke): PASS. Battery question: delete -> DENY
+(neg 0.5625), status -> ALLOW (pos 0.6584). Server question "root":
+delete -> HOLD (zero 0.4904), status -> ALLOW (pos 0.6677). The
+argmax conditions hold under both questions; the delete readings are
+soft (lean / ignorance verdicts), recorded as such.
+GATE C (retention): PASS. Core per-class recalls 1.0 / 0.947 / 0.933
+vs incumbent 0.0 / 0.0 / 0.782; every visible-variant kind at or above
+the incumbent (upper 0.882 vs 0.235, field_reorder 0.871 vs 0.224,
+trunc_half 0.882 vs 0.565, whitespace 0.941 vs 0.765, wrapper 0.906 vs
+0.741, label_paraphrase 0.953 vs 0.659). Core moves accounted: 73
+verdicts moved — 64 toward gold, 2 away, 7 wrong-to-wrong.
+GATE A (sealed, single pass for the chosen candidate): clause (i)
+PASS — combined (525) agree_op 0.8152 vs 0.4838, agree_correct 0.7583
+vs 0.4122; fresh sealed short alone 0.4889 vs 0.3333 on both
+agreements; sealed variants per-kind and per-verdict all at or above
+the incumbent (HOLD recall 0.908 vs 0.000, DENY 0.778 vs 0.111).
+Clause (ii) FAIL — one class traded away, the same clause as v2:
+SHORT ALLOW recall 7/15 (0.4667) against the incumbents 13/15
+(0.8667) on the fresh sealed short set (short DENY 12/15 vs 1/15 and
+short HOLD 3/15 vs 1/15 both improved). The eight missed ALLOW items
+are the harvested everyday texts themselves — image prompts (turtles,
+Sitka harbour, cathedral, aerial town), the two radio-dispatch
+courtesies, the seed-recipe regen — read as HOLD (6) or DENY (2);
+on short texts the refits HOLD region stays thin and its DENY region
+hungry (12 of 15 sealed HOLD items read DENY). Progress on the
+failing measure is real (v2 short ALLOW 4/15 -> v3 7/15; sealed
+short agreement 0.4000 -> 0.4889) and insufficient: the bar is the
+incumbents 13/15, and it was not met.
+
+Outcome: NO SWAP ATTEMPTED. Serving pair verified pristine
+(0fc8b8dc... / 53da6a3e...) and jev-rack active at the close; nothing
+to roll back. Adoption state: NOT ADOPTED (v3).
+
+SERIES CLOSURE — the accumulated three-attempt evidence. v1: the
+sealed-variant champion (84.58 / 78.45; HOLD 0 -> 108/120) failed the
+live post-swap smoke by DENY saturation on short raw texts; rolled
+back byte-exact. v2: authored serving-shaped battery; Gate B fixed
+and passed; Gate A(ii) failed, short ALLOW 4/15 vs 11/15 — the fit
+ALLOW flavour (ops) did not cover the traffics everyday flavour.
+v3: harvested real-flavour corpus + fresh disjoint sealed set; Gates
+B and C passed, Gate A(i) passed, Gate A(ii) failed again on the
+same clause, 7/15 vs 13/15. Three times measured, the same trade:
+within this patch family (pooled-readout refit of the 771 head
+scalars over core + variants + a short fit set), buying DENY/HOLD
+life on short texts costs short-ALLOW recall on unseen items, and
+neither authored flavour (v2) nor harvested real flavour at this
+corpus scale (v3) pays it back to the incumbents bar. The incumbents
+short-ALLOW strength is its ALLOW saturation — the same property
+that leaves its DENY/HOLD dead (1/15 each on the fresh sealed set).
+Per the charter, this lane is CLOSED: no v4 is designed. A future
+attempt would need the operators fresh direction, and the evidence
+above says where it would have to differ — a materially larger real
+short-ALLOW corpus, a different patch surface, or the 64-token
+input contract itself (which drops the question on 97.6% of core
+items) revisited as a serving change. Artefacts: ~/wsp-exp17/w3v3/
+on the Thor (corpora with per-item provenance, fit grid + summary,
+patched/rollback copies, sealed result files).
