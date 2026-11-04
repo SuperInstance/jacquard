@@ -10056,8 +10056,8 @@
   "G5": {
    "diagnostic": {
     "n": 100,
-    "correct": 77,
-    "accuracy": 77.0,
+    "correct": 80,
+    "accuracy": 80.0,
     "per_category": {
      "animal_misc": {
       "n": 16,
@@ -10066,8 +10066,8 @@
      },
      "capital": {
       "n": 31,
-      "correct": 25,
-      "accuracy": 80.65
+      "correct": 28,
+      "accuracy": 90.32
      },
      "element_name": {
       "n": 8,
@@ -10133,16 +10133,16 @@
       "category": "capital",
       "gold": "Male",
       "raw_output": "Mal\u00e9",
-      "normalised_output": "mal\u00e9",
-      "correct": false
+      "normalised_output": "male",
+      "correct": true
      },
      {
       "id": "g5-diag-006",
       "category": "capital",
       "gold": "Bogota",
       "raw_output": "Bogot\u00e1",
-      "normalised_output": "bogot\u00e1",
-      "correct": false
+      "normalised_output": "bogota",
+      "correct": true
      },
      {
       "id": "g5-diag-007",
@@ -10877,8 +10877,8 @@
       "category": "capital",
       "gold": "Asuncion",
       "raw_output": "Asunci\u00f3n",
-      "normalised_output": "asunci\u00f3n",
-      "correct": false
+      "normalised_output": "asuncion",
+      "correct": true
      },
      {
       "id": "g5-diag-099",
@@ -10900,8 +10900,8 @@
    },
    "validation": {
     "n": 60,
-    "correct": 42,
-    "accuracy": 70.0,
+    "correct": 44,
+    "accuracy": 73.33,
     "per_category": {
      "animal_misc": {
       "n": 7,
@@ -10910,8 +10910,8 @@
      },
      "capital": {
       "n": 23,
-      "correct": 18,
-      "accuracy": 78.26
+      "correct": 20,
+      "accuracy": 86.96
      },
      "element_name": {
       "n": 9,
@@ -10961,7 +10961,7 @@
       "category": "animal_misc",
       "gold": "penguin",
       "raw_output": "Ad\u00e9lie penguin",
-      "normalised_output": "ad\u00e9lie penguin",
+      "normalised_output": "adelie penguin",
       "correct": false
      },
      {
@@ -11081,8 +11081,8 @@
       "category": "capital",
       "gold": "Brasilia",
       "raw_output": "Bras\u00edlia",
-      "normalised_output": "bras\u00edlia",
-      "correct": false
+      "normalised_output": "brasilia",
+      "correct": true
      },
      {
       "id": "g5-vali-019",
@@ -11177,8 +11177,8 @@
       "category": "capital",
       "gold": "Reykjavik",
       "raw_output": "Reykjav\u00edk",
-      "normalised_output": "reykjav\u00edk",
-      "correct": false
+      "normalised_output": "reykjavik",
+      "correct": true
      },
      {
       "id": "g5-vali-031",
@@ -11621,7 +11621,7 @@
       "category": "capital",
       "gold": "Vientiane",
       "raw_output": "Vi\u00f1\u00e9",
-      "normalised_output": "vi\u00f1\u00e9",
+      "normalised_output": "vine",
       "correct": false
      },
      {

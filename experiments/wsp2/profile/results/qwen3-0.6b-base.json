@@ -10502,7 +10502,7 @@
       "category": "element_symbol",
       "gold": "W",
       "raw_output": "W\u0119glowod\u00f3r",
-      "normalised_output": "w\u0119glowod\u00f3r",
+      "normalised_output": "weglowodor",
       "correct": false
      },
      {
@@ -10782,7 +10782,7 @@
       "category": "element_symbol",
       "gold": "Ar",
       "raw_output": "Ar\u2070",
-      "normalised_output": "ar\u2070",
+      "normalised_output": "ar0",
       "correct": false
      },
      {
@@ -10878,7 +10878,7 @@
       "category": "capital",
       "gold": "Asuncion",
       "raw_output": "Paraguay capital is Asunci\u00f3n.",
-      "normalised_output": "paraguay capital is asunci\u00f3n",
+      "normalised_output": "paraguay capital is asuncion",
       "correct": false
      },
      {
@@ -11590,7 +11590,7 @@
       "category": "element_symbol",
       "gold": "N",
       "raw_output": "N\u2082",
-      "normalised_output": "n\u2082",
+      "normalised_output": "n2",
       "correct": false
      },
      {
@@ -11662,7 +11662,7 @@
       "category": "element_symbol",
       "gold": "Cl",
       "raw_output": "Cl\u2082",
-      "normalised_output": "cl\u2082",
+      "normalised_output": "cl2",
       "correct": false
      },
      {
@@ -11710,7 +11710,7 @@
       "category": "element_symbol",
       "gold": "Br",
       "raw_output": "Br\u2082",
-      "normalised_output": "br\u2082",
+      "normalised_output": "br2",
       "correct": false
      },
      {
@@ -12030,7 +12030,7 @@
       "category": "element_symbol",
       "gold": "F",
       "raw_output": "F\u2082",
-      "normalised_output": "f\u2082",
+      "normalised_output": "f2",
       "correct": false
      },
      {
@@ -12062,7 +12062,7 @@
       "category": "element_symbol",
       "gold": "O",
       "raw_output": "O\u2082",
-      "normalised_output": "o\u2082",
+      "normalised_output": "o2",
       "correct": false
      },
      {

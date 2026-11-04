@@ -14,8 +14,9 @@ reviewer required by CRITERIA.md R2 ("Battery acceptance").
   `random`, fixed seeds per grade). Regeneration is byte-identical.
 - `batteries/*.jsonl` — 18 split files, 1,740 items total:
   G1–G4 and G6 at 120 diagnostic / 60 validation / 120 held-out;
-  G5 at 100 / 60 / 100 (bounded by the authored fact pool of 260
-  distinct facts; each fact assigned to exactly one split).
+  G5 at 100 / 60 / 100 (bounded by the authored fact pool: 260 of
+  270 authored facts are used, each in exactly one split; 10
+  authored facts are unused — corrected per review R2-F3).
 - `batteries/verify_profile.py` — independent verifier (imports
   nothing from the generator); output saved in
   `batteries/VERIFY-PROFILE.txt`; deterministic label-audit sample
@@ -40,13 +41,25 @@ in the Phase 15 T2 lineage — days-between, weekday offset,
 add-days-to-month, whole months with the birthday rule — plus
 week decomposition and two-step arithmetic chains; three disjoint
 frame sets, one per split, including a numeric DD/MM/YYYY frame
-for held-out); G5 factor-knowledge (authored tables: 90 capitals,
-65 element facts, 28 solar, 30 unit facts, 36 animal/misc, 24
-history/misc — partitioned contiguously after a seeded shuffle);
+for held-out); G5 factor-knowledge (authored tables, 270 facts in total:
+88 capitals, 64 element facts (40 name->symbol + 24
+symbol->name), 28 solar, 30 unit facts, 36 animal/misc, 24
+history/misc — shuffled with a fixed seed and partitioned
+contiguously; the first 260 are used (100 diagnostic / 60
+validation / 100 held-out) and the remaining 10 are unused);
 G6 unseparated relation (paired booking contexts in the E8
 geometry: 60/30/60 minimal pairs per split; the pair's two items
-differ in exactly one relation component — seat, box, time,
-lane, or expiry — and their golds flip ALLOW/HOLD; every split is
+differ in one relation component — seat, box, time, lane, or
+expiry — and their golds flip ALLOW/HOLD. Field-level purity,
+corrected per review R2-F2: different_seat, different_box and
+same_lane_renewal twins differ in exactly 1 field; time_disjoint
+twins differ in 2 fields (the new start and its derived
+check-by — one underlying component); expired_booking twins
+rewrite 2–4 fields of the EXISTING booking (its check-by, the
+expiry note, and often its start and/or duration), so the
+expiry twin is not the same booking with one component
+flipped. All golds were independently recomputed correct by
+the reviewer regardless. Every split is
 exactly 50% ALLOW / 50% HOLD, so a constant classifier scores
 exactly 50 and class bias cannot pass).
 
@@ -105,12 +118,12 @@ LFM2-1.2B (base, GGUF Q8_0 dequantised by transformers):
 | G2 | 33.3 | 36.7 | 30.0 |
 | G3 | 32.5 | 28.3 | 31.7 |
 | G4 | 9.2 | 8.3 | 12.5 |
-| G5 | 77.0 | 70.0 | 81.0 |
+| G5 | 80.0 | 73.3 | 81.0 |
 | G6 | 0.0 | 0.0 | 0.0 |
 
 The two students' profiles are near-mirror images, which is the
 calibration signal that the grades separate failure types rather
-than ranking models: LFM2 carries the facts (G5 70–81) and
+than ranking models: LFM2 carries the facts (G5 73–81) and
 deploys them passably (G1 52–59) but reads surface properties
 poorly (G3 ~30, with genuine readout errors, e.g. 'pillow'
 reported to contain 'e'); Qwen3-0.6B reads comparatively better
@@ -149,9 +162,24 @@ mass, not only format (e.g. a 21-day gap answered as 10 days).
   keys (sorted operand pairs) deduplicated across all splits;
   max G1 Jaccard fell from 1.000 to 0.889 (frame tokens only).
 - D3 (battery text, mine, fixed): audit sample caught "NOT a
-  animal / a instrument" article errors in G2 (13 items), a
-  "caterpillars" misspelling, and one convoluted G5 question;
-  all fixed and regenerated.
+  animal / a instrument" article errors in G2 (13 items) and
+  one convoluted G5 question; both fixed and regenerated.
+  The same paragraph originally also claimed a "caterpillars"
+  misspelling had been caught and fixed. That claim was false
+  in both directions, and the reviewer repeated it (R2-F3):
+  the builder's audit misread the word, the "fix" applied was
+  a no-op string replacement, and the check that appeared to
+  confirm it searched for the very string it believed was the
+  typo. Byte-level adjudication in the fix round: every
+  occurrence of the word in the tree (generator, g5-diag-035,
+  audit sample) is byte-identical to the "caterpillars" entry
+  in /usr/share/dict/words on the Thor (bytes
+  99 97 116 101 114 112 105 108 108 97 114 115; aspell
+  accepts it and rejects the single-l variant). The word was
+  never misspelled, and no change was made to it in the fix
+  round — changing it would have introduced a misspelling
+  and altered battery content. The lesson stands with D1:
+  a verification that cannot fail is not a verification.
 - D4 (generator, mine, fixed during build): G6 pair ids restarted
   per split, colliding derivations across splits (validation
   generation initially exhausted at 43/60); G3 word pools were
@@ -178,14 +206,76 @@ mass, not only format (e.g. a 21-day gap answered as 10 days).
   conclusions should use the per-category numbers in the results
   JSON, not the grade totals.
 
-Harness verification: matcher selftest 19/19 PASS. Sequence
-mode smoke-tested on the Thor with the base model standing in
-as its own G1 patch: the emitted retention curve has the base
-row plus one row per grade in profile order, each re-scoring
-only the grades profiled so far, and every value reproduces
-the base-mode held-out accuracies exactly (a reproducibility
-check on the whole pipeline: two independent runs, identical
-accuracies on all 18 grade/split cells for Qwen3-0.6B).
+Harness verification: matcher selftest PASS (19 cases at
+build; 26 after the R2-F1 fix). Sequence mode smoke-tested on
+the Thor with the base model standing in as its own G1 patch:
+the emitted retention curve has the base row plus one row per
+grade in profile order, each re-scoring only the grades
+profiled so far, and every value reproduces the base-mode
+held-out accuracies exactly (a reproducibility check on the
+whole pipeline: two independent runs, identical accuracies on
+all 18 grade/split cells for Qwen3-0.6B). The full-scale
+smoke artefacts for both students are committed as
+results/qwen3-0.6b-sequence-smoke.json and
+results/lfm2-1.2b-sequence-smoke.json (see Review fixes,
+R2-F4).
+
+## Review fixes (independent review: PASS-WITH-FIXES)
+
+The reviewer's record is on branch p16-r2-review
+(profile/REVIEW.md). Fixes applied on p16-r2:
+
+- R2-F1 (matcher accent-folding): normalise_answer now folds
+  accents on both sides (NFKD, combining marks removed);
+  selftest pins the behaviour in both directions (26 cases,
+  PASS). G5 was re-run for BOTH models on all splits with the
+  fixed matcher and the new G5 sections were spliced into the
+  committed baseline JSONs (all other grades' records are the
+  originally audited ones, byte-preserved). Old -> new G5
+  accuracies: Qwen3-0.6B 16.0 / 13.3 / 18.0 -> unchanged in
+  every split (its re-run also reproduced all 18 grade/split
+  cells of the original run exactly). LFM2-1.2B: diagnostic
+  77.0 -> 80.0, validation 70.0 -> 73.3, held-out 81.0 ->
+  81.0. The five flipped items are exactly the reviewer's
+  accent cases, with identical raw outputs: Malé, Bogotá,
+  Asunción (diagnostic), Brasília, Reykjavík (validation).
+  (Side effect, harmless here: NFKD also folds compatibility
+  characters in the stored normalised_output fields — e.g.
+  subscript digits in chemical outputs, "N\u2082" -> "n2" —
+  visible in the Qwen G5 diff; no correct flag changed
+  anywhere except the five accent items above.)
+  The remaining discredit class the reviewer named —
+  leading-article and plural replies ("The Sun", "The
+  telephone.", "Kittens") — was deliberately NOT fixed: the
+  whole-reply discipline is the instrument's design, and the
+  review itself calls that the stricter call.
+- R2-F2 (G6 pair purity): the claim is corrected in the G6
+  design paragraph above, with the reviewer's field-level
+  counts. No battery content changed.
+- R2-F3 (fact-pool counts + D3): counts corrected above and
+  in D3 (270 authored, 88 capitals, 64 element facts, 260
+  used, 10 unused). The spelling sub-claim is adjudicated
+  in D3: the word is byte-identical to the dictionary
+  spelling; no change was made, and no gold, split
+  membership, or battery content changed anywhere in this
+  fix round (batteries are byte-identical to the audited
+  commit; verify_profile.py still PASSes).
+- R2-F4 (sequence artefact): full-scale sequence smokes run
+  for both students (base model as its own G1 patch) and
+  committed: results/qwen3-0.6b-sequence-smoke.json and
+  results/lfm2-1.2b-sequence-smoke.json. In both, the final
+  retention row equals the base-mode held-out accuracies on
+  every grade. (Process note: the first fix-round launch of
+  these runs silently no-oped — a heredoc expansion bug in
+  the builder's driver script emptied the interpreter path,
+  and its DONE markers were unconditional. Caught by the
+  missing output files, re-run with per-run failure markers;
+  the artefacts above are from the real runs.)
+- R2-F5 (G6 offset limit): stated in the README limitations —
+  G6's start offsets are bimodal with no near-boundary items,
+  so the grade cannot distinguish representing overlap from
+  reading start offset conjunctively with seat/box/producer
+  equality.
 
 ## Retention design note
 

@@ -36,17 +36,20 @@ Scoring discipline (inherited from the Phase 15 harness):
 Matcher: exact normalised-answer matching. Normalisation is:
 lowercase; strip; collapse internal whitespace to single spaces;
 remove thousands commas; remove one trailing full stop; map the
-Unicode minus to '-'. If both the normalised reply and the gold
-parse as numbers, they are compared as numbers (so "07" matches
-"7" and "11.0" matches "11"). NOTHING else is forgiven: a reply
-that merely CONTAINS the gold string scores wrong. This is
-deliberately stricter than substring/token matching -- a reply is
-an answer only if it is the whole reply.
+Unicode minus to '-'; fold accents (NFKD decomposition, combining
+marks removed) so a correctly accented reply ("Bogotá") matches
+an ASCII-folded gold ("Bogota") and vice versa. If both the
+normalised reply and the gold parse as numbers, they are compared
+as numbers (so "07" matches "7" and "11.0" matches "11"). NOTHING
+else is forgiven: a reply that merely CONTAINS the gold string
+scores wrong. This is deliberately stricter than substring/token
+matching -- a reply is an answer only if it is the whole reply.
 """
 import argparse
 import json
 import re
 import sys
+import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
@@ -62,6 +65,12 @@ BATCH_SIZE = 16
 
 def normalise_answer(text):
     t = (text or "").strip().lower()
+    # Accent-fold: NFKD decomposition separates base letters from
+    # combining marks; dropping the marks maps "bogotá" -> "bogota"
+    # on BOTH the reply and the gold, so correct accents are never
+    # discredited against ASCII-folded golds (review fix R2-F1).
+    t = unicodedata.normalize("NFKD", t)
+    t = "".join(c for c in t if not unicodedata.combining(c))
     t = t.replace("−", "-").replace(",", "")
     t = re.sub(r"\s+", " ", t)
     if t.endswith("."):
@@ -264,6 +273,11 @@ def selftest():
         ("07", "7", True), ("11.0", "11", True), ("1,000", "1000", True),
         ("Paris", "paris", True), ("New  Delhi", "New Delhi", True),
         ("ALLOW", "allow", True), ("Fe", "Fe", True),
+        # accent behaviour, both directions (R2-F1)
+        ("Malé", "Male", True), ("Male", "Malé", True),
+        ("Bogotá", "Bogota", True), ("Bogota", "Bogotá", True),
+        ("Brasília", "Brasilia", True), ("Asunción", "Asuncion", True),
+        ("Reykjavík", "Reykjavik", True), ("Bogotá", "Cairo", False),
         # must NOT credit incidental containment (Phase 15 defect class)
         ("The answer is 42", "42", False),
         ("Paris is the capital", "Paris", False),

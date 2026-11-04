@@ -74,8 +74,9 @@ item's raw output is saved.
 An answer is correct only if the model's whole reply, after
 normalisation, equals the gold answer. Normalisation lowercases,
 collapses whitespace, removes thousands commas and one trailing
-full stop; if both sides parse as numbers they are compared as
-numbers. A reply that merely contains the gold string — "The
+full stop, and folds accents (a reply of "Bogotá" matches a gold
+of "Bogota", and vice versa); if both sides parse as numbers
+they are compared as numbers. A reply that merely contains the gold string — "The
 answer is 42" for gold "42" — scores **wrong**. This is strict by
 design: the profile grades failure types, and a model that buries
 its answer in prose has a format failure, which is what G1 and G2
@@ -102,7 +103,14 @@ split.
   number involve conventions (for example capital-city choices
   for countries with more than one seat of government).
 - G6 tests one relation — same-seat contention under one stated
-  booking policy — not decision-making in general.
+  booking policy — not decision-making in general. Its start
+  offsets are bimodal by construction: contention items start
+  15–45 minutes into the existing booking, and non-overlap items
+  start well after it ends. There are no near-boundary items
+  (a start exactly at the existing booking's end, an overlap of
+  a few minutes), so G6 cannot distinguish a model that
+  represents overlap from one that reads the start offset
+  together with seat, box and producer equality.
 - Greedy decoding is deterministic per configuration, but batch
   composition and hardware numerics can move a borderline item
   between runs; treat accuracies as reproducible to within about

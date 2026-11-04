@@ -4584,3 +4584,30 @@ gguf_file route with dequantisation and a reference
 causal-conv fallback — no substitute was used. The battery
 now waits on the independent reviewer's audit required by
 CRITERIA.md R2 before any patching.
+
+Phase 16, slice 45 fix round (2026-11-04) — the independent
+review returned PASS-WITH-FIXES (REVIEW.md on p16-r2-review);
+fixes applied on p16-r2. R2-F1: the matcher now accent-folds
+both sides (NFKD) — G5 re-run for both students, new G5
+sections spliced into the committed baselines: Qwen unchanged
+everywhere (16.0/13.3/18.0), LFM2 diagnostic 77.0 -> 80.0 and
+validation 70.0 -> 73.3 on exactly the five accented replies
+the reviewer named (Malé, Bogotá, Asunción, Brasília,
+Reykjavík), held-out unchanged at 81.0. Article-type
+discredits were deliberately left standing (whole-reply
+discipline). R2-F4: full-scale sequence smokes for BOTH
+students committed under profile/results/; final retention
+rows equal base held-out on every grade. R2-F2/R2-F3/R2-F5:
+wording corrected — G6 pair purity (expired_booking twins
+rewrite 2-4 fields), fact pool is 270 authored (88 capitals,
+64 element facts) with 260 used and 10 unused, and the G6
+bimodal-offset limit now stated in the README. One reviewer
+sub-claim did not survive byte-level adjudication: the
+"caterpillars" misspelling exists in neither the generator
+nor item g5-diag-035 — every occurrence is byte-identical
+to /usr/share/dict/words (the builder's original D3 claim
+of having fixed it was equally false; the fix was a no-op
+replace and its check searched for its own typo string).
+The corrected D3 in SLICE45-BUILD.md tells the whole story;
+no battery content changed in the fix round and the
+verifier still PASSes.
