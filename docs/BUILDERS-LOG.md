@@ -4515,3 +4515,35 @@ nothing here is the source paper's 6x, and the record
 says why (their failure class was capability-shaped,
 this battery's was behaviour-shaped). The honesty gate
 is NOT triggered — slices 42-43 proceed as chartered.
+
+Phase 15 COMPLETE (2026-11-04) — slices 41-43 all landed;
+records in experiments/wsp/ (SLICE41-E1E4, SLICE42-E3,
+SLICE42-E5, SLICE43-E2, SLICE43-E6, SLICE43-E7,
+SLICE43-E8, SLICE43-FINDINGS). One paragraph for the log:
+authored logit-level patching is a behaviour-deployment
+instrument — it harvested every format/completion failure
+it was shown (E1 +4.5 held-out, ablation-exact; the E6
+loop closed 35.9% of the teacher gap in two adopted
+rounds and stopped on a falsification battery, its round
+3 denied in the log; E7's patched specialist beat the
+hand-built signal-chain joint 84.2% to 46.7% held-out),
+and it measured zero — with the trials to prove it — on
+procedure, on factor knowledge, and on a contention
+relation the base representation does not separate
+(E8: diagnostic triumph, held-out item-identical to base,
+the incumbent-wrong trio learned as ALLOW; adoption
+denied). The gradient pole amputated its own scaffold
+and corroded chained tasks; the fluid pole's collateral
+was global and unpredictable (fact recall 85 -> 9). The
+governance log carried 10 deployment proposals: 7
+approved, 3 denied, every decision from coordinator-
+scored evidence, including a bit-for-bit rollback. The
+phase's own process failures were recorded where they
+happened (governor stale-job audit, the truncated first
+copy, seat pool measured unusable — Pi crashed, Kimi at
+quota, ZCode context-saturated — so all roles were filled
+by coordinator-run sessions with the charter's separations
+preserved). Casey-facing residuals unchanged: adoption of
+any patched copy into a serving role remains his call;
+the adopted states in this record are experiment states
+on the bench, nothing was promoted to a fleet service.
