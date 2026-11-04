@@ -4358,3 +4358,91 @@ with diagnostic data + validation aggregates only, and
 every verdict quantity is produced by the verified
 scoring scripts run by the coordinator — no model grades
 a number that enters a verdict.
+
+Phase 15 setup incidents and seat findings (2026-11-04):
+(1) Governor restart — the coordinator's first restart of
+the Thor download-governor walked into a stale-queue trap:
+several historical jobs' destination files had been moved
+to the cold shelf by prior lanes without retiring their
+governor lines, so the restart tried to re-download a
+16.8 GB file whose home was gone (curl rc 23). The
+coordinator killed the run (an orphaned backoff `sleep`
+briefly held the governor flock via an inherited fd —
+killed by PID), audited EVERY registered job's destination
+against disk, and retired the verifiably-absent set in the
+house pattern (dated comment + full backup
+governor.sh.bak-wsp-retire-20261104): diffusiongemma,
+flux1-dev, vllm-pull (image pruned), hunyuan3d-2 (empty
+target dir), nemotron-labs-diffusion-8b, edenlive-* (7) —
+~100 GB of phantom queue removed; no live job's line was
+touched. Restart then verified the surviving DONE jobs by
+hash and reached this phase's jobs; the Qwen3-0.6B fetch
+completed through the gate. Lesson recorded for the fleet:
+a governor restart is only as safe as the retirement
+hygiene of every lane before it.
+(2) Pi seat on the Thor — VERIFIED PRESENT: Pi coding
+agent 1.4.0 (@earendil-works/pi-coding-agent) at
+~/.pi/agent/bin/pi, with ~/.pi/agent/auth.json present and
+-pi (print) drive mode available. Two drive traps found:
+under the system Node 18 the bundle fails to load (needs
+the nvm Node 22/24 first in PATH — the fleet's known
+pattern), and the first full headless probe with the
+correct PATH ran past a 120 s timeout without returning
+(slow cold start or a hang; output was lost with the
+session). Pi is therefore rostered as UNPROVEN for timed
+work until a file-captured probe completes; the teacher
+role falls to the next roster line until then. Kimi seat
+present at ~/.kimi-code/bin/kimi (headless verified by
+the fleet 2026-10-24); ZCode on the Thor is the nvm build.
+Roster as staffed: battery builder = Oracle ZCode
+(3.16.3-40, /usr/bin/zcode); battery reviewer = Orin ZCode
+(3.16.2-38); patcher = Thor Kimi seat; teacher = Thor Pi
+if its probe lands, else a non-patching Claude session
+run by the coordinator.
+
+Phase 15 setup, continued (2026-11-04): (a) Coordinator
+near-miss, owned: the first copy of the student base was
+made while the weights download was in its final seconds
+(the governor STATUS timestamp lags job events; the file's
+own size was still growing) and captured a truncated
+prefix — caught immediately because the copy's sha256 did
+not match the gated original, diagnosed from mtimes
+(copy 17:57:08 < gate OK 17:57:28), and redone after the
+original verified stable at f47f7117... The gated original
+was never touched; the incident is recorded because the
+rollback proofs in slice 43 depend on hash discipline
+being real, not theatrical. (b) Pi seat, final verdict for
+this phase: present (1.4.0, auth file on box) but NOT
+drivable for timed work — probe 1 hung past 120 s under
+the correct nvm PATH, probe 2 (file-captured, 600 s
+budget) returned "Connection error." Pi takes no role in
+Phase 15; the teacher role goes to a coordinator-run
+Claude session that never patches, per PLAN.md's roster
+fallback. (c) The Oracle zcode -p headless launch of the
+battery seat produced no work and exited silently (log =
+seven "Built-in skipped" lines); the seat was relaunched
+as an interactive tmux seat (p15bat — GLM-5.3, yolo, max),
+which read the brief and began work normally. The -p
+build-drive failure on this box/version is consistent
+with the fleet's existing zcode record.
+
+Phase 15 staffing change (2026-11-04): the Oracle ZCode
+seat is NOT usable for this phase's building. Measured,
+not assumed: a fresh session reports ctx 98-100% full at
+start (in the repo dir AND in a bare directory — the seat's
+own bundled context saturates its window before any user
+content), and twice settled into multi-minute thinking
+turns (5m 41s the first) producing zero artefacts, even
+after an incremental one-file-at-a-time re-brief. The
+battery build therefore goes to a coordinator-spawned
+Claude session; the battery review to a second, separate
+Claude session (the Orin ZCode reviewer plan is dropped
+on the same evidence — same product family, and a review
+that cannot run is not a review). Role separation is
+preserved exactly: builder != reviewer != patcher (Thor
+Kimi seat) != teacher (a third non-patching session), and
+all verdict numbers still come from the verified scoring
+scripts run by the coordinator. Log records the seat
+failure as a fleet finding: zcode seats on this build
+carry a context load that leaves no working room for
+large briefs.

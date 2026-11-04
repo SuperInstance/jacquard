@@ -3,3 +3,38 @@
 {"ts": "2026-11-04T02:49:19.425432+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 1.996, "proposal_id": "956c439ac3efe4a09cf55364e648a977d2309027b8d24e5d56fc548a61a5f693", "outcome": "queue"}
 {"ts": "2026-11-04T02:49:26.345127+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 1.504, "proposal_id": "956c439ac3efe4a09cf55364e648a977d2309027b8d24e5d56fc548a61a5f693", "outcome": "queue"}
 {"ts": "2026-11-04T02:49:35.465514+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 2.416, "proposal_id": "6a9e898d9de72b13d3d00a35831bebd528b9eec63e8138236a08ae383894641b", "outcome": "queue"}
+{"ts": "2026-11-04T02:56:20.166202+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 2.459, "proposal_id": "b4dff68a3d7ecab0b2325b33829cf38a488836cdc4c4c6ca1b631600d9bc6a8f", "outcome": "allow"}
+{"ts": "2026-11-04T02:56:20.257475+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.117, "outcome": "pass"}
+{"ts": "2026-11-04T02:56:22.389372+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 2.577, "proposal_id": "9e7f849af4909a652ca250f235c718e5dffa0411efcb8db0afbca95c1d0fd61e", "outcome": "allow"}
+{"ts": "2026-11-04T02:56:22.474877+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.139, "outcome": "pass"}
+{"ts": "2026-11-04T02:56:41.202759+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 2.899, "proposal_id": "5b28c2fcbea290c78cf4ce2111d9b949cc0003372392af7384109b7b81f7e682", "outcome": "queue"}
+{"ts": "2026-11-04T03:00:53.146936+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 7.916, "proposal_id": "259e94fc4d4a4865c3ab28d908ed0afae9a71dbeb8cb775be9bf49fb53104daf", "outcome": "queue"}
+{"ts": "2026-11-04T03:01:07.127505+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 5.176, "proposal_id": "ccb4c47cdb12dc6ef89298a96ace16ad09532622edec27f6de912a44f37b2f90", "outcome": "queue"}
+{"ts": "2026-11-04T03:01:11.008944+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 5.536, "proposal_id": "b67074f5d203655efcf60080a216d548758a9a5ee1d9063dce6466d81570f362", "outcome": "allow"}
+{"ts": "2026-11-04T03:01:11.117270+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.579, "outcome": "pass"}
+{"ts": "2026-11-04T03:01:19.473065+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 5.638, "proposal_id": "0415f3e74fce2494b655ffc977b23603b27a0b2547b9133c40f62814dae26057", "outcome": "allow"}
+{"ts": "2026-11-04T03:01:19.566019+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.193, "outcome": "pass"}
+{"ts": "2026-11-04T03:03:17.785359+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 5.388, "proposal_id": "259e94fc4d4a4865c3ab28d908ed0afae9a71dbeb8cb775be9bf49fb53104daf", "outcome": "queue"}
+{"ts": "2026-11-04T03:04:15.579893+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 6.819, "proposal_id": "d21a736138da6795a29479b8e22712feda4e6b5716649d71d1bf994323d5f6f5", "outcome": "allow"}
+{"ts": "2026-11-04T03:04:15.670924+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.058, "outcome": "pass"}
+{"ts": "2026-11-04T03:04:43.567203+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 6.194, "proposal_id": "5e926d3990aab29e62b875c5e70b41e8a315b2af642c19640a478ae294bc8e95", "outcome": "allow"}
+{"ts": "2026-11-04T03:04:43.655408+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.053, "outcome": "pass"}
+{"ts": "2026-11-04T03:04:50.661780+00:00", "tool": "TodoWrite", "verdict": "pass", "decision_ms": 0.07, "outcome": "pass"}
+{"ts": "2026-11-04T03:04:50.747340+00:00", "tool": "TodoWrite", "verdict": "pass", "decision_ms": 0.088, "outcome": "pass"}
+{"ts": "2026-11-04T03:06:42.703755+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 5.921, "proposal_id": "259e94fc4d4a4865c3ab28d908ed0afae9a71dbeb8cb775be9bf49fb53104daf", "outcome": "queue"}
+{"ts": "2026-11-04T03:08:47.530468+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 5.647, "proposal_id": "259e94fc4d4a4865c3ab28d908ed0afae9a71dbeb8cb775be9bf49fb53104daf", "outcome": "queue"}
+{"ts": "2026-11-04T03:11:37.025616+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 10.913, "proposal_id": "84210556625f0b2161ea08c73540f76efbecaa101ae0ed32615290963bb4cfa7", "outcome": "queue"}
+{"ts": "2026-11-04T03:12:33.940733+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 10.217, "proposal_id": "90a7a08420e1c29287d247e9088d13030de2200dc98cfeed7f4c669009da62f9", "outcome": "queue"}
+{"ts": "2026-11-04T03:13:22.961177+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 10.669, "proposal_id": "b5c69d8257b59261a1d5c587d30e8de343b4e009f93d5704506c2360adb56817", "outcome": "queue"}
+{"ts": "2026-11-04T03:14:41.244769+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 13.065, "proposal_id": "4494ad4c4cce3e9f21d42619f3c8e821fac5b8d71e6ce64bf729fa3f976e764b", "outcome": "queue"}
+{"ts": "2026-11-04T03:16:47.970874+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 8.365, "proposal_id": "84210556625f0b2161ea08c73540f76efbecaa101ae0ed32615290963bb4cfa7", "outcome": "queue"}
+{"ts": "2026-11-04T03:17:59.291282+00:00", "tool": "Write", "verdict": "deny", "decision_ms": 13.896, "proposal_id": "ab83bde69382b22ac8b5f127f828ad0100676f52010e6954db2da0e10436357e", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:07.917882+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 12.951, "proposal_id": "0eb9bff66eced29a697496ea744f684fbf350845b10988e7530a648febcf3674", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:10.131111+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 8.562, "proposal_id": "0eb9bff66eced29a697496ea744f684fbf350845b10988e7530a648febcf3674", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:18.236380+00:00", "tool": "TodoWrite", "verdict": "pass", "decision_ms": 0.062, "outcome": "pass"}
+{"ts": "2026-11-04T03:18:18.325742+00:00", "tool": "TodoWrite", "verdict": "pass", "decision_ms": 0.098, "outcome": "pass"}
+{"ts": "2026-11-04T03:18:26.070115+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 13.02, "proposal_id": "2b34acf067874b5e8bbf2c8d9ebf2734eb13e61e1a2405dadd55ae05f243f273", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:28.559147+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 9.132, "proposal_id": "2b34acf067874b5e8bbf2c8d9ebf2734eb13e61e1a2405dadd55ae05f243f273", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:31.333366+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 8.935, "proposal_id": "2b34acf067874b5e8bbf2c8d9ebf2734eb13e61e1a2405dadd55ae05f243f273", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:48.223745+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 13.209, "proposal_id": "3803788089f9472141e0650d82a3d0d884818783fbcd75df9e83de7f93786421", "outcome": "queue"}
+{"ts": "2026-11-04T03:18:54.357020+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 13.63, "proposal_id": "a9e81941bab1191b7f921b362bfd3ec32f2c02063aee85c88943426f6184219c", "outcome": "queue"}

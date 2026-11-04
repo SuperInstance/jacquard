@@ -1,0 +1,8 @@
+=== battery verification ===
+  diagnostic: count 80 OK
+  validation: count 200 OK
+  heldout: count 200 OK
+  forget_instr: count 100 OK
+  forget_fact: count 100 OK
+  forget_prose: count 24 OK
+PASS: counts, derivations, category balance, prompt uniqueness, heldout marker hygiene, and structural checks all OK
