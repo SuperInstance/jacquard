@@ -1,0 +1,8 @@
+{
+ "exact_duplicate_messages_cross_split": 0,
+ "held_items_with_digit_normalised_template_in_diag": 492,
+ "held_n": 492,
+ "cross_split_token_jaccard_max": 0.8947,
+ "cross_split_token_jaccard_mean_nearest": 0.8947,
+ "distinct_cmd_templates_total": 4
+}
