@@ -4547,3 +4547,48 @@ preserved). Casey-facing residuals unchanged: adoption of
 any patched copy into a serving role remains his call;
 the adopted states in this record are experiment states
 on the bench, nothing was promoted to a fleet service.
+
+Phase 16, slice 44 (R1) — the E8 transfer autopsy
+(2026-11-03). Battery/scoring role only; no patch
+authored. Sanity first: the Phase 15 scoring path
+reproduced the record exactly (diagnostic (a) 64.3 ->
+96.4, (b) 59.0 -> 93.3; held-out patched == base
+item-identical, 53/53 ALLOW). The format eras were
+characterised from curate.py: one renderer family tree
+(board / kernel / prose) shared across eras — the only
+renderer-level novelty in held-out is the gpu-windows
+enrich-segment insertion, and the bigger difference is
+source mix (diagnostic has the prose jev family and the
+proof-run HOLD mass; held-out's non-ALLOW golds all sit
+in gpu-windows). Canonicalisation (held-out into
+diagnostic-era formats; diagnostic into the held-out
+era's kernel form) was proven content-preserving by an
+independent verifier: 165/165 items, every non-context
+field identical, every context exactly the re-derived
+rendering. Verdict against the pre-stated R1 criterion:
+TRANSFER DOES NOT APPEAR — on canonicalised held-out
+the patched student is again item-identical to base
+((a) gap 0.0 points, non-ALLOW 0/53, (b) equal at
+64.3), failing two of three conjuncts at exactly zero.
+Cross-format diagnostic cost the patched student one
+net item (95.5/92.4; two jev answers flip, trio still
+ALLOW x3). The representation probes (E8's probe
+adapted; its 0.971 AUC and class projections reproduce
+exactly) name the failing relations: same-exclusive-
+seat contention vs legal overlaps (E8's own sim2
+direction replicated: trio 5.22 vs legal 5.41,
+AUC 0.444; cross-format ranges overlap, no usable
+margin), the gpu-windows DENY relation (within-family
+AUC 0.500 on the diagnostic DENY direction; the HOLD
+direction anti-separates the family at AUC 0.000), and
+the single gpu HOLD inside the ALLOW cloud on both
+directions. The door closes as a representation claim;
+no patch round follows from R1. Record:
+experiments/wsp2/r1/R1-AUTOPSY.md. Defects reported
+there, plainly: the Phase 15 record's format-era
+phrasing overstates renderer drift (D1); E8's printed
+orthogonalised-projection scale (21.3-21.5) does not
+reproduce from the preserved sim2.py, though its
+qualitative claim does (D2); one transient probe-run
+failure, rerun clean twice (D3); two inherited battery
+quirks noted, not altered (D4/D5).

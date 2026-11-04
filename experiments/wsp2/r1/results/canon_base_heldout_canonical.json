@@ -1,0 +1,563 @@
+{
+  "model": "/home/caseydigennaro/wsp-exp/e8/work/student-base",
+  "battery": "batteries/heldout_canonical.jsonl",
+  "splits": {
+    "heldout-canonical": {
+      "n": 53,
+      "accuracy_operator": 0.8867924528301887,
+      "correctness": {
+        "n": 14,
+        "accuracy": 0.6428571428571429
+      },
+      "per_gold": {
+        "ALLOW": {
+          "n": 47,
+          "correct_operator": 47,
+          "accuracy_operator": 1.0
+        },
+        "HOLD": {
+          "n": 1,
+          "correct_operator": 0,
+          "accuracy_operator": 0.0
+        },
+        "DENY": {
+          "n": 5,
+          "correct_operator": 0,
+          "accuracy_operator": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "e8-board-shadow-057",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-058",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-059",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-060",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-gpu-windows-001",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-002",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-003",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-gpu-windows-004",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-gpu-windows-006",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-007",
+          "gold": "DENY",
+          "operator_correct": false,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-008",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-009",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-010",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-011",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-gpu-windows-012",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-gpu-windows-013",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-gpu-windows-014",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-015",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-gpu-windows-016",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-gpu-windows-017",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-001",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-002",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-003",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-004",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-005",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-006",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-007",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-008",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-009",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-010",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-011",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-slice30-booking-012",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-061",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-062",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-063",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-064",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-065",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-066",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-067",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-068",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-069",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-070",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-071",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-072",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-073",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-074",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-075",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-076",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-077",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-078",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-079",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-080",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-081",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        }
+      ]
+    }
+  }
+}

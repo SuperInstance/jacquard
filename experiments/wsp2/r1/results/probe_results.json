@@ -1,0 +1,227 @@
+{
+ "P0_original_diagnostic": {
+  "hold_vs_allow_AUC_on_u_ha": 0.9710960960960962,
+  "proj_ALLOW_on_u_ha": {
+   "mean": 17.72051386675419,
+   "std": 4.225065976970309,
+   "min": 13.947393622610736,
+   "max": 29.046404066917326
+  },
+  "proj_HOLD_on_u_ha": {
+   "mean": 30.738164228331918,
+   "std": 3.2404441609185812,
+   "min": 14.7616349334215,
+   "max": 32.79443173696762
+  }
+ },
+ "P1_canonical_heldout": {
+  "n_allow": 47,
+  "n_nonallow": 6,
+  "AUC_nonallow_vs_allow_on_u_hold": 0.7340425531914894,
+  "AUC_nonallow_vs_allow_on_u_deny": 0.5780141843971631,
+  "proj_ALLOW_on_u_hold": {
+   "mean": 20.662781689254075,
+   "std": 2.268677653830922,
+   "min": 16.952913348048043,
+   "max": 24.159456951196873
+  },
+  "proj_nonallow_items": [
+   {
+    "id": "e8-gpu-windows-003",
+    "gold": "DENY",
+    "source": "gpu-windows",
+    "proj_u_hold": 21.7956878341054,
+    "proj_u_deny": -32.87895966504736,
+    "margin_u_hold_vs_ALLOW_mean": 1.1329061448513258,
+    "margin_u_deny_vs_ALLOW_mean": 1.6371592313045014
+   },
+   {
+    "id": "e8-gpu-windows-004",
+    "gold": "DENY",
+    "source": "gpu-windows",
+    "proj_u_hold": 22.411735742154,
+    "proj_u_deny": -34.978481292388025,
+    "margin_u_hold_vs_ALLOW_mean": 1.7489540528999257,
+    "margin_u_deny_vs_ALLOW_mean": -0.4623623960361627
+   },
+   {
+    "id": "e8-gpu-windows-007",
+    "gold": "DENY",
+    "source": "gpu-windows",
+    "proj_u_hold": 22.09904358435127,
+    "proj_u_deny": -32.36881278517233,
+    "margin_u_hold_vs_ALLOW_mean": 1.4362618950971964,
+    "margin_u_deny_vs_ALLOW_mean": 2.1473061111795317
+   },
+   {
+    "id": "e8-gpu-windows-011",
+    "gold": "HOLD",
+    "source": "gpu-windows",
+    "proj_u_hold": 23.1785662151673,
+    "proj_u_deny": -35.56151726564886,
+    "margin_u_hold_vs_ALLOW_mean": 2.515784525913226,
+    "margin_u_deny_vs_ALLOW_mean": -1.045398369296997
+   },
+   {
+    "id": "e8-gpu-windows-012",
+    "gold": "DENY",
+    "source": "gpu-windows",
+    "proj_u_hold": 22.630034031567895,
+    "proj_u_deny": -32.80800619351099,
+    "margin_u_hold_vs_ALLOW_mean": 1.9672523423138202,
+    "margin_u_deny_vs_ALLOW_mean": 1.7081127028408716
+   },
+   {
+    "id": "e8-gpu-windows-013",
+    "gold": "DENY",
+    "source": "gpu-windows",
+    "proj_u_hold": 22.745722548067825,
+    "proj_u_deny": -35.07586521867778,
+    "margin_u_hold_vs_ALLOW_mean": 2.0829408588137497,
+    "margin_u_deny_vs_ALLOW_mean": -0.559746322325914
+   }
+  ]
+ },
+ "P2_crossformat_diagnostic": {
+  "n_board": 56,
+  "n_overlap": 6,
+  "n_trio": 3,
+  "n_legal_overlap": 3,
+  "trio_ids": [
+   "e8-board-shadow-018",
+   "e8-board-shadow-025",
+   "e8-board-shadow-033"
+  ],
+  "legal_ids": [
+   "e8-board-shadow-015",
+   "e8-board-shadow-019",
+   "e8-board-shadow-028"
+  ],
+  "AUC_overlap_vs_nocontention_on_u_over": 0.9966666666666667,
+  "proj_overlap_on_u_over": {
+   "mean": -11.546769987493812,
+   "std": 1.8954308767553827,
+   "min": -13.525527636724155,
+   "max": -8.049531697770577
+  },
+  "proj_nocontention_on_u_over": {
+   "mean": -16.84910875652923,
+   "std": 1.710332081857921,
+   "min": -21.561885965991767,
+   "max": -13.4800339402037
+  },
+  "AUC_trio_vs_legal_on_u_seat": 1.0,
+  "proj_trio_on_u_seat": {
+   "mean": 36.94559568700564,
+   "std": 1.0957620564115762,
+   "min": 35.75495140138794,
+   "max": 37.911686117449456
+  },
+  "proj_legal_on_u_seat": {
+   "mean": 30.226525076157614,
+   "std": 2.0439676755367375,
+   "min": 27.86757963915114,
+   "max": 31.471847453420743
+  },
+  "proj_trio_on_u_over": {
+   "mean": -12.589072386918565,
+   "std": 0.8385816753732362,
+   "min": -13.525527636724155,
+   "max": -11.90751895460971
+  },
+  "proj_legal_on_u_over": {
+   "mean": -10.50446758806906,
+   "std": 2.2403668046957446,
+   "min": -12.438484010306688,
+   "max": -8.049531697770577
+  },
+  "trio_minus_legal_margin_on_u_over": -2.0846047988495044,
+  "per_item_on_u_over": {
+   "e8-board-shadow-015": -12.438484010306688,
+   "e8-board-shadow-018": -11.90751895460971,
+   "e8-board-shadow-019": -11.025387056129915,
+   "e8-board-shadow-025": -12.334170569421833,
+   "e8-board-shadow-028": -8.049531697770577,
+   "e8-board-shadow-033": -13.525527636724155
+  },
+  "per_item_on_u_seat": {
+   "e8-board-shadow-015": 31.471847453420743,
+   "e8-board-shadow-018": 35.75495140138794,
+   "e8-board-shadow-019": 31.340148135900964,
+   "e8-board-shadow-025": 37.17014954217953,
+   "e8-board-shadow-028": 27.86757963915114,
+   "e8-board-shadow-033": 37.911686117449456
+  }
+ },
+ "P3_original_diagnostic": {
+  "n_board": 56,
+  "n_overlap": 6,
+  "n_trio": 3,
+  "n_legal_overlap": 3,
+  "trio_ids": [
+   "e8-board-shadow-018",
+   "e8-board-shadow-025",
+   "e8-board-shadow-033"
+  ],
+  "legal_ids": [
+   "e8-board-shadow-015",
+   "e8-board-shadow-019",
+   "e8-board-shadow-028"
+  ],
+  "AUC_overlap_vs_nocontention_on_u_over": 0.9533333333333334,
+  "proj_overlap_on_u_over": {
+   "mean": -1.9481365264161035,
+   "std": 3.5192676589381753,
+   "min": -7.474564065453285,
+   "max": 2.7017792061194363
+  },
+  "proj_nocontention_on_u_over": {
+   "mean": -8.934030603381908,
+   "std": 2.3974008460985075,
+   "min": -14.548619457010806,
+   "max": -3.699960869739826
+  },
+  "AUC_trio_vs_legal_on_u_seat": 1.0,
+  "proj_trio_on_u_seat": {
+   "mean": 45.11394428883008,
+   "std": 2.5445688336864536,
+   "min": 42.718039497744336,
+   "max": 47.78483956290142
+  },
+  "proj_legal_on_u_seat": {
+   "mean": 37.713585519269785,
+   "std": 1.7194995859494162,
+   "min": 35.728201071491945,
+   "max": 38.725389832830786
+  },
+  "proj_trio_on_u_over": {
+   "mean": -3.94524898113013,
+   "std": 3.6927870324988374,
+   "min": -7.474564065453285,
+   "max": -0.10824317092373548
+  },
+  "proj_legal_on_u_over": {
+   "mean": 0.048975928297923334,
+   "std": 2.3153966399749386,
+   "min": -1.565588298905994,
+   "max": 2.7017792061194363
+  },
+  "trio_minus_legal_margin_on_u_over": -3.9942249094280533,
+  "per_item_on_u_over": {
+   "e8-board-shadow-015": -1.565588298905994,
+   "e8-board-shadow-018": -4.25293970701337,
+   "e8-board-shadow-019": -0.9892631223196724,
+   "e8-board-shadow-025": -0.10824317092373548,
+   "e8-board-shadow-028": 2.7017792061194363,
+   "e8-board-shadow-033": -7.474564065453285
+  },
+  "per_item_on_u_seat": {
+   "e8-board-shadow-015": 38.725389832830786,
+   "e8-board-shadow-018": 44.8389538058445,
+   "e8-board-shadow-019": 38.687165653486616,
+   "e8-board-shadow-025": 42.718039497744336,
+   "e8-board-shadow-028": 35.728201071491945,
+   "e8-board-shadow-033": 47.78483956290142
+  }
+ }
+}
