@@ -4928,3 +4928,27 @@ two-candidate bound (noted, not re-judged), and a minor Thor
 /tmp module-shadowing defect that bit a helper script and no
 score. Thor compute 5m00s for all four runs; grader wall-clock
 ≈ 0.8 h.
+
+## Phase 16 close (2026-11-04)
+
+Slices 44-46 complete; findings at experiments/wsp2/FINDINGS.md.
+R1: transfer does not appear under verified canonicalisation —
+E8 door closed as a representation claim. R2: the patchability
+profile instrument shipped (experiments/wsp2/profile/) and run
+on two students; the yield boundary sits after G1
+(format/completion) in both, with both G2 gains denied solely
+by the retention clause. R3: no patch declared — probes
+discriminate, interventions do not reach; procedure bounded
+from two authored sides. R4: panic-dial joint — round 1
+adopted (held-out 50.8 vs incumbents 32.5/15.0), round 2
+denied (49.2); marginal cost of joint 2 ~1 hour of agent time
+all-in, 0 teacher calls. Governance: canonical log 195 -> 279
+entries; profile ratification preserved as its own chain
+(experiments/wsp2/profile/ratification-kernel.jsonl, 398).
+Coordinator errors of record this phase: unresolved merge
+markers committed into this log in 1feb4b1 (fixed by union,
+bce1db6); the governance log fork between the coordinator and
+grader clones, preserved as two valid chains rather than
+rewritten (RATIFICATION-NOTE.md). Housekeeping: phase15-wsp
+merged to main at the phase start (8d44929); kernel untouched
+throughout — no version bump, no tag.
