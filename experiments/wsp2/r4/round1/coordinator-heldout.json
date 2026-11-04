@@ -1,0 +1,9 @@
+{"scorer": "coordinator (Phase 16), builder's score_student.py unmodified, Thor, 2026-11-04",
+ "model": "~/wsp-exp16/r4/round1/patched",
+ "battery": "experiments/wsp2/r4/heldout.jsonl (n=120)",
+ "overall_pct": 50.8, "correct": 61, "n": 120,
+ "per_class_recall_pct": {"calm": 27.5, "alarmed": 72.5, "stampede": 52.5},
+ "confusion": {"calm": {"calm": 11, "alarmed": 27, "stampede": 2}, "alarmed": {"alarmed": 29, "calm": 11}, "stampede": {"stampede": 21, "alarmed": 17, "calm": 2}},
+ "bar": "pre-stated: held-out >= 42.5 (better incumbent 32.5 + 10) with no class traded away",
+ "verdict": "BAR MET: 50.8 >= 42.5; all three classes alive (student base was 0/97.5/0; dial 37.5/7.5/0). Patcher prediction was 55-70 overall — slightly optimistic; calm fragile as predicted.",
+ "raw": "Thor ~/wsp-exp16/r4/results/coordinator_r4_round1_heldout.json"}
