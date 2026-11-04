@@ -1,11 +1,25 @@
-cross-language drill (slice 19; three kernels since slice 20) — fixture.json driven through all three sequencers
+cross-language drill (slice 19; three kernels since slice 20; resubmission fixture since slice 38)
+
+fixture: fixture.json
 ops in stream: 38
 log entries: 52
-python log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
-ts     log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
-rust   log sha256: 411bb3e7e6853744ffa74501781275353dd1bda42a6936302a35e6845bf409bb
+python log sha256: b87f1fda1ae099ae502bd66e7dc51285906538df70894ee9833901e6d484916c
+ts     log sha256: b87f1fda1ae099ae502bd66e7dc51285906538df70894ee9833901e6d484916c
+rust   log sha256: b87f1fda1ae099ae502bd66e7dc51285906538df70894ee9833901e6d484916c
 logs byte-identical (all three): True
-python verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
-ts     verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
-rust   verdicts sha256: 25746e6f2dbaef202acd8c5121ccdc17822e25064f89c5f79fe64d0c97e126a7
+python verdicts sha256: a5ade8140abdea51f43c7bf65f1bf44beaee498667f0bd9dacf17862b362b346
+ts     verdicts sha256: a5ade8140abdea51f43c7bf65f1bf44beaee498667f0bd9dacf17862b362b346
+rust   verdicts sha256: a5ade8140abdea51f43c7bf65f1bf44beaee498667f0bd9dacf17862b362b346
+verdicts byte-identical (all three): True
+
+fixture: fixture-resubmission.json
+ops in stream: 26
+log entries: 11
+python log sha256: 487a49957d255ce84c9e2da3a75849575802ee5cdb7c2f68fc5e8d0548f2081f
+ts     log sha256: 487a49957d255ce84c9e2da3a75849575802ee5cdb7c2f68fc5e8d0548f2081f
+rust   log sha256: 487a49957d255ce84c9e2da3a75849575802ee5cdb7c2f68fc5e8d0548f2081f
+logs byte-identical (all three): True
+python verdicts sha256: fa3a88812b31050baecc0f714a8fb51432bebe93abe7e805e7a270e47e505a56
+ts     verdicts sha256: fa3a88812b31050baecc0f714a8fb51432bebe93abe7e805e7a270e47e505a56
+rust   verdicts sha256: fa3a88812b31050baecc0f714a8fb51432bebe93abe7e805e7a270e47e505a56
 verdicts byte-identical (all three): True

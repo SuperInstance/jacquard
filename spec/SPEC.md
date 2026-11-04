@@ -297,6 +297,14 @@ foreign-version envelope; its recorded verdict remains
 readable from the log it was decided in. Logs written
 under earlier versions fold unchanged under 0.7.
 
+**Conformance.** The cross-language drill carries a
+resubmission fixture driving the shapes of this section
+(duplicate allowed, queued, denied, refused, across a
+checkpoint, after an operator release, adapter-shaped)
+through every implementation across sequencer restarts;
+the logs and the verdict streams must be byte-identical
+in all implementations.
+
 ## 4. Effects
 
 The effect vocabulary is the set of Tier-E verbs (section 6) plus

@@ -13,7 +13,7 @@ import {
   type Json,
   type JsonObject,
 } from "../jacquard.ts";
-import { Sequencer, envelopeHash } from "../kernel.ts";
+import { Log, Sequencer, envelopeHash } from "../kernel.ts";
 
 function makeEnvelopeTs(
   producer: string,
@@ -37,7 +37,7 @@ const [fixturePath, logOut, verdictsOut] = process.argv.slice(2);
 const fixture = JSON.parse(readFileSync(fixturePath, "utf8")) as {
   ops: JsonObject[];
 };
-const seq = new Sequencer();
+let seq = new Sequencer();
 const hashes: { [idem: string]: string } = {};
 const verdicts: Json[] = [];
 
@@ -97,6 +97,14 @@ for (const op of fixture.ops) {
   } else if (kind === "standing") {
     seq.setStanding(op.producer as string, op.standing as JsonObject);
     verdicts.push({ standing: "set" });
+  } else if (kind === "restart") {
+    // A fresh sequencer over the same entries: the
+    // cross-process shape (spec 0.7 section 3.1). Standing
+    // and other constructor state do NOT survive; recorded
+    // verdicts do.
+    const saved = JSON.parse(JSON.stringify(seq.log.entries));
+    seq = new Sequencer(new Log(saved));
+    verdicts.push({ restarted_entries: saved.length });
   } else if (kind === "append_rule") {
     const entry = seq.log.append("rule", {
       producer: "learner", rule: op.rule as JsonObject,

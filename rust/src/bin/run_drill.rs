@@ -6,7 +6,7 @@
 //! Usage: jacquard-cross-drill <fixture> <log-out> <verdicts-out>
 
 use jacquard_kernel::core::spec_seal;
-use jacquard_kernel::kernel::{envelope_hash, Sequencer};
+use jacquard_kernel::kernel::{envelope_hash, Log, Sequencer};
 use jacquard_kernel::value::{arr, canonical, obj, parse_json, s, sort_strings, Value};
 use std::process::ExitCode;
 
@@ -134,6 +134,21 @@ fn main() -> ExitCode {
                 verdicts.push(obj(vec![(
                     "entry",
                     entry.get("hash").cloned().unwrap_or(Value::Null),
+                )]));
+            }
+            "restart" => {
+                // A fresh sequencer over the same entries:
+                // the cross-process shape (spec 0.7 section
+                // 3.1). Standing and other constructor state
+                // do NOT survive; recorded verdicts do.
+                let entries = seq.log.entries.clone();
+                let n = entries.len();
+                let mut log = Log::new();
+                log.entries = entries;
+                seq = Sequencer::with_log(log);
+                verdicts.push(obj(vec![(
+                    "restarted_entries",
+                    Value::Int(n as i64),
                 )]));
             }
             "standing" => {
