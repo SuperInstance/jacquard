@@ -4151,3 +4151,51 @@ readable from the log — the same posture as every prior
 bump. The jq submit verb loses its own folded-record scan
 and delegates to the kernel (one mechanism, no drift); its
 printed shape is unchanged.
+### Phase 14, slice 38 close (2026-11-04)
+
+Resubmission is settled: SPEC 0.7 section 3.1, the
+recorded-verdict rule, shipped in all three kernels. The
+design record above states the choice and the two rejected
+alternatives; docs/slice38-resubmission.md carries the
+full account. The numbers: Python 359 + 7 (the battery is
+tests/test_resubmission.py, 12 cross-process cases);
+vectors regenerated; TS 14/0/0; Rust 14/0/0; the drill's
+new resubmission fixture runs 26 ops to 11 entries with
+logs and verdicts byte-identical in all three kernels.
+`jq submit` delegates to the kernel rule now -- its
+Phase 13 surface scan is deleted. Two pre-existing tests
+were updated to the 0.7 contract (the idempotency test's
+equality now includes the duplicate marker; the atomicity
+test counts the define-check fault decision the refusal
+now records). Neither was weakened; both cite section
+3.1.
+
+The duplicate audit over the deployments' logs (gpu live
+227 entries, booking board live 260, Orin seat 117, both
+frozen proof logs, both committed copies; the auditor
+self-tested against a planted log first) found NO landed
+duplicate anywhere: the adapters' surface bookkeeping had
+held the line in production, and the kernel hole Phase 13
+demonstrated in a scratch log never fired on a live
+deployment. History noted, never rewritten. The ProArt
+seat log could not be audited -- the box is dark on both
+routes (proxy reset; Thor hub port refused), the same
+state Phase 11 recorded; no committed copy of its log
+exists. That row stays open, and is moot for any log
+written under 0.7.
+
+One process note, recorded plainly: this phase's
+coordinator began in a detached-HEAD checkout of the tag
+(the clone trap this fleet has hit before); the builders
+log commit that first landed there was recovered through
+the reflog and cherry-picked onto main before any other
+work. Nothing was lost; the ls-remote check after every
+push is what makes that a footnote rather than a finding.
+
+Two coordinator incidents of the small kind, also plain:
+two spec-sentence edits missed their target patterns on
+the first attempt (asserted, no partial writes; the
+sentences landed against the file's actual text), and the
+§9 sentence planned for the drill turned out to describe
+text the spec does not contain -- the conformance pinning
+lives in section 3.1 itself, where it was added.
