@@ -16,7 +16,9 @@ def test_idempotent_resubmission():
     first = seq.submit(env)
     count = len(seq.log.entries)
     second = seq.submit(env)
-    assert first == second
+    # SPEC 3.1 (0.7): a duplicate returns the recorded verdict,
+    # marked as a replay; before 0.7 the copy was unmarked.
+    assert second == dict(first, duplicate=True)
     assert len(seq.log.entries) == count
 
 
@@ -91,7 +93,17 @@ def test_proposal_applies_atomically():
                       {"verb": "define", "args": [bad_definition]}]},
         ["write", "define"], "at1")
     assert verdict["status"] == "REFUSED"
-    assert len(seq.log.entries) == before
+    # Atomicity: neither request applied — no definition entry,
+    # no execution, the unit unwritten. Since spec 0.7 (3.1) the
+    # refusal itself is recorded as one fault decision, exactly
+    # as the underdeclared refusal is; before 0.7 this path
+    # appended nothing.
+    assert len(seq.log.entries) == before + 1
+    entry = seq.log.entries[-1]
+    assert entry["kind"] == "decision"
+    assert entry["body"]["outcome"] == "refused"
+    assert entry["body"]["fault"] == verdict["refusal"]
+    assert "broken" not in seq.state.dictionary
     assert "u" not in seq.state.units
 
 

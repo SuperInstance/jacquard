@@ -20,7 +20,11 @@ outcome is written to the log before it is reported:
   transition entry for every step.
 
 Submitting the same envelope twice returns the original verdict
-and appends nothing (idempotency by envelope id).
+and appends nothing (idempotency by envelope id). The verdicts
+are rebuilt from the log at construction (SPEC 3.1), so the
+rule holds across processes, not only inside one: a duplicate
+returns the recorded verdict, marked "duplicate": true, and
+never re-decides, never re-executes, never appends.
 """
 import copy
 
@@ -48,6 +52,7 @@ class Sequencer:
         self.dictionary = Dictionary(
             self.state, lambda: self.log.entries,
             lambda: self.tentative, self._record_lookup)
+        self._verdicts = self._recorded_verdicts()
 
     # -------------------------------------------------- plumbing
     def _refold(self):
@@ -169,6 +174,53 @@ class Sequencer:
         return self.admission.order(items)
 
     # -------------------------------------------------- submit
+    def _recorded_verdicts(self):
+        """Rebuild the recorded verdicts from the log (SPEC 3.1).
+
+        A proposal is recorded by its submission decision: the
+        first decision entry carrying its proposal id that is
+        not an operator release/reject/expire entry. (Later
+        entries about the same proposal — wait-pump records,
+        operator decisions, further pump re-decisions — never
+        displace the first.) A definition or machine is
+        recorded by its acceptance entry, which from spec 0.7
+        carries the envelope hash in an "envelope" body field;
+        earlier acceptance entries do not, so their replay is
+        not rebuilt here."""
+        verdicts = {}
+        for entry in self.log.entries:
+            body = entry["body"]
+            if entry["kind"] == "decision":
+                pid = body.get("proposal_id")
+                if pid is None or pid in verdicts:
+                    continue
+                if any(key in body for key in
+                       ("releases", "rejects", "expires")):
+                    continue
+                if body.get("fault"):
+                    verdicts[pid] = {
+                        "status": "REFUSED", "refusal": body["fault"],
+                        "detail": body["reasons"][0]
+                        if body.get("reasons") else "",
+                        "proposal_id": pid}
+                elif body.get("outcome") in ("allow", "deny", "queued"):
+                    verdicts[pid] = {
+                        "status": "decided",
+                        "outcome": {"queued": "queue"}.get(
+                            body["outcome"], body["outcome"]),
+                        "proposal_id": pid,
+                        "reasons": list(body.get("reasons", []))}
+            elif entry["kind"] == "definition" and "envelope" in body:
+                verdicts[body["envelope"]] = {
+                    "status": "accepted", "entry": entry["hash"],
+                    "computed_effects":
+                        body["definition"]["computed_effects"]}
+            elif entry["kind"] == "machine" and "envelope" in body:
+                verdicts[body["envelope"]] = {
+                    "status": "accepted", "entry": entry["hash"],
+                    "machine": body["machine"]["name"]}
+        return verdicts
+
     def submit(self, envelope):
         problem = validate_envelope(envelope)
         if problem is not None:
@@ -176,25 +228,28 @@ class Sequencer:
                     "detail": problem[1]}
         env_hash = envelope_hash(envelope)
         if env_hash in self._verdicts:
-            return copy.deepcopy(self._verdicts[env_hash])
+            verdict = copy.deepcopy(self._verdicts[env_hash])
+            verdict["duplicate"] = True
+            return verdict
         if envelope["kind"] == "definition":
-            verdict = self._submit_definition(envelope)
+            verdict = self._submit_definition(envelope, env_hash)
         elif envelope["kind"] == "machine":
-            verdict = self._submit_machine(envelope)
+            verdict = self._submit_machine(envelope, env_hash)
         else:
             verdict = self._submit_proposal(envelope, env_hash)
         self._verdicts[env_hash] = copy.deepcopy(verdict)
         self._pump_waits()
         return verdict
 
-    def _submit_definition(self, envelope):
+    def _submit_definition(self, envelope, env_hash):
         try:
             stored = self.dictionary.define(envelope["body"])
         except Refusal as refusal:
             return {"status": "REFUSED", "refusal": refusal.name,
                     "detail": refusal.detail}
         entry = self.log.append("definition", {
-            "producer": envelope["producer"], "definition": stored})
+            "producer": envelope["producer"], "definition": stored,
+            "envelope": env_hash})
         self._refold()
         return {"status": "accepted", "entry": entry["hash"],
                 "computed_effects": stored["computed_effects"]}
@@ -217,20 +272,21 @@ class Sequencer:
         _kind, ins, outs, _entry_hash, definition = resolved
         return (ins, outs, set(definition["computed_effects"]))
 
-    def _submit_machine(self, envelope):
+    def _submit_machine(self, envelope, env_hash):
         body = envelope["body"]
         if not isinstance(body, dict) or not isinstance(body.get("text"), str):
             return {"status": "REFUSED", "refusal": "FIELD",
                     "detail": "machine body must be {\"text\": <text>}"}
         try:
             parsed = parse_machine(body["text"])
-            return self.submit_machine_definition(parsed,
-                                                  envelope["producer"])
+            return self.submit_machine_definition(
+                parsed, envelope["producer"], env_hash)
         except Refusal as refusal:
             return {"status": "REFUSED", "refusal": refusal.name,
                     "detail": refusal.detail}
 
-    def submit_machine_definition(self, parsed, producer="operator"):
+    def submit_machine_definition(self, parsed, producer="operator",
+                                  env_hash=None):
         """Check a parsed machine definition against the profile
         and append it. Raises Refusal; the envelope path converts
         refusals to verdicts."""
@@ -241,8 +297,10 @@ class Sequencer:
                 versions = self.state.dictionary[transition["action"]]
                 effects |= set(versions[-1]["definition"]["computed_effects"])
         stored["action_effects"] = sorted(effects)
-        entry = self.log.append("machine", {
-            "producer": producer, "machine": stored})
+        machine_body = {"producer": producer, "machine": stored}
+        if env_hash is not None:
+            machine_body["envelope"] = env_hash
+        entry = self.log.append("machine", machine_body)
         self._refold()
         return {"status": "accepted", "entry": entry["hash"],
                 "machine": stored["name"]}
@@ -516,6 +574,19 @@ class Sequencer:
                 try:
                     self.dictionary.define(request["args"][0])
                 except Refusal as refusal:
+                    # Recorded as a fault decision, exactly as the
+                    # underdeclared refusal is (SPEC 3.1): every
+                    # proposal that reaches the decision stage has
+                    # exactly one submission decision, so its
+                    # verdict is replayable from the log.
+                    self.log.append("decision", {
+                        "producer": producer, "class": cls,
+                        "proposal_id": env_hash,
+                        "policy_version": POLICY_VERSION,
+                        "outcome": "refused", "fault": refusal.name,
+                        "reasons": [refusal.detail],
+                        "effects": sorted(effects)})
+                    self._refold()
                     self._lifecycle("proposal", env_hash, "refuse", producer)
                     return {"status": "REFUSED", "refusal": refusal.name,
                             "detail": refusal.detail,

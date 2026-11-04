@@ -2269,8 +2269,8 @@ export function validateAnchorBody(body: unknown): string | null {
   }
   // Spec 15.1 (0.6): the anchor format did not change in 0.6, so
   // checkpoints issued under 0.5 remain valid; refuse any other.
-  if (body.spec !== "jacquard/0.5" && body.spec !== "jacquard/0.6") {
-    return `spec is ${pyRepr(body.spec)}, expected "jacquard/0.5" or "jacquard/0.6"`;
+  if (body.spec !== "jacquard/0.5" && body.spec !== "jacquard/0.6" && body.spec !== "jacquard/0.7") {
+    return `spec is ${pyRepr(body.spec)}, expected "jacquard/0.5", "jacquard/0.6" or "jacquard/0.7"`;
   }
   const prev = body.prev_checkpoint;
   if (body.checkpoint_seq === 0 && prev !== null) {

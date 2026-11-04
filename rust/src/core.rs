@@ -8,10 +8,10 @@
 
 use crate::value::{arr, hash_of, hash_string_raw, obj, s, Value};
 
-pub const SPEC_VERSION: &str = "jacquard/0.6";
+pub const SPEC_VERSION: &str = "jacquard/0.7";
 
 pub fn spec_seal() -> String {
-    hash_string_raw("jacquard-spec/0.6")
+    hash_string_raw("jacquard-spec/0.7")
 }
 
 pub fn genesis_prev() -> String {
@@ -63,7 +63,7 @@ pub fn validate_envelope(env: &Value) -> Vec<String> {
     match env.get("spec_seal") {
         Some(Value::Str(seal)) if is_hex64(seal) => {
             if *seal != spec_seal() {
-                problems.push("spec_seal does not match the seal of jacquard-spec/0.6".to_string());
+                problems.push("spec_seal does not match the seal of jacquard-spec/0.7".to_string());
             }
         }
         _ => problems.push("spec_seal must be a hex64 string".to_string()),

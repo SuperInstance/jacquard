@@ -18,7 +18,7 @@ def load():
 
 def test_spec_seal():
     assert load()["spec_seal"] == SPEC_SEAL
-    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.6").hexdigest()
+    assert SPEC_SEAL == hashlib.sha256(b"jacquard-spec/0.7").hexdigest()
 
 
 def test_entry_zero_hash_from_handwritten_canonical_string():
@@ -27,7 +27,7 @@ def test_entry_zero_hash_from_handwritten_canonical_string():
     literal = (
         '{"body":{"name":"gpu-foreign","producer":"operator","value":false},'
         '"kind":"sense","prev":"' + "0" * 64 + '","seq":0,'
-        '"spec":"jacquard/0.6"}')
+        '"spec":"jacquard/0.7"}')
     expect = hashlib.sha256(literal.encode("utf-8")).hexdigest()
     assert load()["entries"][0]["hash"] == expect
 
@@ -66,17 +66,27 @@ def test_state_vector():
     # Replay the generator's scenario end to end.
     vectors = load()
     seq = Sequencer()
+    # The replay uses the generator's own envelope ids: since
+    # spec 0.7 an acceptance entry records its envelope hash
+    # (SPEC 3.1), so the folded state commits to the submitting
+    # envelopes, and a replay under different ids is a
+    # different (equally valid) history, not this vector's.
+    # The generator's envelopes, field for field (ids and
+    # declared effects): both are covered by the envelope
+    # hash the acceptance entries now record.
+    gen_env = {"double": ("v-d1", []),
+               "dispatch-job": ("v-d2", ["dispatch"])}
     for item in vectors["definitions"]:
+        idem, declared = gen_env[item["definition"]["name"]]
         seq.submit(make_envelope(
             "operator", "definition", item["definition"],
-            item["definition"].get("declared_effects", []),
-            "sv-" + item["definition"]["name"]))
+            declared, idem))
     env = vectors["envelope"]["envelope"]
     seq.submit(make_envelope(
         "operator", "proposal",
         {"requests": [{"verb": "write", "args": ["answer", 42],
                        "outputs": ["o-42"]}]},
-        ["write"], "sv-p1"))
+        ["write"], "v-p1"))
     assert seq.state.units == recorded["units"]
     assert seq.state.state_hash() == recorded["state_hash"]
     assert fold(seq.log.entries).state_hash() == recorded["state_hash"]
@@ -144,7 +154,7 @@ def test_anchor_vector():
                     "checkpoint_seq": 0,
                     "log_length": 4,
                     "head_hash": entries[3]["hash"],
-                    "spec": "jacquard/0.6",
+                    "spec": "jacquard/0.7",
                     "prev_checkpoint": None}
     assert section["checkpoint_hash"] == hash_of(body)
     pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(pub_hex))
@@ -189,7 +199,7 @@ def test_anchor_registry_vectors():
         entries.append({"seq": projection["seq"],
                         "kind": projection["kind"],
                         "body": projection["body"],
-                        "prev": prev, "spec": "jacquard/0.6",
+                        "prev": prev, "spec": "jacquard/0.7",
                         "hash": projection["hash"]})
         prev = projection["hash"]
     envelope = load()["anchor"]["envelope"]

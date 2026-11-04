@@ -36,7 +36,8 @@ ANCHOR_FORMAT = "jacquard/anchor/1"
 # Checkpoint bodies issued under spec 0.5 remain valid under 0.6:
 # the anchor format did not change (SPEC 15.1). New checkpoints
 # carry the current SPEC_VERSION.
-ANCHOR_SPEC_VERSIONS = frozenset({"jacquard/0.5", "jacquard/0.6"})
+ANCHOR_SPEC_VERSIONS = frozenset({"jacquard/0.5", "jacquard/0.6",
+                                   "jacquard/0.7"})
 PASSPHRASE_ENV = "JACQUARD_ANCHOR_PASSPHRASE"
 # Registry grammar versions (SPEC 15.3, erratum 2): /1 documents
 # are read under the legacy rule (every key participates in every

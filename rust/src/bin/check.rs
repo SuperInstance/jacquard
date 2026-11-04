@@ -567,7 +567,7 @@ fn main() {
             ("checkpoint_seq", Value::Int(0)),
             ("log_length", Value::Int(4)),
             ("head_hash", vec_entries[3].get("hash").cloned().unwrap_or(Value::Null)),
-            ("spec", s("jacquard/0.6")),
+            ("spec", s("jacquard/0.7")),
             ("prev_checkpoint", Value::Null),
         ]);
         if !deep_eq(&body, &expected_body) {

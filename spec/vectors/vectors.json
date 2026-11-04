@@ -1,19 +1,19 @@
 {
  "anchor": {
-  "checkpoint_hash": "67dc575f7cb894dabb338711943f57bb3e3eadd5d104e3d43e2c79f9d52fbf79",
+  "checkpoint_hash": "b4277c1a16b82db9c1ffc53792ffc651a0ab9a7569edbf53f3b3fefe0e3df62d",
   "envelope": {
    "body": {
     "checkpoint_seq": 0,
     "format": "jacquard/anchor/1",
-    "head_hash": "714e9734b4ce683d01dfda75b22504d2f45150c98dfccc71b0eb13f90da1fecd",
+    "head_hash": "c8ec812f28c4e112bdecdb3ff88194c7bd9c703b1da385664f397d07d76bd1ec",
     "label": "golden-vectors",
-    "log_id": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+    "log_id": "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb",
     "log_length": 4,
     "prev_checkpoint": null,
-    "spec": "jacquard/0.6"
+    "spec": "jacquard/0.7"
    },
    "pubkey": "601d0652c968641455ed71fdb668b368b522372af454e128a703a99d6e368a99",
-   "sig": "510d4fd6e1a9697e1ac324add99edb048d89ca15b7c0056544ac1b7fc0ac880e4ea36f5749ef82d9c4aeb6d39d89583c90e535972740d386a7f1ae1ed9a60907"
+   "sig": "516b5c3d8c256c8ce9c5b07d71ff978697adb425cc39e33eea003497f57d13b708543e6436013d590d7089c6cf9a3be6cebef68c6908b67c4e9f58344e9b730f"
   },
   "test_seed": "0d08490c05dd95a108030729bcf6dd1889595d413b7b3bfcd38b456ce09a1795"
  },
@@ -21,7 +21,7 @@
   "auth_cases": [
    {
     "expect_outcome": "verified",
-    "log_id": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+    "log_id": "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb",
     "name": "null-window-bystander-verifies",
     "registry": {
      "format": "jacquard/anchor-keys/2",
@@ -29,7 +29,7 @@
       {
        "pubkey": "601d0652c968641455ed71fdb668b368b522372af454e128a703a99d6e368a99",
        "signs_from": {
-        "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d": 0
+        "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb": 0
        },
        "signs_until": {},
        "status": "active"
@@ -46,7 +46,7 @@
    {
     "expect_detail": "checkpoint 0: envelope pubkey is not the pinned key for its sequence",
     "expect_outcome": "failed",
-    "log_id": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+    "log_id": "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb",
     "name": "window-claim-outside-truth-fails",
     "registry": {
      "format": "jacquard/anchor-keys/2",
@@ -54,7 +54,7 @@
       {
        "pubkey": "1aa240acef0058b732e6093e3728e65a6d95a4178f77664ea92772bfb3072be5",
        "signs_from": {
-        "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d": 0
+        "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb": 0
        },
        "signs_until": {},
        "status": "active"
@@ -442,7 +442,7 @@
     "producer": "operator",
     "value": false
    },
-   "hash": "d1fbb679088b9e16ca9c1001ed9aa57a80ceb2022e8179a35c153c99a410376d",
+   "hash": "258d6a968961fd52dc99f778285da71d2842d2975ea79ac88ab01c0fa942b7bb",
    "kind": "sense",
    "seq": 0
   },
@@ -477,25 +477,25 @@
     },
     "producer": "operator"
    },
-   "hash": "25c52124029d00197b089dca57bcf0ce3d4e06b36a0e9ebf019aa27258bbbb43",
+   "hash": "716c6317597c92c62292391e46da8de0bf53302d3dc15f9b7e87172f34d71b92",
    "kind": "definition",
    "seq": 1
   },
   {
    "body": {
     "name": "after-two",
-    "state_hash": "403bea8c7a0f8a7669998c83b1c7d27ef2267c4de3704041d0dc526bab32565b"
+    "state_hash": "038c14d19ff201811b6c83ff785087351df25a0317af07d3d3fe7bc1fbb86899"
    },
-   "hash": "8bd75596272035787e7205327f57f4411f48fb6ae89bc022419713663aaf6c02",
+   "hash": "4c1ea9f69cd6cfa31acac1acc54fdacd8d6bce5d3271888337fd0d00401564bf",
    "kind": "checkpoint",
    "seq": 2
   },
   {
    "body": {
     "name": "caf\u00e9-\u2603",
-    "state_hash": "403bea8c7a0f8a7669998c83b1c7d27ef2267c4de3704041d0dc526bab32565b"
+    "state_hash": "038c14d19ff201811b6c83ff785087351df25a0317af07d3d3fe7bc1fbb86899"
    },
-   "hash": "714e9734b4ce683d01dfda75b22504d2f45150c98dfccc71b0eb13f90da1fecd",
+   "hash": "c8ec812f28c4e112bdecdb3ff88194c7bd9c703b1da385664f397d07d76bd1ec",
    "kind": "checkpoint",
    "seq": 3
   }
@@ -519,10 +519,10 @@
    "id": "vectors-1",
    "kind": "proposal",
    "producer": "operator",
-   "spec_seal": "0d639ec0309bad5b0190d64e731a6676f780a2ff93b5011600a2b7b0c6f95250",
+   "spec_seal": "49483e30f2ce857b787a691770521b5c3155b098c6dd386650101ccafd92469c",
    "v": 1
   },
-  "id": "f2f036a0a2be3f7f3b1c9de828de6797f679f9b884bfd3637c5e0af274ca220b"
+  "id": "5e0185d3d3a78eb317a58d08e9239101b076aca6d092e09d8277712b129b106c"
  },
  "senses": {
   "authority": [
@@ -544,11 +544,11 @@
        "proposal_id": "sv-self-grant",
        "uses": []
       },
-      "hash": "9559553eec80263516d6546284ea98b0e3e52e1077e0c16a12094e6eb5a9cdc0",
+      "hash": "e1975a6c38a787d7c138ef823bab7218398e2ff1799949a09a350dee5dc2b0e8",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      }
     ],
     "expect": {
@@ -579,11 +579,11 @@
        "proposal_id": "sv-grant-1",
        "uses": []
       },
-      "hash": "d1be991cf6d07917e21b3fd2f887fa5ebbba0f30fb4519de9ef3bba19aec4d01",
+      "hash": "3c8f49bbbeef6a08f57128276a5d6e049c14c5f8b39371b29fa9192fd06c4e4d",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      },
      {
       "body": {
@@ -601,11 +601,11 @@
        "proposal_id": "sv-grant-2",
        "uses": []
       },
-      "hash": "769c37312c9f4a7268a0fa522630026acac71bfa3ad1c9e1095815010502af12",
+      "hash": "98c81c3d2e584fa64a3c0cfd03eda500f61774ccddd86dddf4727d82f094d7a0",
       "kind": "execution",
-      "prev": "d1be991cf6d07917e21b3fd2f887fa5ebbba0f30fb4519de9ef3bba19aec4d01",
+      "prev": "3c8f49bbbeef6a08f57128276a5d6e049c14c5f8b39371b29fa9192fd06c4e4d",
       "seq": 1,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      }
     ],
     "expect": {
@@ -649,11 +649,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "1f84b8867fa58343975b3a6003474127c01a30e12424cf8c78edca5fba8a661a",
+      "hash": "cfb083bfe0df976d478a4d7317fea5f2db60dee7dc61c2dea8b9cc0701561c5d",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      }
     ],
     "expect": {
@@ -698,11 +698,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "5196a778f98ecd4b0dd5bedc4133ae22b54fe71987e29994ae52f320228c53bd",
+      "hash": "b429c306e9e85429542026f2f5211b860547fe2d9b9ec3654e92315c968248f6",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      },
      {
       "body": {
@@ -731,11 +731,11 @@
        "proposal_id": "sv-bk-2",
        "uses": []
       },
-      "hash": "ff052adcfcde3408517d3c7b5912f6475c946a64b9c5fabd520ac0ff7d326fc5",
+      "hash": "7654278bf372a67eaa0e505c268182af77b247babac39e6655888fa2a4af9cfa",
       "kind": "execution",
-      "prev": "5196a778f98ecd4b0dd5bedc4133ae22b54fe71987e29994ae52f320228c53bd",
+      "prev": "b429c306e9e85429542026f2f5211b860547fe2d9b9ec3654e92315c968248f6",
       "seq": 1,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      }
     ],
     "expect": {
@@ -797,11 +797,11 @@
        "proposal_id": "sv-bk-1",
        "uses": []
       },
-      "hash": "684308738e50d36bdfbb793292cfc08e1a1891ad8288d3098e20630b385ad409",
+      "hash": "e076b833a839316dee291c65e8d6ebc3a1311cc5bd20df86b95f06226f0fc807",
       "kind": "execution",
       "prev": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 0,
-      "spec": "jacquard/0.6"
+      "spec": "jacquard/0.7"
      }
     ],
     "expect": {
@@ -821,9 +821,9 @@
    }
   ]
  },
- "spec_seal": "0d639ec0309bad5b0190d64e731a6676f780a2ff93b5011600a2b7b0c6f95250",
+ "spec_seal": "49483e30f2ce857b787a691770521b5c3155b098c6dd386650101ccafd92469c",
  "state": {
-  "state_hash": "c7281ce0145c52ab63c7a0bfef8d06f38119aafdc67bf98b72a20ca8b8f52bd0",
+  "state_hash": "ae9df3597d8dd2be53f67deba84d262c1a42ed2cfe984b56369832fa829be638",
   "units": {
    "answer": 42
   }

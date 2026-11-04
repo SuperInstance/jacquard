@@ -1,4 +1,4 @@
-# Jacquard specification — version 0.6
+# Jacquard specification — version 0.7
 
 This document is the contract. Conforming implementations must
 reproduce the golden vectors in `spec/vectors/` exactly. The Python
@@ -156,8 +156,9 @@ Producers submit envelopes:
 `{"v": 1, "id": str, "producer": str, "kind": str, "body": object,
 "declared_effects": [str], "spec_seal": hex64}`.
 `id` is an idempotency key: resubmitting the same envelope returns
-the original verdict and appends nothing. `spec_seal` is the hash
-of the raw UTF-8 bytes of the string `jacquard-spec/0.6` (not of its canonical JSON form). The envelope id used in the log
+the original verdict and appends nothing (section 3.1 states the
+rule precisely). `spec_seal` is the hash
+of the raw UTF-8 bytes of the string `jacquard-spec/0.7` (not of its canonical JSON form). The envelope id used in the log
 is the hash of the envelope.
 
 Envelope kinds: `proposal` (body: `{"requests": [request]}`,
@@ -182,8 +183,119 @@ carries a `name` from the refusal vocabulary and a human-readable
 CONSERVATION, FRAGMENT, CLASS, PROVENANCE, UNDERDECLARED, EXAMPLE
 (a definition whose examples fail; added in 0.2 — in 0.1 the name
 was used but not listed), and (for machine definitions)
-UNREACHABLE, DEAD, AMBIGUOUS, NON_TOTAL. Every refusal is itself recorded in the log as a
-`decision` entry.
+UNREACHABLE, DEAD, AMBIGUOUS, NON_TOTAL. Every refusal of a proposal
+that reaches the decision stage is itself recorded in the log as a
+`decision` entry (the UNDERDECLARED refusal has been recorded since
+0.1; the define-check refusal joins it in 0.7, section 3.1).
+Refusals issued before any recording — envelope validation, the
+request-shape check, the wait-spec checks — append nothing; section
+3.1 states what resubmission means for them.
+
+### 3.1 Resubmission (added in 0.7)
+
+An envelope's identity is its hash: the whole envelope object,
+including its `id`, its producer and its seal, is what the hash
+covers (section 3). Two envelopes that differ in any field are
+different envelopes, however similar their bodies.
+
+**The recorded-verdict rule.** Once a submission is recorded in
+the log, resubmitting the same envelope returns the recorded
+verdict and does nothing else: it never re-decides, never
+re-executes, never re-queues, and never appends an entry. The
+returned verdict is the verdict of the submission, with one
+field added — `"duplicate": true` — so a caller can tell a
+replay from a fresh decision. The check is made against the
+log, not against process memory: a sequencer constructed over
+an existing log rebuilds the recorded verdicts from the log's
+entries at construction, so the rule holds across processes
+and across checkpoint entries (a checkpoint is an entry like
+any other; it neither truncates nor resets the record). In
+0.6 and earlier the rule was honoured only inside one process
+(the verdict cache was per-process), so a fresh-process
+duplicate was re-decided: an allowed duplicate silently
+re-executed, a queued duplicate appended a second decision
+entry and raised an unhandled refusal from machine-instance
+creation, and a refused duplicate appended a second refusal.
+0.7 makes the 0.6 text's promise true at kernel level.
+
+What counts as recorded, per kind:
+
+- A **proposal** is recorded by its submission decision: the
+  first `decision` entry carrying its proposal id that is not
+  an operator release/reject/expire entry and not a
+  wait-pump record. Its recorded verdict is reconstructed
+  from that entry — outcome `allow`/`deny`/`queued` map to
+  the verdict outcomes `allow`/`deny`/`queue`, with the
+  entry's reasons; an outcome of `refused` with a `fault`
+  reconstructs the REFUSED verdict of that name, with the
+  recorded detail. Later entries about the same proposal
+  (operator decisions, wait-pump records, executions) do not
+  alter the recorded verdict.
+- A **definition** or **machine** is recorded by its
+  acceptance entry. From 0.7 those entries carry the
+  envelope hash in an `envelope` body field, and the
+  recorded verdict is the acceptance verdict (its `entry`
+  is the acceptance entry's own hash). Acceptance entries
+  written before 0.7 do not carry the field, so replay of
+  definitions and machines is a 0.7-forward guarantee;
+  proposal replay covers every log ever written, since
+  decision entries have always carried the proposal id.
+  Recording the envelope hash in the acceptance entry has
+  one visible consequence, stated rather than hidden: the
+  entry hash commits to the submitting envelope, so the
+  folded dictionary and machine sections (which identify
+  versions by entry) make a log's state hash a fact about
+  that log's own submission history. State hashes were
+  already history-dependent (versions carry entry sequence
+  numbers); they are per-log facts, and no rule in this
+  specification equates the state hashes of two different
+  logs.
+
+**Later operator decisions do not change the recorded
+verdict.** If a queued proposal has since been released,
+rejected or expired by the operator, resubmitting its
+envelope still returns the submission verdict (`queue`),
+marked as a duplicate. A verdict is a fact about a
+submission event, and the log's facts do not change; the
+item's current disposition is read from the record (the
+decision queue and status surfaces), not from a
+resubmission. The alternative — returning the item's
+current disposition — was weighed and rejected: it makes
+one question receive different answers at different times,
+and it attributes a later decider's decision to the
+original submission.
+
+**A named refusal for duplicates was also weighed and
+rejected.** Duplicate delivery is the normal shape of
+cross-process submitters — the shipped adapters are fresh
+processes per call and deliver at-least-once — so a refusal
+would push idempotency into every adapter and present an
+error surface for a benign replay. The recorded verdict is
+the answer a retrying submitter needs: what was decided,
+once.
+
+**Pre-recording refusals.** A submission refused before
+any recording (envelope validation in the order stated
+above, the request-shape check, the wait-spec checks of
+section 7.1) appends nothing and executes nothing.
+Resubmitting it re-derives the refusal from the envelope
+and the current dictionary; the observable invariants of
+the recorded-verdict rule — no second decision, no second
+execution, no second queue entry — hold trivially. One
+refusal moved across the line in 0.7: a proposal whose
+embedded definition fails its check previously recorded
+nothing but lifecycle steps; it now records a fault
+`decision` entry exactly as the UNDERDECLARED refusal
+does, so every proposal that reaches the decision stage
+has exactly one submission decision and its verdict is
+replayable under the rule.
+
+**Across spec versions.** The rule applies to envelopes
+sealed under the running spec version. An envelope sealed
+under an earlier version is refused on its seal, like any
+foreign-version envelope; its recorded verdict remains
+readable from the log it was decided in. Logs written
+under earlier versions fold unchanged under 0.7.
 
 ## 4. Effects
 

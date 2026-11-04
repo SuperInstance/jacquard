@@ -7,8 +7,8 @@ Quantities are integers in stated units.
 import hashlib
 import json
 
-SPEC_VERSION = "jacquard/0.6"
-SPEC_SEAL = hashlib.sha256(b"jacquard-spec/0.6").hexdigest()
+SPEC_VERSION = "jacquard/0.7"
+SPEC_SEAL = hashlib.sha256(b"jacquard-spec/0.7").hexdigest()
 
 
 def _check(value, path="$"):

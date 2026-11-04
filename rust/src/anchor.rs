@@ -127,9 +127,9 @@ pub fn validate_anchor_body(body: &Value) -> Option<String> {
     // 0.6, so checkpoints issued under 0.5 remain valid;
     // refuse any other.
     let body_spec = body.get("spec").and_then(|v| v.as_str()).unwrap_or("");
-    if body_spec != "jacquard/0.5" && body_spec != "jacquard/0.6" {
+    if body_spec != "jacquard/0.5" && body_spec != "jacquard/0.6" && body_spec != "jacquard/0.7" {
         return Some(format!(
-            "spec is {}, expected \"jacquard/0.5\" or \"jacquard/0.6\"",
+            "spec is {}, expected \"jacquard/0.5\", \"jacquard/0.6\" or \"jacquard/0.7\"",
             py_repr(body.get("spec").unwrap_or(&Value::Null))
         ));
     }

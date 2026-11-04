@@ -123,8 +123,8 @@ export function hashString(s: string): string {
 // §3 Envelopes and the spec seal
 // ---------------------------------------------------------------------------
 
-export const SPEC_VERSION = "jacquard/0.6";
-export const SPEC_SEAL = hashString("jacquard-spec/0.6");
+export const SPEC_VERSION = "jacquard/0.7";
+export const SPEC_SEAL = hashString("jacquard-spec/0.7");
 export const GENESIS_PREV = "0".repeat(64);
 const HEX64 = /^[0-9a-f]{64}$/;
 const ENVELOPE_KINDS = ["proposal", "definition", "machine"];
@@ -162,7 +162,7 @@ export function validateEnvelope(env: unknown): string[] {
   if (typeof env.spec_seal !== "string" || !HEX64.test(env.spec_seal)) {
     problems.push("spec_seal must be a hex64 string");
   } else if (env.spec_seal !== SPEC_SEAL) {
-    problems.push("spec_seal does not match the seal of jacquard-spec/0.6");
+    problems.push("spec_seal does not match the seal of jacquard-spec/0.7");
   }
   return problems;
 }

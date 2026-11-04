@@ -160,33 +160,16 @@ def cmd_submit(seq, args):
     envelope = make_envelope(
         spec["producer"], "proposal", body,
         spec["declared_effects"], spec["id"])
-    # Idempotency across processes: the kernel's verdict cache
-    # is per-process, so a fresh CLI invocation must consult
-    # the folded record itself. If this exact envelope was
-    # already decided, print the recorded verdict (the latest
-    # decision entry for the proposal) and change nothing.
-    from jacquard.envelope import envelope_hash
-    env_hash = envelope_hash(envelope)
-    prior = None
-    for entry in seq.log.entries:
-        if entry["kind"] == "decision" \
-                and entry["body"].get("proposal_id") == env_hash:
-            prior = entry["body"]
-    if prior is not None:
-        if prior.get("fault"):
-            print(json.dumps({
-                "status": "REFUSED", "refusal": prior["fault"],
-                "detail": "; ".join(prior.get("reasons", [])),
-                "proposal_id": env_hash, "duplicate": True}, indent=1))
-            return 1
-        outcome = {"allow": "allow", "deny": "deny",
-                   "queued": "queue"}[prior["outcome"]]
-        print(json.dumps({
-            "status": "decided", "outcome": outcome,
-            "proposal_id": env_hash,
-            "reasons": prior.get("reasons", []),
-            "duplicate": True}, indent=1))
-        return 0
+    # Idempotency across processes is the kernel's contract
+    # (SPEC 3.1): the sequencer this process constructs over
+    # the log rebuilds the recorded verdicts from it, so a
+    # duplicate submission returns the recorded verdict,
+    # marked "duplicate": true, and changes nothing. The verb
+    # delegates; it keeps no duplicate logic of its own. (In
+    # spec 0.6 the verb carried a folded-record scan here
+    # because the kernel's cache was per-process; that scan
+    # also reported the LATEST decision entry rather than
+    # the submission verdict, and crashed on expired items.)
     if not seq.log.entries:
         install_lifecycles(seq)
     verdict = seq.submit(envelope)

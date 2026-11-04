@@ -445,7 +445,7 @@ if (replay === null) {
     checkpoint_seq: 0,
     log_length: 4,
     head_hash: vectors.entries[3].hash,
-    spec: "jacquard/0.6",
+    spec: "jacquard/0.7",
     prev_checkpoint: null,
   };
   if (!deepEq(body, expectedBody)) {
