@@ -106,18 +106,53 @@ measured value is given.
 ## MCode (MiniMax Code), all boxes
 
 Installed on the ProArt (0.6.12), the Orin (0.6.12) and the
-Thor (0.6.13). Static inventory found `plugin` subcommands,
-an `exec` headless mode (`--permission smart|full|off`,
-`--config`, `--output-format json`), and a hook event
-vocabulary in the shipped bundles — SessionStart,
-PreToolUse, PermissionRequest, PostToolUse — with a
-Claude/Codex-format plugin loader (`hooks/hooks.json`).
-**No MCode hook has been live-fired**: MCode is
-supervised by governing what it emits
-(board rows, files, jobs), and a Jacquard adapter via its
-plugin route is a feasible, unbuilt next step. TUI seats
-are driven through tmux; seat sessions belong to their
-lanes.
+Thor (0.6.13). **The MCode adapter is live** (Phase 14,
+slice 39): `adapters/mcode_hook.py` plus the local plugin
+in `adapters/mcode/`, live-fired and deployed on the Thor's
+0.6.13 seat - hooks fire in `exec` and TUI modes, a
+PreToolUse deny blocks before execution, and a governed
+end-to-end run is recorded in
+`docs/slice39-mcode-live-fire.md` (7 proposals, 6 hash-bound
+approvals, 3 consumed executions, counted from the log).
+The Orin's 0.6.12 seat was not live-fired: its MiniMax
+sign-in had lapsed (`anonymous` / "Login required"); the
+0.6.12 bundles ship the same hook grammar by static
+inventory, so the adapter is expected to hold there once
+the seat is signed in again - an expectation, not a
+measurement.
+
+What the surface actually is (all live-verified on 0.6.13):
+
+- **Plugins are the only hook surface.** The runtime config
+  schema has no `hooks` key (a config carrying one is
+  silently ignored), a workspace `.claude/settings.json`
+  is ignored, and a package at a workspace root is not
+  loaded. Local plugins are directories under
+  `~/.minimax/plugins/` scanned at runtime; verify with
+  `mcode plugin list -m local` (the default list shows the
+  official marketplace only).
+- A MINIMAX manifest is strict and fails silently:
+  `schemaVersion: 1`, a semver version, an existing
+  `icon`, a `category` from the host's list, and `hooks`
+  declared as an array of hooks-file paths (no default
+  `hooks/hooks.json` lookup - that default is Claude/Codex
+  format only, and Claude-format packages also work).
+  Handlers take a `command` string (no `args` for MINIMAX)
+  and a `timeout` in seconds, capped at 10.
+- Payloads are snake_case; tool names are lowercase
+  (`bash`, `read`, `write`, `edit`, `glob`, `grep`,
+  `fetch`, `web_search`). There is no PostToolUseFailure
+  event. PermissionRequest did not fire in headless runs
+  (the smart policy auto-decides; `ask` needs TUI/ACP), so
+  the adapter governs at PreToolUse, which fires under
+  every permission policy.
+- **The hook host fails open**: a hook that crashes,
+  prints garbage, or exceeds its timeout lets the tool
+  call proceed. The adapter fails closed on its own
+  errors; the host-level fail-open is a platform
+  limitation, watched via the latency sidecar.
+- `mcode plugin marketplace list` hangs on a network
+  refresh; local work never needs it.
 
 ## The laptop (HP) — pending
 
