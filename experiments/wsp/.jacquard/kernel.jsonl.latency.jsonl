@@ -1,0 +1,5 @@
+{"ts": "2026-11-04T02:49:19.068916+00:00", "tool": "Read", "verdict": "allow", "decision_ms": 4.364, "proposal_id": "a8a8ad286991ee2317cb1fff7c0337a3014e561dc5a19a6e68ddd8902a421237", "outcome": "allow"}
+{"ts": "2026-11-04T02:49:19.165194+00:00", "tool": "Read", "verdict": "pass", "decision_ms": 0.797, "outcome": "pass"}
+{"ts": "2026-11-04T02:49:19.425432+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 1.996, "proposal_id": "956c439ac3efe4a09cf55364e648a977d2309027b8d24e5d56fc548a61a5f693", "outcome": "queue"}
+{"ts": "2026-11-04T02:49:26.345127+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 1.504, "proposal_id": "956c439ac3efe4a09cf55364e648a977d2309027b8d24e5d56fc548a61a5f693", "outcome": "queue"}
+{"ts": "2026-11-04T02:49:35.465514+00:00", "tool": "Bash", "verdict": "deny", "decision_ms": 2.416, "proposal_id": "6a9e898d9de72b13d3d00a35831bebd528b9eec63e8138236a08ae383894641b", "outcome": "queue"}

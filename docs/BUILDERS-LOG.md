@@ -4308,3 +4308,53 @@ verdicts remain readable from their own logs — a future
 spec pass could soften this, none is chartered). The
 rank-tie disposition remains interim, untouched, as
 chartered.
+**Phase 15 — weight-space programming, governed (opened
+2026-11-04, coordinator clone ~/jacquard-p15, branch
+phase15-wsp, base v1.2.2 @ccaf95f; Phase 14 in parallel in
+~/jacquard-p14 — this phase rebases over its tag at slice
+43).** Charter: BUILD-BRIEF-PHASE15.md. Casey's frame is
+the design lens: liquid evolution is the yin (adaptation
+from within — continuous, artefact-free, unauditable);
+authored weight patches are the yang (adaptation from
+without — discrete, sealed, reversible). Jacquard is the
+harness where they meet: flow proposes, the record
+disposes. The source claim enters at blog-post evidence
+grade (MIT CSAIL via The Register, 2026-11-03: 0.016% of
+Qwen3.5-0.8B's weights edited, MATH-500 up to 6x, IFEval
+~3x, no gradient descent) — everything here is built to be
+able to say no to it.
+Steering folded in: E6 (teacher-student patch loop on E2's
+governed rails; Casey 17:39) and E7/E8 as its application
+targets (17:40) — E7 a soft joint inside signal-chain's
+hard decision-tree spine; E8 a custom decision model
+behind the provider seam, trained on Jacquard's own
+decision record, scored on preference fidelity AND
+correctness separately. Seat-based labour pool (17:41):
+battery builder, patcher and reviewer are different seats
+on different boxes; the Thor's Pi seat is unverified in
+fleet records and gets verified on-box before use.
+Sequencing decision (coordinator): E6 loop mechanics are
+proven first on a self-built arithmetic narrow set
+(cleanest held-out control); E7/E8 follow as application
+rounds of the proven loop, since both need battery
+curation that should not gate the mechanics proof.
+Recorded in experiments/wsp/PLAN.md with E6 stop
+conditions stated in advance (6-round budget; plateau =
+<2pt held-out gap closure x2 rounds; divergence = seen
++5pt while held-out flat/worse x2 = overfitting, named
+and stopped; forgetting guard = any round dropping a
+forgetting battery >5pt vs base is rejected outright).
+Target model: Qwen3-0.6B, fetched as a COPY through the
+Thor download-governor (jobs wsp-qwen3-06b-*; weights
+sha256 f47f7117..., tokenizer sha256 aeb13307...; the
+five small non-LFS files ride ungated and are verified
+by load). Thor booked on the board (gpu bursts + light
+box), Oracle box booked; residents are never mutated —
+all patching happens on copies under ~/wsp-exp/work/.
+Held-out discipline is structural: batteries live in the
+coordinator clone (private/ for held-out + forgetting),
+the patcher seat works in ~/wsp-exp/patcher/ on the Thor
+with diagnostic data + validation aggregates only, and
+every verdict quantity is produced by the verified
+scoring scripts run by the coordinator — no model grades
+a number that enters a verdict.
