@@ -1,0 +1,20 @@
+{
+ "diagnostic": {
+  "n": 1145,
+  "file": "diagnostic.jsonl",
+  "sha256": "e551c9bb1bcfb990b582f3e23f19406a75918060fb46ead8f64069dc4ba4ffc6",
+  "range": [
+   "2026-10-27T23:20:00-0800",
+   "2026-10-28T12:30:03-0800"
+  ]
+ },
+ "heldout": {
+  "n": 492,
+  "file": "heldout.sealed.jsonl",
+  "sha256": "2a669782ce7e42d03e854057415e0bd490dd35d24a7fd3f94beacafd80f95298",
+  "range": [
+   "2026-10-28T12:31:04-0800",
+   "2026-10-28T18:40:46-0800"
+  ]
+ }
+}
