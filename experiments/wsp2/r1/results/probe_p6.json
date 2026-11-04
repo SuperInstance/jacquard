@@ -1,0 +1,110 @@
+{
+ "P6a_original_diagnostic_sim2_replication": {
+  "residual_norm_fraction": 0.9654073715209961,
+  "cos_cont_raw_with_mh_u_hold_u_deny": [
+   0.1044,
+   0.2099,
+   0.0615
+  ],
+  "proj_on_uc": {
+   "trio": {
+    "n": 3,
+    "mean": 5.22,
+    "std": 2.94,
+    "min": 2.63,
+    "max": 8.42
+   },
+   "board_overlap_null": {
+    "n": 3,
+    "mean": 5.41,
+    "std": 1.86,
+    "min": 3.83,
+    "max": 7.46
+   },
+   "board_overlap_all": {
+    "n": 6,
+    "mean": 5.32,
+    "std": 2.2,
+    "min": 2.63,
+    "max": 8.42
+   },
+   "board_none_allow": {
+    "n": 46,
+    "mean": -0.6,
+    "std": 1.35,
+    "min": -3.82,
+    "max": 2.11
+   },
+   "board_all": {
+    "n": 56,
+    "mean": 0.14,
+    "std": 2.32,
+    "min": -3.82,
+    "max": 8.42
+   }
+  },
+  "AUC_trio_vs_null_on_uc": 0.4444444444444444,
+  "per_item_on_uc": {
+   "e8-board-shadow-015": 3.83,
+   "e8-board-shadow-018": 4.61,
+   "e8-board-shadow-019": 4.95,
+   "e8-board-shadow-025": 8.42,
+   "e8-board-shadow-028": 7.46,
+   "e8-board-shadow-033": 2.63
+  }
+ },
+ "P6b_crossformat_diagnostic_sim2": {
+  "residual_norm_fraction": 0.9859302043914795,
+  "cos_cont_raw_with_mh_u_hold_u_deny": [
+   0.036,
+   0.1656,
+   -0.1075
+  ],
+  "proj_on_uc": {
+   "trio": {
+    "n": 3,
+    "mean": -1.59,
+    "std": 0.42,
+    "min": -2.08,
+    "max": -1.33
+   },
+   "board_overlap_null": {
+    "n": 3,
+    "mean": -3.04,
+    "std": 1.5,
+    "min": -4.65,
+    "max": -1.68
+   },
+   "board_overlap_all": {
+    "n": 6,
+    "mean": -2.32,
+    "std": 1.27,
+    "min": -4.65,
+    "max": -1.33
+   },
+   "board_none_allow": {
+    "n": 46,
+    "mean": -6.9,
+    "std": 1.19,
+    "min": -10.6,
+    "max": -4.01
+   },
+   "board_all": {
+    "n": 56,
+    "mean": -6.32,
+    "std": 1.84,
+    "min": -10.6,
+    "max": -1.33
+   }
+  },
+  "AUC_trio_vs_null_on_uc": 0.8888888888888888,
+  "per_item_on_uc": {
+   "e8-board-shadow-015": -4.65,
+   "e8-board-shadow-018": -1.37,
+   "e8-board-shadow-019": -2.79,
+   "e8-board-shadow-025": -1.33,
+   "e8-board-shadow-028": -1.68,
+   "e8-board-shadow-033": -2.08
+  }
+ }
+}

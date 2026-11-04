@@ -1,0 +1,1153 @@
+{
+  "model": "/home/caseydigennaro/wsp-exp/e8/work/student-base",
+  "battery": "batteries/diagnostic_crossformat.jsonl",
+  "splits": {
+    "diagnostic-crossformat": {
+      "n": 112,
+      "accuracy_operator": 0.6428571428571429,
+      "correctness": {
+        "n": 105,
+        "accuracy": 0.5904761904761905
+      },
+      "per_gold": {
+        "ALLOW": {
+          "n": 72,
+          "correct_operator": 72,
+          "accuracy_operator": 1.0
+        },
+        "HOLD": {
+          "n": 37,
+          "correct_operator": 0,
+          "accuracy_operator": 0.0
+        },
+        "DENY": {
+          "n": 3,
+          "correct_operator": 0,
+          "accuracy_operator": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "e8-board-shadow-001",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-002",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-003",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-004",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-005",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-006",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-007",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-008",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-009",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-010",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-011",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-012",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-013",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-014",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-015",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-016",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-017",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-018",
+          "gold": "ALLOW",
+          "operator_correct": false,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-board-shadow-019",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-020",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-021",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-022",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-023",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-024",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-025",
+          "gold": "ALLOW",
+          "operator_correct": false,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-board-shadow-026",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-027",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-028",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-jev-001",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-jev-002",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-jev-003",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-jev-004",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-jev-005",
+          "gold": "DENY",
+          "operator_correct": true,
+          "correct_outcome": "DENY",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-board-shadow-029",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-030",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-031",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-032",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-033",
+          "gold": "ALLOW",
+          "operator_correct": false,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-board-shadow-034",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-035",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-036",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-006",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-007",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-008",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-009",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-010",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-jev-011",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-037",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-038",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-039",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-040",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-041",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-042",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-043",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-044",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-045",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-046",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-047",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-048",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-049",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-001",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-002",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-003",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-004",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-005",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-006",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-007",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-008",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-009",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-001",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-002",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-003",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-004",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-005",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-006",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-007",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-008",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-009",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-010",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-011",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-012",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-013",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-014",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-015",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-016",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-017",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-018",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-019",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-020",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-021",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-022",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-023",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-024",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-025",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-026",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-027",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-028",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-029",
+          "gold": "HOLD",
+          "operator_correct": true,
+          "correct_outcome": "HOLD",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": false,
+          "correct_correctness": false
+        },
+        {
+          "id": "e8-proof-run-2-030",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-031",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-032",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-033",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-034",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-035",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-proof-run-2-036",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-050",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-051",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-052",
+          "gold": "ALLOW",
+          "operator_correct": true,
+          "correct_outcome": "ALLOW",
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": true
+        },
+        {
+          "id": "e8-board-shadow-053",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-054",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-055",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        },
+        {
+          "id": "e8-board-shadow-056",
+          "gold": "ALLOW",
+          "operator_correct": null,
+          "correct_outcome": null,
+          "raw_output": "ALLOW",
+          "extracted": "ALLOW",
+          "correct_operator": true,
+          "correct_correctness": null
+        }
+      ]
+    }
+  }
+}

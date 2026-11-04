@@ -1,0 +1,12 @@
+{
+ "within_gpu": {
+  "n_allow": 10,
+  "n_nonallow": 6,
+  "AUC_nonallow_vs_allow_on_u_hold": 0.0,
+  "AUC_nonallow_vs_allow_on_u_deny": 0.5
+ },
+ "all_heldout": {
+  "AUC_deny_vs_allow_on_u_hold": 0.723404255319149,
+  "AUC_deny_vs_allow_on_u_deny": 0.6127659574468085
+ }
+}
