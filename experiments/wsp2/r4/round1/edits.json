@@ -1,0 +1,194 @@
+{
+  "patch": "R4 round 1 \u2014 PanicDial specialist (family 1: centroid readout + emulated bias)",
+  "scale": 0.1,
+  "base": "~/wsp-exp/models/Qwen3-0.6B (pristine, read-only)",
+  "directions_file": "directions.npz",
+  "directions": "mu, class means, D, mhat, bias_centered computed from DIAGNOSTIC split ONLY (probe.npz hidden states, base model, answer position).",
+  "formula": "Delta_c = scale*(2*D_c + bias_centered_c*m_hat) + gamma_c*m_hat, scale=0.10. gamma decomposed in EXPLANATION.md.",
+  "gamma": {
+    "calm": 0.0025916100845175412,
+    "alarmed": 0.19260298029575354,
+    "stampede": 0.05676171362728876
+  },
+  "bias_centered": {
+    "calm": 3.064239501953125,
+    "alarmed": -0.51800537109375,
+    "stampede": -2.5462493896484375
+  },
+  "total_params": 751632384,
+  "scalars_changed": 6144,
+  "dose_percent": 0.0008174208736594296,
+  "edits": [
+    {
+      "id": "E1_calm_dir",
+      "label": "calm",
+      "token_id": 19300,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          19300
+        ]
+      },
+      "op": "add",
+      "component": "direction",
+      "coeff": 0.2,
+      "critical": true,
+      "group": "centroid-readout",
+      "value": "coeff * D_calm from directions.npz (diagnostic class-mean hidden state minus global mean)",
+      "mechanism": "Delta += 0.2 * D_calm on row 19300 (' calm') of BOTH tied copies. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E2_calm_bias",
+      "label": "calm",
+      "token_id": 19300,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          19300
+        ]
+      },
+      "op": "add",
+      "component": "bias",
+      "coeff": 0.30642396211624146,
+      "critical": false,
+      "group": "centroid-readout",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += 0.306424 * m_hat (scale*bias_centered_calm; bias_centered=3.0642 = -||mu_calm||^2/||mu|| centred) on row 19300 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat = 184.39 +/- 2.56 is near-constant."
+    },
+    {
+      "id": "E3_calm_cal",
+      "label": "calm",
+      "token_id": 19300,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          19300
+        ]
+      },
+      "op": "add",
+      "component": "calibration",
+      "coeff": 0.0025916100845175412,
+      "critical": false,
+      "group": "input-coupling-calibration",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += gamma_calm * m_hat (gamma=0.00259161) on row 19300 of BOTH copies. Calibration: gamma = gamma_full + gamma_sim + gamma_resid, all measured on diagnostic only (see EXPLANATION.md for the decomposition). Compensates the input-side coupling (patched rows are also the INPUT embeddings of the label tokens in the instruction) plus the base rows' unequal mean logits."
+    },
+    {
+      "id": "E4_alarmed_dir",
+      "label": "alarmed",
+      "token_id": 81040,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          81040
+        ]
+      },
+      "op": "add",
+      "component": "direction",
+      "coeff": 0.2,
+      "critical": true,
+      "group": "centroid-readout",
+      "value": "coeff * D_alarmed from directions.npz (diagnostic class-mean hidden state minus global mean)",
+      "mechanism": "Delta += 0.2 * D_alarmed on row 81040 (' alarmed') of BOTH tied copies. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E5_alarmed_bias",
+      "label": "alarmed",
+      "token_id": 81040,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          81040
+        ]
+      },
+      "op": "add",
+      "component": "bias",
+      "coeff": -0.05180053785443306,
+      "critical": false,
+      "group": "centroid-readout",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += -0.051801 * m_hat (scale*bias_centered_alarmed; bias_centered=-0.5180 = -||mu_alarmed||^2/||mu|| centred) on row 81040 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat = 184.39 +/- 2.56 is near-constant."
+    },
+    {
+      "id": "E6_alarmed_cal",
+      "label": "alarmed",
+      "token_id": 81040,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          81040
+        ]
+      },
+      "op": "add",
+      "component": "calibration",
+      "coeff": 0.19260298029575354,
+      "critical": false,
+      "group": "input-coupling-calibration",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += gamma_alarmed * m_hat (gamma=0.19260298) on row 81040 of BOTH copies. Calibration: gamma = gamma_full + gamma_sim + gamma_resid, all measured on diagnostic only (see EXPLANATION.md for the decomposition). Compensates the input-side coupling (patched rows are also the INPUT embeddings of the label tokens in the instruction) plus the base rows' unequal mean logits."
+    },
+    {
+      "id": "E7_stampede_dir",
+      "label": "stampede",
+      "token_id": 21206,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          21206
+        ]
+      },
+      "op": "add",
+      "component": "direction",
+      "coeff": 0.2,
+      "critical": true,
+      "group": "centroid-readout",
+      "value": "coeff * D_stampede from directions.npz (diagnostic class-mean hidden state minus global mean)",
+      "mechanism": "Delta += 0.2 * D_stampede on row 21206 (' stamp' (first token of ' stampede')) of BOTH tied copies. Class-conditional direction from diagnostic final-hidden states only."
+    },
+    {
+      "id": "E8_stampede_bias",
+      "label": "stampede",
+      "token_id": 21206,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          21206
+        ]
+      },
+      "op": "add",
+      "component": "bias",
+      "coeff": -0.2546249330043793,
+      "critical": false,
+      "group": "centroid-readout",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += -0.254625 * m_hat (scale*bias_centered_stampede; bias_centered=-2.5462 = -||mu_stampede||^2/||mu|| centred) on row 21206 of BOTH copies. Emulates the -||mu_c||^2 term of the nearest-centroid classifier as an effective per-class bias, since h.m_hat = 184.39 +/- 2.56 is near-constant."
+    },
+    {
+      "id": "E9_stampede_cal",
+      "label": "stampede",
+      "token_id": 21206,
+      "tensor": "model.embed_tokens.weight + lm_head.weight (both tied copies)",
+      "selector": {
+        "kind": "rows",
+        "rows": [
+          21206
+        ]
+      },
+      "op": "add",
+      "component": "calibration",
+      "coeff": 0.05676171362728876,
+      "critical": false,
+      "group": "input-coupling-calibration",
+      "value": "coeff * m_hat from directions.npz",
+      "mechanism": "Delta += gamma_stampede * m_hat (gamma=0.05676171) on row 21206 of BOTH copies. Calibration: gamma = gamma_full + gamma_sim + gamma_resid, all measured on diagnostic only (see EXPLANATION.md for the decomposition). Compensates the input-side coupling (patched rows are also the INPUT embeddings of the label tokens in the instruction) plus the base rows' unequal mean logits."
+    }
+  ]
+}

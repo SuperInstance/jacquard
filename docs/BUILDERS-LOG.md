@@ -4659,3 +4659,43 @@ complete 07:36 UTC, both on 2026-11-04). Oracle root disk was
 100% full (26 MB free) at start, so this clone lives in the
 Oracle's /tmp (tmpfs, 7.6 GB free) as /tmp/jacquard-p16-r4;
 the branch is the deliverable.
+
+## 2026-11-04 — Phase 16 slice 46 R4, patcher round 1 (PanicDial specialist)
+
+Family-1 authored patch (centroid readout + emulated bias on
+the tied label rows), diagnostic split only; held-out never
+read or scored by the patcher. Full record:
+`experiments/wsp2/r4/round1/R4-ROUND1.md` (+ EXPLANATION.md,
+edits.json, patch.py, directions.npz, manifest.json, scorer
+outputs).
+
+Diagnosis: the student's first-token argmax is constant
+"alarmed" on all 120 diagnostic items (alarmed row prior
+~+8/+15 logits over calm/stampede); the hidden states
+already separate the classes (nearest-centroid 88.3%:
+calm 77.5 / alarmed 97.5 / stampede 90.0) — a readout
+failure. Gold-defining signals (corroborators r=+0.95 with
+stampede) are present in transcripts and representations
+but invisible to the readout; alarm-word density
+anti-correlates with genuineness.
+
+Patch: Delta_c = 0.10*(2*D_c + bias_c*m-hat) + gamma_c*m-hat
+on rows 19300 (' calm'), 81040 (' alarmed'), 21206
+(' stamp', first token of stampede), both tied copies;
+gamma = gamma_full (measured input-coupling cancellation)
++ gamma_sim + two fixed-point residual steps; frozen when a
+third step lowered diagnostic argmax (81.7 -> 80.0) and
+micro-boosts only traded classes. 9 edits, 6,144 scalars =
+0.00082% of 751,632,384.
+
+Diagnostic (official scorer): base 30.0% (0/90/0) ->
+patched **78.3% (calm 62.5 / alarmed 87.5 / stampede 85.0)**,
+boundary 72.0% vs base 26%. E4 self-check: minus-critical
+(direction edits) 33.3% all-calm; minus-random (seed 1234)
+33.3% all-calm — the effect follows the critical set, as
+predicted. Patched model on the Thor at
+~/wsp-exp16/r4/round1/patched/ (built by patch.py from
+pristine base). Teacher calls 0. Worker wall time
+07:31-07:52 UTC 2026-11-04. Round 1 declared FINAL;
+coordinator scores held-out against the pre-stated bar
+(>= 42.5%, no class traded away). No round 2 attempted.
