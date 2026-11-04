@@ -138,3 +138,18 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   (worker clones in /tmp); grader push credential-blocked
   (labels delivered in-report, committed by coordinator,
   byte-identical to grader commit 6439a9e).
+
+- W1 re-coaching round (mc dial) DELIVERED by the patcher:
+  candidate p17-w1-r2 at ~/wsp-exp17/w1-r2/patched-r2 on the
+  Thor (model.safetensors 8f343221...). Refit of the E7
+  round-1 family on the married diagnostic set (battery 120 +
+  live 25; pooled centroids, source-balanced calibration,
+  dose 0.20 at the R4 ceiling, 6,144 scalars). Diagnostic
+  (in-sample): battery 79.2% balanced (80/77.5/80), live
+  88.0% (code 14/15, model 8/9 vs round 1's 1/9, mixed 0/1 —
+  the single live mixed item is a measured outlier missed
+  by every construction). Ablations collapse all-code on
+  both sources. Recorded prediction (W1-RECOACH.md): live
+  graded 55-70% no dead class; battery held-out 72-82%,
+  mixed 65-85%. Coordinator scores both held-outs; adoption
+  is Casey's.
