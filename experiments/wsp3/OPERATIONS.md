@@ -177,3 +177,46 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   Adoption packet: experiments/wsp3/ADOPTION-PACKET.md —
   one ripe candidate (jev hygiene patch), Caseys decision.
 - Thor bookings released at close (board rows marked DONE).
+
+## 2026-11-04 — Candidate 1 adoption ATTEMPTED; smoke FAILED; rolled back byte-exact
+
+Executed under the operators standing rule (2026-11-02: no-downside
+fixes are automatic, not decisions), on the Phase 17 adoption
+packets Candidate 1 recommendation, after the operator confirmed
+in chat that no separate decision was being requested.
+
+- Pristine verification: serving pair matched the packets pristine
+  hashes before any change — .onnx
+  0fc8b8dcb1dac759f946be00fc3cbbb7efe593fd136630152efde2646ca0d750,
+  .data 53da6a3e7265e92fed153e9e228e793f77224efd85ce2bb83d55b12439bff587.
+- Backup: ~/jev-rack/judge/pristine-backup-20261104-143825/ on the
+  Thor (hashes verified equal to pristine after copy).
+- Swap: patched pair copied in; in-place hashes matched the packet
+  exactly — .onnx
+  1bb15c5b54e4b75f2b1e6a67a00081664c8a8030572cfecaa19c6a5aff77e400,
+  .data af8a22457e360889cc89b80f8c981b0c2311ed9b4451cdcb7c7fcb01e610bc3b.
+  jev-rack restarted (system unit), health OK.
+- Smoke (live POST /judge; baseline pristine readings in brackets):
+  prod-db-delete text: neg 0.9998 / zero 0.0001 / pos 0.0001,
+  settled - [pristine: pos 0.6679, settled +]. Status-summary text:
+  neg 0.9974 / zero 0.0020 / pos 0.0006, settled - [pristine:
+  pos 0.8708, settled +]. The status item MUST remain ALLOW-side:
+  FAIL. The delete item read DENY-side, not the HOLD side the
+  packet smoke expected.
+- Diagnosis (offline, run_judge.py on the patched copy): identical
+  readings (neg 0.9998 / 0.9974 with question root; 0.999 / 0.9718
+  with the go-no-go question) — the serving path is faithful. The
+  patched head saturates DENY on SHORT raw texts: the fit
+  distribution is long decision-record paragraphs, and on short
+  inputs the question survives the 64-token window and the pooled
+  representation lands in the refit heads DENY region for
+  everything probed. The judges live traffic includes exactly
+  this shape (the recorded TOOLS.md examples are short raw
+  queries), so the sealed battery evidence does not cover the
+  serving distribution at its short end.
+- Rollback: pristine pair restored from the backup; in-place
+  hashes verified pristine; service restarted; post-rollback
+  readings identical to baseline to the digit (0.6679 / 0.8708).
+  The incumbent judge is serving, unchanged. Adoption state:
+  NOT ADOPTED. Any future attempt needs a battery that includes
+  short raw-query items and a smoke gate on them before swap.
