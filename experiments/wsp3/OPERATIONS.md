@@ -153,3 +153,27 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   graded 55-70% no dead class; battery held-out 72-82%,
   mixed 65-85%. Coordinator scores both held-outs; adoption
   is Casey's.
+
+## 2026-11-04 — W1 re-coaching round 2: DENIED; phase close
+
+- Round 2 (married fit: battery diagnostic 120 + live
+  diagnostic 25, dose 0.20 at the R4 ceiling): coordinator
+  scoring on both sealed held-outs — live graded 34.85%
+  (round 1: 27.3%; prediction 55-70% missed), battery
+  held-out 71.67% (round 1: 84.2%; retention tax -12.5,
+  mixed 75 -> 55). Mixed is never predicted on live items;
+  the in-sample live repair (88.0%) did not transfer
+  (model 4/26 unseen). DENIED as shadow specialist in the
+  governance log (proposal f3852587, hash-bound). Round 1
+  remains the recorded specialist; neither round is a
+  serving candidate (adoption packet, candidate 3).
+- Phase totals: governance log 279 -> 356 entries;
+  2 deployment proposals (1 approved: W3 shadow; 1 denied:
+  W1 round 2); 7 evidence bundles; roles separated at
+  every step (builders, profiler, patchers, blind grader,
+  blind teacher, coordinator scoring) with substitutions
+  and credential-blocked relays recorded where they
+  happened. Findings: experiments/wsp3/FINDINGS.md.
+  Adoption packet: experiments/wsp3/ADOPTION-PACKET.md —
+  one ripe candidate (jev hygiene patch), Caseys decision.
+- Thor bookings released at close (board rows marked DONE).
