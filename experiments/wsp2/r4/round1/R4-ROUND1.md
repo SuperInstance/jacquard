@@ -170,7 +170,7 @@ should transfer better than the calibration constants.
 ## Marginal cost
 
 Teacher calls: **0**. Worker wall time: 2026-11-04
-07:31–07:52 UTC (~21 min, incl. all probe/search/scoring
+07:31–07:43 UTC (~12 min, incl. all probe/search/scoring
 runs on the Thor; GPU shared, no foreign process touched).
 Governance decisions: this patch is submitted as one
 proposal (manifest.json) for the coordinator's held-out

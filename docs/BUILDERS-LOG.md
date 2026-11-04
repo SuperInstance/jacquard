@@ -4696,6 +4696,6 @@ boundary 72.0% vs base 26%. E4 self-check: minus-critical
 predicted. Patched model on the Thor at
 ~/wsp-exp16/r4/round1/patched/ (built by patch.py from
 pristine base). Teacher calls 0. Worker wall time
-07:31-07:52 UTC 2026-11-04. Round 1 declared FINAL;
+07:31-07:43 UTC 2026-11-04. Round 1 declared FINAL;
 coordinator scores held-out against the pre-stated bar
 (>= 42.5%, no class traded away). No round 2 attempted.
