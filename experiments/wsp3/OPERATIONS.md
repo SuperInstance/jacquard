@@ -39,3 +39,29 @@ BUILD-BRIEF-PHASE17.md, experiments/wsp3/CRITERIA.md
   worker clones live in /tmp/tmpfs and relay via bundles;
   nothing lost. phase17-practice push omission caught and
   fixed by the coordinator the same hour.
+
+## 2026-11-04 — W2 closed: measured refusal (no joint qualifies)
+
+- Pick rule applied to counted inventories. Booking-board
+  contention: 13 governed units, 6 evaluations, exactly 1 real
+  contention event — short of (a) by ~487. Agent-inbox routing:
+  25 tasks ever, 22 claim commits — short by ~475, and no hard
+  spine gates claiming. gpu-queue job-shape: 3,320 events but
+  substance fails — see below. NO candidate picked; nearest
+  miss named and priced, per CRITERIA.
+- gpu-queue anatomy: 1,651 jobs = 1,635 feeder + 16 finite.
+  The only balanced >=500 class (foundry archetypes, n=1,637)
+  prints its label verbatim in every input (13 digit-normalised
+  templates in the whole corpus; all 492 held-out items have
+  their template in diagnostic). Outcomes: 1,649 success /
+  1 failure — no failure class exists. The judgement-bearing
+  record (Jacquard bridge submissions, slices 22/25) totals
+  17: allow 10, deny 5, held 2.
+- Battery built for the nearest miss regardless (diagnostic
+  1,145 / held-out 492 sealed, sha256 2a669782): incumbent
+  1.0000 on both splits, zero-shot student 1.0000 on
+  diagnostic. The shadow bar is unreachable BY CONSTRUCTION —
+  there is no judgement for a patch to install. Patcher stood
+  down; harness stands ready for the day governed bridge
+  submissions reach 500. Cost ~30 worker-min, 0 teacher calls.
+- Evidence entered in the governance log (300 entries).
