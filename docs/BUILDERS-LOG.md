@@ -4199,3 +4199,40 @@ sentences landed against the file's actual text), and the
 §9 sentence planned for the drill turned out to describe
 text the spec does not contain -- the conformance pinning
 lives in section 3.1 itself, where it was added.
+
+**Slice 39 — the MCode adapter: live-fire, then build
+(2026-11-04).** Phase 11 had established statically that
+MCode ships a plugin/hook surface but no hook had ever been
+live-fired. Slice 39 fired them. The Orin seat (0.6.12) was
+auth-dead on arrival (sign-in lapsed: `anonymous`, "Login
+required"), so the live-fire moved to the Thor's 0.6.13 seat
+under a board booking; 0.6.12's grammar is identical by
+static inventory and its live-fire is a named residual
+pending a re-login. On 0.6.13: MINIMAX-format and
+Claude-format local plugins both fire (SessionStart,
+UserPromptSubmit, PreToolUse, PostToolUse) and a PreToolUse
+deny blocks before execution in `exec` and TUI modes alike;
+config-file hooks do not exist (the config schema has no
+`hooks` key; a workspace `.claude/settings.json` and a
+workspace-root package are likewise ignored);
+PermissionRequest never fired headless (smart auto-decides).
+Traps, ZCode-shaped but new: a MINIMAX manifest that misses
+its icon/category/declared-hooks is dropped from the scan
+*silently*; MINIMAX handlers take a command string only,
+with timeouts in seconds capped at 10; the default
+`plugin list` hides local packages (`-m local` shows them).
+The host **fails open** on hook crash/garbage/timeout —
+live-verified all three — so the adapter's fail-closed
+posture covers only errors the hook survives to report;
+that limitation is stated wherever the adapter is
+described. The adapter itself is the ZCode contract
+unchanged (same kernel, profile, queue semantics, one-shot
+hash-bound approvals) with an MCode translation table
+(lowercase tool names, snake_case payloads, no
+PostToolUseFailure event): `adapters/mcode_hook.py` +
+`adapters/mcode/` + 11 tests over real captured payloads.
+Deployed on the Thor seat against a genuine task and
+counted from the log: 21 hook invocations, 7 proposals,
+6 hash-bound approvals, 3 consumed executions, 2 PostToolUse
+confirmations, queue empty at the end. Full record:
+docs/slice39-mcode-live-fire.md.
