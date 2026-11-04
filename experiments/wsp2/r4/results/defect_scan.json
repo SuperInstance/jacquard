@@ -1,0 +1,31 @@
+{
+  "n_items": 300,
+  "n_messages": 1721,
+  "substring_trap_messages": 62,
+  "substring_trap_by_entry": {
+    "URGENCY:now": 14,
+    "ALARM:crash": 11,
+    "ALARM:flood": 9,
+    "ALARM:run": 8,
+    "URGENCY:fast": 7,
+    "ALARM:fire": 6,
+    "ALARM:panic": 4,
+    "ALARM:abandon": 2,
+    "ALARM:capsize": 1
+  },
+  "flattened_lost_hits": 32,
+  "flattened_by_entry": {
+    "ALARM:fire": 12,
+    "ALARM:crash": 8,
+    "ALARM:run": 4,
+    "ALARM:flood": 3,
+    "URGENCY:now": 3,
+    "ALARM:alarm": 2
+  },
+  "room_word_count": {
+    "min": 42,
+    "median": 75,
+    "max": 122,
+    "rooms_where_alarm_norm_denominator_is_1": 0
+  }
+}

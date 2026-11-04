@@ -1,0 +1,1002 @@
+{
+  "model": "/home/caseydigennaro/wsp-exp/models/Qwen3-0.6B",
+  "prompt": "Classify the room's alarm state as calm, alarmed, or stampede. Answer with just the label.",
+  "splits": {
+    "heldout": {
+      "n": 120,
+      "accuracy": 0.325,
+      "per_class": {
+        "alarmed": {
+          "correct": 39,
+          "n": 40,
+          "accuracy": 0.975
+        },
+        "calm": {
+          "correct": 0,
+          "n": 40,
+          "accuracy": 0.0
+        },
+        "stampede": {
+          "correct": 0,
+          "n": 40,
+          "accuracy": 0.0
+        }
+      },
+      "confusion": {
+        "alarmed": {
+          "alarmed": 39,
+          "none": 1
+        },
+        "calm": {
+          "alarmed": 40
+        },
+        "stampede": {
+          "alarmed": 40
+        }
+      },
+      "items": [
+        {
+          "id": "r4held-001",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-002",
+          "category": "polysemy_calm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-003",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-004",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-005",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-006",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-007",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-008",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-009",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-010",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-011",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-012",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-013",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-014",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-015",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-016",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-017",
+          "category": "polysemy_calm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-018",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-019",
+          "category": "polysemy_calm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-020",
+          "category": "negated_alarm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-021",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-022",
+          "category": "escalating_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-023",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-024",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-025",
+          "category": "negated_alarm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-026",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-027",
+          "category": "surprise_urgency",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-028",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-029",
+          "category": "escalating_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-030",
+          "category": "trivia_burst",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-031",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-032",
+          "category": "escalating_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-033",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-034",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-035",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-036",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-037",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-038",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-039",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-040",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-041",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-042",
+          "category": "fiction_discussion",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-043",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-044",
+          "category": "polysemy_calm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-045",
+          "category": "negated_alarm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-046",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-047",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-048",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-049",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-050",
+          "category": "drill_notice",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-051",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-052",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-053",
+          "category": "polysemy_calm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-054",
+          "category": "trivia_burst",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-055",
+          "category": "escalating_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-056",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-057",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-058",
+          "category": "escalating_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-059",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-060",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-061",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-062",
+          "category": "drill_notice",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-063",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-064",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-065",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-066",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-067",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-068",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-069",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-070",
+          "category": "surprise_urgency",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-071",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-072",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-073",
+          "category": "everyday_chat",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-074",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-075",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-076",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-077",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-078",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-079",
+          "category": "trivia_burst",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-080",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-081",
+          "category": "uncertain_signal",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-082",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-083",
+          "category": "negated_alarm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-084",
+          "category": "fiction_discussion",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-085",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-086",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-087",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-088",
+          "category": "drill_notice",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-089",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-090",
+          "category": "drill_notice",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-091",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-092",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-093",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-094",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-095",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-096",
+          "category": "fiction_discussion",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-097",
+          "category": "surprise_urgency",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-098",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-099",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-100",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-101",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-102",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-103",
+          "category": "surprise_urgency",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-104",
+          "category": "first_report",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-105",
+          "category": "fiction_discussion",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-106",
+          "category": "minor_incident",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-107",
+          "category": "work_routine",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-108",
+          "category": "technical_cascade",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-109",
+          "category": "impact_event",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-110",
+          "category": "negated_alarm",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-111",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmited",
+          "extracted": null,
+          "correct": false
+        },
+        {
+          "id": "r4held-112",
+          "category": "fast_water",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-113",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-114",
+          "category": "evacuation_underway",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-115",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-116",
+          "category": "single_loud_voice",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-117",
+          "category": "trivia_burst",
+          "gold": "calm",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        },
+        {
+          "id": "r4held-118",
+          "category": "weather_warning",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-119",
+          "category": "slow_burn_technical",
+          "gold": "alarmed",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": true
+        },
+        {
+          "id": "r4held-120",
+          "category": "confirmed_spread",
+          "gold": "stampede",
+          "raw_output": "alarmed",
+          "extracted": "alarmed",
+          "correct": false
+        }
+      ],
+      "boundary_accuracy": 0.24
+    }
+  }
+}
