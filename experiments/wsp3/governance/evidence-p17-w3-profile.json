@@ -1,0 +1,48 @@
+{
+  "worker": "p17-w3",
+  "artefact": "jev-semantic intuition-student-v1 (copy on Thor, hashes in W3-PROFILE.md)",
+  "profile_sha256": "1b3d33b8e620d404fa626b05a0ded3fb59afc608775410c082dc2d1df9d2573d",
+  "core_set": {
+    "file": "experiments/wsp3/w3/core.jsonl",
+    "n": 165,
+    "sha256": "0d51abaa18120d7d97bc17ed24d317ab629e8a6a796c3e600150acbae1e88e72",
+    "sources": "E8 battery verbatim: board-shadow 81, proof-run-2 36, gpu-windows 16, slice30-booking 12, jev 11, proof-run 9"
+  },
+  "baseline_dual_score": {
+    "agreement_with_operator": 0.5636,
+    "n_operator": 165,
+    "agreement_with_correctness": 0.4202,
+    "n_correctness": 119
+  },
+  "per_class": {
+    "G1_all": {
+      "score": 0.5591,
+      "delta_pts": -0.45,
+      "retention": 0.742
+    },
+    "G1_upper": {
+      "score": 0.2485,
+      "delta_pts": -31.52,
+      "retention": 0.449
+    },
+    "G2_all": {
+      "score": 0.4273,
+      "delta_pts": -13.64,
+      "retention": 0.667
+    },
+    "G2_field_reorder": {
+      "score": 0.2182,
+      "delta_pts": -34.55,
+      "retention": 0.473
+    }
+  },
+  "patch_gate": "PASS",
+  "patch_gate_basis": "G2 aggregate -13.64 pts, G1 upper -31.52 pts, G2 field_reorder -34.55 pts vs core 56.36%; pre-stated bar >=5 pts (CRITERIA W3)",
+  "patch_surface": "final node /head/Gemm only: head.weight [3,256] + head.bias [3] = 771 scalars, external-data ONNX, editable with onnx+numpy",
+  "sealed_heldout": {
+    "file": "experiments/wsp3/w3/variants-heldout-sealed.jsonl",
+    "n": 480,
+    "sha256": "b8716661b45d489728351eba4be51542e247afd2bd779a20c70aefdfda7d87f4"
+  },
+  "results_file": "experiments/wsp3/w3/results-all.json"
+}

@@ -1,0 +1,88 @@
+{
+ "core_all165": {
+  "n": 165,
+  "gold_counts": {
+   "DENY": 8,
+   "HOLD": 38,
+   "ALLOW": 119
+  },
+  "incumbent_acc": 0.5636363636363636,
+  "logreg3_cv_acc": 0.9575757575757575,
+  "logreg_allow_vs_rest_cv_acc": 0.9696969696969697,
+  "majority_baseline": 0.7212121212121212,
+  "lda3_cv_acc": 0.8242424242424242,
+  "classmean_cos": {
+   "ALLOW-HOLD": 0.9078543573798974,
+   "ALLOW-DENY": 0.8333906181598951,
+   "HOLD-DENY": 0.7847745567524052
+  },
+  "fisher_allow_vs_rest": 1.3924969553682822,
+  "x_norm_mean": 10.094801976572539
+ },
+ "upper": {
+  "n": 85,
+  "gold_counts": {
+   "DENY": 2,
+   "HOLD": 18,
+   "ALLOW": 65
+  },
+  "incumbent_acc": 0.23529411764705882,
+  "logreg3_cv_acc": 0.9058823529411765,
+  "logreg_allow_vs_rest_cv_acc": 0.9176470588235294,
+  "majority_baseline": 0.7647058823529411,
+  "lda3_cv_acc": 0.8941176470588236,
+  "x_norm_mean": 12.109954517447228
+ },
+ "core_matched_to_upper": {
+  "n": 85,
+  "gold_counts": {
+   "DENY": 2,
+   "HOLD": 18,
+   "ALLOW": 65
+  },
+  "incumbent_acc": 0.5529411764705883,
+  "logreg3_cv_acc": 0.9647058823529412,
+  "logreg_allow_vs_rest_cv_acc": 0.9529411764705882,
+  "majority_baseline": 0.7647058823529411,
+  "lda3_cv_acc": 0.9411764705882353,
+  "x_norm_mean": 10.116138648344153
+ },
+ "paired_cosine": {
+  "upper": 0.6029037902056755,
+  "field_reorder": 0.7236266943357524
+ },
+ "cross_probe": {
+  "core->upper": 0.7647058823529411,
+  "upper->core": 0.5411764705882353,
+  "core->field_reorder": 0.788235294117647,
+  "field_reorder->core": 0.788235294117647
+ },
+ "field_reorder": {
+  "n": 85,
+  "gold_counts": {
+   "DENY": 2,
+   "HOLD": 18,
+   "ALLOW": 65
+  },
+  "incumbent_acc": 0.2235294117647059,
+  "logreg3_cv_acc": 0.9529411764705882,
+  "logreg_allow_vs_rest_cv_acc": 0.9529411764705882,
+  "majority_baseline": 0.7647058823529411,
+  "lda3_cv_acc": 0.9529411764705882,
+  "x_norm_mean": 9.688137255406046
+ },
+ "core_matched_to_field_reorder": {
+  "n": 85,
+  "gold_counts": {
+   "DENY": 2,
+   "HOLD": 18,
+   "ALLOW": 65
+  },
+  "incumbent_acc": 0.5529411764705883,
+  "logreg3_cv_acc": 0.9647058823529412,
+  "logreg_allow_vs_rest_cv_acc": 0.9529411764705882,
+  "majority_baseline": 0.7647058823529411,
+  "lda3_cv_acc": 0.9411764705882353,
+  "x_norm_mean": 10.116138648344153
+ }
+}
