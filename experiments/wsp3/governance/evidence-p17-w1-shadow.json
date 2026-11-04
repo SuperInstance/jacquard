@@ -1,0 +1,42 @@
+{
+  "stage": "p17-w1-shadow",
+  "sha256": "4e3713efcb2115dd9f6b1a5ffa2fa0405925121dfc11271a1e6d42cc774944e8",
+  "sha256_of": "experiments/wsp3/W1-SHADOW.md",
+  "summary": "W1 shadow complete on the corpus side: 156 real agent-inbox messages (full git history, deduped; fewer than the 300 target exist). Live agreement specialist-vs-incumbent on the 91 scorable items: model/code 66/91 = 72.5%, panic 71/91 = 78.0% (6 unparseable counted as disagreements). Incumbents collapse in the wild (model/code: code 153/156; panic: calm 156/156, max reading 0.2354); specialists keep the coached classes alive (mixed 21/91; alarmed 11, stampede 3). Blind sample of 66 drawn for the teacher spot-check; grader agreement and SURVIVES CONTACT verdicts pending the blind grader.",
+  "corpus_n": 156,
+  "corpus_target": 300,
+  "target_met": false,
+  "eligible_n_per_specialist": 91,
+  "too_long_n": 65,
+  "model_code": {
+    "battery_specialist_heldout": 0.842,
+    "battery_incumbent_heldout": 0.467,
+    "live_agreement": 0.7253,
+    "agree": 66,
+    "n": 91,
+    "incumbent_mix_full_corpus": {"code": 153, "mixed": 2, "model": 1},
+    "specialist_mix_eligible": {"code": 69, "mixed": 21, "model": 1},
+    "per_incumbent_class_agree": {"code": "66/88", "mixed": "0/2", "model": "0/1"}
+  },
+  "panic": {
+    "battery_specialist_heldout": 0.508,
+    "battery_incumbent_heldout": 0.15,
+    "live_agreement": 0.7802,
+    "live_agreement_parseable_only": 0.8353,
+    "agree": 71,
+    "n": 91,
+    "unparseable": 6,
+    "incumbent_mix_full_corpus": {"calm": 156, "alarmed": 0, "stampede": 0},
+    "incumbent_max_reading": 0.2354,
+    "specialist_mix_eligible": {"calm": 71, "alarmed": 11, "stampede": 3, "none": 6},
+    "specialist_stampede_item_ids": ["c0021", "c0044", "c0113"]
+  },
+  "blind_sample_n": 66,
+  "teacher_spot_check": "pending blind grader (not graded by the W1 builder)",
+  "deficits": [
+    "corpus below target: only 156 distinct text messages exist in the full agent-inbox history under the mined directories",
+    "panic incumbent structurally capped at 0.65 in the single-message-room adaptation (density and ripple terms zero); empirically calm on 156/156",
+    "R4 scorer killed by SIGTERM 3x as a long run on the shared Thor (cause unknown, no oomd/journal trace); completed via 16 micro-chunk runs of the unmodified harness with retries",
+    "Oracle root disk 100% full at lane start; repo work done in /tmp tmpfs"
+  ]
+}
