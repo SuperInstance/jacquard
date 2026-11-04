@@ -4699,3 +4699,44 @@ pristine base). Teacher calls 0. Worker wall time
 07:31-07:43 UTC 2026-11-04. Round 1 declared FINAL;
 coordinator scores held-out against the pre-stated bar
 (>= 42.5%, no class traded away). No round 2 attempted.
+
+## 2026-11-04 — Phase 16 slice 46 R4, patcher round 2 (PanicDial, refinement vs adopted round 1)
+
+Round 1 held-out (coordinator): 50.8% (calm 27.5 / alarmed 72.5 /
+stampede 52.5) vs its diagnostic 78.3 — one-directional collapse
+into alarmed (calm->alarmed 27/40, stampede->alarmed 17/40).
+Round-2 bar, stated in advance: held-out > 50.8 with no class
+more than 5 points below round 1 per-class.
+
+Design was committed before building (experiments/wsp2/r4/
+round2/DESIGN.md). The frozen primary — direction amplification
+0.20 -> 0.30, ranked first by a 5-fold cross-fitted fixed-H
+simulation (85.8 vs 82.5) — FAILED on the real model (argmax
+65.0), as did the predeclared fallback chain (denoised-D s=0.15:
+69.2; dir 0.25: 66.7; dir 0.15 dose reduction: argmax 77.5 but
+official scorer 56.7, generation collapse to the bare alarmed
+token). Measured mechanism: per-item input-coupling offset std
+grows with delta norm (dir 0.30: std 7.4-10.6 logits vs round 1
+4.9-7.2); fixed-H simulation cannot see it. Real-model dose
+curve peaks at round 1s dir 0.20 (0.10: 70.8, 0.15: 77.5,
+0.20: 81.7, 0.25: 66.7, 0.30: 65.0) — dir 0.20 is a measured
+ceiling on this tied-embedding student, not a choice.
+
+Shipped round 2 (Amendment A, committed before building):
+round 1s dose/geometry byte-identical (same directions.npz),
+only gamma changed — gamma_resid (the fixed-point residual
+correction, round 1s most diagnostic-fitted component; its
+alarmed term is a ~+7.6-logit constant boost) halved:
+gamma = [0.00065, 0.17202, 0.05340]. Diagnostic (official
+scorer): 72.5% (calm 65.0 / alarmed 75.0 / stampede 77.5),
+boundary 64.0% — deliberately below round 1s 78.3 diagnostic:
+surplus returned from the strong classes, calm up, fitted
+alarmed boost halved. E4 self-check: minus-critical 33.3%
+all-calm, minus-random 33.3% all-calm, as predicted. Probes:
+LOO centroid drill_notice 0/4 — representation limit, not
+chased; negated_alarm 3/5. 9 edits, 6,144 scalars = 0.00082%.
+Patched model: Thor ~/wsp-exp16/r4/round2/patched/. Teacher
+calls 0. Worker wall time 07:44-08:00 UTC 2026-11-04.
+Declared FINAL for coordinator held-out scoring against the
+round-2 bar; full record in experiments/wsp2/r4/round2/
+R4-ROUND2.md.
