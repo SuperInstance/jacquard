@@ -104,3 +104,27 @@ Marginal cost accounting: joint N+1 vs joint N in coordinator
 wall time, worker wall time, teacher calls and governance
 decisions — counted live for joint 2; joint 1 figures taken
 from the Phase 15 record and labelled counted vs estimated.
+
+## Amendment A1 (2026-11-04, recorded BEFORE any R4 test runs)
+
+R4 joint identity amended. The pre-stated R4 named the
+gpu-queue downstream-use judgement as a substitution because
+the E7 inventory of signal-chain held one joint. Coordinator
+inventory after pre-statement found the dial's home repo
+(SuperInstance/elephant, DialBank) holds further dials of the
+same architecture — lexicon counting with equal weights mapped
+to a scalar — including elephant/dials/panic.py. The R4 joint
+is therefore the PANIC DIAL (room alarm state:
+calm / alarmed / stampede), an inventory EXTENSION of the
+E7 family, not the gpu-queue substitution. Reasons: the joint
+is real incumbent code of the same spine pattern with a
+different judgement type (affect/urgency, not text spectrum);
+its battery can be construction-labelled exactly as E7's
+was; the gpu-queue route's real labels are too thin at the
+governed end (3 consumed of 10) and construction-bound at the
+other. The R4 protocol, success bar, dataset hygiene rules
+and marginal-cost accounting from the original R4 section
+apply UNCHANGED; only the joint's identity and the dataset
+precondition (which now reads as E7's battery discipline:
+>= 100 diagnostic and >= 100 held-out items, disjoint pools,
+cross-split overlap screened and reported) are amended.
