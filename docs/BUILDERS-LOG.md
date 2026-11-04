@@ -4485,3 +4485,33 @@ solutions that truncate at the 96-token cap — a
 format/completion failure class, mechanistically
 distinct from arithmetic slips, and exactly the kind of
 failure an authored patch could plausibly address.
+
+Slice 41 COMPLETE (2026-11-04) — E1 positive, E4 confirmed;
+full record in experiments/wsp/SLICE41-E1E4.md. Headlines:
+the patcher (a coordinator-run Claude session, after the
+Kimi quota refusal and the ZCode saturation) diagnosed
+that 9 of 17 diagnostic failures were format/completion,
+not arithmetic — worked solutions truncating at the
+96-token cap, correct comparisons buried by their own
+sentence frame. Its patch (22 logical edits, 43,028
+scalars = 0.0057% — a digit-row bias built from the
+model's own mean hidden direction, plus a ' than'-row
+scale to break the compare frame, plus 11 honestly
+labelled inert control edits) scored, coordinator-run:
+validation 83.5 -> 91.5, heldout 80.5 -> 85.0
+(14 gains / 5 losses, concentrated in addsub_chain
+48 -> 84 as the mechanism predicts), forgetting
+batteries unmoved (fact item-identical; prose NLL
++0.005). The E4 ablation, run independently from the
+artefacts, is exact: minus-critical returns every score
+to base; minus-random (equal count) leaves every score
+at full; the rebuilt full variant reproduces the
+patcher's model to the item. The explanation is causally
+correct at the level it claims. Modesty notes recorded
+in the slice record: heldout +4.5 is ~1.6 sigma — the
+claim rides on direction + mechanism + ablation, not on
+heldout alone; the patcher's predicted +8 overshot;
+nothing here is the source paper's 6x, and the record
+says why (their failure class was capability-shaped,
+this battery's was behaviour-shaped). The honesty gate
+is NOT triggered — slices 42-43 proceed as chartered.

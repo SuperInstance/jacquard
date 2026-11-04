@@ -28,14 +28,19 @@ YOUR EVIDENCE (in your working directory):
   NOT see item-by-item.
 - inspect.json — the student's architecture summary.
 Baseline numbers (coordinator-run, verified harness):
-  diagnostic (80, the items in front of you): 87.5% overall
-    addsub_chain 70% | compare 80% | mul_2x2 80% |
-    unit_price 80% | word_2step 90% | div_exact 100% |
+  diagnostic (80, the items in front of you): 78.8% overall
+    addsub_chain 30% | compare 50% | mul_2x2 70% |
+    unit_price 80% | word_2step 100% | div_exact 100% |
     mul_2x1 100% | pct_of 100%
   validation (200, aggregates in validation_aggregates.json):
-    78.5% overall — compare 36% and addsub_chain 48% are
+    83.5% overall — addsub_chain 48% and compare 52% are
     the loud failures there; div/mul_2x1/pct/unit_price
     sit at 100% (no headroom — do not break them).
+  Note the diagnostic raw outputs: on many failures the
+  student writes a worked solution that runs past the
+  scoring token cap, so the recorded answer is a
+  mid-solution number. Distinguish, in your diagnosis,
+  arithmetic slips from completion/format failures.
   Held-out and forgetting batteries are scored by the
   coordinator only after you declare a patch FINAL. A
   forgetting guard applies: a final patch that drops any
@@ -79,3 +84,12 @@ HARD RULES:
   the final message with your reasoning and the best
   negative evidence you gathered. A well-evidenced negative
   is a successful run of this experiment.
+
+ENVIRONMENT NOTES (Thor): Python with torch/transformers is
+~/ml/.venv/bin/python (the system python3 has neither). The
+GPU is idle and yours. Your diagnostic scorer:
+~/ml/.venv/bin/python score_diag.py --model <MODEL_DIR>
+--split diagnostic --out <OUT.json>, run from your working
+directory. Base model copy for patching experiments:
+~/wsp-exp/work/student-base/ (read it, copy from it, never
+write to it — your patched copies live in your own dir).
