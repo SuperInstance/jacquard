@@ -4090,3 +4090,64 @@ Phase 13 closes: four mid-work primaries passed, Jacquard
 adopted zero times and rejected with reasons that were
 verified where checkable — the outside has now been heard
 twice, and both times it priced the tool honestly.
+
+## Phase 14 — settle the open questions (2026-11-04)
+
+**Slice 38 — resubmission semantics, spec first.** The design
+question Phase 13 left open: the spec (§3) already promises
+"id is an idempotency key: resubmitting the same envelope
+returns the original verdict and appends nothing", but the
+kernels honour it only inside one process — the verdict
+cache is per-process, so a fresh-process duplicate was
+re-decided (an allowed duplicate silently re-executed; a
+queued duplicate appended a second decision and crashed on
+machine-instance creation; a refused duplicate appended a
+second refusal). The shipped adapters ARE cross-process
+submitters (a fresh process per ZCode hook call), so this
+is a production shape, not a curiosity. Decision (spec
+0.7, §3.1): the recorded-verdict rule — once a submission
+is recorded in the log, resubmission returns the recorded
+verdict (the submission decision), marked "duplicate":
+true, and never re-decides, never re-executes, never
+appends. The check is against the folded log, rebuilt at
+sequencer construction, so it holds across processes and
+checkpoints. If the operator has since released, rejected
+or expired a queued item, the resubmission still returns
+the SUBMISSION verdict: a verdict is a fact about a
+submission event; later operator decisions are separate
+recorded decisions, read from the record — the alternative
+(current-disposition replay) makes one question receive
+different answers at different times and conflates two
+deciders; it is also what the jq verb improvised, and it
+crashes on expired items (its outcome map has no
+"expired"), which is recorded here as evidence it was a
+workaround, not a semantics. The other alternative —
+REFUSED(DUPLICATE) — is rejected: duplicate delivery is
+the normal shape of cross-process adapters (at-least-once
+delivery), and an error surface for a benign replay pushes
+idempotency into every adapter and invites retry storms.
+Scope, stated plainly: the guarantee covers every
+submission the log records — proposals via their
+submission decision (this now includes the define-check
+refusal, which records a fault decision exactly as the
+underdeclared refusal already did; before 0.7 it recorded
+nothing but lifecycle steps), definitions and machines
+via their acceptance entries, which from 0.7 carry the
+envelope hash (pre-0.7 acceptance entries do not, so
+definition/machine replay is a 0.7-forward guarantee;
+proposal replay covers every existing log, since decision
+entries always carried the proposal id). Submissions
+refused before any recording (envelope validation,
+request shape, wait-spec checks) append nothing and
+execute nothing; resubmitting one re-derives the same
+refusal — the observable invariants hold. Section 3s
+older sentence "every refusal is itself recorded" is
+scoped to match: it was prose ahead of the implementation
+for the pre-decision refusals. Cross-version: replay
+applies to envelopes sealed under the running spec
+version; a pre-bump envelope is refused on its seal like
+any foreign-version envelope, its recorded verdict still
+readable from the log — the same posture as every prior
+bump. The jq submit verb loses its own folded-record scan
+and delegates to the kernel (one mechanism, no drift); its
+printed shape is unchanged.
