@@ -1,0 +1,17 @@
+{
+ "student": "qwen3-0.6b",
+ "grade": "G1",
+ "declaration": "FINAL",
+ "base_model": "Qwen3-0.6B base (~/wsp-exp/models/Qwen3-0.6B)",
+ "patched_model_dir_on_thor": "~/wsp-exp16/profile/patches/qwen3-0.6b/G1/",
+ "edits_sha256": "52d6243ac47dd0b2cb1210c03a2d992735c815b0575ff15e4b1c25efb931b0dc",
+ "scalars_changed_stored_basis": 61440,
+ "dose_percent_stored_basis": 0.00817,
+ "diagnostic_before_percent": 18.33,
+ "diagnostic_after_percent": 47.5,
+ "ablation_diagnostic_percent": {
+  "minus_critical": 18.33,
+  "minus_random_seed41": 17.5
+ },
+ "scoring": "diagnostic split only, official harness matcher (run_profile.is_correct); held-out/validation never opened or scored by the patcher"
+}

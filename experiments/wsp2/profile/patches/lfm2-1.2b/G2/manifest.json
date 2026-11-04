@@ -1,0 +1,17 @@
+{
+ "student": "lfm2-1.2b",
+ "grade": "G2",
+ "declaration": "FINAL",
+ "base_model": "chained: lfm2-1.2b/G1 patch output",
+ "patched_model_dir_on_thor": "~/wsp-exp16/profile/patches/lfm2-1.2b/G2/",
+ "edits_sha256": "02978c6980c50220d34d91d339ef8c65f582795a0960d843940faee4b38bd7d7",
+ "scalars_changed_stored_basis": 8192,
+ "dose_percent_stored_basis": 0.0007,
+ "diagnostic_before_percent": 63.33,
+ "diagnostic_after_percent": 72.5,
+ "ablation_diagnostic_percent": {
+  "minus_critical": 63.33,
+  "minus_random_seed41": 65.0
+ },
+ "scoring": "diagnostic split only, official harness matcher (run_profile.is_correct); held-out/validation never opened or scored by the patcher"
+}

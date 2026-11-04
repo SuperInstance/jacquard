@@ -1,0 +1,995 @@
+{
+ "model": "/home/caseydigennaro/wsp-exp16/profile/patches/qwen3-0.6b/G2",
+ "grade": "G2",
+ "split": "diagnostic",
+ "accuracy": 38.33,
+ "per_category": {
+  "distractor": {
+   "n": 5,
+   "correct": 0,
+   "accuracy": 0.0
+  },
+  "false_claim": {
+   "n": 42,
+   "correct": 20,
+   "accuracy": 47.62
+  },
+  "not_category": {
+   "n": 5,
+   "correct": 3,
+   "accuracy": 60.0
+  },
+  "order_swap": {
+   "n": 37,
+   "correct": 23,
+   "accuracy": 62.16
+  },
+  "quoted_question": {
+   "n": 31,
+   "correct": 0,
+   "accuracy": 0.0
+  }
+ },
+ "items": [
+  {
+   "id": "g2-diag-001",
+   "category": "not_category",
+   "gold": "table",
+   "raw_output": "sheep",
+   "normalised_output": "sheep",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-002",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "Maria says: *\"12 is greater than 56.\"*\n\nNo,",
+   "normalised_output": "maria says: *\"12 is greater than 56.\"* no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-003",
+   "category": "distractor",
+   "gold": "2",
+   "raw_output": "Sam has **2 boats**.",
+   "normalised_output": "sam has **2 boats**",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-004",
+   "category": "quoted_question",
+   "gold": "49",
+   "raw_output": "25",
+   "normalised_output": "25",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-005",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-006",
+   "category": "not_category",
+   "gold": "chair",
+   "raw_output": "green",
+   "normalised_output": "green",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-007",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-008",
+   "category": "distractor",
+   "gold": "8",
+   "raw_output": "Mia has **8 hens** and **3 goats**.",
+   "normalised_output": "mia has **8 hens** and **3 goats**",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-009",
+   "category": "quoted_question",
+   "gold": "37",
+   "raw_output": "23",
+   "normalised_output": "23",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-010",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-011",
+   "category": "not_category",
+   "gold": "river",
+   "raw_output": "river",
+   "normalised_output": "river",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-012",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-013",
+   "category": "distractor",
+   "gold": "4",
+   "raw_output": "Leo has **4 bikes**.",
+   "normalised_output": "leo has **4 bikes**",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-014",
+   "category": "quoted_question",
+   "gold": "35",
+   "raw_output": "21",
+   "normalised_output": "21",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-015",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-016",
+   "category": "not_category",
+   "gold": "cloud",
+   "raw_output": "cloud",
+   "normalised_output": "cloud",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-017",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-018",
+   "category": "distractor",
+   "gold": "2",
+   "raw_output": "Ana has **2 cats** and **5 birds**.",
+   "normalised_output": "ana has **2 cats** and **5 birds**",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-019",
+   "category": "quoted_question",
+   "gold": "39",
+   "raw_output": "25",
+   "normalised_output": "25",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-020",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-021",
+   "category": "not_category",
+   "gold": "stone",
+   "raw_output": "stone",
+   "normalised_output": "stone",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-022",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-023",
+   "category": "distractor",
+   "gold": "3",
+   "raw_output": "Jon has 3 dogs and 7 fish.",
+   "normalised_output": "jon has 3 dogs and 7 fish",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-024",
+   "category": "quoted_question",
+   "gold": "37",
+   "raw_output": "12",
+   "normalised_output": "12",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-025",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-026",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-027",
+   "category": "quoted_question",
+   "gold": "22",
+   "raw_output": "5 + 17",
+   "normalised_output": "5 + 17",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-028",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-029",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-030",
+   "category": "quoted_question",
+   "gold": "41",
+   "raw_output": "18 + 23 =",
+   "normalised_output": "18 + 23 =",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-031",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-032",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-033",
+   "category": "quoted_question",
+   "gold": "23",
+   "raw_output": "19",
+   "normalised_output": "19",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-034",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-035",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-036",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-037",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-038",
+   "category": "quoted_question",
+   "gold": "32",
+   "raw_output": "25",
+   "normalised_output": "25",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-039",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-040",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-041",
+   "category": "quoted_question",
+   "gold": "51",
+   "raw_output": "22",
+   "normalised_output": "22",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-042",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-043",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-044",
+   "category": "quoted_question",
+   "gold": "39",
+   "raw_output": "21",
+   "normalised_output": "21",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-045",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-046",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-047",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-048",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-049",
+   "category": "quoted_question",
+   "gold": "41",
+   "raw_output": "21",
+   "normalised_output": "21",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-050",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-051",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Nina says: **60 is greater than 41.**\n\nYes,",
+   "normalised_output": "nina says: **60 is greater than 41.** yes",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-052",
+   "category": "quoted_question",
+   "gold": "29",
+   "raw_output": "5",
+   "normalised_output": "5",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-053",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-054",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-055",
+   "category": "quoted_question",
+   "gold": "23",
+   "raw_output": "3",
+   "normalised_output": "3",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-056",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-057",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-058",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-059",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-060",
+   "category": "quoted_question",
+   "gold": "23",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-061",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-062",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-063",
+   "category": "quoted_question",
+   "gold": "27",
+   "raw_output": "13 + 14",
+   "normalised_output": "13 + 14",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-064",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-065",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-066",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-067",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-068",
+   "category": "quoted_question",
+   "gold": "21",
+   "raw_output": "13",
+   "normalised_output": "13",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-069",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Nina says 44 is greater than 38.",
+   "normalised_output": "nina says 44 is greater than 38",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-070",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Peter says: **28 is greater than 22**.\n\nYes, **Yes**, Peter is right.",
+   "normalised_output": "peter says: **28 is greater than 22**. yes **yes** peter is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-071",
+   "category": "quoted_question",
+   "gold": "34",
+   "raw_output": "11 + 23 =",
+   "normalised_output": "11 + 23 =",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-072",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-073",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-074",
+   "category": "quoted_question",
+   "gold": "30",
+   "raw_output": "4",
+   "normalised_output": "4",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-075",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-076",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-077",
+   "category": "quoted_question",
+   "gold": "42",
+   "raw_output": "25",
+   "normalised_output": "25",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-078",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-079",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-080",
+   "category": "quoted_question",
+   "gold": "28",
+   "raw_output": "10",
+   "normalised_output": "10",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-081",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-082",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Nina says:",
+   "normalised_output": "nina says:",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-083",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-084",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-085",
+   "category": "quoted_question",
+   "gold": "46",
+   "raw_output": "18 + 28 =",
+   "normalised_output": "18 + 28 =",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-086",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-087",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Nina says: **48 is greater than 20.**\n\nYes,",
+   "normalised_output": "nina says: **48 is greater than 20.** yes",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-088",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-089",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-090",
+   "category": "quoted_question",
+   "gold": "21",
+   "raw_output": "18 + 3",
+   "normalised_output": "18 + 3",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-091",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-092",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-093",
+   "category": "quoted_question",
+   "gold": "33",
+   "raw_output": "10 + 23",
+   "normalised_output": "10 + 23",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-094",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-095",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-096",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-097",
+   "category": "quoted_question",
+   "gold": "37",
+   "raw_output": "11",
+   "normalised_output": "11",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-098",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-099",
+   "category": "quoted_question",
+   "gold": "25",
+   "raw_output": "22",
+   "normalised_output": "22",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-100",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-101",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-102",
+   "category": "quoted_question",
+   "gold": "35",
+   "raw_output": "26",
+   "normalised_output": "26",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-103",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-104",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-105",
+   "category": "quoted_question",
+   "gold": "18",
+   "raw_output": "14",
+   "normalised_output": "14",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-106",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-107",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Nina says 28 is greater than 12.",
+   "normalised_output": "nina says 28 is greater than 12",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-108",
+   "category": "quoted_question",
+   "gold": "36",
+   "raw_output": "24",
+   "normalised_output": "24",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-109",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-110",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "Yes",
+   "normalised_output": "yes",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-111",
+   "category": "quoted_question",
+   "gold": "34",
+   "raw_output": "13",
+   "normalised_output": "13",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-112",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-113",
+   "category": "false_claim",
+   "gold": "no",
+   "raw_output": "Maria says: **32 is greater than 37**.\n\nNo,",
+   "normalised_output": "maria says: **32 is greater than 37**. no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-114",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-115",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Yes, Maria is right.",
+   "normalised_output": "yes maria is right",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-116",
+   "category": "quoted_question",
+   "gold": "10",
+   "raw_output": "7",
+   "normalised_output": "7",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-117",
+   "category": "order_swap",
+   "gold": "yes",
+   "raw_output": "57",
+   "normalised_output": "57",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-118",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": false
+  },
+  {
+   "id": "g2-diag-119",
+   "category": "order_swap",
+   "gold": "no",
+   "raw_output": "No",
+   "normalised_output": "no",
+   "correct": true
+  },
+  {
+   "id": "g2-diag-120",
+   "category": "false_claim",
+   "gold": "yes",
+   "raw_output": "Peter says: **38 is greater than 27.**\n\nYes,",
+   "normalised_output": "peter says: **38 is greater than 27.** yes",
+   "correct": false
+  }
+ ]
+}
